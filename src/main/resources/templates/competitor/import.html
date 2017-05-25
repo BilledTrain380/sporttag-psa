@@ -43,7 +43,7 @@
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:replace="fragments/main :: navigation(import)">
+<nav th:replace="fragments/main :: navigation(competitor)">
 </nav>
 
 <div class="content-wrapper py-3">
@@ -63,7 +63,7 @@
                 </p>
 
 
-                <form th:action="@{/competitor/import}" method="post">
+                <form th:action="@{/competitor/import}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="competitor-input-file">Datei Import</label>
                         <input id="competitor-input-file" class="form-control" name="competitor-input" type="file" accept="text/csv" required>
