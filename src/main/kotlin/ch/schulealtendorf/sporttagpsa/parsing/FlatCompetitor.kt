@@ -42,7 +42,7 @@ import java.util.*
  * @author nmaerchy
  * @version 0.0.1
  */
-class FlatCompetitor(
+data class FlatCompetitor(
         val surname: String,
         val prename: String,
         val gender: Boolean,

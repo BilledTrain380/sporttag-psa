@@ -36,37 +36,64 @@
 
 package ch.schulealtendorf.sporttagpsa.parsing
 
-import com.opencsv.bean.CsvToBean
-import com.opencsv.bean.HeaderColumnNameMappingStrategy
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import org.junit.Assert
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
+import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.springframework.web.multipart.MultipartFile
-import java.io.InputStreamReader
+import java.io.InputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
+import java.util.stream.Stream
 
 /**
  * @author nmaerchy
+ * *
  * @version 0.0.1
  */
-class CompetitorFileReader {
-
-    fun parseToCompetitor(file: MultipartFile): List<FlatCompetitor> {
-        
-        val strategy: HeaderColumnNameMappingStrategy<CSVCompetitor> =  HeaderColumnNameMappingStrategy()
-        strategy.type = CSVCompetitor::class.java
-        val csvToBean: CsvToBean<CSVCompetitor> = CsvToBean()
-        
-        return csvToBean.parse(strategy, InputStreamReader(file.inputStream)).stream()
-                .map { (clazz, surname, prename, gender, address, zipCode, town, birthday, teacher) -> FlatCompetitor(
-                        surname, prename, gender == "m", getDate(birthday), address, zipCode, town, clazz, teacher
-                )}.collect(Collectors.toList())
-    }
+@RunWith(JUnitPlatform::class)
+object CompetitorFileReaderTest: Spek ({
     
-    private fun getDate(date: String): Date {
+    var competitorFileReader: CompetitorFileReader = CompetitorFileReader()
+    
+    beforeEachTest { 
+        competitorFileReader = CompetitorFileReader()
+    }
+
+    fun getDate(date: String): Date {
 
         val format: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
         return format.parse(date)
     }
     
-}
+    describe("a CompetitorFileReader") {
+        
+        on("parse a competitor input") {
+            
+            val exampleFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
+            val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor.csv")
+            
+            `when` (exampleFile.inputStream).thenReturn(testInputStream)
+            
+            it("should return a list of FlatCompetitor objects") {
+
+                val expected: List<FlatCompetitor> = Stream.of(
+                        FlatCompetitor("Muster", "Hans", true, getDate("07.09.2017"), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
+                        FlatCompetitor("Wirbelwind", "Will", false, getDate("08.12.2015"), "Wirbelstrasse 16", "4000", "Willhausen", "1a", "Hans Müller")
+                ).collect(Collectors.toList())
+                
+                val result: List<FlatCompetitor> = competitorFileReader.parseToCompetitor(exampleFile)
+                Assert.assertEquals(expected, result)
+            }
+        }
+    }
+
+    
+})
