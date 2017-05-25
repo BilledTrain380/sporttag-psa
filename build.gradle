@@ -48,6 +48,11 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+
+	// database dependencies
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.flywaydb:flyway-core')
+	runtime('com.h2database:h2')
 	
 	// to enable thymeleaf legacy html5 mode
 	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
@@ -58,8 +63,6 @@ dependencies {
 	compile 'org.webjars:font-awesome:4.7.0'
 	compile 'org.webjars:tether:1.4.0'
 	
-	runtime('com.h2database:h2')
-	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile "org.mockito:mockito-core:2.8.9"
 	testCompile "org.jetbrains.spek:spek-api:1.1.2"
@@ -67,10 +70,10 @@ dependencies {
 	// necessary for spek on JUnit4
 	testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
 	testCompile "org.junit.platform:junit-platform-runner:1.0.0-M4"
-
 	testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.2'
 }
 
+// copy resources to see resource changes
 task copyResources(type: Copy) {
 	from 'src/main/resources/'
 	into 'build/resources/main/'
