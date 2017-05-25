@@ -46,9 +46,19 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class MainController {
 
-    @GetMapping("/")
+    companion object {
+        const val DASHBOARD = "/"
+        const val COMPETITOR = "/competitor"
+    }
+    
+    @GetMapping(DASHBOARD)
     fun index(): String {
         return "index"
+    }
+
+    @GetMapping(COMPETITOR)
+    fun competitor(): String {
+        return "competitor/competitor-index"
     }
     
 }

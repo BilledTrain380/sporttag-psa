@@ -38,6 +38,10 @@ package ch.schulealtendorf.sporttagpsa.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 /**
  * @author nmaerchy
@@ -46,9 +50,23 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class ImportController {
 
-    @GetMapping("/competitor/import")
+    companion object {
+        const val IMPORT = "/competitor/import"
+    }
+    
+    @GetMapping(IMPORT)
     fun import(): String {
         return "competitor/import"
+    }
+
+    @PostMapping(IMPORT)
+    fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, redirectAttributes: RedirectAttributes): String {
+        
+        // Todo: Forward file
+        
+        redirectAttributes.addFlashAttribute("message", "File Upload war erfolgreich.")
+        
+        return "redirect:${MainController.COMPETITOR}"
     }
     
 }
