@@ -51,8 +51,7 @@ dependencies {
 	
 	// to enable thymeleaf legacy html5 mode
 	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
-
-
+	
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'
 	compile 'org.webjars:bootstrap:4.0.0-alpha.6'
@@ -60,10 +59,16 @@ dependencies {
 	compile 'org.webjars:tether:1.4.0'
 	
 	runtime('com.h2database:h2')
+	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile 'org.jetbrains.spek:spek-api:1.1.2'
-	testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.2'
+    testCompile "org.mockito:mockito-core:2.8.9"
+	testCompile "org.jetbrains.spek:spek-api:1.1.2"
+	
+	// necessary for spek on JUnit4
+	testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
+	testCompile "org.junit.platform:junit-platform-runner:1.0.0-M4"
 
+	testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.2'
 }
 
 task copyResources(type: Copy) {
