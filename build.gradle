@@ -38,6 +38,10 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 	
+	// to enable thymeleaf legacy html5 mode
+	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
+
+
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'
 	compile 'org.webjars:bootstrap:3.3.7-1'
