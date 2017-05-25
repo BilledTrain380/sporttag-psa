@@ -44,21 +44,37 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 /**
+ * Controller to upload a multipart file with the competitors data.
+ * 
  * @author nmaerchy
  * @version 0.0.1
  */
 @Controller
 class ImportController {
-
+    
     companion object {
         const val IMPORT = "/competitor/import"
     }
+    
+    val errorMessage: String = "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten."
+    val successMessage: String = "File Upload war erfolgreich."
     
     @GetMapping(IMPORT)
     fun import(): String {
         return "competitor/import"
     }
 
+    /**
+     * Handles the passed in MultipartFile and redirects the user.
+     * The Multipart file MUST be a text/csv mime type.
+     * A success message will be set on the RedirectAttributes if no validation error occurs,
+     * otherwise a error message will be set.
+     * 
+     * @param file a csv file to upload
+     * @param redirectAttributes specialization to set attributes on a redirect scenario
+     * 
+     * @return a thymeleaf template
+     */
     @PostMapping(IMPORT)
     fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, redirectAttributes: RedirectAttributes): String {
         
@@ -66,14 +82,13 @@ class ImportController {
         
         if(file.contentType != "text/csv") {
 
-            redirectAttributes.addFlashAttribute("message", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
+            redirectAttributes.addFlashAttribute("message", errorMessage)
 
             return "redirect:${ImportController.IMPORT}"
         }
         
-        redirectAttributes.addFlashAttribute("message", "File Upload war erfolgreich.")
+        redirectAttributes.addFlashAttribute("message", successMessage)
         
         return "redirect:${MainController.COMPETITOR}"
     }
-    
 }
