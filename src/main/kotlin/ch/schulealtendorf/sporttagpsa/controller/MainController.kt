@@ -44,11 +44,11 @@ import org.springframework.web.bind.annotation.GetMapping
  * @version 0.0.1
  */
 @Controller
-class ImportController {
+class MainController {
 
-    @GetMapping("/competitor/import")
-    fun import(): String {
-        return "competitor/import"
+    @GetMapping("/")
+    fun index(): String {
+        return "index"
     }
     
 }

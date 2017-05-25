@@ -44,9 +44,15 @@ dependencies {
 
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'
-	compile 'org.webjars:bootstrap:3.3.7-1'
+	compile 'org.webjars:bootstrap:4.0.0-alpha.6'
 	compile 'org.webjars:font-awesome:4.7.0'
+	compile 'org.webjars:tether:1.4.0'
 	
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task copyResources(type: Copy) {
+	from 'src/main/resources/'
+	into 'build/resources/main/'
 }
