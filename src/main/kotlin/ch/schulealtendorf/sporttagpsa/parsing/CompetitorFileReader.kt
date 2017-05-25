@@ -53,6 +53,10 @@ class CompetitorFileReader {
 
     fun parseToCompetitor(file: MultipartFile): List<FlatCompetitor> {
         
+        if(file.isEmpty) {
+            throw IllegalArgumentException("Competitor input file is empty.")
+        }
+        
         val strategy: HeaderColumnNameMappingStrategy<CSVCompetitor> =  HeaderColumnNameMappingStrategy()
         strategy.type = CSVCompetitor::class.java
         val csvToBean: CsvToBean<CSVCompetitor> = CsvToBean()

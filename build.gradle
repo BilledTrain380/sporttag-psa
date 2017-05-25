@@ -42,6 +42,7 @@ compileTestKotlin {
 repositories {
 	mavenCentral()
 	maven { url "http://dl.bintray.com/jetbrains/spek" }
+    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
 }
 
 
@@ -69,7 +70,9 @@ dependencies {
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile "org.mockito:mockito-core:2.8.9"
-	testCompile "org.jetbrains.spek:spek-api:1.1.2"
+    testCompile "org.jetbrains.kotlin:kotlin-test:1.1.4-dev-330"
+
+    testCompile "org.jetbrains.spek:spek-api:1.1.2"
 	
 	// necessary for spek on JUnit4
 	testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"

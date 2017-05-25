@@ -52,6 +52,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
 import java.util.stream.Stream
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy
@@ -78,12 +80,13 @@ object CompetitorFileReaderTest: Spek ({
         on("parse a competitor input") {
             
             val exampleFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
-            val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor.csv")
-            
-            `when` (exampleFile.inputStream).thenReturn(testInputStream)
             
             it("should return a list of FlatCompetitor objects") {
 
+                val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor.csv")
+                
+                Mockito.`when`(exampleFile.inputStream).thenReturn(testInputStream)
+                
                 val expected: List<FlatCompetitor> = Stream.of(
                         FlatCompetitor("Muster", "Hans", true, getDate("07.09.2017"), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
                         FlatCompetitor("Wirbelwind", "Will", false, getDate("08.12.2015"), "Wirbelstrasse 16", "4000", "Willhausen", "1a", "Hans Müller")
@@ -92,8 +95,17 @@ object CompetitorFileReaderTest: Spek ({
                 val result: List<FlatCompetitor> = competitorFileReader.parseToCompetitor(exampleFile)
                 Assert.assertEquals(expected, result)
             }
+            
+            it("should throw an IllegalArgumentException when the file is empty") {
+                
+                `when` (exampleFile.isEmpty).thenReturn(true)
+                
+                val exception: IllegalArgumentException = assertFailsWith(IllegalArgumentException::class) {
+                    competitorFileReader.parseToCompetitor(exampleFile)
+                }
+                
+                assertEquals("Competitor input file is empty.", exception.message)
+            }
         }
     }
-
-    
 })
