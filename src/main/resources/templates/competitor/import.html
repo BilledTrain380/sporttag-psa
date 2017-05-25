@@ -50,12 +50,42 @@
 
     <div class="container-fluid">
 
-        <!-- Breadcrumbs -->
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a th:href="@{/competitor}">Teilnehmer</a></li>
-            <li class="breadcrumb-item active">Import</li>
-        </ol>
+        <div class="page-header">
+            <h1>Teilnehmer <small>Import</small></h1>
+        </div>
+        
+        <div class="row">
+            
+            <div class="col-lg-12">
+                <p>
+                    Sie können Teilnehmer mittels einer CSV Datei importieren. Achten Sie darauf, dass die CSV Datei 
+                    den untenstehenden Regeln entspricht.
+                </p>
 
+
+                <form th:action="@{/competitor/import}" method="post">
+                    <div class="form-group">
+                        <label for="competitor-input-file">Datei Import</label>
+                        <input id="competitor-input-file" class="form-control" name="competitor-input" type="file" accept="text/csv" required>
+                        <ul>
+                            <li>Als Trennzeichen MUSS ein Komma vorhanden sein.</li>
+                            <li>Das Geschlecht MUSS dem Zeichen "m" oder "w" entsprechen.</li>
+                            <li>Das Geburtsdatum MUSS im Format DD.MM.YYYY sein. z.B. 05.08.2017</li>
+                            <li>Die Spaltenüberschriften DÜRFEN NICHT vorhanden sein.</li>
+                            <li>Die Spalten MÜSSEN in folgender Reihenfolge vorhanden sein:
+                                <p>Klasse,Nachname,Vorname,Geschlecht,Strasse,PLZ,Ort,Geburtsdatum,Klassenlehrer</p>
+                            </li>
+                            
+                        </ul>
+                        
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Datei hochladen</button>
+                </form>
+                
+            </div>
+            
+        </div>
 
     </div>
     <!-- /.container-fluid -->
