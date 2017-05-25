@@ -11,6 +11,7 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
+        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
 	}
 }
 
@@ -19,6 +20,7 @@ apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "kotlin-jpa"
 
 junitPlatform {
 	filters {
