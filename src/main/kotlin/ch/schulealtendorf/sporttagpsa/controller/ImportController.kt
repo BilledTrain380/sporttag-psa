@@ -64,6 +64,13 @@ class ImportController {
         
         // Todo: Forward file
         
+        if(file.contentType != "text/csv") {
+
+            redirectAttributes.addFlashAttribute("message", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
+
+            return "redirect:${ImportController.IMPORT}"
+        }
+        
         redirectAttributes.addFlashAttribute("message", "File Upload war erfolgreich.")
         
         return "redirect:${MainController.COMPETITOR}"

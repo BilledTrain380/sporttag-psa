@@ -67,17 +67,28 @@ object ImportControllerSpec: Spek({
         on("competitor csv file upload") {
             
             val mockFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
-            val redirectedAttr: RedirectAttributes = mock(RedirectAttributes::class.java)
+            val mockRedirectedAttr: RedirectAttributes = mock(RedirectAttributes::class.java)
             
             it("should redirect the user to the competitor page with a success message.") {
                 
                 `when` (mockFile.contentType).thenReturn("text/csv")
                 
-                val result: String = importCtrl.handleFileUpload(mockFile, redirectedAttr)
+                val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
                 
                 Assert.assertEquals("redirect:/competitor", result)
                 
-                verify(redirectedAttr, times(1)).addFlashAttribute("message", "File Upload war erfolgreich.")
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war erfolgreich.")
+            }
+            
+            it("should redirect the user to the import page with an error message.") {
+                
+                `when` (mockFile.contentType).thenReturn("text/html")
+                
+                val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
+                
+                Assert.assertEquals("redirect:/competitor/import", result)
+                
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
             }
             
         }
