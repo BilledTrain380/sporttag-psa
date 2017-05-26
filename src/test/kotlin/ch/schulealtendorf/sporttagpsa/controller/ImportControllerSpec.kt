@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.parsing.FileReader
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -58,10 +59,12 @@ object ImportControllerSpec: Spek({
     
     describe("an ImportController") {
         
-        var importCtrl: ImportController = ImportController()
+        val mockFileReader: FileReader = mock(FileReader::class.java)
+        
+        var importCtrl: ImportController = ImportController(mockFileReader)
         
         beforeEachTest { 
-            importCtrl = ImportController()
+            importCtrl = ImportController(mockFileReader)
         }
         
         on("competitor csv file upload") {
@@ -71,7 +74,7 @@ object ImportControllerSpec: Spek({
             
             it("should redirect the user to the competitor page with a success message.") {
                 
-                `when` (mockFile.contentType).thenReturn("text/csv")
+                `when` (mockFileReader.parseToCompetitor(mockFile)).thenReturn(emptyList())
                 
                 val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
                 
@@ -82,7 +85,7 @@ object ImportControllerSpec: Spek({
             
             it("should redirect the user to the import page with an error message.") {
                 
-                `when` (mockFile.contentType).thenReturn("text/html")
+                `when` (mockFileReader.parseToCompetitor(mockFile)).thenThrow(IllegalArgumentException::class.java)
                 
                 val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
                 
@@ -90,9 +93,6 @@ object ImportControllerSpec: Spek({
                 
                 verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
             }
-            
         }
-        
     }
-    
 })
