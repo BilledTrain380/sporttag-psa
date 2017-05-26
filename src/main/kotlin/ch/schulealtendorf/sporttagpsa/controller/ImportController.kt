@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.competitors.CompetitorListConsumer
 import ch.schulealtendorf.sporttagpsa.parsing.FileReader
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -51,7 +52,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
  * @version 0.0.1
  */
 @Controller
-class ImportController(private val fileReader: FileReader) {
+class ImportController(
+        private val fileReader: FileReader,
+        private val competitorConsumer: CompetitorListConsumer) {
     
     companion object {
         const val IMPORT = "/competitor/import"
@@ -82,7 +85,7 @@ class ImportController(private val fileReader: FileReader) {
         // Todo: Forward file
         try {
             
-            fileReader.parseToCompetitor(file)
+            competitorConsumer.accept(fileReader.parseToCompetitor(file))
             redirectAttributes.addFlashAttribute("message", successMessage)
 
             return "redirect:${MainController.COMPETITOR}"

@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.competitors.CompetitorListConsumer
 import ch.schulealtendorf.sporttagpsa.parsing.FileReader
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -56,12 +57,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 @RunWith(JUnitPlatform::class)
 object ImportControllerSpec: Spek({
 
-    val mockFileReader: FileReader = mock(FileReader::class.java)
+    var mockFileReader: FileReader = mock(FileReader::class.java)
+    var mockCompetitorConsumer: CompetitorListConsumer = mock(CompetitorListConsumer::class.java)
 
-    var importCtrl: ImportController = ImportController(mockFileReader)
+    var importCtrl: ImportController = ImportController(mockFileReader, mockCompetitorConsumer)
 
     beforeEachTest {
-        importCtrl = ImportController(mockFileReader)
+        mockFileReader = mock(FileReader::class.java)
+        mockCompetitorConsumer = mock(CompetitorListConsumer::class.java)
+        importCtrl = ImportController(mockFileReader, mockCompetitorConsumer)
     }
     
     describe("an ImportController") {
@@ -74,6 +78,14 @@ object ImportControllerSpec: Spek({
             `when` (mockFileReader.parseToCompetitor(mockFile)).thenReturn(emptyList())
 
             val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
+            
+            it("should parse the input file") {
+                verify(mockFileReader, times(1)).parseToCompetitor(mockFile)
+            }
+            
+            it("should delegate the parsed file result to the competitor consumer") {
+                verify(mockCompetitorConsumer, times(1)).accept(emptyList())
+            }
             
             it("should redirect the user to the competitor page") {
                 Assert.assertEquals("redirect:/competitor", result)
