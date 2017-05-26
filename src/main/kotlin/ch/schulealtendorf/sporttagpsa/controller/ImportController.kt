@@ -82,7 +82,6 @@ class ImportController(
     @PostMapping(IMPORT)
     fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, redirectAttributes: RedirectAttributes): String {
         
-        // Todo: Forward file
         try {
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
