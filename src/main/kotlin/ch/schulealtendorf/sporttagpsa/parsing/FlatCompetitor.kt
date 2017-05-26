@@ -39,6 +39,8 @@ package ch.schulealtendorf.sporttagpsa.parsing
 import java.util.*
 
 /**
+ * Data class for competitors in a flat data structure.
+ * 
  * @author nmaerchy
  * @version 0.0.1
  */

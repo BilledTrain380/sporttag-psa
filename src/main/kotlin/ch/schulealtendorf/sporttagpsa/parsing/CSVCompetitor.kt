@@ -39,6 +39,8 @@ package ch.schulealtendorf.sporttagpsa.parsing
 import com.opencsv.bean.CsvBindByName
 
 /**
+ * Data class for CSV entries of a competitor file input.
+ * 
  * @author nmaerchy
  * @version 0.0.1
  */
