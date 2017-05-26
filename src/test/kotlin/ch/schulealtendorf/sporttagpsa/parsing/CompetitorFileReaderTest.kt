@@ -84,8 +84,9 @@ object CompetitorFileReaderTest: Spek ({
             it("should return a list of FlatCompetitor objects") {
 
                 val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor.csv")
-                
-                Mockito.`when`(exampleFile.inputStream).thenReturn(testInputStream)
+
+                `when` (exampleFile.isEmpty).thenReturn(false)
+                `when`(exampleFile.inputStream).thenReturn(testInputStream)
                 
                 val expected: List<FlatCompetitor> = Stream.of(
                         FlatCompetitor("Muster", "Hans", true, getDate("07.09.2017"), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
@@ -105,6 +106,20 @@ object CompetitorFileReaderTest: Spek ({
                 }
                 
                 assertEquals("Competitor input file is empty.", exception.message)
+            }
+            
+            it("should shrow an IllegalArgumentException when no header line is available") {
+
+                val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor-no-header.csv")
+
+                `when` (exampleFile.isEmpty).thenReturn(false)
+                `when`(exampleFile.inputStream).thenReturn(testInputStream)
+                
+                val exception: IllegalArgumentException = assertFailsWith(IllegalArgumentException::class) {
+                    competitorFileReader.parseToCompetitor(exampleFile)
+                }
+                
+                assertEquals("Error during CSV parsing.", exception.message)
             }
         }
     }

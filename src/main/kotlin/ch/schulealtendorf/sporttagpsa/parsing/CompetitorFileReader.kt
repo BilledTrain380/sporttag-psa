@@ -41,6 +41,7 @@ import com.opencsv.bean.HeaderColumnNameMappingStrategy
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStreamReader
 import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.stream.Collectors
@@ -57,14 +58,19 @@ class CompetitorFileReader {
             throw IllegalArgumentException("Competitor input file is empty.")
         }
         
-        val strategy: HeaderColumnNameMappingStrategy<CSVCompetitor> =  HeaderColumnNameMappingStrategy()
-        strategy.type = CSVCompetitor::class.java
-        val csvToBean: CsvToBean<CSVCompetitor> = CsvToBean()
+        try {
+            val strategy: HeaderColumnNameMappingStrategy<CSVCompetitor> =  HeaderColumnNameMappingStrategy()
+            strategy.type = CSVCompetitor::class.java
+            val csvToBean: CsvToBean<CSVCompetitor> = CsvToBean()
+
+            return csvToBean.parse(strategy, InputStreamReader(file.inputStream)).stream()
+                    .map { (clazz, surname, prename, gender, address, zipCode, town, birthday, teacher) -> FlatCompetitor(
+                            surname, prename, gender == "m", getDate(birthday), address, zipCode, town, clazz, teacher
+                    )}.collect(Collectors.toList())
+        } catch (ex: ParseException) {
+            throw IllegalArgumentException("Error during CSV parsing.", ex)
+        }
         
-        return csvToBean.parse(strategy, InputStreamReader(file.inputStream)).stream()
-                .map { (clazz, surname, prename, gender, address, zipCode, town, birthday, teacher) -> FlatCompetitor(
-                        surname, prename, gender == "m", getDate(birthday), address, zipCode, town, clazz, teacher
-                )}.collect(Collectors.toList())
     }
     
     private fun getDate(date: String): Date {
