@@ -37,11 +37,20 @@
 package ch.schulealtendorf.sporttagpsa.competitors
 
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
+import org.springframework.stereotype.Component
 
 /**
+ * An implementation that consumes a list of {@link FlatCompetitor}
+ * and guarantees that duplicated attributes are only consumed once.
+ *
+ * For example:
+ * When two {@link FlatCompetitor} objects with the same value in attribute {@link FlatCompetitor#teacher},
+ * that attribute will only be consumed once.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
+@Component
 class EntrySafeCompetitorListConsumer(
         private val competitorConsumer: CompetitorConsumer,
         private val competitorTownConsumer: CompetitorTownConsumer,
@@ -50,15 +59,15 @@ class EntrySafeCompetitorListConsumer(
 ): CompetitorListConsumer {
 
     /**
-     * Performs this operation on the given argument.
-
-     * @param t the input argument
+     * Delegates each element of the passed in argument to a series of Consumers.
+     * 
+     * @param competitorList a list of competitors to consume
      */
-    override fun accept(t: List<FlatCompetitor>) {
+    override fun accept(competitorList: List<FlatCompetitor>) {
         
-        t.forEach { competitor: FlatCompetitor -> competitorTeacherConsumer.accept(competitor) }
-        t.forEach { competitor: FlatCompetitor -> competitorClazzConsumer.accept(competitor) }
-        t.forEach { competitor: FlatCompetitor -> competitorTownConsumer.accept(competitor) }
-        t.forEach { competitor: FlatCompetitor -> competitorConsumer.accept(competitor) }
+        competitorList.forEach { competitor: FlatCompetitor -> competitorTeacherConsumer.accept(competitor) }
+        competitorList.forEach { competitor: FlatCompetitor -> competitorClazzConsumer.accept(competitor) }
+        competitorList.forEach { competitor: FlatCompetitor -> competitorTownConsumer.accept(competitor) }
+        competitorList.forEach { competitor: FlatCompetitor -> competitorConsumer.accept(competitor) }
     }
 }

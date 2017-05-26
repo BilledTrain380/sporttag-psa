@@ -39,24 +39,29 @@ package ch.schulealtendorf.sporttagpsa.competitors
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import org.springframework.stereotype.Component
 
 /**
+ * An implementation that consumes a {@link FlatCompetitor}
+ * and ensures, that the {@link FlatCompetitor} attributes for a TownEntity are only consumed once.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
+@Component
 class EntrySafeCompetitorTownConsumer(
         private val townRepository: TownRepository
 ): CompetitorTownConsumer {
 
     /**
-     * Performs this operation on the given argument.
+     * Saves a {@link TownEntity} based on the passed in argument.
 
-     * @param t the input argument
+     * @param competitorList the input argument
      */
-    override fun accept(t: FlatCompetitor) {
+    override fun accept(competitorList: FlatCompetitor) {
         
-        if (townRepository.findByZipAndName(t.zipCode, t.town) == null) {
-            val townEntity: TownEntity = TownEntity(t.zipCode, t.town)
+        if (townRepository.findByZipAndName(competitorList.zipCode, competitorList.town) == null) {
+            val townEntity: TownEntity = TownEntity(competitorList.zipCode, competitorList.town)
 
             townRepository.save(townEntity)
         }

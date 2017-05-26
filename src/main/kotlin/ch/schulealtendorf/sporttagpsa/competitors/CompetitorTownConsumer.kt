@@ -41,7 +41,7 @@ import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import java.util.function.Consumer
 
 /**
- * Describes an implementation that consumes the attribute {@link FlatCompetitor#town town}
+ * Describes an implementation that consumes the attribute {@link FlatCompetitor#town}
  * of a {@link FlatCompetitor} object.
  * 
  * @author nmaerchy

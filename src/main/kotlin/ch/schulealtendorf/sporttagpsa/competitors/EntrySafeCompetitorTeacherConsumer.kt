@@ -39,24 +39,29 @@ package ch.schulealtendorf.sporttagpsa.competitors
 import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import org.springframework.stereotype.Component
 
 /**
+ * An implementation that consumes a {@link FlatCompetitor}
+ * and ensures that the {@link FlatCompetitor#teacher} attribute is only consumed once.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
+@Component
 class EntrySafeCompetitorTeacherConsumer(
         private val teacherRepository: TeacherRepository
 ): CompetitorTeacherConsumer {
 
     /**
-     * Performs this operation on the given argument.
-
-     * @param t the input argument
+     * Saves a {@link TeacherEntity} based on the passed in argument.
+     *
+     * @param competitorList the input argument
      */
-    override fun accept(t: FlatCompetitor) {
+    override fun accept(competitorList: FlatCompetitor) {
         
-        if (teacherRepository.findByName(t.teacher) == null) {
-            val teacherEntity: TeacherEntity = TeacherEntity(t.teacher)
+        if (teacherRepository.findByName(competitorList.teacher) == null) {
+            val teacherEntity: TeacherEntity = TeacherEntity(competitorList.teacher)
 
             teacherRepository.save(teacherEntity)
         }

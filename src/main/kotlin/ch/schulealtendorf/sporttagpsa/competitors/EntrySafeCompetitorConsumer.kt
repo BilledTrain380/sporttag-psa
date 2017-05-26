@@ -43,13 +43,18 @@ import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import org.springframework.stereotype.Component
 import java.sql.Date
 import javax.persistence.EntityNotFoundException
 
 /**
+ * An implementation that consumes a {@link FlatCompetitor}
+ * and ensures, that the {@link FlatCompetitor} attributes which are references to another Entity are available.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
+@Component
 class EntrySafeCompetitorConsumer(
         private val competitorRepository: CompetitorRepository,
         private val townRepository: TownRepository,
@@ -57,20 +62,22 @@ class EntrySafeCompetitorConsumer(
 ): CompetitorConsumer {
 
     /**
-     * Performs this operation on the given argument.
+     * Saves a {@link CompetitorEntity} based on the passed in argument.
+     * The {@link FlatCompetitor#clazz} attribute has to be exist as a ClazzEntity already.
 
-     * @param t the input argument
+     * @param competitorList the input argument
+     * @throws EntityNotFoundException if the {@link FlatCompetitor#clazz} attribute does not exist as a ClazzEntity already
      */
-    override fun accept(t: FlatCompetitor) {
+    override fun accept(competitorList: FlatCompetitor) {
         
-        val clazzEntity: ClazzEntity = clazzRepository.findByName(t.clazz) ?:
-                throw EntityNotFoundException("Competitor $t expecting an existing ClazzEntity: ClazzEntity not found")
+        val clazzEntity: ClazzEntity = clazzRepository.findByName(competitorList.clazz) ?:
+                throw EntityNotFoundException("Competitor $competitorList expecting an existing ClazzEntity: ClazzEntity not found")
         
-        val townEntity: TownEntity = townRepository.findByZipAndName(t.zipCode, t.town) ?:
-                TownEntity(t.zipCode, t.town)
+        val townEntity: TownEntity = townRepository.findByZipAndName(competitorList.zipCode, competitorList.town) ?:
+                TownEntity(competitorList.zipCode, competitorList.town)
         
         val competitorEntity: CompetitorEntity = CompetitorEntity(
-                t.surname, t.prename, t.gender, Date(t.birthday.time), t.address, townEntity, clazzEntity)
+                competitorList.surname, competitorList.prename, competitorList.gender, Date(competitorList.birthday.time), competitorList.address, townEntity, clazzEntity)
         
         competitorRepository.save(competitorEntity)    
     }

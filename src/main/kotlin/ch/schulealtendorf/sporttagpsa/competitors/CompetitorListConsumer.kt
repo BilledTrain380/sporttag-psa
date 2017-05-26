@@ -40,12 +40,7 @@ import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import java.util.function.Consumer
 
 /**
- * Describes an implementation that consumes a list of {@link FlatCompetitor} objects
- * and guarantees that duplicated attributes are only consumed once.
- *
- * For example:
- * When two {@link FlatCompetitor} objects with the same value in attribute {@link FlatCompetitor#teacher},
- * that attribute will only be consumed once.
+ * Describes an implementation that consumes a list of {@link FlatCompetitor} objects.
  * 
  * @author nmaerchy
  * @version 0.0.1

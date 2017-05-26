@@ -41,29 +41,36 @@ import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import org.springframework.stereotype.Component
 import javax.persistence.EntityNotFoundException
 
 /**
+ * An implementation that consumes a {@link FlatCompetitor}
+ * and ensures, that the {@link FlatCompetitor} attributes for a ClazzEntity are only consumed once.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
+@Component
 class EntrySafeCompetitorClazzConsumer(
         private val clazzRepository: ClazzRepository,
         private val teacherRepository: TeacherRepository
 ): CompetitorClazzConsumer {
 
     /**
-     * Performs this operation on the given argument.
+     * Saves a {@link ClazzEntity} based on the passed in argument.
+     * The {@link FlatCompetitor#teacher} attribute has to be exist as a TeacherEntity already.
 
-     * @param t the input argument
+     * @param competitorList the input argument
+     * @throws EntityNotFoundException if the {@link FlatCompetitor#teacher} attribute does not exist as a TeacherEntity already
      */
-    override fun accept(t: FlatCompetitor) {
+    override fun accept(competitorList: FlatCompetitor) {
         
-        if (clazzRepository.findByName(t.clazz) == null) {
-            val teacherEntity: TeacherEntity = teacherRepository.findByName(t.teacher) ?:
-                    throw EntityNotFoundException("Clazz ${t.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
+        if (clazzRepository.findByName(competitorList.clazz) == null) {
+            val teacherEntity: TeacherEntity = teacherRepository.findByName(competitorList.teacher) ?:
+                    throw EntityNotFoundException("Clazz ${competitorList.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
 
-            val clazzEntity: ClazzEntity = ClazzEntity(t.clazz, teacherEntity)
+            val clazzEntity: ClazzEntity = ClazzEntity(competitorList.clazz, teacherEntity)
 
             clazzRepository.save(clazzEntity)
         }
