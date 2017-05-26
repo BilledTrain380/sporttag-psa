@@ -85,6 +85,7 @@ object CompetitorFileReaderTest: Spek ({
 
                 val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor.csv")
 
+                `when` (exampleFile.contentType).thenReturn("text/csv")
                 `when` (exampleFile.isEmpty).thenReturn(false)
                 `when`(exampleFile.inputStream).thenReturn(testInputStream)
                 
@@ -98,7 +99,8 @@ object CompetitorFileReaderTest: Spek ({
             }
             
             it("should throw an IllegalArgumentException when the file is empty") {
-                
+
+                `when` (exampleFile.contentType).thenReturn("text/csv")
                 `when` (exampleFile.isEmpty).thenReturn(true)
                 
                 val exception: IllegalArgumentException = assertFailsWith(IllegalArgumentException::class) {
@@ -112,6 +114,7 @@ object CompetitorFileReaderTest: Spek ({
 
                 val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor-no-header.csv")
 
+                `when` (exampleFile.contentType).thenReturn("text/csv")
                 `when` (exampleFile.isEmpty).thenReturn(false)
                 `when`(exampleFile.inputStream).thenReturn(testInputStream)
                 
@@ -126,6 +129,7 @@ object CompetitorFileReaderTest: Spek ({
 
                 val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor-invalid-date.csv")
 
+                `when` (exampleFile.contentType).thenReturn("text/csv")
                 `when` (exampleFile.isEmpty).thenReturn(false)
                 `when`(exampleFile.inputStream).thenReturn(testInputStream)
 
@@ -134,6 +138,17 @@ object CompetitorFileReaderTest: Spek ({
                 }
 
                 assertEquals("Error during CSV parsing.", exception.message)
+            }
+            
+            it("should throw an IllegalArgumentException when the file is not the mime type text/csv") {
+
+                `when` (exampleFile.contentType).thenReturn("text/html")
+
+                val exception: IllegalArgumentException = assertFailsWith(IllegalArgumentException::class) {
+                    competitorFileReader.parseToCompetitor(exampleFile)
+                }
+
+                assertEquals("The input file MUST be the mime type \"text/csv\".", exception.message)
             }
         }
     }

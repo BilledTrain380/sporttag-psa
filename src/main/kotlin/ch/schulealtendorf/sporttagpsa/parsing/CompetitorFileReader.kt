@@ -47,36 +47,58 @@ import java.util.*
 import java.util.stream.Collectors
 
 /**
+ * An implementation of a FileReader for a competitor input file.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
-class CompetitorFileReader {
+class CompetitorFileReader : FileReader {
 
-    fun parseToCompetitor(file: MultipartFile): List<FlatCompetitor> {
+    /**
+     * Parses the passed in file by the following rules:
+     *  The file MUST be a mime type text/csv.
+     *  The file MUST NOT be empty.
+     *  The file MUST have a header line:
+     *      Klasse,Nachname,Vorname,Geschlecht,Strasse,PLZ,Ort,Geburtsdatum,Klassenlehrer
+     *  The Geburtsdatum field MUST be in format: dd.MM.yyyy
+     *  
+     *  @param file the file to parse
+     *  
+     *  @return a list of the parsed entries
+     */
+    override fun parseToCompetitor(file: MultipartFile): List<FlatCompetitor> {
         
-        if(file.isEmpty) {
-            throw IllegalArgumentException("Competitor input file is empty.")
-        }
+        if (file.contentType != "text/csv") throw IllegalArgumentException("The input file MUST be the mime type \"text/csv\".")
+        if (file.isEmpty) throw IllegalArgumentException("Competitor input file is empty.")
         
         try {
+            
+            // setup parser
             val strategy: HeaderColumnNameMappingStrategy<CSVCompetitor> =  HeaderColumnNameMappingStrategy()
             strategy.type = CSVCompetitor::class.java
             val csvToBean: CsvToBean<CSVCompetitor> = CsvToBean()
 
             return csvToBean.parse(strategy, InputStreamReader(file.inputStream)).stream()
                     .map { (clazz, surname, prename, gender, address, zipCode, town, birthday, teacher) -> FlatCompetitor(
-                            surname, prename, gender == "m", getDate(birthday), address, zipCode, town, clazz, teacher
+                            surname, prename, gender == "m", convertDate(birthday), address, zipCode, town, clazz, teacher
                     )}.collect(Collectors.toList())
+            
         } catch (ex: ParseException) {
             throw IllegalArgumentException("Error during CSV parsing.", ex)
         }
-        
     }
-    
-    private fun getDate(date: String): Date {
+
+    /**
+     * Converts the passed in date to a {@link Date} type.
+     * The date format MUST be: dd.MM.yyyy
+     * 
+     * @param date the date to convert
+     * 
+     * @return the parsed date
+     */
+    private fun convertDate(date: String): Date {
 
         val format: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
         return format.parse(date)
     }
-    
 }
