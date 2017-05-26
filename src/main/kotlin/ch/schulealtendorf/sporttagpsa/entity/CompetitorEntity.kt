@@ -52,7 +52,7 @@ data class CompetitorEntity(
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int,
+        val id: Int?,
         
         @NotNull
         @Size(min = 1, max = 30)
@@ -79,4 +79,7 @@ data class CompetitorEntity(
         @ManyToOne
         @JoinColumn(name = "FK_CLAZZ_id", referencedColumnName = "id")
         val clazz: ClazzEntity
-)
+) {
+        constructor(surname: String, prename: String, gender: Boolean, birthday: Date, address: String, town: TownEntity, clazz: ClazzEntity):
+                this(null, surname, prename, gender, birthday, address, town, clazz)
+}

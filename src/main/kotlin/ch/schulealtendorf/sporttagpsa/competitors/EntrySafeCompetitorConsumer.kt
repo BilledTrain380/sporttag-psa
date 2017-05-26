@@ -36,10 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.competitors
 
+import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import java.sql.Date
 
 /**
  * @author nmaerchy
@@ -57,6 +61,16 @@ class EntrySafeCompetitorConsumer(
      * @param t the input argument
      */
     override fun accept(t: FlatCompetitor) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val clazzEntity: ClazzEntity = clazzRepository.findByName(t.clazz) ?:
+                throw UnsupportedOperationException("This method is not implemented yet.")
+        
+        val townEntity: TownEntity = townRepository.findByZipAndName(t.zipCode, t.town) ?:
+                throw UnsupportedOperationException("This method is not implemented yet.")
+        
+        val competitorEntity: CompetitorEntity = CompetitorEntity(
+                t.surname, t.prename, t.gender, Date(t.birthday.time), t.address, townEntity, clazzEntity)
+        
+        competitorRepository.save(competitorEntity)    
     }
 }
