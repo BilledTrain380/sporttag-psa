@@ -41,6 +41,7 @@ import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import javax.persistence.EntityNotFoundException
 
 /**
  * @author nmaerchy
@@ -59,7 +60,7 @@ class EntrySafeCompetitorClazzConsumer(
     override fun accept(t: FlatCompetitor) {
         
         val teacherEntity: TeacherEntity = teacherRepository.findByName(t.teacher) ?:
-                throw UnsupportedOperationException("This method is not implemented yet.")
+                throw EntityNotFoundException("Clazz 1a expecting an existing TeacherEntity: No TeacherEntity found")
 
         val clazzEntity: ClazzEntity = ClazzEntity(t.clazz, teacherEntity)
         

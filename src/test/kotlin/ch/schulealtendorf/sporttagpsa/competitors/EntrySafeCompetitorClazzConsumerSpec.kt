@@ -50,6 +50,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import java.util.*
+import javax.persistence.EntityNotFoundException
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy
@@ -88,6 +91,19 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
             it("should save a ClazzEntity based on the FlatCompetitors attributes") {
                 val expected: ClazzEntity = ClazzEntity("1a", teacherEntity)
                 Mockito.verify(mockClazzRepo, Mockito.times(1)).save(expected)
+            }
+        }
+        
+        on("consuming a FlatCompetitor with an unexpected teacher attribute") {
+            
+            `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(null)
+            
+            it("should throw an EntityNotFoundException that the TeacherEntity does not exist") {
+                val exception = assertFailsWith(EntityNotFoundException::class) {
+                    consumer.accept(flatCompetitor)
+                }
+                
+                assertEquals("Clazz 1a expecting an existing TeacherEntity: No TeacherEntity found", exception.message)
             }
         }
     }
