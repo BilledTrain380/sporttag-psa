@@ -55,6 +55,10 @@ class EntrySafeCompetitorListConsumer(
      * @param t the input argument
      */
     override fun accept(t: List<FlatCompetitor>) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        t.forEach { competitor: FlatCompetitor -> competitorTeacherConsumer.accept(competitor) }
+        t.forEach { competitor: FlatCompetitor -> competitorClazzConsumer.accept(competitor) }
+        t.forEach { competitor: FlatCompetitor -> competitorTownConsumer.accept(competitor) }
+        t.forEach { competitor: FlatCompetitor -> competitorConsumer.accept(competitor) }
     }
 }
