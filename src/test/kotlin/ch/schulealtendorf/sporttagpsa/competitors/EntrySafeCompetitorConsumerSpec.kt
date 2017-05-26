@@ -51,8 +51,11 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import java.sql.Date
+import javax.persistence.EntityNotFoundException
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy
@@ -100,6 +103,33 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             it("should save a CompetitorEntity based on the FlatCompetitors attributes") {
                 val expected: CompetitorEntity = CompetitorEntity("Muster", "Hans", true, Date(1), "Musterstrasse 6", townEntity, clazzEntity)
                 Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
+            }
+        }
+        
+        on("consuming a FlatCompetitor with an unexpected clazz attribute") {
+            
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(null)
+            
+            it("should throw an EntityNotFoundException that the clazz entity does not exist") {
+                val expected: EntityNotFoundException = assertFailsWith(EntityNotFoundException::class) {
+                    consumer.accept(flatCompetitor)
+                }
+                
+                assertEquals("Competitor $flatCompetitor expecting an existing ClazzEntity: ClazzEntity not found", expected.message)
+            }
+        }
+
+        on("consuming a FlatCompetitor with an non existing TownEntity") {
+
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(clazzEntity)
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(null)
+
+            consumer.accept(flatCompetitor)
+            
+            it("should save the TownEntity with the CompetitorEntity") {
+                val newTownEntity: TownEntity = TownEntity("4000", "Musterhausen") // it is important, that the id is not set, otherwise it would be an existing TownEntity
+                val expected: CompetitorEntity = CompetitorEntity("Muster", "Hans", true, Date(1), "Musterstrasse 6", newTownEntity, clazzEntity)
+                verify(mockCompetitorRepo, times(1)).save(expected)
             }
         }
     }

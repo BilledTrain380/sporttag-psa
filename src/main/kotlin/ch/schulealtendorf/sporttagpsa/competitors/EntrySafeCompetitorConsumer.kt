@@ -44,6 +44,7 @@ import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import java.sql.Date
+import javax.persistence.EntityNotFoundException
 
 /**
  * @author nmaerchy
@@ -63,10 +64,10 @@ class EntrySafeCompetitorConsumer(
     override fun accept(t: FlatCompetitor) {
         
         val clazzEntity: ClazzEntity = clazzRepository.findByName(t.clazz) ?:
-                throw UnsupportedOperationException("This method is not implemented yet.")
+                throw EntityNotFoundException("Competitor $t expecting an existing ClazzEntity: ClazzEntity not found")
         
         val townEntity: TownEntity = townRepository.findByZipAndName(t.zipCode, t.town) ?:
-                throw UnsupportedOperationException("This method is not implemented yet.")
+                TownEntity(t.zipCode, t.town)
         
         val competitorEntity: CompetitorEntity = CompetitorEntity(
                 t.surname, t.prename, t.gender, Date(t.birthday.time), t.address, townEntity, clazzEntity)
