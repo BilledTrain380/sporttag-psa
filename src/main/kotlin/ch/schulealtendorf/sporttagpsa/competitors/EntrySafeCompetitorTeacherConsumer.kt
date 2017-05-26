@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.competitors
 
+import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
 
@@ -53,6 +54,9 @@ class EntrySafeCompetitorTeacherConsumer(
      * @param t the input argument
      */
     override fun accept(t: FlatCompetitor) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val teacherEntity: TeacherEntity = TeacherEntity(t.teacher)
+        
+        teacherRepository.save(teacherEntity)
     }
 }

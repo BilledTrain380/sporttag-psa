@@ -34,28 +34,45 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.competitors
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
+import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
+import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import org.mockito.Mockito
+import java.util.*
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-@Entity
-@Table(name = "TEACHER")
-data class TeacherEntity(
+object EntrySafeCompetitorTeacherConsumerSpec: Spek({
+    
+    var mockTeacherRepo: TeacherRepository = Mockito.mock(TeacherRepository::class.java)
+    var consumer: EntrySafeCompetitorTeacherConsumer = EntrySafeCompetitorTeacherConsumer(mockTeacherRepo)
+    
+    beforeEachTest {
+        mockTeacherRepo = Mockito.mock(TeacherRepository::class.java)
+        consumer = EntrySafeCompetitorTeacherConsumer(mockTeacherRepo)
+    }
+    
+    describe("a EntrySafeCompetitorTeacherConsumer") {
+
+        val flatCompetitor: FlatCompetitor = FlatCompetitor(
+                "", "", true, Date(1), "", "", "", "", "Hans Müller") // <- just empty values for non used attributes
         
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int?,
-        
-        @NotNull
-        @Size(min = 1, max = 100)
-        val name: String
-) {
-        constructor(name: String): this(null, name)
-}
+        on("consuming a FlatCompetitor") {
+            
+            consumer.accept(flatCompetitor)
+            
+            it("should save a TeacherEntity based on the FlatCompetitors attributes") {
+                val expected = TeacherEntity("Hans Müller")
+                Mockito.verify(mockTeacherRepo, Mockito.times(1)).save(expected)
+            }
+        }
+    }
+})
