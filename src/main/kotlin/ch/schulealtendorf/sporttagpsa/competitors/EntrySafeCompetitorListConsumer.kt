@@ -37,17 +37,24 @@
 package ch.schulealtendorf.sporttagpsa.competitors
 
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
-import java.util.function.Consumer
 
 /**
- * Describes an implementation that consumes a list of {@link FlatCompetitor} objects
- * and guarantees that duplicated attributes are only consumed once.
- *
- * For example:
- * When two {@link FlatCompetitor} objects with the same value in attribute {@link FlatCompetitor#teacher},
- * that attribute will only be consumed once.
- * 
  * @author nmaerchy
  * @version 0.0.1
  */
-interface EntrySaveCompetitorConsumer: Consumer<List<FlatCompetitor>>
+class EntrySafeCompetitorListConsumer(
+        private val competitorConsumer: CompetitorConsumer,
+        private val competitorTownConsumer: CompetitorTownConsumer,
+        private val competitorTeacherConsumer: CompetitorTeacherConsumer,
+        private val competitorClazzConsumer: CompetitorClazzConsumer
+): CompetitorListConsumer {
+
+    /**
+     * Performs this operation on the given argument.
+
+     * @param t the input argument
+     */
+    override fun accept(t: List<FlatCompetitor>) {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    }
+}
