@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.parsing
 
 import com.opencsv.bean.CsvToBean
 import com.opencsv.bean.HeaderColumnNameMappingStrategy
+import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStreamReader
 import java.text.DateFormat
@@ -52,6 +53,7 @@ import java.util.stream.Collectors
  * @author nmaerchy
  * @version 0.0.2
  */
+@Component
 class CompetitorFileReader : FileReader {
 
     /**
