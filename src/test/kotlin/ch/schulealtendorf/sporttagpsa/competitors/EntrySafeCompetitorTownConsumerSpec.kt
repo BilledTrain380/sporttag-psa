@@ -70,14 +70,13 @@ object EntrySafeCompetitorTownConsumerSpec: Spek({
                 "", "", true, Date(1), "", "4000", "Musterhausen", "", "") // <- just empty values for non used attributes
         
         on("consuming a FlatCompetitor") {
-            
-            val expected: TownEntity = TownEntity("4000", "Musterhausen")
 
             `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(null)
 
             consumer.accept(flatCompetitor)
             
             it("should save a TownEntity based on the FlatCompetitors attributes") {
+                val expected: TownEntity = TownEntity("4000", "Musterhausen")
                 Mockito.verify(mockTownRepo, Mockito.times(1)).save(expected)
             }
         }
@@ -90,8 +89,11 @@ object EntrySafeCompetitorTownConsumerSpec: Spek({
 
             consumer.accept(flatCompetitor)
             
-            it("should not save any TownEntity") {
+            it("should check if the TownEntity exists already") {
                 Mockito.verify(mockTownRepo, Mockito.times(1)).findByZipAndName("4000", "Musterhausen")
+            }
+            
+            it("should not save any TownEntity") {
                 Mockito.verifyNoMoreInteractions(mockTownRepo)
             }
         }

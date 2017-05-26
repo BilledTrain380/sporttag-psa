@@ -55,42 +55,46 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
  */
 @RunWith(JUnitPlatform::class)
 object ImportControllerSpec: Spek({
-    
+
+    val mockFileReader: FileReader = mock(FileReader::class.java)
+
+    var importCtrl: ImportController = ImportController(mockFileReader)
+
+    beforeEachTest {
+        importCtrl = ImportController(mockFileReader)
+    }
     
     describe("an ImportController") {
+
+        val mockFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
+        val mockRedirectedAttr: RedirectAttributes = mock(RedirectAttributes::class.java)
         
-        val mockFileReader: FileReader = mock(FileReader::class.java)
-        
-        var importCtrl: ImportController = ImportController(mockFileReader)
-        
-        beforeEachTest { 
-            importCtrl = ImportController(mockFileReader)
-        }
-        
-        on("competitor csv file upload") {
+        on("on handling a valid file") {
+
+            `when` (mockFileReader.parseToCompetitor(mockFile)).thenReturn(emptyList())
+
+            val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
             
-            val mockFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
-            val mockRedirectedAttr: RedirectAttributes = mock(RedirectAttributes::class.java)
-            
-            it("should redirect the user to the competitor page with a success message.") {
-                
-                `when` (mockFileReader.parseToCompetitor(mockFile)).thenReturn(emptyList())
-                
-                val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
-                
+            it("should redirect the user to the competitor page") {
                 Assert.assertEquals("redirect:/competitor", result)
-                
-                verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war erfolgreich.")
             }
             
-            it("should redirect the user to the import page with an error message.") {
-                
-                `when` (mockFileReader.parseToCompetitor(mockFile)).thenThrow(IllegalArgumentException::class.java)
-                
-                val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
-                
+            it("should send a success message to the redirected page") {
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war erfolgreich.")
+            }
+        }
+        
+        on("handling an invalid file") {
+
+            `when` (mockFileReader.parseToCompetitor(mockFile)).thenThrow(IllegalArgumentException::class.java)
+
+            val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
+            
+            it("should redirect the user to the import page") {
                 Assert.assertEquals("redirect:/competitor/import", result)
-                
+            }
+            
+            it("should send an error message to the redirected page") {
                 verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
             }
         }
