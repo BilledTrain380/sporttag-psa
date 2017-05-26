@@ -55,8 +55,10 @@ class EntrySafeCompetitorTeacherConsumer(
      */
     override fun accept(t: FlatCompetitor) {
         
-        val teacherEntity: TeacherEntity = TeacherEntity(t.teacher)
-        
-        teacherRepository.save(teacherEntity)
+        if (teacherRepository.findByName(t.teacher) == null) {
+            val teacherEntity: TeacherEntity = TeacherEntity(t.teacher)
+
+            teacherRepository.save(teacherEntity)
+        }
     }
 }

@@ -44,6 +44,7 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.mockito.Mockito
+import org.mockito.Mockito.*
 import java.util.*
 
 /**
@@ -66,12 +67,31 @@ object EntrySafeCompetitorTeacherConsumerSpec: Spek({
                 "", "", true, Date(1), "", "", "", "", "Hans Müller") // <- just empty values for non used attributes
         
         on("consuming a FlatCompetitor") {
+
+            `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(null)
             
             consumer.accept(flatCompetitor)
             
             it("should save a TeacherEntity based on the FlatCompetitors attributes") {
                 val expected = TeacherEntity("Hans Müller")
                 Mockito.verify(mockTeacherRepo, Mockito.times(1)).save(expected)
+            }
+        }
+        
+        on("consuming a FlatCompetitor that teacher attributes already exists") {
+            
+            val foundEntity: TeacherEntity = TeacherEntity(1, "Hans Müller")
+            
+            `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(foundEntity)
+            
+            consumer.accept(flatCompetitor)
+            
+            it("should check if the TeacherEntity already exists") {
+                verify(mockTeacherRepo, times(1)).findByName("Hans Müller")
+            }
+            
+            it("should not save any TeacherEntity") {
+                verifyNoMoreInteractions(mockTeacherRepo)
             }
         }
     }
