@@ -39,24 +39,45 @@ package ch.schulealtendorf.sporttagpsa.competitors
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
+import org.mockito.Mockito
+import java.util.*
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-class EntrySafeCompetitorTownConsumer(
-        private val townRepository: TownRepository
-): CompetitorTownConsumer {
-
-    /**
-     * Performs this operation on the given argument.
-
-     * @param t the input argument
-     */
-    override fun accept(t: FlatCompetitor) {
+@RunWith(JUnitPlatform::class)
+object EntrySafeCompetitorTownConsumerSpec: Spek({
+    
+    describe("an EntrySafeCompetitorTownConsumer") {
         
-        val townEntity: TownEntity = TownEntity(t.zipCode, t.town)
+        var mockTownRepo: TownRepository = Mockito.mock(TownRepository::class.java)
         
-        townRepository.save(townEntity)
+        var consumer: EntrySafeCompetitorTownConsumer = EntrySafeCompetitorTownConsumer(mockTownRepo)
+        
+        beforeEachTest { 
+            consumer = EntrySafeCompetitorTownConsumer(mockTownRepo)
+        }
+        
+        on("consuming a FlatCompetitor") {
+            
+            val flatCompetitor: FlatCompetitor = FlatCompetitor(
+                    "", "", true, Date(1), "", "4000", "Musterhausen", "", "") // <- just empty values for non used attributes
+            
+            val expected: TownEntity = TownEntity("4000", "Musterhausen")
+            
+            it("should save the FlatCompetitors zip and town attribute") {
+                
+                consumer.accept(flatCompetitor)
+                
+                Mockito.verify(mockTownRepo, Mockito.times(1)).save(expected)
+            }
+        }
     }
-}
+})
