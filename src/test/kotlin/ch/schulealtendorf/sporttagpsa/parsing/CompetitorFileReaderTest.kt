@@ -108,7 +108,7 @@ object CompetitorFileReaderTest: Spek ({
                 assertEquals("Competitor input file is empty.", exception.message)
             }
             
-            it("should shrow an IllegalArgumentException when no header line is available") {
+            it("should throw an IllegalArgumentException when no header line is available") {
 
                 val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor-no-header.csv")
 
@@ -119,6 +119,20 @@ object CompetitorFileReaderTest: Spek ({
                     competitorFileReader.parseToCompetitor(exampleFile)
                 }
                 
+                assertEquals("Error during CSV parsing.", exception.message)
+            }
+            
+            it("should throw an IllegalArgumentException when date format is not valid") {
+
+                val testInputStream: InputStream = Thread.currentThread().contextClassLoader.getResourceAsStream("parsing/test-competitor-invalid-date.csv")
+
+                `when` (exampleFile.isEmpty).thenReturn(false)
+                `when`(exampleFile.inputStream).thenReturn(testInputStream)
+
+                val exception: IllegalArgumentException = assertFailsWith(IllegalArgumentException::class) {
+                    competitorFileReader.parseToCompetitor(exampleFile)
+                }
+
                 assertEquals("Error during CSV parsing.", exception.message)
             }
         }
