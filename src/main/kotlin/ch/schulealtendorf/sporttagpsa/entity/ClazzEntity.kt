@@ -51,7 +51,7 @@ data class ClazzEntity(
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int,
+        val id: Int?,
         
         @NotNull
         @Size(min = 1, max = 6)
@@ -62,4 +62,6 @@ data class ClazzEntity(
         @JoinColumn(name = "FK_TEACHER_id", referencedColumnName = "id")
         val teacher: TeacherEntity
 
-)
+) {
+        constructor(name: String, teacher: TeacherEntity): this(null, name, teacher)
+}

@@ -41,28 +41,54 @@ import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
+import org.mockito.Mockito
+import org.mockito.Mockito.`when`
+import java.util.*
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-class EntrySafeCompetitorClazzConsumer(
-        private val clazzRepository: ClazzRepository,
-        private val teacherRepository: TeacherRepository
-): CompetitorClazzConsumer {
-
-    /**
-     * Performs this operation on the given argument.
-
-     * @param t the input argument
-     */
-    override fun accept(t: FlatCompetitor) {
-        
-        val teacherEntity: TeacherEntity = teacherRepository.findByName(t.teacher) ?:
-                throw UnsupportedOperationException("This method is not implemented yet.")
-
-        val clazzEntity: ClazzEntity = ClazzEntity(t.clazz, teacherEntity)
-        
-        clazzRepository.save(clazzEntity)    
+@RunWith(JUnitPlatform::class)
+object EntrySafeCompetitorClazzConsumerSpec: Spek({
+    
+    var mockClazzRepo: ClazzRepository = Mockito.mock(ClazzRepository::class.java)
+    var mockTeacherRepo: TeacherRepository = Mockito.mock(TeacherRepository::class.java)
+    var consumer: EntrySafeCompetitorClazzConsumer = EntrySafeCompetitorClazzConsumer(mockClazzRepo, mockTeacherRepo)
+    
+    beforeEachTest {
+        mockClazzRepo= Mockito.mock(ClazzRepository::class.java)
+        mockTeacherRepo = Mockito.mock(TeacherRepository::class.java)
+        consumer = EntrySafeCompetitorClazzConsumer(mockClazzRepo, mockTeacherRepo)
     }
-}
+    
+    describe("an EntrySafeCompetitorClazzConsumer") {
+
+        val flatCompetitor: FlatCompetitor = FlatCompetitor(
+                "", "", true, Date(1), "", "", "", "1a", "Hans Müller") // <- just empty values for non used attributes
+        
+        val teacherEntity: TeacherEntity = TeacherEntity(1, "Hans Müller")
+        
+        on("consuming a FlatCompetitor") {
+            
+            `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(teacherEntity)
+            
+            consumer.accept(flatCompetitor)
+            
+            it("should find the TeacherEntity for the clazz") {
+                Mockito.verify(mockTeacherRepo, Mockito.times(1)).findByName("Hans Müller")
+            }
+            
+            it("should save a ClazzEntity based on the FlatCompetitors attributes") {
+                val expected: ClazzEntity = ClazzEntity("1a", teacherEntity)
+                Mockito.verify(mockClazzRepo, Mockito.times(1)).save(expected)
+            }
+        }
+    }
+})
