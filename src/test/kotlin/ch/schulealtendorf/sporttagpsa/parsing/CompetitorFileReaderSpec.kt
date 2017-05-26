@@ -155,7 +155,7 @@ object CompetitorFileReaderSpec : Spek ({
 
             `when` (exampleFile.contentType).thenReturn("text/html")
             
-            it("should throw an IllegalArgumentException that an the file MUST be the text/csv file") {
+            it("should throw an IllegalArgumentException that an the file MUST be a text/csv file") {
                 
                 val exception: IllegalArgumentException = assertFailsWith(IllegalArgumentException::class) {
                     competitorFileReader.parseToCompetitor(exampleFile)
