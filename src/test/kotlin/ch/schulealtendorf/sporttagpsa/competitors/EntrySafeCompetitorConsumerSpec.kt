@@ -96,7 +96,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
                 Mockito.verify(mockClazzRepo, Mockito.times(1)).findByName("1a")
             }
             
-            it("should find the TownEntiy for the town") {
+            it("should find the TownEntity for the town") {
                 Mockito.verify(mockTownRepo, Mockito.times(1)).findByZipAndName("4000", "Musterhausen")
             }
             
