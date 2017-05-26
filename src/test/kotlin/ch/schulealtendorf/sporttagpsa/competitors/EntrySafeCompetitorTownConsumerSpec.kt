@@ -46,6 +46,7 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import java.util.*
 
 /**
@@ -54,29 +55,44 @@ import java.util.*
  */
 @RunWith(JUnitPlatform::class)
 object EntrySafeCompetitorTownConsumerSpec: Spek({
+
+    var mockTownRepo: TownRepository = Mockito.mock(TownRepository::class.java)
+    var consumer: EntrySafeCompetitorTownConsumer = EntrySafeCompetitorTownConsumer(mockTownRepo)
+
+    beforeEachTest {
+        mockTownRepo = Mockito.mock(TownRepository::class.java)
+        consumer = EntrySafeCompetitorTownConsumer(mockTownRepo)
+    }
     
     describe("an EntrySafeCompetitorTownConsumer") {
         
-        var mockTownRepo: TownRepository = Mockito.mock(TownRepository::class.java)
-        
-        var consumer: EntrySafeCompetitorTownConsumer = EntrySafeCompetitorTownConsumer(mockTownRepo)
-        
-        beforeEachTest { 
-            consumer = EntrySafeCompetitorTownConsumer(mockTownRepo)
-        }
+        val flatCompetitor: FlatCompetitor = FlatCompetitor(
+                "", "", true, Date(1), "", "4000", "Musterhausen", "", "") // <- just empty values for non used attributes
         
         on("consuming a FlatCompetitor") {
             
-            val flatCompetitor: FlatCompetitor = FlatCompetitor(
-                    "", "", true, Date(1), "", "4000", "Musterhausen", "", "") // <- just empty values for non used attributes
-            
             val expected: TownEntity = TownEntity("4000", "Musterhausen")
+
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(null)
+
+            consumer.accept(flatCompetitor)
             
-            it("should save the FlatCompetitors zip and town attribute") {
-                
-                consumer.accept(flatCompetitor)
-                
+            it("should save a TownEntity based on the FlatCompetitors attributes") {
                 Mockito.verify(mockTownRepo, Mockito.times(1)).save(expected)
+            }
+        }
+        
+        on("consuming a FlatCompetitor that zip and town attribute already exists") {
+
+            val foundEntity: TownEntity = TownEntity(1, "4000", "Musterhausen")
+
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(foundEntity)
+
+            consumer.accept(flatCompetitor)
+            
+            it("should not save any TownEntity") {
+                Mockito.verify(mockTownRepo, Mockito.times(1)).findByZipAndName("4000", "Musterhausen")
+                Mockito.verifyNoMoreInteractions(mockTownRepo)
             }
         }
     }

@@ -55,8 +55,10 @@ class EntrySafeCompetitorTownConsumer(
      */
     override fun accept(t: FlatCompetitor) {
         
-        val townEntity: TownEntity = TownEntity(t.zipCode, t.town)
-        
-        townRepository.save(townEntity)
+        if (townRepository.findByZipAndName(t.zipCode, t.town) == null) {
+            val townEntity: TownEntity = TownEntity(t.zipCode, t.town)
+
+            townRepository.save(townEntity)
+        }
     }
 }
