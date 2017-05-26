@@ -43,8 +43,8 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 0.0.1
  */
-interface TeacherRepository: CrudRepository<TeacherEntity, Int> {
+interface TeacherRepository: CrudRepository<TeacherEntity?, Int> {
 
-    fun findByName(name: String): TeacherEntity
+    fun findByName(name: String): TeacherEntity?
     
 }
