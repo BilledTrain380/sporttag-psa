@@ -43,4 +43,8 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 0.0.1
  */
-interface ClazzRepository: CrudRepository<ClazzEntity?, Int>
+interface ClazzRepository: CrudRepository<ClazzEntity?, Int> {
+
+    fun findByName(name: String): ClazzEntity?
+    
+}

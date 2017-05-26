@@ -48,7 +48,7 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import java.util.*
 import javax.persistence.EntityNotFoundException
 import kotlin.test.assertEquals
@@ -77,9 +77,11 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
                 "", "", true, Date(1), "", "", "", "1a", "Hans Müller") // <- just empty values for non used attributes
         
         val teacherEntity: TeacherEntity = TeacherEntity(1, "Hans Müller")
+        val clazzEntity: ClazzEntity = ClazzEntity(1, "1a", teacherEntity)
         
         on("consuming a FlatCompetitor") {
-            
+
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(null)
             `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(teacherEntity)
             
             consumer.accept(flatCompetitor)
@@ -95,7 +97,8 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
         }
         
         on("consuming a FlatCompetitor with an unexpected teacher attribute") {
-            
+
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(null)
             `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(null)
             
             it("should throw an EntityNotFoundException that the TeacherEntity does not exist") {
@@ -105,6 +108,22 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
                 
                 assertEquals("Clazz 1a expecting an existing TeacherEntity: No TeacherEntity found", exception.message)
             }
+        }
+        
+        on("consuming a FlatCompetitor that clazz attribute already exists") {
+            
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(clazzEntity)
+            
+            consumer.accept(flatCompetitor)
+            
+            it("should check if the ClazzEntity exists already") {
+                verify(mockClazzRepo, times(1)).findByName("1a")
+            }
+            
+            it("should not save any ClazzEntity") {
+                verifyNoMoreInteractions(mockClazzRepo)
+            }
+            
         }
     }
 })
