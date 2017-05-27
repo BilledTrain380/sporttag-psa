@@ -45,7 +45,6 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.stream.Collectors
 
 /**
  * An implementation of a FileReader for a competitor input file.
@@ -80,10 +79,10 @@ class CompetitorFileReader : FileReader {
             strategy.type = CSVCompetitor::class.java
             val csvToBean: CsvToBean<CSVCompetitor> = CsvToBean()
 
-            return csvToBean.parse(strategy, InputStreamReader(file.inputStream)).stream()
+            return csvToBean.parse(strategy, InputStreamReader(file.inputStream))
                     .map { (clazz, surname, prename, gender, address, zipCode, town, birthday, teacher) -> FlatCompetitor(
                             surname, prename, gender == "m", convertDate(birthday), address, zipCode, town, clazz, teacher
-                    )}.collect(Collectors.toList())
+                    )}
             
         } catch (ex: ParseException) {
             throw IllegalArgumentException("Error during CSV parsing.", ex)

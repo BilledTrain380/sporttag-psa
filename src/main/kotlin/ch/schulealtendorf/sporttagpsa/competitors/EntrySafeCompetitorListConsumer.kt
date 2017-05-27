@@ -65,9 +65,9 @@ class EntrySafeCompetitorListConsumer(
      */
     override fun accept(competitorList: List<FlatCompetitor>) {
         
-        competitorList.forEach { competitor: FlatCompetitor -> competitorTeacherConsumer.accept(competitor) }
-        competitorList.forEach { competitor: FlatCompetitor -> competitorClazzConsumer.accept(competitor) }
-        competitorList.forEach { competitor: FlatCompetitor -> competitorTownConsumer.accept(competitor) }
-        competitorList.forEach { competitor: FlatCompetitor -> competitorConsumer.accept(competitor) }
+        competitorList.forEach(competitorTeacherConsumer::accept)
+        competitorList.forEach(competitorClazzConsumer::accept)
+        competitorList.forEach(competitorTownConsumer::accept)
+        competitorList.forEach(competitorConsumer::accept)
     }
 }
