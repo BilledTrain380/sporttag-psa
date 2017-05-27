@@ -56,12 +56,12 @@ class EntrySafeCompetitorTeacherConsumer(
     /**
      * Saves a {@link TeacherEntity} based on the passed in argument.
      *
-     * @param competitorList the input argument
+     * @param competitor the input argument
      */
-    override fun accept(competitorList: FlatCompetitor) {
+    override fun accept(competitor: FlatCompetitor) {
         
-        if (teacherRepository.findByName(competitorList.teacher) == null) {
-            val teacherEntity: TeacherEntity = TeacherEntity(competitorList.teacher)
+        if (teacherRepository.findByName(competitor.teacher) == null) {
+            val teacherEntity: TeacherEntity = TeacherEntity(competitor.teacher)
 
             teacherRepository.save(teacherEntity)
         }

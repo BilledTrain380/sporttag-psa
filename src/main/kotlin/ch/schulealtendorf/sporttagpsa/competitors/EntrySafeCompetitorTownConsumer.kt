@@ -56,12 +56,12 @@ class EntrySafeCompetitorTownConsumer(
     /**
      * Saves a {@link TownEntity} based on the passed in argument.
 
-     * @param competitorList the input argument
+     * @param competitor the input argument
      */
-    override fun accept(competitorList: FlatCompetitor) {
+    override fun accept(competitor: FlatCompetitor) {
         
-        if (townRepository.findByZipAndName(competitorList.zipCode, competitorList.town) == null) {
-            val townEntity: TownEntity = TownEntity(competitorList.zipCode, competitorList.town)
+        if (townRepository.findByZipAndName(competitor.zipCode, competitor.town) == null) {
+            val townEntity: TownEntity = TownEntity(competitor.zipCode, competitor.town)
 
             townRepository.save(townEntity)
         }

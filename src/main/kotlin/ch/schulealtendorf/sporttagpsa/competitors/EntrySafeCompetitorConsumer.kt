@@ -65,19 +65,19 @@ class EntrySafeCompetitorConsumer(
      * Saves a {@link CompetitorEntity} based on the passed in argument.
      * The {@link FlatCompetitor#clazz} attribute has to be exist as a ClazzEntity already.
 
-     * @param competitorList the input argument
+     * @param competitor the input argument
      * @throws EntityNotFoundException if the {@link FlatCompetitor#clazz} attribute does not exist as a ClazzEntity already
      */
-    override fun accept(competitorList: FlatCompetitor) {
+    override fun accept(competitor: FlatCompetitor) {
         
-        val clazzEntity: ClazzEntity = clazzRepository.findByName(competitorList.clazz) ?:
-                throw EntityNotFoundException("Competitor $competitorList expecting an existing ClazzEntity: ClazzEntity not found")
+        val clazzEntity: ClazzEntity = clazzRepository.findByName(competitor.clazz) ?:
+                throw EntityNotFoundException("Competitor $competitor expecting an existing ClazzEntity: ClazzEntity not found")
         
-        val townEntity: TownEntity = townRepository.findByZipAndName(competitorList.zipCode, competitorList.town) ?:
-                TownEntity(competitorList.zipCode, competitorList.town)
+        val townEntity: TownEntity = townRepository.findByZipAndName(competitor.zipCode, competitor.town) ?:
+                TownEntity(competitor.zipCode, competitor.town)
         
         val competitorEntity: CompetitorEntity = CompetitorEntity(
-                competitorList.surname, competitorList.prename, competitorList.gender, Date(competitorList.birthday.time), competitorList.address, townEntity, clazzEntity)
+                competitor.surname, competitor.prename, competitor.gender, Date(competitor.birthday.time), competitor.address, townEntity, clazzEntity)
         
         competitorRepository.save(competitorEntity)    
     }

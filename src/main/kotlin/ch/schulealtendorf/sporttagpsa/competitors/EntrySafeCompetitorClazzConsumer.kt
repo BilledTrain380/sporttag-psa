@@ -61,16 +61,16 @@ class EntrySafeCompetitorClazzConsumer(
      * Saves a {@link ClazzEntity} based on the passed in argument.
      * The {@link FlatCompetitor#teacher} attribute has to be exist as a TeacherEntity already.
 
-     * @param competitorList the input argument
+     * @param competitor the input argument
      * @throws EntityNotFoundException if the {@link FlatCompetitor#teacher} attribute does not exist as a TeacherEntity already
      */
-    override fun accept(competitorList: FlatCompetitor) {
+    override fun accept(competitor: FlatCompetitor) {
         
-        if (clazzRepository.findByName(competitorList.clazz) == null) {
-            val teacherEntity: TeacherEntity = teacherRepository.findByName(competitorList.teacher) ?:
-                    throw EntityNotFoundException("Clazz ${competitorList.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
+        if (clazzRepository.findByName(competitor.clazz) == null) {
+            val teacherEntity: TeacherEntity = teacherRepository.findByName(competitor.teacher) ?:
+                    throw EntityNotFoundException("Clazz ${competitor.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
 
-            val clazzEntity: ClazzEntity = ClazzEntity(competitorList.clazz, teacherEntity)
+            val clazzEntity: ClazzEntity = ClazzEntity(competitor.clazz, teacherEntity)
 
             clazzRepository.save(clazzEntity)
         }
