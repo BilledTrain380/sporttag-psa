@@ -46,31 +46,31 @@ import com.opencsv.bean.CsvBindByName
  */
 data class CSVCompetitor(
         
-        @CsvBindByName(column = "Klasse")
+        @CsvBindByName(column = "Klasse", required = true)
         var clazz: String,
         
-        @CsvBindByName(column = "Nachname")
+        @CsvBindByName(column = "Nachname", required = true)
         var surname: String,
         
-        @CsvBindByName(column = "Vorname")
+        @CsvBindByName(column = "Vorname", required = true)
         var prename: String,
         
-        @CsvBindByName(column = "Geschlecht")
+        @CsvBindByName(column = "Geschlecht", required = true)
         var gender: String,
         
-        @CsvBindByName(column = "Adresse")
+        @CsvBindByName(column = "Adresse", required = true)
         var address: String,
         
-        @CsvBindByName(column = "PLZ")
+        @CsvBindByName(column = "PLZ", required = true)
         var zipCode: String,
         
-        @CsvBindByName(column = "Ortschaft")
+        @CsvBindByName(column = "Ort", required = true)
         var town: String,
         
-        @CsvBindByName(column = "Geburtsdatum")
+        @CsvBindByName(column = "Geburtsdatum", required = true)
         var birthday: String,
         
-        @CsvBindByName(column = "Klassenlehrer")
+        @CsvBindByName(column = "Klassenlehrer", required = true)
         var teacher: String
 ) {
         constructor(): this("", "", "", "", "", "", "", "", "")
