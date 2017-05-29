@@ -36,7 +36,15 @@ CREATE TABLE IF NOT EXISTS CLAZZ (
     ON UPDATE RESTRICT );
 
 
+-- -----------------------------------------------------
+-- Table SPORT
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS SPORT (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  name VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id));
 
+  
 -- -----------------------------------------------------
 -- Table COMPETITOR
 -- -----------------------------------------------------
@@ -49,6 +57,7 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
   address VARCHAR(80) NOT NULL,
   FK_TOWN_id INT NOT NULL,
   FK_CLAZZ_id INT NOT NULL,
+  FK_SPORT_id INT,
   PRIMARY KEY (id) ,
   CONSTRAINT fk_COMPETITOR_TOWN
     FOREIGN KEY (FK_TOWN_id)
@@ -59,6 +68,11 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
     FOREIGN KEY (FK_CLAZZ_id)
     REFERENCES CLAZZ (id)
     ON DELETE RESTRICT 
-    ON UPDATE RESTRICT);
+    ON UPDATE RESTRICT,
+  CONSTRAINT fk_COMPETITOR_SPORT
+    FOREIGN KEY (FK_SPORT_id)
+    REFERENCES SPORT (id)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT );
 
 

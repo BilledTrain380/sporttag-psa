@@ -36,7 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import java.sql.Date
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -46,8 +45,8 @@ import javax.validation.constraints.Size
  * @version 0.0.1
  */
 @Entity
-@Table(name = "COMPETITOR")
-data class CompetitorEntity(
+@Table(name = "SPORT")
+class SportEntity(
         
         @Id
         @NotNull
@@ -55,35 +54,6 @@ data class CompetitorEntity(
         val id: Int?,
         
         @NotNull
-        @Size(min = 1, max = 30)
-        val surname: String,
-        
-        @NotNull
-        @Size(min = 1, max = 30)
-        val prename: String,
-        
-        @NotNull
-        val gender: Boolean,
-        
-        @NotNull
-        val birthday: Date,
-        
-        @NotNull
-        @Size(min = 1, max = 80)
-        val address: String,
-        
-        @ManyToOne
-        @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
-        val town: TownEntity,
-        
-        @ManyToOne
-        @JoinColumn(name = "FK_CLAZZ_id", referencedColumnName = "id")
-        val clazz: ClazzEntity,
-        
-        @ManyToOne
-        @JoinColumn(name = "FK_SPORT_id", referencedColumnName = "id")
-        val sport: SportEntity?
-) {
-        constructor(surname: String, prename: String, gender: Boolean, birthday: Date, address: String, town: TownEntity, clazz: ClazzEntity):
-                this(null, surname, prename, gender, birthday, address, town, clazz, null)
-}
+        @Size(min = 1, max = 45)
+        val name: String
+)
