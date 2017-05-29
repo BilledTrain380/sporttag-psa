@@ -43,7 +43,7 @@
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:replace="fragments/main :: navigation(competitor)">
+<nav th:replace="fragments/main :: navigation(competitor, import)">
 </nav>
 
 <div class="content-wrapper py-3">
@@ -54,8 +54,12 @@
             <h1>Teilnehmer <small>Import</small></h1>
         </div>
 
-        <div th:if="${message}" th:inline="text" class="alert alert-danger" role="alert">
-            [[${message}]]
+        <div th:if="${messageError}" th:inline="text" class="alert alert-danger" role="alert">
+            [[${messageError}]]
+        </div>
+
+        <div th:if="${messageSuccess}" th:inline="text" class="alert alert-success" role="alert">
+            [[${messageSuccess}]]
         </div>
         
         <div class="row">

@@ -39,11 +39,11 @@ package ch.schulealtendorf.sporttagpsa.controller
 import ch.schulealtendorf.sporttagpsa.competitors.CompetitorListConsumer
 import ch.schulealtendorf.sporttagpsa.parsing.FileReader
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 /**
  * Controller to upload a multipart file with the competitors data.
@@ -69,31 +69,31 @@ class ImportController(
     }
 
     /**
-     * Handles the passed in MultipartFile and redirects the user.
+     * Handles the passed in MultipartFile.
      * The Multipart file MUST be a text/csv mime type.
-     * A success message will be set on the RedirectAttributes if no validation error occurs,
+     * A success message will be set on the Model if no validation error occurs,
      * otherwise a error message will be set.
      * 
      * @param file a csv file to upload
-     * @param redirectAttributes specialization to set attributes on a redirect scenario
+     * @param model holder for model attributes
      * 
      * @return a thymeleaf template
      */
     @PostMapping(IMPORT)
-    fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, redirectAttributes: RedirectAttributes): String {
+    fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, model: Model): String {
         
         try {
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
-            redirectAttributes.addFlashAttribute("message", successMessage)
+            model.addAttribute("messageSuccess", successMessage)
 
-            return "redirect:${MainController.COMPETITOR}"
+            return IMPORT
             
         } catch (ex: IllegalArgumentException) {
             
-            redirectAttributes.addFlashAttribute("message", errorMessage)
+            model.addAttribute("messageError", errorMessage)
 
-            return "redirect:${ImportController.IMPORT}"
+            return IMPORT
         }
     }
 }
