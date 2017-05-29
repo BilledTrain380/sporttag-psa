@@ -36,7 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 
 /**
@@ -44,11 +46,11 @@ import org.springframework.web.bind.annotation.GetMapping
  * @version 0.0.1
  */
 @Controller
-class MainController {
+class MainController(private val clazzRepository: ClazzRepository) {
 
     companion object {
         const val DASHBOARD = "/"
-        const val COMPETITOR = "/competitor"
+        const val COMPETITOR_SELECTION = "/competitor/selection"
     }
     
     @GetMapping(DASHBOARD)
@@ -56,9 +58,12 @@ class MainController {
         return "index"
     }
 
-    @GetMapping(COMPETITOR)
-    fun competitor(): String {
-        return "competitor/competitor-index"
+    @GetMapping(COMPETITOR_SELECTION)
+    fun competitor(model: Model): String {
+        
+        model.addAttribute("clazzes", clazzRepository.findAll())
+        
+        return "competitor/selection"
     }
     
 }
