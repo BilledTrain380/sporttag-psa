@@ -36,22 +36,42 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
+import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
 @Controller
-class MainController() {
+class CompetitorController(
+        private val clazzRepository: ClazzRepository,
+        private val sportRepository: SportRepository
+) {
 
     companion object {
-        const val DASHBOARD = "/"
+        const val COMPETITOR_SELECTION = "/competitor/selection"
     }
-    
-    @GetMapping(DASHBOARD)
-    fun index(): String {
-        return "index"
+
+    @GetMapping(COMPETITOR_SELECTION)
+    fun competitor(model: Model): String {
+
+        model.addAttribute("clazzes", clazzRepository.findAll())
+        model.addAttribute("sports", sportRepository.findAll())
+
+        return "competitor/selection"
+    }
+
+    @GetMapping("/clazz/{id}")
+    fun clazz(@PathVariable id: Int, redirectAttributes: RedirectAttributes): String {
+        
+        // Todo: add clazz members to redirectAttributes
+        
+        return "redirect:$COMPETITOR_SELECTION"
     }
 }
