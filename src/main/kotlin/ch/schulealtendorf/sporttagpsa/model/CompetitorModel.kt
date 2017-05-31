@@ -48,5 +48,5 @@ class CompetitorModel(
         val prename: String,
         val gender: Boolean,
         val birthday: Date,
-        val sport: SportModel
+        val sport: SportModel?
 )
