@@ -40,7 +40,7 @@ package ch.schulealtendorf.sporttagpsa.model
  * @author nmaerchy
  * @version 0.0.1
  */
-class SportModel(
+data class SportModel(
         val id: Int,
         val name: String
 )

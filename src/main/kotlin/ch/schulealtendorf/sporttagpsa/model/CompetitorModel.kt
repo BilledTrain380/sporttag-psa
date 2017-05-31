@@ -42,7 +42,7 @@ import java.util.*
  * @author nmaerchy
  * @version 0.0.1
  */
-class CompetitorModel(
+data class CompetitorModel(
         val id: Int,
         val surname: String,
         val prename: String,
