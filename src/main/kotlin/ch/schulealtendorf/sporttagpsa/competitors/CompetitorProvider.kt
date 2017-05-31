@@ -44,7 +44,7 @@ import ch.schulealtendorf.sporttagpsa.model.CompetitorModel
  */
 interface CompetitorProvider {
 
-    fun getCompetitorsByClazz(clazzId: Int): CompetitorModel
+    fun getCompetitorsByClazz(clazzId: Int): List<CompetitorModel>
 
     fun updateCompetitor(competitor: CompetitorModel)
 }
