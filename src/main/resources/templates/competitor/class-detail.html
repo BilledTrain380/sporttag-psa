@@ -64,7 +64,7 @@
                 
                 <hr/>
                 
-                <h3>1a</h3>
+                <h3 th:text="${clazz.name}"></h3>
                 
                 <form>
 
@@ -79,37 +79,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@ännlich</td>
-                            <td>@ännlich</td>
+                        <tr th:each="competitor : ${competitors}">
+                            <td th:text="${competitor.surname}"></td>
+                            <td th:text="${competitor.prename}"></td>
+                            <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
+                            <td th:text="${#dates.format(competitor.birthday, 'dd-MMM-yyyy')}"></td>
                             <td>
                                 <select class="form-control">
                                     <option selected>---</option>
                                     <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>Weiblich</td>
-                            <td>@ännlich</td>
-                            <td>
-                                <select class="form-control">
-                                    <option>test</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>Männlich</td>
-                            <td>@ännlich</td>
-                            <td>
-                                <select class="form-control">
-                                    <option>test</option>
                                 </select>
                             </td>
                         </tr>

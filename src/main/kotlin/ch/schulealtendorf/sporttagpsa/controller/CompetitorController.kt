@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.competitors.CompetitorProvider
+import ch.schulealtendorf.sporttagpsa.entity.map
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
@@ -70,8 +71,9 @@ class CompetitorController(
     @GetMapping("/clazz/{id}")
     fun clazz(@PathVariable id: Int, model: Model): String {
         
+        model.addAttribute("clazz", clazzRepository.findOne(id))
         model.addAttribute("competitors", competitorProvider.getCompetitorsByClazz(id))
-        model.addAttribute("sports", sportRepository.findAll())
+        model.addAttribute("sports", sportRepository.findAll().map { it.map() })
         
         return "competitor/class-detail"
     }
