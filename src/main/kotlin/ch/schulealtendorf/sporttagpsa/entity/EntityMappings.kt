@@ -41,8 +41,10 @@ import ch.schulealtendorf.sporttagpsa.model.SportModel
 import java.util.*
 
 /**
+ * This file contains extension functions to map entity classes to the according model class.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
 
 fun CompetitorEntity.map(): CompetitorModel {
