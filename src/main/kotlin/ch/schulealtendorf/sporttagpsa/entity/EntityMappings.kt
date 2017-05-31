@@ -46,7 +46,7 @@ import java.util.*
  */
 
 fun CompetitorEntity.map(): CompetitorModel {
-    return CompetitorModel(this.id!!, this.surname, this.prename, this.gender, Date(this.birthday.time), this.sport!!.map())
+    return CompetitorModel(this.id!!, this.surname, this.prename, this.gender, Date(this.birthday.time), if (this.sport == null) this.sport else this.sport.map())
 }
 
 fun SportEntity.map(): SportModel {

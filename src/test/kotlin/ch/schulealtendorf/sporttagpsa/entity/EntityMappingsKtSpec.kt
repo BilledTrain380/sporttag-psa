@@ -71,9 +71,19 @@ object EntityMappingsKtSpec: Spek({
                 val expected: CompetitorModel = CompetitorModel(1, "Muster", "Hans", true, Date(1), SportModel(1, "Brennball"))
                 assertEquals(expected, competitorEntity.map())
             }
-            
         }
         
+        on("a CompetitorEntity with no SportEntity") {
+
+            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", true, java.sql.Date(1), "address",
+                    townEntity,
+                    clazzEntity,
+                    null)
+            
+            it("should map the CompetitorEntity to a CompetitorModel without the SportModel") {
+                val expected: CompetitorModel = CompetitorModel(1, "Muster", "Hans", true, Date(1), null)
+                assertEquals(expected, competitorEntity.map())
+            }
+        }
     }
-    
 })
