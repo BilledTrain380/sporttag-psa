@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.model.CompetitorModel
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.model.SportModel
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -44,7 +44,6 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
-import java.util.*
 import kotlin.test.assertEquals
 
 /**
@@ -67,8 +66,8 @@ object EntityMappingsKtSpec: Spek({
                     clazzEntity,
                     sportEntity)
             
-            it("should map the CompetitorEntity to a CompetitorModel with the SportModel") {
-                val expected: CompetitorModel = CompetitorModel(1, "Muster", "Hans", true, Date(1), SportModel(1, "Brennball"))
+            it("should map the CompetitorEntity to a SimpleCompetitorModel with the SportModel") {
+                val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, SportModel(1, "Brennball"))
                 assertEquals(expected, competitorEntity.map())
             }
         }
@@ -80,8 +79,8 @@ object EntityMappingsKtSpec: Spek({
                     clazzEntity,
                     null)
             
-            it("should map the CompetitorEntity to a CompetitorModel without the SportModel") {
-                val expected: CompetitorModel = CompetitorModel(1, "Muster", "Hans", true, Date(1), null)
+            it("should map the CompetitorEntity to a SimpleCompetitorModel with an empty SportModel") {
+                val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, SportModel())
                 assertEquals(expected, competitorEntity.map())
             }
         }
