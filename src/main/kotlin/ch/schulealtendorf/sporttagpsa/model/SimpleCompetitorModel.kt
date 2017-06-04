@@ -36,11 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
+import java.util.*
+
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
-data class SportModel @JvmOverloads constructor(
+data class SimpleCompetitorModel @JvmOverloads constructor(
         var id: Int = 0,
-        var name: String = ""
+        var surname: String = "",
+        var prename: String = "",
+        var gender: Boolean = true,
+        var sport: SportModel = SportModel()
 )

@@ -38,9 +38,8 @@ package ch.schulealtendorf.sporttagpsa.model
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
-data class SportModel @JvmOverloads constructor(
-        var id: Int = 0,
-        var name: String = ""
+data class SimpleCompetitorFomModel @JvmOverloads constructor(
+        var competitors: List<SimpleCompetitorModel> = ArrayList<SimpleCompetitorModel>()
 )
