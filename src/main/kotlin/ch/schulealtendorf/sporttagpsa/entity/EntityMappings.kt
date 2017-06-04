@@ -36,9 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.model.CompetitorModel
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.model.SportModel
-import java.util.*
 
 /**
  * This file contains extension functions to map entity classes to the according model class.
@@ -47,8 +46,8 @@ import java.util.*
  * @version 0.0.2
  */
 
-fun CompetitorEntity.map(): CompetitorModel {
-    return CompetitorModel(this.id!!, this.surname, this.prename, this.gender, Date(this.birthday.time), if (this.sport == null) this.sport else this.sport.map())
+fun CompetitorEntity.map(): SimpleCompetitorModel {
+    return SimpleCompetitorModel(this.id!!, this.surname, this.prename, this.gender, if (this.sport == null) SportModel() else this.sport.map())
 }
 
 fun SportEntity.map(): SportModel {

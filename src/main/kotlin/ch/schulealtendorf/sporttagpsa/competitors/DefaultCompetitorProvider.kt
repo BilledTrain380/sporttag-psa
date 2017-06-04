@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.competitors
 
 import ch.schulealtendorf.sporttagpsa.entity.map
-import ch.schulealtendorf.sporttagpsa.model.CompetitorModel
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
@@ -52,14 +52,14 @@ class DefaultCompetitorProvider(
         private val sportRepository: SportRepository
 ): CompetitorProvider {
 
-    override fun getCompetitorsByClazz(clazzId: Int): List<CompetitorModel> {
+    override fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel> {
         
         return competitorRepository.findByClazzId(clazzId).map {
             it.map()
         }
     }
 
-    override fun updateCompetitor(competitor: CompetitorModel) {
+    override fun updateCompetitor(competitor: SimpleCompetitorModel) {
         throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
     }
 }

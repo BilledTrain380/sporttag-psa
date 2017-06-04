@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.competitors
 
-import ch.schulealtendorf.sporttagpsa.model.CompetitorModel
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 
 /**
  * @author nmaerchy
@@ -44,7 +44,7 @@ import ch.schulealtendorf.sporttagpsa.model.CompetitorModel
  */
 interface CompetitorProvider {
 
-    fun getCompetitorsByClazz(clazzId: Int): List<CompetitorModel>
+    fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel>
 
-    fun updateCompetitor(competitor: CompetitorModel)
+    fun updateCompetitor(competitor: SimpleCompetitorModel)
 }
