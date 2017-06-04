@@ -66,7 +66,7 @@
                 
                 <h3 th:text="${clazz.name}"></h3>
                 
-                <form>
+                <form th:action="@{/clazz/} + ${clazz.id}" method="post" th:object="${competitorSportForm}" enctype="application/x-www-form-urlencoded">
 
                     <table class="table table-striped">
                         <thead>
@@ -74,21 +74,21 @@
                             <th>Name</th>
                             <th>Vorname</th>
                             <th>Geschlecht</th>
-                            <th>Geburtsdatum</th>
                             <th>Sportart</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="competitor : ${competitors}">
+                        <tr th:each="competitor, status : *{competitors}">
                             <td th:text="${competitor.surname}"></td>
                             <td th:text="${competitor.prename}"></td>
                             <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
-                            <td th:text="${#dates.format(competitor.birthday, 'dd-MMM-yyyy')}"></td>
                             <td>
-                                <select class="form-control">
-                                    <option selected>---</option>
+                                <input th:field="*{competitors[__${status.index}__].id}" type="hidden"/>
+                                <select class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
+                                    <option selected th:value="0">---</option>
                                     <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
                                 </select>
+                                
                             </td>
                         </tr>
                         </tbody>
