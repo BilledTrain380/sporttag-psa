@@ -87,12 +87,12 @@ object ImportControllerSpec: Spek({
                 verify(mockCompetitorConsumer, times(1)).accept(emptyList())
             }
             
-            it("should redirect the user to the competitor page") {
-                Assert.assertEquals("redirect:/competitor", result)
+            it("should redirect the user to the competitor import page") {
+                Assert.assertEquals("redirect:/competitor/import", result)
             }
             
             it("should send a success message to the redirected page") {
-                verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war erfolgreich.")
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("messageSuccess", "File Upload war erfolgreich.")
             }
         }
         
@@ -107,7 +107,7 @@ object ImportControllerSpec: Spek({
             }
             
             it("should send an error message to the redirected page") {
-                verify(mockRedirectedAttr, times(1)).addFlashAttribute("message", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("messageError", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
             }
         }
     }

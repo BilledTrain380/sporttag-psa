@@ -39,11 +39,11 @@ package ch.schulealtendorf.sporttagpsa.controller
 import ch.schulealtendorf.sporttagpsa.competitors.CompetitorListConsumer
 import ch.schulealtendorf.sporttagpsa.parsing.FileReader
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 /**
  * Controller to upload a multipart file with the competitors data.
@@ -80,20 +80,20 @@ class ImportController(
      * @return a thymeleaf template
      */
     @PostMapping(IMPORT)
-    fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, model: Model): String {
+    fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, redirectAttributes: RedirectAttributes): String {
         
         try {
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
-            model.addAttribute("messageSuccess", successMessage)
+            redirectAttributes.addFlashAttribute("messageSuccess", successMessage)
 
-            return IMPORT
+            return "redirect:$IMPORT"
             
         } catch (ex: IllegalArgumentException) {
             
-            model.addAttribute("messageError", errorMessage)
+            redirectAttributes.addFlashAttribute("messageError", errorMessage)
 
-            return IMPORT
+            return "redirect:$IMPORT"
         }
     }
 }
