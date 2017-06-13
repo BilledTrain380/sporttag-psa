@@ -54,6 +54,10 @@
             <h1>Teilnehmer <small>Klasse</small></h1>
         </div>
 
+        <div th:if="${messageSuccess}" th:inline="text" class="alert alert-success" role="alert">
+            [[${messageSuccess}]]
+        </div>
+
         <div class="row">
 
             <div class="col-lg-12">
