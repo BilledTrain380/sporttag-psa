@@ -38,12 +38,17 @@ package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.competitors.CompetitorProvider
 import ch.schulealtendorf.sporttagpsa.entity.map
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorFomModel
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import javax.validation.Valid
 
 /**
  * @author nmaerchy
@@ -71,10 +76,21 @@ class CompetitorController(
     @GetMapping("/clazz/{id}")
     fun clazz(@PathVariable id: Int, model: Model): String {
         
+        
         model.addAttribute("clazz", clazzRepository.findOne(id))
-        model.addAttribute("competitors", competitorProvider.getCompetitorsByClazz(id))
-        model.addAttribute("sports", sportRepository.findAll().map { it.map() })
+        model.addAttribute("sports", sportRepository.findAll().map { it?.map() })
+        model.addAttribute("competitorSportForm", SimpleCompetitorFomModel(competitorProvider.getCompetitorsByClazz(id)))
         
         return "competitor/class-detail"
+    }
+
+    @PostMapping("/clazz/{id}")
+    fun updateCompetitors(@PathVariable id: Int, @Valid @ModelAttribute("competitorSportForm") competitorForm: SimpleCompetitorFomModel, redirectAttributes: RedirectAttributes): String {
+        
+        competitorForm.competitors.forEach(competitorProvider::updateCompetitor)
+        
+        redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
+        
+        return "redirect:/clazz/$id"
     }
 }
