@@ -49,9 +49,6 @@ import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
-import java.util.stream.Collectors
-import java.util.stream.Stream
-import kotlin.test.assertEquals
 
 /**
  * @author nmaerchy
@@ -73,37 +70,23 @@ object DefaultCompetitorProviderSpec: Spek({
     describe("a DefaultCompetitorProvider") {
         
         
-        on("getting a list of competitors by clazz") {
-            
+        on("updating a SimpleCompetitorModel") {
+
             val townEntity: TownEntity = TownEntity(1, "8000", "Musterhausen")
             val clazzEntity: ClazzEntity = ClazzEntity(1, "1a", TeacherEntity(1, "teacher"))
             val sportEntity: SportEntity = SportEntity(1, "Brennball")
+
+            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "", "", false, SportModel(1))
             
-            `when` (mockCompetitorRepo.findByClazzId(1)).thenReturn(Stream.of(
-                    CompetitorEntity(1, "Muster", "Hans", true, java.sql.Date(1), "address",
-                            townEntity,
-                            clazzEntity,
-                            null),
-                    
-                    CompetitorEntity(2, "Wirbelwind", "Will", false, java.sql.Date(1), "address",
-                            townEntity,
-                            clazzEntity,
-                            sportEntity)
-                    
-            ).collect(Collectors.toList()))
+            `when` (mockCompetitorRepo.findOne(1)).thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
+            `when` (mockSportRepo.findOne(1)).thenReturn(sportEntity)
             
-            it("should map the CompetitorEntity clazz to a SimpleCompetitorModel") {
-                
-                val expected: List<SimpleCompetitorModel> = Stream.of(
-                        SimpleCompetitorModel(1, "Muster", "Hans", true, SportModel()),
-                        SimpleCompetitorModel(2, "Wirbelwind", "Will", false, SportModel(1, "Brennball"))
-                ).collect(Collectors.toList())
-                
-                assertEquals(expected, provider.getCompetitorsByClazz(1))
+            provider.updateCompetitor(competitorModel)
+            
+            it("it should update the CompetitorEntity with the according SportEntity") {
+                val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, sportEntity)
+                Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
             }
         }
-        
-        
     }
-    
 })

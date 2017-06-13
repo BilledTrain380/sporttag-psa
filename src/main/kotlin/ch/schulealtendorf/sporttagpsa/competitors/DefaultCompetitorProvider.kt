@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.competitors
 
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.map
 import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -60,6 +62,13 @@ class DefaultCompetitorProvider(
     }
 
     override fun updateCompetitor(competitor: SimpleCompetitorModel) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        // just throw the NPE here, so it would redirect the user to the error page
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
+        val sportEntity: SportEntity = sportRepository.findOne(competitor.sport.id)!!
+        
+        competitorEntity.sport = sportEntity
+        
+        competitorRepository.save(competitorEntity)
     }
 }
