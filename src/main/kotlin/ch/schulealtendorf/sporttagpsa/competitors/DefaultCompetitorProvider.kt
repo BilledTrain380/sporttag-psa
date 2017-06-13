@@ -55,17 +55,14 @@ class DefaultCompetitorProvider(
 ): CompetitorProvider {
 
     override fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel> {
-        
-        return competitorRepository.findByClazzId(clazzId).map {
-            it.map()
-        }
+        return competitorRepository.findByClazzId(clazzId).map { it.map() }
     }
 
     override fun updateCompetitor(competitor: SimpleCompetitorModel) {
         
         // just throw the NPE here, so it would redirect the user to the error page
         val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
-        val sportEntity: SportEntity = sportRepository.findOne(competitor.sport.id)!!
+        val sportEntity: SportEntity? = sportRepository.findOne(competitor.sport.id)
         
         competitorEntity.sport = sportEntity
         
