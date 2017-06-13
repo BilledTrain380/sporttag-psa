@@ -53,7 +53,7 @@ import kotlin.test.assertEquals
 @RunWith(JUnitPlatform::class)
 object EntityMappingsKtSpec: Spek({
     
-    describe("an EntityMapping") {
+    describe("an EntityMapping for a CompetitorEntity") {
 
         val townEntity: TownEntity = TownEntity(1, "8000", "Musterhausen")
         val clazzEntity: ClazzEntity = ClazzEntity(1, "1a", TeacherEntity(1, "teacher"))
@@ -82,6 +82,32 @@ object EntityMappingsKtSpec: Spek({
             it("should map the CompetitorEntity to a SimpleCompetitorModel with an empty SportModel") {
                 val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, SportModel())
                 assertEquals(expected, competitorEntity.map())
+            }
+        }
+        
+        on("a CompetitorEntity with no id") {
+
+            val competitorEntity: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, java.sql.Date(1), "address",
+                    townEntity,
+                    clazzEntity,
+                    null)
+            
+            it("should map the CompetitorEntity to a SimpleCompetitorModel with 0 as id") {
+                val expected: SimpleCompetitorModel = SimpleCompetitorModel(0, "Muster", "Hans", true, SportModel())
+                assertEquals(expected, competitorEntity.map())
+            }
+        }
+    }
+    
+    describe("an EntityMapping for a SportEntity") {
+        
+        on("a SportEntity with no id") {
+
+            val sportEntity: SportEntity = SportEntity(null, "Brennball")
+            
+            it("should map the SportEntity to a SportModel with 0 as id") {
+                val expected: SportModel = SportModel(0, "Brennball")
+                assertEquals(expected, sportEntity.map())
             }
         }
     }
