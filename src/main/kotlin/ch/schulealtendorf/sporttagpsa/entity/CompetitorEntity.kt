@@ -52,37 +52,37 @@ data class CompetitorEntity(
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int?,
+        var id: Int?,
         
         @NotNull
         @Size(min = 1, max = 30)
-        val surname: String,
+        var surname: String,
         
         @NotNull
         @Size(min = 1, max = 30)
-        val prename: String,
+        var prename: String,
         
         @NotNull
-        val gender: Boolean,
+        var gender: Boolean,
         
         @NotNull
-        val birthday: Date,
+        var birthday: Date,
         
         @NotNull
         @Size(min = 1, max = 80)
-        val address: String,
+        var address: String,
         
         @ManyToOne
         @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
-        val town: TownEntity,
+        var town: TownEntity,
         
         @ManyToOne
         @JoinColumn(name = "FK_CLAZZ_id", referencedColumnName = "id")
-        val clazz: ClazzEntity,
+        var clazz: ClazzEntity,
         
         @ManyToOne
         @JoinColumn(name = "FK_SPORT_id", referencedColumnName = "id")
-        val sport: SportEntity?
+        var sport: SportEntity?
 ) {
         constructor(surname: String, prename: String, gender: Boolean, birthday: Date, address: String, town: TownEntity, clazz: ClazzEntity):
                 this(null, surname, prename, gender, birthday, address, town, clazz, null)

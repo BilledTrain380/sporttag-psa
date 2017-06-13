@@ -51,15 +51,15 @@ data class TownEntity(
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int?,
+        var id: Int?,
         
         @NotNull
         @Size(min = 4, max = 4)
-        val zip: String,
+        var zip: String,
         
         @NotNull
         @Size(min = 1, max = 50)
-        val name: String
+        var name: String
 ) {
     constructor(zip: String, name: String) : this(null, zip, name)
 }

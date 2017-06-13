@@ -51,11 +51,11 @@ data class TeacherEntity(
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int?,
+        var id: Int?,
         
         @NotNull
         @Size(min = 1, max = 100)
-        val name: String
+        var name: String
 ) {
         constructor(name: String): this(null, name)
 }
