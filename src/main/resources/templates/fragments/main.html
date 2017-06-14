@@ -81,7 +81,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" data-toggle="collapse" href="#competitor-multi"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" th:classappend="${active} == competitor? active : ''" data-toggle="collapse" href="#competitor-multi"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
                 <ul class="sidebar-second-level collapse" th:classappend="${menu} == competitor? show : ''" id="competitor-multi">
                     <li th:class="${active} == import? active : ''">
                         <a th:href="@{/competitor/import}">Import</a>
