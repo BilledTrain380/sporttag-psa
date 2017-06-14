@@ -66,7 +66,7 @@ class CompetitorController(
     }
 
     @GetMapping(COMPETITOR_SELECTION)
-    fun competitor(model: Model): String {
+    fun competitors(model: Model): String {
 
         model.addAttribute("clazzes", clazzRepository.findAll())
         
@@ -92,5 +92,12 @@ class CompetitorController(
         redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
         
         return "redirect:/clazz/$id"
+    }
+
+    @GetMapping("/competitor/{id}")
+    fun competitor(@PathVariable id: Int, model: Model): String {
+        
+        
+        return "competitor/competitor-detail"
     }
 }
