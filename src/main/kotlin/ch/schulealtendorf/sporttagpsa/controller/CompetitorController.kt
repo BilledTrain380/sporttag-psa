@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller
 import ch.schulealtendorf.sporttagpsa.competitors.CompetitorProvider
 import ch.schulealtendorf.sporttagpsa.entity.map
 import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorFomModel
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
@@ -97,7 +98,16 @@ class CompetitorController(
     @GetMapping("/competitor/{id}")
     fun competitor(@PathVariable id: Int, model: Model): String {
         
+        model.addAttribute("competitor", SimpleCompetitorModel())
         
         return "competitor/competitor-detail"
+    }
+
+    @PostMapping("/competitor/{id}")
+    fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
+        
+        redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
+        
+        return "redirect:/competitor/$id"
     }
 }

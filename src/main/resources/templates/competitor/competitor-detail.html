@@ -51,40 +51,43 @@
     <div class="container-fluid">
 
         <div class="page-header">
-            <h1>Teilnehmer <small th:text="schülername"></small></h1>
+            <h1>Teilnehmer <small th:text="${competitor.surname} + ' ' + ${competitor.prename}"></small></h1>
         </div>
 
         <div th:if="${messageSuccess}" th:inline="text" class="alert alert-success" role="alert">
             [[${messageSuccess}]]
         </div>
         
-        <form>
+        <form th:object="${competitor}" th:action="@{/competitor/} + *{id}" method="post">
         
             <div class="form-group row">
                 <label class="col-2 col-form-label">Vorname</label>
                 <div class="col-10">
-                    <input class="form-control" type="text" value="Hans">
+                    <input class="form-control" type="text" th:field="*{prename}">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-2 col-form-label">Nachname</label>
                 <div class="col-10">
-                    <input class="form-control" type="text" value="Muster">
+                    <input class="form-control" type="text" th:field="*{surname}">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-2 col-form-label">Geschlecht</label>
                 <div class="col-10">
-                    <input class="form-control" type="text" value="Männlich">
+                    <select class="form-control" th:field="*{gender}">
+                        <option value="1">Männlich</option>
+                        <option value="0">Weiblich</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-2 col-form-label">Adresse</label>
                 <div class="col-10">
-                    <input class="form-control" type="text" value="Musterstrasse 8">
+                    <input class="form-control" type="text">
                 </div>
             </div>
 
