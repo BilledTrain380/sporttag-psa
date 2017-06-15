@@ -67,7 +67,7 @@ object EntityMappingsKtSpec: Spek({
                     sportEntity)
             
             it("should map the CompetitorEntity to a SimpleCompetitorModel with the SportModel") {
-                val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, SportModel(1, "Brennball"))
+                val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, "address", SportModel(1, "Brennball"))
                 assertEquals(expected, competitorEntity.map())
             }
         }
@@ -80,7 +80,7 @@ object EntityMappingsKtSpec: Spek({
                     null)
             
             it("should map the CompetitorEntity to a SimpleCompetitorModel with an empty SportModel") {
-                val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, SportModel())
+                val expected: SimpleCompetitorModel = SimpleCompetitorModel(1, "Muster", "Hans", true, "address", SportModel())
                 assertEquals(expected, competitorEntity.map())
             }
         }
@@ -93,7 +93,7 @@ object EntityMappingsKtSpec: Spek({
                     null)
             
             it("should map the CompetitorEntity to a SimpleCompetitorModel with 0 as id") {
-                val expected: SimpleCompetitorModel = SimpleCompetitorModel(0, "Muster", "Hans", true, SportModel())
+                val expected: SimpleCompetitorModel = SimpleCompetitorModel(0, "Muster", "Hans", true, "address", SportModel())
                 assertEquals(expected, competitorEntity.map())
             }
         }

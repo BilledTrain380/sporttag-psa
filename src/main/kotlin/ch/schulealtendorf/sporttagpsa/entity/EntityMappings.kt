@@ -47,7 +47,7 @@ import ch.schulealtendorf.sporttagpsa.model.SportModel
  */
 
 fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, if (sport == null) SportModel() else this.sport!!.map())
+    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
 }
 
 fun SportEntity.map(): SportModel {

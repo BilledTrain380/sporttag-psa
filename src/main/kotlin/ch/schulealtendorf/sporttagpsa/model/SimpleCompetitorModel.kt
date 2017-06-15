@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
-import java.util.*
-
 /**
  * @author nmaerchy
  * @version 0.0.2
@@ -47,5 +45,6 @@ data class SimpleCompetitorModel @JvmOverloads constructor(
         var surname: String = "",
         var prename: String = "",
         var gender: Boolean = true,
+        var address: String = "",
         var sport: SportModel = SportModel()
 )
