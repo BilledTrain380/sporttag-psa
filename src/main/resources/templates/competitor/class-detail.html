@@ -75,6 +75,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
+                            <th>Bearbeiten</th>
                             <th>Name</th>
                             <th>Vorname</th>
                             <th>Geschlecht</th>
@@ -83,6 +84,9 @@
                         </thead>
                         <tbody>
                         <tr th:each="competitor, status : *{competitors}">
+                            <td>
+                                <a th:href="@{/competitor/} + *{competitors[__${status.index}__].id}"><i class="fa fa-fw fa-pencil-square-o"></i></a>
+                            </td>
                             <td th:text="${competitor.surname}"></td>
                             <td th:text="${competitor.prename}"></td>
                             <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
