@@ -40,16 +40,28 @@ import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.model.SportModel
 
 /**
- * This file contains extension functions to map entity classes to the according model class.
+ * This file contains extension functions to map entity classes to the according model class
+ * or merge model classes with the according entity class.
  * 
  * @author nmaerchy
- * @version 0.0.3
+ * @version 0.0.4
  */
 
+/**
+ * Maps recursive and null safe.
+ * 
+ * @return the mapped model class
+ */
 fun CompetitorEntity.map(): SimpleCompetitorModel {
     return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
 }
 
+/**
+ * Merges a {@link CompetitorEntity} with the passed in argument.
+ * Does NOT merge recursive and does NOT merge the attribute id of a CompetitorEntity.
+ * 
+ * @param competitorModel the model to merge into the entity
+ */
 fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
     this.surname = competitorModel.surname
     this.prename = competitorModel.prename
@@ -57,6 +69,11 @@ fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
     this.address = competitorModel.address
 }
 
+/**
+ * Maps null safe.
+ * 
+ * @return the mapped model class
+ */
 fun SportEntity.map(): SportModel {
     return SportModel(if (this.id == null) 0 else this.id!!, this.name)
 }

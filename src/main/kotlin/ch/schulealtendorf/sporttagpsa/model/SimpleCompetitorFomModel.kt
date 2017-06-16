@@ -37,6 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.model
 
 /**
+ * Form wrapper for a list of competitors.
+ * 
  * @author nmaerchy
  * @version 0.0.2
  */

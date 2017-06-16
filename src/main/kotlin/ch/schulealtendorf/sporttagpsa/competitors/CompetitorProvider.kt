@@ -39,14 +39,33 @@ package ch.schulealtendorf.sporttagpsa.competitors
 import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 
 /**
+ * Describes a provider for competitors.
+ * 
  * @author nmaerchy
  * @version 0.0.1
  */
 interface CompetitorProvider {
 
+    /**
+     * Gets all competitors that belong to the clazz with the passed in argument.
+     *
+     * @param clazzId the id of the clazz wanted
+     * @return a list of found competitors
+     */
     fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel>
-    
+
+    /**
+     * Gets a single competitor by the passed in argument.
+     *
+     * @param competitorId id of the competitor wanted
+     * @return the found competitor
+     */
     fun getCompetitorById(competitorId: Int): SimpleCompetitorModel
 
+    /**
+     * Updates the passed in argument.
+     *
+     * @param competitor competitor model containing properties to update
+     */
     fun updateCompetitor(competitor: SimpleCompetitorModel)
 }

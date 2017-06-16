@@ -46,6 +46,8 @@ import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
 
 /**
+ * Provider for competitors.
+ * 
  * @author nmaerchy
  * @version 0.0.2
  */
@@ -55,15 +57,34 @@ class DefaultCompetitorProvider(
         private val sportRepository: SportRepository
 ): CompetitorProvider {
 
+    /**
+     * Gets all competitors that belong to the clazz with the passed in argument.
+     * 
+     * @param clazzId the id of the clazz wanted
+     * @return a list of found competitors
+     */
     override fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel> {
         return competitorRepository.findByClazzId(clazzId).map { it.map() }
     }
 
+    /**
+     * Gets a single competitor by the passed in argument.
+     * 
+     * @param competitorId id of the competitor wanted
+     * @return the found competitor
+     * @throws NullPointerException If no competitor belongs to the passed in argument.
+     */
     override fun getCompetitorById(competitorId: Int): SimpleCompetitorModel {
         // just throw the NPE here, so it would redirect the user to the error page
         return competitorRepository.findOne(competitorId)!!.map()
     }
 
+    /**
+     * Update all properties of a single competitor depending on the passed in argument.
+     * 
+     * @param competitor competitor model containing properties to update
+     * @throws NullPointerException If the id of the passed in competitor does not exist.
+     */
     override fun updateCompetitor(competitor: SimpleCompetitorModel) {
         
         // just throw the NPE here, so it would redirect the user to the error page

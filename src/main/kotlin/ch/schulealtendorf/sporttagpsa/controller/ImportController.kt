@@ -60,8 +60,8 @@ class ImportController(
         const val IMPORT = "/competitor/import"
     }
     
-    val errorMessage: String = "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten."
-    val successMessage: String = "File Upload war erfolgreich."
+    private val errorMessage: String = "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten."
+    private val successMessage: String = "File Upload war erfolgreich."
     
     @GetMapping(IMPORT)
     fun import(): String {
@@ -85,12 +85,14 @@ class ImportController(
         try {
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
+            // TODO: use message in html and just add true or false
             redirectAttributes.addFlashAttribute("messageSuccess", successMessage)
 
             return "redirect:$IMPORT"
             
         } catch (ex: IllegalArgumentException) {
-            
+
+            // TODO: use message in html and just add true or false
             redirectAttributes.addFlashAttribute("messageError", errorMessage)
 
             return "redirect:$IMPORT"

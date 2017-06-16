@@ -37,6 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.model
 
 /**
+ * Represents a competitor with limited properties in contrast to an entity class.
+ * 
  * @author nmaerchy
  * @version 0.0.2
  */

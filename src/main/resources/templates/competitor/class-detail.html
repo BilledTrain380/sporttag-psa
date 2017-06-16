@@ -92,6 +92,7 @@
                             <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
                             <td>
 
+                                <!-- send all other attributes back, needed to properly update a competitor -->
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].id}"/>
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].surname}"/>
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].prename}"/>

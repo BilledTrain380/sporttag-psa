@@ -49,6 +49,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
 /**
+ * Controller for GET and PATCH competitors.
+ * 
  * @author nmaerchy
  * @version 0.0.2
  */
@@ -61,17 +63,19 @@ class CompetitorController(
 ) {
 
     @GetMapping("/clazz")
-    fun competitors(model: Model): String {
+    fun clazzList(model: Model): String {
 
         model.addAttribute("clazzes", clazzRepository.findAll())
         
         return "competitor/clazz-list"
     }
 
+    // TODO: Move class depending methods to a own controller
+    
     @GetMapping("/clazz/{id}")
     fun clazz(@PathVariable id: Int, model: Model): String {
         
-        
+        // TODO: May use a clazz and sport provider class
         model.addAttribute("clazz", clazzRepository.findOne(id))
         model.addAttribute("sports", sportRepository.findAll().map { it?.map() })
         model.addAttribute("competitorSportForm", SimpleCompetitorFomModel(competitorProvider.getCompetitorsByClazz(id)))
@@ -84,13 +88,14 @@ class CompetitorController(
         
         competitorForm.competitors.forEach(competitorProvider::updateCompetitor)
         
+        // TODO: use message in html and just add true or false
         redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
         
         return "redirect:/competitor/clazz/$id"
     }
 
     @GetMapping("/{id}")
-    fun competitor(@PathVariable id: Int, model: Model): String {
+    fun getCompetitor(@PathVariable id: Int, model: Model): String {
         
         model.addAttribute("competitor", competitorProvider.getCompetitorById(id))
         
@@ -101,7 +106,8 @@ class CompetitorController(
     fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
         
         competitorProvider.updateCompetitor(competitor)
-        
+
+        // TODO: use message in html and just add true or false
         redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
         
         return "redirect:/competitor/$id"
