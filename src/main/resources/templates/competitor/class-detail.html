@@ -87,7 +87,14 @@
                             <td th:text="${competitor.prename}"></td>
                             <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
                             <td>
-                                <input th:field="*{competitors[__${status.index}__].id}" type="hidden"/>
+
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].id}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].surname}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].prename}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].gender}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].address}">
+                                
+                                
                                 <select class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
                                     <option selected th:value="0">---</option>
                                     <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
@@ -97,7 +104,7 @@
                         </tr>
                         </tbody>
                     </table>
-
+                    
                     <button type="submit" class="btn btn-primary">Speichern</button>
                     
                 </form>
