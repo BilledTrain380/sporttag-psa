@@ -75,7 +75,7 @@ object DefaultCompetitorProviderSpec: Spek({
         
         on("updating a SimpleCompetitorModel") {
             
-            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "", "", false, "", SportModel(1))
+            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(1))
             
             `when` (mockCompetitorRepo.findOne(1)).thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
             `when` (mockSportRepo.findOne(1)).thenReturn(sportEntity)
@@ -90,7 +90,7 @@ object DefaultCompetitorProviderSpec: Spek({
         
         on("updating a SimpleCompetitorModel with no sport selected") {
 
-            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "", "", false, "", SportModel(0))
+            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(0))
 
             `when` (mockCompetitorRepo.findOne(1)).thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
             `when` (mockSportRepo.findOne(0)).thenReturn(null)
