@@ -53,3 +53,11 @@ fun CompetitorEntity.map(): SimpleCompetitorModel {
 fun SportEntity.map(): SportModel {
     return SportModel(if (this.id == null) 0 else this.id!!, this.name)
 }
+
+fun SimpleCompetitorModel.merge(competitorEntity: CompetitorEntity): CompetitorEntity {
+    competitorEntity.surname = this.surname
+    competitorEntity.prename = this.prename
+    competitorEntity.address = this.address
+    competitorEntity.gender = this.gender
+    return competitorEntity
+}
