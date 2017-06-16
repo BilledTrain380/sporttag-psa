@@ -98,6 +98,19 @@ object EntityMappingsKtSpec: Spek({
                 assertEquals(expected, competitorEntity.map())
             }
         }
+        
+        on("merging a SimpleCompetitorModel") {
+            
+            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", false, Date(1), "address", townEntity, clazzEntity, sportEntity)
+            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(2, "merged Muster", "merged Hans", true, "merged address")
+            
+            competitorEntity.merge(competitorModel)
+            
+            it("should only merge primitive properties without the id") {
+                val expected: CompetitorEntity = CompetitorEntity(1, "merged Muster", "merged Hans", true, Date(1), "merged address", townEntity, clazzEntity, sportEntity)
+                assertEquals(expected, competitorEntity)
+            }
+        }
     }
     
     describe("an EntityMapping for a SportEntity") {

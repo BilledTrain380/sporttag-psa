@@ -43,11 +43,18 @@ import ch.schulealtendorf.sporttagpsa.model.SportModel
  * This file contains extension functions to map entity classes to the according model class.
  * 
  * @author nmaerchy
- * @version 0.0.2
+ * @version 0.0.3
  */
 
 fun CompetitorEntity.map(): SimpleCompetitorModel {
     return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
+}
+
+fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
+    this.surname = competitorModel.surname
+    this.prename = competitorModel.prename
+    this.gender = competitorModel.gender
+    this.address = competitorModel.address
 }
 
 fun SportEntity.map(): SportModel {
