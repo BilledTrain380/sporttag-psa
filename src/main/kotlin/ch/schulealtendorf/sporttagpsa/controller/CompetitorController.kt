@@ -44,10 +44,7 @@ import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
@@ -56,22 +53,19 @@ import javax.validation.Valid
  * @version 0.0.2
  */
 @Controller
+@RequestMapping("/competitor")
 class CompetitorController(
         private val clazzRepository: ClazzRepository,
         private val sportRepository: SportRepository,
         private val competitorProvider: CompetitorProvider
 ) {
 
-    companion object {
-        const val COMPETITOR_SELECTION = "/competitor/selection"
-    }
-
-    @GetMapping(COMPETITOR_SELECTION)
+    @GetMapping("/clazz")
     fun competitors(model: Model): String {
 
         model.addAttribute("clazzes", clazzRepository.findAll())
         
-        return "competitor/selection"
+        return "competitor/clazz-list"
     }
 
     @GetMapping("/clazz/{id}")
@@ -92,10 +86,10 @@ class CompetitorController(
         
         redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
         
-        return "redirect:/clazz/$id"
+        return "redirect:/competitor/clazz/$id"
     }
 
-    @GetMapping("/competitor/{id}")
+    @GetMapping("/{id}")
     fun competitor(@PathVariable id: Int, model: Model): String {
         
         model.addAttribute("competitor", competitorProvider.getCompetitorById(id))
@@ -103,7 +97,7 @@ class CompetitorController(
         return "competitor/competitor-detail"
     }
 
-    @PostMapping("/competitor/{id}")
+    @PostMapping("/{id}")
     fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
         
         competitorProvider.updateCompetitor(competitor)

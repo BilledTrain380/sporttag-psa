@@ -86,8 +86,8 @@
                     <li th:class="${active} == import? active : ''">
                         <a th:href="@{/competitor/import}">Import</a>
                     </li>
-                    <li th:class="${active} == selection? active : ''">
-                        <a th:href="@{/competitor/selection}">Klassenliste</a>
+                    <li th:class="${active} == clazz-list? active : ''">
+                        <a th:href="@{/competitor/clazz}">Klassenliste</a>
                     </li>
                 </ul>
             </li>

@@ -43,7 +43,7 @@
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:replace="fragments/main :: navigation(competitor, selection)">
+<nav th:replace="fragments/main :: navigation(competitor, clazz-list)">
 </nav>
 
 <div class="content-wrapper py-3">
@@ -61,7 +61,7 @@
         <div class="row">
 
             <div class="col-lg-12">
-                <a th:href="@{/competitor/selection}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
+                <a th:href="@{/competitor/clazz}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
             </div>
             
             <div class="col-lg-12">
@@ -70,7 +70,7 @@
                 
                 <h3 th:text="${clazz.name}"></h3>
                 
-                <form th:action="@{/clazz/} + ${clazz.id}" method="post" th:object="${competitorSportForm}" enctype="application/x-www-form-urlencoded">
+                <form th:action="@{/competitor/clazz/} + ${clazz.id}" method="post" th:object="${competitorSportForm}" enctype="application/x-www-form-urlencoded">
 
                     <table class="table table-striped">
                         <thead>
