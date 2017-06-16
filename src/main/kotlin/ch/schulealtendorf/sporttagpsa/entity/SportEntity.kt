@@ -34,24 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.entity
 
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+import javax.persistence.*
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-@Controller
-class MainController() {
-
-    companion object {
-        const val DASHBOARD = "/"
-    }
-    
-    @GetMapping(DASHBOARD)
-    fun index(): String {
-        return "index"
-    }
-}
+@Entity
+@Table(name = "SPORT")
+data class SportEntity(
+        
+        @Id
+        @NotNull
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Int?,
+        
+        @NotNull
+        @Size(min = 1, max = 45)
+        var name: String
+)

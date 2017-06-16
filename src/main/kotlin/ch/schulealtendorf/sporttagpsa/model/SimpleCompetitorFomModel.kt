@@ -34,24 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
-
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+package ch.schulealtendorf.sporttagpsa.model
 
 /**
+ * Form wrapper for a list of competitors.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
-@Controller
-class MainController() {
-
-    companion object {
-        const val DASHBOARD = "/"
-    }
-    
-    @GetMapping(DASHBOARD)
-    fun index(): String {
-        return "index"
-    }
-}
+data class SimpleCompetitorFomModel @JvmOverloads constructor(
+        var competitors: List<SimpleCompetitorModel> = ArrayList<SimpleCompetitorModel>()
+)

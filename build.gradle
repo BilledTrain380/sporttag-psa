@@ -52,8 +52,11 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    compile("org.springframework.boot:spring-boot-devtools")
     
     compile "com.opencsv:opencsv:3.9"
+
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
     
     // database dependencies
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')

@@ -43,7 +43,7 @@
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:replace="fragments/main :: navigation(competitor)">
+<nav th:replace="fragments/main :: navigation(competitor, clazz-list)">
 </nav>
 
 <div class="content-wrapper py-3">
@@ -51,18 +51,19 @@
     <div class="container-fluid">
 
         <div class="page-header">
-            <h1>Teilnehmer</h1>
-        </div>
-
-        <div th:if="${message}" th:inline="text" class="alert alert-success" role="alert">
-            [[${message}]]
+            <h1>Teilnehmer <small>Auswahl</small></h1>
         </div>
         
         <div class="row">
             
-            <div class="col-lg-12">
-                
+            <div class="col-lg-2">
 
+                <div class="list-group">
+                    <a th:each="clazz : ${clazzes}"  th:href="@{/competitor/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">
+                        Klasse [[${clazz.name}]]
+                    </a>
+                </div>
+                
             </div>
 
         </div>

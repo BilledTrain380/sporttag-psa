@@ -34,24 +34,15 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
-
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+package ch.schulealtendorf.sporttagpsa.model
 
 /**
+ * Represents a sport with limited properties in contrast to an entity class.
+ * 
  * @author nmaerchy
  * @version 0.0.1
  */
-@Controller
-class MainController() {
-
-    companion object {
-        const val DASHBOARD = "/"
-    }
-    
-    @GetMapping(DASHBOARD)
-    fun index(): String {
-        return "index"
-    }
-}
+data class SportModel @JvmOverloads constructor(
+        var id: Int = 0,
+        var name: String = ""
+)

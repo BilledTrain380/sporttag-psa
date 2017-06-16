@@ -37,13 +37,13 @@
 
 <html lang="de">
 
-<head th:replace="fragments/main :: head(Import)">
+<head th:replace="fragments/main :: head(Teilnehmer)">
 </head>
 
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:replace="fragments/main :: navigation(competitor, import)">
+<nav th:replace="fragments/main :: navigation(competitor, competitor)">
 </nav>
 
 <div class="content-wrapper py-3">
@@ -51,51 +51,54 @@
     <div class="container-fluid">
 
         <div class="page-header">
-            <h1>Teilnehmer <small>Import</small></h1>
-        </div>
-
-        <div th:if="${messageError}" th:inline="text" class="alert alert-danger" role="alert">
-            [[${messageError}]]
+            <h1>Teilnehmer <small th:text="${competitor.surname} + ' ' + ${competitor.prename}"></small></h1>
         </div>
 
         <div th:if="${messageSuccess}" th:inline="text" class="alert alert-success" role="alert">
             [[${messageSuccess}]]
         </div>
         
-        <div class="row">
-            
-            <div class="col-lg-12">
-                <p>
-                    Sie können Teilnehmer mittels einer CSV Datei importieren. Achten Sie darauf, dass die CSV Datei 
-                    den untenstehenden Regeln entspricht.
-                </p>
-
-
-                <form th:action="@{/competitor/import}" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="competitor-input-file">Datei Import</label>
-                        <input id="competitor-input-file" class="form-control" name="competitor-input" type="file" accept="text/csv" required>
-                        <ul>
-                            <li>Die Datei DARF NICHT grösser als 1MB sein.</li>
-                            <li>Die Datei MUSS der Dateiendung ".csv" entsprechen.</li>
-                            <li>Als Trennzeichen MUSS ein Komma vorhanden sein.</li>
-                            <li>Das Geschlecht MUSS dem Zeichen "m" oder "w" entsprechen.</li>
-                            <li>Das Geburtsdatum MUSS im Format DD.MM.YYYY sein. z.B. 05.08.2017</li>
-                            <li>Die Spaltenüberschriften MÜSSEN vorhanden sein.</li>
-                            <li>Die Spalten MÜSSEN in folgender Reihenfolge vorhanden sein:
-                                <p>Klasse,Nachname,Vorname,Geschlecht,Strasse,PLZ,Ort,Geburtsdatum,Klassenlehrer</p>
-                            </li>
-                            
-                        </ul>
-                        
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Datei hochladen</button>
-                </form>
-                
+        <form th:object="${competitor}" th:action="@{/competitor/} + *{id}" method="post">
+        
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Vorname</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" th:field="*{prename}">
+                </div>
             </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Nachname</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" th:field="*{surname}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Geschlecht</label>
+                <div class="col-10">
+                    <select class="form-control" th:field="*{gender}">
+                        <option value="1">Männlich</option>
+                        <option value="0">Weiblich</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Adresse</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" th:field="*{address}">
+                </div>
+            </div>
+
+            <!-- send all other attributes back, needed to properly update a competitor -->
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{sport.id}">
+            <input type="hidden" th:field="*{sport.name}">
+
+            <button type="submit" class="btn btn-primary">Speichern</button>
             
-        </div>
+        </form>
 
     </div>
     <!-- /.container-fluid -->

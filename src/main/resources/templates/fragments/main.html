@@ -69,18 +69,27 @@
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:fragment="navigation (active)" id="mainNav" class="navbar static-top navbar-toggleable-md navbar-inverse bg-inverse">
+<nav th:fragment="navigation (menu, active)" id="mainNav" class="navbar static-top navbar-toggleable-md navbar-inverse bg-inverse">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-psa" aria-controls="navbar-psa" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">Sporttag PSA</a>
     <div class="collapse navbar-collapse" id="navbar-psa">
         <ul class="sidebar-nav navbar-nav">
-            <li class="nav-item" th:classappend="${active} == dashboard? active : ''">
+            <li class="nav-item" th:classappend="${menu} == dashboard? active : ''">
                 <a class="nav-link" href="#"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
             </li>
-            <li class="nav-item" th:classappend="${active} == competitor? active : ''">
-                <a class="nav-link" th:href="@{/competitor}"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
+
+            <li class="nav-item">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" th:classappend="${active} == competitor? active : ''" data-toggle="collapse" href="#competitor-multi"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == competitor? show : ''" id="competitor-multi">
+                    <li th:class="${active} == import? active : ''">
+                        <a th:href="@{/competitor/import}">Import</a>
+                    </li>
+                    <li th:class="${active} == clazz-list? active : ''">
+                        <a th:href="@{/competitor/clazz}">Klassenliste</a>
+                    </li>
+                </ul>
             </li>
 
             <!-- copy when using multilevel -->

@@ -34,24 +34,13 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.repository
 
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
+import org.springframework.data.repository.CrudRepository
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-@Controller
-class MainController() {
-
-    companion object {
-        const val DASHBOARD = "/"
-    }
-    
-    @GetMapping(DASHBOARD)
-    fun index(): String {
-        return "index"
-    }
-}
+interface SportRepository: CrudRepository<SportEntity?, Int?>

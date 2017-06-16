@@ -60,8 +60,8 @@ class ImportController(
         const val IMPORT = "/competitor/import"
     }
     
-    val errorMessage: String = "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten."
-    val successMessage: String = "File Upload war erfolgreich."
+    private val errorMessage: String = "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten."
+    private val successMessage: String = "File Upload war erfolgreich."
     
     @GetMapping(IMPORT)
     fun import(): String {
@@ -69,13 +69,13 @@ class ImportController(
     }
 
     /**
-     * Handles the passed in MultipartFile and redirects the user.
+     * Handles the passed in MultipartFile.
      * The Multipart file MUST be a text/csv mime type.
-     * A success message will be set on the RedirectAttributes if no validation error occurs,
+     * A success message will be set on the Model if no validation error occurs,
      * otherwise a error message will be set.
      * 
      * @param file a csv file to upload
-     * @param redirectAttributes specialization to set attributes on a redirect scenario
+     * @param model holder for model attributes
      * 
      * @return a thymeleaf template
      */
@@ -85,15 +85,17 @@ class ImportController(
         try {
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
-            redirectAttributes.addFlashAttribute("message", successMessage)
+            // TODO: use message in html and just add true or false
+            redirectAttributes.addFlashAttribute("messageSuccess", successMessage)
 
-            return "redirect:${MainController.COMPETITOR}"
+            return "redirect:$IMPORT"
             
         } catch (ex: IllegalArgumentException) {
-            
-            redirectAttributes.addFlashAttribute("message", errorMessage)
 
-            return "redirect:${ImportController.IMPORT}"
+            // TODO: use message in html and just add true or false
+            redirectAttributes.addFlashAttribute("messageError", errorMessage)
+
+            return "redirect:$IMPORT"
         }
     }
 }

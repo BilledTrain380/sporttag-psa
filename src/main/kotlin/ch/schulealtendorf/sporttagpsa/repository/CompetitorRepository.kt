@@ -43,4 +43,8 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 0.0.1
  */
-interface CompetitorRepository: CrudRepository<CompetitorEntity?, Int>
+interface CompetitorRepository: CrudRepository<CompetitorEntity?, Int> {
+
+    fun findByClazzId(id: Int): List<CompetitorEntity>
+    
+}
