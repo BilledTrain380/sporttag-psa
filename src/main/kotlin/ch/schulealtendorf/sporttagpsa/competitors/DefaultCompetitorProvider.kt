@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.competitors
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.map
+import ch.schulealtendorf.sporttagpsa.entity.merge
 import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
@@ -58,12 +59,18 @@ class DefaultCompetitorProvider(
         return competitorRepository.findByClazzId(clazzId).map { it.map() }
     }
 
+    override fun getCompetitorById(competitorId: Int): SimpleCompetitorModel {
+        // just throw the NPE here, so it would redirect the user to the error page
+        return competitorRepository.findOne(competitorId)!!.map()
+    }
+
     override fun updateCompetitor(competitor: SimpleCompetitorModel) {
         
         // just throw the NPE here, so it would redirect the user to the error page
         val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
         val sportEntity: SportEntity? = sportRepository.findOne(competitor.sport.id)
         
+        competitorEntity.merge(competitor)
         competitorEntity.sport = sportEntity
         
         competitorRepository.save(competitorEntity)
