@@ -98,13 +98,15 @@ class CompetitorController(
     @GetMapping("/competitor/{id}")
     fun competitor(@PathVariable id: Int, model: Model): String {
         
-        model.addAttribute("competitor", SimpleCompetitorModel())
+        model.addAttribute("competitor", competitorProvider.getCompetitorById(id))
         
         return "competitor/competitor-detail"
     }
 
     @PostMapping("/competitor/{id}")
     fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
+        
+        competitorProvider.updateCompetitor(competitor)
         
         redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
         
