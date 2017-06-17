@@ -37,7 +37,10 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.competitors.CompetitorProvider
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.entity.map
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorFomModel
+import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
+import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -48,35 +51,47 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
 /**
- * Controller for GET and PATCH competitors.
- * 
  * @author nmaerchy
- * @version 0.0.2
+ * @version 0.0.1
  */
 @Controller
-class CompetitorController(
+class ClazzController(
+        private val clazzRepository: ClazzRepository,
+        private val sportRepository: SportRepository,
         private val competitorProvider: CompetitorProvider
 ) {
     
+    
     companion object {
-        const val COMPETITOR: String = "/competitor"
+        const val CLAZZ: String = "/clazz"
     }
 
-    @GetMapping("$COMPETITOR/{id}")
-    fun getCompetitor(@PathVariable id: Int, model: Model): String {
-        
-        model.addAttribute("competitor", competitorProvider.getCompetitorById(id))
-        
-        return "competitor/competitor-detail"
+    @GetMapping(CLAZZ)
+    fun getClazzList(model: Model): String {
+
+        model.addAttribute("clazzes", clazzRepository.findAll())
+
+        return "competitor/clazz-list"
     }
 
-    @PostMapping("$COMPETITOR/{id}")
-    fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
-        
-        competitorProvider.updateCompetitor(competitor)
-        
+    @GetMapping("$CLAZZ/{id}")
+    fun getClazz(@PathVariable id: Int, model: Model): String {
+
+        // TODO: May use a clazz and sport provider class
+        model.addAttribute("clazz", clazzRepository.findOne(id))
+        model.addAttribute("sports", sportRepository.findAll().map { it?.map() })
+        model.addAttribute("competitorSportForm", SimpleCompetitorFomModel(competitorProvider.getCompetitorsByClazz(id)))
+
+        return "competitor/class-detail"
+    }
+
+    @PostMapping("$CLAZZ/{id}")
+    fun updateCompetitors(@PathVariable id: Int, @Valid @ModelAttribute("competitorSportForm") competitorForm: SimpleCompetitorFomModel, redirectAttributes: RedirectAttributes): String {
+
+        competitorForm.competitors.forEach(competitorProvider::updateCompetitor)
+
         redirectAttributes.addFlashAttribute("messageSuccess", true)
-        
-        return "redirect:$COMPETITOR/$id"
+
+        return "redirect:$CLAZZ/$id"
     }
 }
