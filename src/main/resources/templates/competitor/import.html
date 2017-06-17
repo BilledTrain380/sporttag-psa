@@ -54,11 +54,11 @@
             <h1>Teilnehmer <small>Import</small></h1>
         </div>
 
-        <div th:if="${messageError}" class="alert alert-danger" role="alert">
+        <div th:if="${success} != null AND !${success}" class="alert alert-danger" role="alert">
             File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.
         </div>
 
-        <div th:if="${messageSuccess}" class="alert alert-success" role="alert">
+        <div th:if="${success}" class="alert alert-success" role="alert">
             File Upload war erfolgreich.
         </div>
         

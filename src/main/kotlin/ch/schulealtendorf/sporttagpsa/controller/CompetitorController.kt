@@ -75,7 +75,7 @@ class CompetitorController(
         
         competitorProvider.updateCompetitor(competitor)
         
-        redirectAttributes.addFlashAttribute("messageSuccess", true)
+        redirectAttributes.addFlashAttribute("success", true)
         
         return "redirect:$COMPETITOR/$id"
     }

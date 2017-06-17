@@ -90,7 +90,7 @@ class ClazzController(
 
         competitorForm.competitors.forEach(competitorProvider::updateCompetitor)
 
-        redirectAttributes.addFlashAttribute("messageSuccess", true)
+        redirectAttributes.addFlashAttribute("success", true)
 
         return "redirect:$CLAZZ/$id"
     }

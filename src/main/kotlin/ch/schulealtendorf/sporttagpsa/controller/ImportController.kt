@@ -83,13 +83,13 @@ class ImportController(
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
             
-            redirectAttributes.addFlashAttribute("messageSuccess", true)
+            redirectAttributes.addFlashAttribute("success", true)
 
             return "redirect:$IMPORT"
             
         } catch (ex: IllegalArgumentException) {
             
-            redirectAttributes.addFlashAttribute("messageError", true)
+            redirectAttributes.addFlashAttribute("success", false)
 
             return "redirect:$IMPORT"
         }
