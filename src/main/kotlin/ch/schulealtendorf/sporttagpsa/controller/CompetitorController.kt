@@ -61,6 +61,10 @@ class CompetitorController(
         private val sportRepository: SportRepository,
         private val competitorProvider: CompetitorProvider
 ) {
+    
+    companion object {
+        const val COMPETITOR: String = "/competitor"
+    }
 
     @GetMapping("/clazz")
     fun clazzList(model: Model): String {
@@ -88,8 +92,7 @@ class CompetitorController(
         
         competitorForm.competitors.forEach(competitorProvider::updateCompetitor)
         
-        // TODO: use message in html and just add true or false
-        redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
+        redirectAttributes.addFlashAttribute("messageSuccess", true)
         
         return "redirect:/competitor/clazz/$id"
     }
@@ -106,9 +109,8 @@ class CompetitorController(
     fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
         
         competitorProvider.updateCompetitor(competitor)
-
-        // TODO: use message in html and just add true or false
-        redirectAttributes.addFlashAttribute("messageSuccess", "Änderungen wurden erfolgreich übernommen")
+        
+        redirectAttributes.addFlashAttribute("messageSuccess", true)
         
         return "redirect:/competitor/$id"
     }
