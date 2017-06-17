@@ -59,7 +59,7 @@
             <div class="col-lg-2">
 
                 <div class="list-group">
-                    <a th:each="clazz : ${clazzes}"  th:href="@{/competitor/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">
+                    <a th:each="clazz : ${clazzes}"  th:href="@{/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">
                         Klasse [[${clazz.name}]]
                     </a>
                 </div>

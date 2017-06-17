@@ -61,7 +61,7 @@
         <div class="row">
 
             <div class="col-lg-12">
-                <a th:href="@{/competitor/clazz}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
+                <a th:href="@{/clazz}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
             </div>
             
             <div class="col-lg-12">
@@ -70,7 +70,7 @@
                 
                 <h3 th:text="${clazz.name}"></h3>
                 
-                <form th:action="@{/competitor/clazz/} + ${clazz.id}" method="post" th:object="${competitorSportForm}" enctype="application/x-www-form-urlencoded">
+                <form th:action="@{/clazz/} + ${clazz.id}" method="post" th:object="${competitorSportForm}" enctype="application/x-www-form-urlencoded">
 
                     <table class="table table-striped">
                         <thead>

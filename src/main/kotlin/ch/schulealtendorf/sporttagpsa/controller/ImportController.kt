@@ -57,7 +57,7 @@ class ImportController(
         private val competitorConsumer: CompetitorListConsumer) {
     
     companion object {
-        const val IMPORT = "/competitor/import"
+        const val IMPORT = "/import"
     }
     
     @GetMapping(IMPORT)
