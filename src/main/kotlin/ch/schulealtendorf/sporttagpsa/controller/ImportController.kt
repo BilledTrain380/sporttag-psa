@@ -60,9 +60,6 @@ class ImportController(
         const val IMPORT = "/competitor/import"
     }
     
-    private val errorMessage: String = "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten."
-    private val successMessage: String = "File Upload war erfolgreich."
-    
     @GetMapping(IMPORT)
     fun import(): String {
         return "competitor/import"
@@ -71,11 +68,11 @@ class ImportController(
     /**
      * Handles the passed in MultipartFile.
      * The Multipart file MUST be a text/csv mime type.
-     * A success message will be set on the Model if no validation error occurs,
+     * A success message will be set on the RedirectAttributes if no validation error occurs,
      * otherwise a error message will be set.
      * 
      * @param file a csv file to upload
-     * @param model holder for model attributes
+     * @param redirectAttributes holder for redirect attributes
      * 
      * @return a thymeleaf template
      */
@@ -85,15 +82,14 @@ class ImportController(
         try {
             
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
-            // TODO: use message in html and just add true or false
-            redirectAttributes.addFlashAttribute("messageSuccess", successMessage)
+            
+            redirectAttributes.addFlashAttribute("messageSuccess", true)
 
             return "redirect:$IMPORT"
             
         } catch (ex: IllegalArgumentException) {
-
-            // TODO: use message in html and just add true or false
-            redirectAttributes.addFlashAttribute("messageError", errorMessage)
+            
+            redirectAttributes.addFlashAttribute("messageError", true)
 
             return "redirect:$IMPORT"
         }
