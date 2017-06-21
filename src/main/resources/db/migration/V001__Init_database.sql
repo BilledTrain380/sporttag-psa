@@ -76,3 +76,61 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
     ON UPDATE RESTRICT );
 
 
+-- -----------------------------------------------------
+-- Table UNIT
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS UNIT (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  unit VARCHAR(15) NOT NULL UNIQUE ,
+  PRIMARY KEY (id));
+
+
+-- -----------------------------------------------------
+-- Table DISCIPLINE
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS DISCIPLINE (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  name VARCHAR(45) NOT NULL UNIQUE ,
+  UNIT_id INT NOT NULL ,
+  PRIMARY KEY (id)  ,
+  CONSTRAINT fk_DISCIPLINE_UNIT
+  FOREIGN KEY (UNIT_id)
+  REFERENCES UNIT (id)
+  ON DELETE RESTRICT 
+  ON UPDATE RESTRICT );
+
+
+-- -----------------------------------------------------
+-- Table STARTNUMBER
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS STARTNUMBER (
+  startnumber INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  COMPETITOR_id INT NOT NULL UNIQUE ,
+  PRIMARY KEY (startnumber)  ,
+  CONSTRAINT fk_STARTNUMBER_COMPETITOR
+  FOREIGN KEY (COMPETITOR_id)
+  REFERENCES COMPETITOR (id)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE );
+
+
+-- -----------------------------------------------------
+-- Table RESULT
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS RESULT (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  performance BIGINT NOT NULL DEFAULT 0 ,
+  points INT NOT NULL DEFAULT 0 ,
+  STARTNUMBER_startnumber INT NOT NULL ,
+  DISCIPLIN_id INT NOT NULL ,
+  PRIMARY KEY (id)  ,
+  CONSTRAINT fk_RESULT_STARTNUMBER
+  FOREIGN KEY (STARTNUMBER_startnumber)
+  REFERENCES STARTNUMBER (startnumber)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE ,
+  CONSTRAINT fk_RESULT_DISCIPLIN
+  FOREIGN KEY (DISCIPLIN_id)
+  REFERENCES DISCIPLINE (id)
+  ON DELETE CASCADE 
+  ON UPDATE CASCADE )
