@@ -2,6 +2,7 @@ buildscript {
 	ext {
 		kotlinVersion = '1.1.2'
 		springBootVersion = '1.5.3.RELEASE'
+		sporttagPSAVersion = '0.0.1'
 	}
 	repositories {
 		mavenCentral()
@@ -12,7 +13,6 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
         classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
 	}
 }
 
@@ -31,7 +31,7 @@ junitPlatform {
 	}
 }
 
-version = '0.0.1-SNAPSHOT'
+version = "${sporttagPSAVersion}"
 sourceCompatibility = 1.8
 compileKotlin {
 	kotlinOptions.jvmTarget = "1.8"
