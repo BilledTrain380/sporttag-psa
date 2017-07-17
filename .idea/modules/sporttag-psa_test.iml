@@ -18,13 +18,6 @@
           <option name="loadBuiltInsFromDependencies" value="true" />
           <option name="languageVersion" value="1.1" />
           <option name="apiVersion" value="1.1" />
-          <option name="pluginClasspaths">
-            <array>
-              <option value="$KOTLIN_BUNDLED$/lib/allopen-compiler-plugin.jar" />
-              <option value="$KOTLIN_BUNDLED$/lib/noarg-compiler-plugin.jar" />
-            </array>
-          </option>
-          <option name="coroutinesWarn" value="true" />
           <option name="pluginOptions">
             <array>
               <option value="plugin:org.jetbrains.kotlin.allopen:annotation=" />
@@ -37,6 +30,13 @@
               <option value="plugin:org.jetbrains.kotlin.noarg:annotation=javax.persistence.Embeddable" />
             </array>
           </option>
+          <option name="pluginClasspaths">
+            <array>
+              <option value="$KOTLIN_BUNDLED$/lib/allopen-compiler-plugin.jar" />
+              <option value="$KOTLIN_BUNDLED$/lib/noarg-compiler-plugin.jar" />
+            </array>
+          </option>
+          <option name="coroutinesWarn" value="true" />
         </compilerArguments>
       </configuration>
     </facet>
