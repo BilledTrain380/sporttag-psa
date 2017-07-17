@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2017 by Nicolas Märchy
  *
@@ -35,37 +34,15 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.repository
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
+import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
+import org.springframework.data.repository.CrudRepository
 
 /**
+ * Describes a CRUD repository for a {@link DisciplineEntity}.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-@Entity
-@Table(name = "RESULT")
-class ResultEntity(
-        
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int?,
-        
-        @NotNull
-        var performance: Int = 1,
-        
-        @NotNull
-        var points: Int = 1,
-        
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_RESULT_STARTER", referencedColumnName = "NUMBER")
-        var starter: StarterEntity,
-        
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fi_RESULT_DISCIPLINE", referencedColumnName = "id")
-        var disciplin: DisciplineEntity
-)
+interface DisciplineRepository: CrudRepository<DisciplineEntity, Int?>
