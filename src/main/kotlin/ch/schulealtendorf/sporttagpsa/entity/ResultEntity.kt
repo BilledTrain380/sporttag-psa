@@ -46,26 +46,26 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 @Table(name = "RESULT")
-class ResultEntity(
-        
+class ResultEntity @JvmOverloads constructor(
+
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int?,
-        
+        var id: Int? = null,
+
         @NotNull
         var performance: Int = 1,
-        
+
         @NotNull
         var points: Int = 1,
-        
+
         @NotNull
         @ManyToOne
         @JoinColumn(name = "fk_RESULT_STARTER", referencedColumnName = "NUMBER")
-        var starter: StarterEntity,
-        
+        var starter: StarterEntity = StarterEntity(),
+
         @NotNull
         @ManyToOne
         @JoinColumn(name = "fi_RESULT_DISCIPLINE", referencedColumnName = "id")
-        var disciplin: DisciplineEntity
+        var disciplin: DisciplineEntity = DisciplineEntity()
 )

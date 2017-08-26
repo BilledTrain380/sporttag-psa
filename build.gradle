@@ -10,9 +10,7 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
-        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
 	}
 }
 
@@ -41,9 +39,9 @@ compileTestKotlin {
 }
 
 repositories {
-	mavenCentral()
 	maven { url "http://dl.bintray.com/jetbrains/spek" }
-    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
+	maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
+	mavenCentral()
 }
 
 

@@ -45,15 +45,15 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 @Table(name = "STARTER")
-class StarterEntity(
+class StarterEntity @JvmOverloads constructor(
         
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var number: Int?,
+        var number: Int? = null,
         
         @NotNull
         @ManyToOne
         @JoinColumn(name = "fk_STARTER_COMPETITOR", referencedColumnName = "id")
-        var competitor: CompetitorEntity
+        var competitor: CompetitorEntity = CompetitorEntity()
 )
