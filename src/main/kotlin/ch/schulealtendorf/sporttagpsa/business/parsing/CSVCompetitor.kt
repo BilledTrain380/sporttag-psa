@@ -34,46 +34,44 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.parsing
 
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import com.opencsv.bean.CsvBindByName
 
 /**
- * This file contains extension functions to map entity classes to the according model class
- * or merge model classes with the according entity class.
+ * Data class for CSV entries of a competitor file input.
  * 
  * @author nmaerchy
- * @version 0.0.4
+ * @version 0.0.1
  */
-
-/**
- * Maps recursive and null safe.
- * 
- * @return the mapped model class
- */
-fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
-}
-
-/**
- * Merges a {@link CompetitorEntity} with the passed in argument.
- * Does NOT merge recursive and does NOT merge the attribute id of a CompetitorEntity.
- * 
- * @param competitorModel the model to merge into the entity
- */
-fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
-    this.surname = competitorModel.surname
-    this.prename = competitorModel.prename
-    this.gender = competitorModel.gender
-    this.address = competitorModel.address
-}
-
-/**
- * Maps null safe.
- * 
- * @return the mapped model class
- */
-fun SportEntity.map(): SportModel {
-    return SportModel(if (this.id == null) 0 else this.id!!, this.name)
+data class CSVCompetitor(
+        
+        @CsvBindByName(column = "Klasse", required = true)
+        var clazz: String,
+        
+        @CsvBindByName(column = "Nachname", required = true)
+        var surname: String,
+        
+        @CsvBindByName(column = "Vorname", required = true)
+        var prename: String,
+        
+        @CsvBindByName(column = "Geschlecht", required = true)
+        var gender: String,
+        
+        @CsvBindByName(column = "Adresse", required = true)
+        var address: String,
+        
+        @CsvBindByName(column = "PLZ", required = true)
+        var zipCode: String,
+        
+        @CsvBindByName(column = "Ort", required = true)
+        var town: String,
+        
+        @CsvBindByName(column = "Geburtsdatum", required = true)
+        var birthday: String,
+        
+        @CsvBindByName(column = "Klassenlehrer", required = true)
+        var teacher: String
+) {
+        constructor(): this("", "", "", "", "", "", "", "", "")
 }

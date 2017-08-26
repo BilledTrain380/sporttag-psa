@@ -34,46 +34,36 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
+import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import org.springframework.stereotype.Component
 
 /**
- * This file contains extension functions to map entity classes to the according model class
- * or merge model classes with the according entity class.
+ * An implementation that consumes a {@link FlatCompetitor}
+ * and ensures, that the {@link FlatCompetitor} attributes for a TownEntity are only consumed once.
  * 
  * @author nmaerchy
- * @version 0.0.4
+ * @version 0.0.2
  */
+@Component
+class EntrySafeCompetitorTownConsumer(
+        private val townRepository: TownRepository
+): CompetitorTownConsumer {
 
-/**
- * Maps recursive and null safe.
- * 
- * @return the mapped model class
- */
-fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
-}
+    /**
+     * Saves a {@link TownEntity} based on the passed in argument.
 
-/**
- * Merges a {@link CompetitorEntity} with the passed in argument.
- * Does NOT merge recursive and does NOT merge the attribute id of a CompetitorEntity.
- * 
- * @param competitorModel the model to merge into the entity
- */
-fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
-    this.surname = competitorModel.surname
-    this.prename = competitorModel.prename
-    this.gender = competitorModel.gender
-    this.address = competitorModel.address
-}
+     * @param competitor the input argument
+     */
+    override fun accept(competitor: FlatCompetitor) {
+        
+        if (townRepository.findByZipAndName(competitor.zipCode, competitor.town) == null) {
+            val townEntity: TownEntity = TownEntity(competitor.zipCode, competitor.town)
 
-/**
- * Maps null safe.
- * 
- * @return the mapped model class
- */
-fun SportEntity.map(): SportModel {
-    return SportModel(if (this.id == null) 0 else this.id!!, this.name)
+            townRepository.save(townEntity)
+        }
+    }
 }

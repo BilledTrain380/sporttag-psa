@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
-import ch.schulealtendorf.sporttagpsa.competitors.CompetitorListConsumer
-import ch.schulealtendorf.sporttagpsa.parsing.FileReader
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorListConsumer
+import ch.schulealtendorf.sporttagpsa.business.parsing.FileReader
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it

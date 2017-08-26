@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
-import ch.schulealtendorf.sporttagpsa.competitors.CompetitorListConsumer
-import ch.schulealtendorf.sporttagpsa.parsing.FileReader
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorListConsumer
+import ch.schulealtendorf.sporttagpsa.business.parsing.FileReader
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping

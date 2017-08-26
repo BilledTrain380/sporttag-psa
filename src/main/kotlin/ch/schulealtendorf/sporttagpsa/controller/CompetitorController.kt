@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
-import ch.schulealtendorf.sporttagpsa.competitors.CompetitorProvider
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
+import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping

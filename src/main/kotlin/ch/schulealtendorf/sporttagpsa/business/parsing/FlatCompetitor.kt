@@ -34,46 +34,24 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.parsing
 
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import java.util.*
 
 /**
- * This file contains extension functions to map entity classes to the according model class
- * or merge model classes with the according entity class.
+ * Data class for competitors in a flat data structure.
  * 
  * @author nmaerchy
- * @version 0.0.4
+ * @version 0.0.1
  */
-
-/**
- * Maps recursive and null safe.
- * 
- * @return the mapped model class
- */
-fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
-}
-
-/**
- * Merges a {@link CompetitorEntity} with the passed in argument.
- * Does NOT merge recursive and does NOT merge the attribute id of a CompetitorEntity.
- * 
- * @param competitorModel the model to merge into the entity
- */
-fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
-    this.surname = competitorModel.surname
-    this.prename = competitorModel.prename
-    this.gender = competitorModel.gender
-    this.address = competitorModel.address
-}
-
-/**
- * Maps null safe.
- * 
- * @return the mapped model class
- */
-fun SportEntity.map(): SportModel {
-    return SportModel(if (this.id == null) 0 else this.id!!, this.name)
-}
+data class FlatCompetitor(
+        val surname: String,
+        val prename: String,
+        val gender: Boolean,
+        val birthday: Date,
+        val address: String,
+        val zipCode: String,
+        val town: String,
+        val clazz: String,
+        val teacher: String
+)

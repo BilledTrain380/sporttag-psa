@@ -34,46 +34,38 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
 
 /**
- * This file contains extension functions to map entity classes to the according model class
- * or merge model classes with the according entity class.
+ * Describes a provider for competitors.
  * 
  * @author nmaerchy
- * @version 0.0.4
+ * @version 0.0.1
  */
+interface CompetitorProvider {
 
-/**
- * Maps recursive and null safe.
- * 
- * @return the mapped model class
- */
-fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
-}
+    /**
+     * Gets all competitors that belong to the clazz with the passed in argument.
+     *
+     * @param clazzId the id of the clazz wanted
+     * @return a list of found competitors
+     */
+    fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel>
 
-/**
- * Merges a {@link CompetitorEntity} with the passed in argument.
- * Does NOT merge recursive and does NOT merge the attribute id of a CompetitorEntity.
- * 
- * @param competitorModel the model to merge into the entity
- */
-fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
-    this.surname = competitorModel.surname
-    this.prename = competitorModel.prename
-    this.gender = competitorModel.gender
-    this.address = competitorModel.address
-}
+    /**
+     * Gets a single competitor by the passed in argument.
+     *
+     * @param competitorId id of the competitor wanted
+     * @return the found competitor
+     */
+    fun getCompetitorById(competitorId: Int): SimpleCompetitorModel
 
-/**
- * Maps null safe.
- * 
- * @return the mapped model class
- */
-fun SportEntity.map(): SportModel {
-    return SportModel(if (this.id == null) 0 else this.id!!, this.name)
+    /**
+     * Updates the passed in argument.
+     *
+     * @param competitor competitor model containing properties to update
+     */
+    fun updateCompetitor(competitor: SimpleCompetitorModel)
 }

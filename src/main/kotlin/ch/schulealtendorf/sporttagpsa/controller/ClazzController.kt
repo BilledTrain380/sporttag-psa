@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
-import ch.schulealtendorf.sporttagpsa.competitors.CompetitorProvider
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
 import ch.schulealtendorf.sporttagpsa.entity.map
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorFomModel
+import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorFomModel
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller

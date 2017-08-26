@@ -34,46 +34,40 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
+import org.springframework.stereotype.Component
 
 /**
- * This file contains extension functions to map entity classes to the according model class
- * or merge model classes with the according entity class.
+ * An implementation that consumes a list of {@link FlatCompetitor}
+ * and guarantees that duplicated attributes are only consumed once.
+ *
+ * For example:
+ * When two {@link FlatCompetitor} objects with the same value in attribute {@link FlatCompetitor#teacher},
+ * that attribute will only be consumed once.
  * 
  * @author nmaerchy
- * @version 0.0.4
+ * @version 0.0.2
  */
+@Component
+class EntrySafeCompetitorListConsumer(
+        private val competitorConsumer: CompetitorConsumer,
+        private val competitorTownConsumer: CompetitorTownConsumer,
+        private val competitorTeacherConsumer: CompetitorTeacherConsumer,
+        private val competitorClazzConsumer: CompetitorClazzConsumer
+): CompetitorListConsumer {
 
-/**
- * Maps recursive and null safe.
- * 
- * @return the mapped model class
- */
-fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
-}
-
-/**
- * Merges a {@link CompetitorEntity} with the passed in argument.
- * Does NOT merge recursive and does NOT merge the attribute id of a CompetitorEntity.
- * 
- * @param competitorModel the model to merge into the entity
- */
-fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
-    this.surname = competitorModel.surname
-    this.prename = competitorModel.prename
-    this.gender = competitorModel.gender
-    this.address = competitorModel.address
-}
-
-/**
- * Maps null safe.
- * 
- * @return the mapped model class
- */
-fun SportEntity.map(): SportModel {
-    return SportModel(if (this.id == null) 0 else this.id!!, this.name)
+    /**
+     * Delegates each element of the passed in argument to a series of Consumers.
+     * 
+     * @param competitorList a list of competitors to consume
+     */
+    override fun accept(competitorList: List<FlatCompetitor>) {
+        
+        competitorList.forEach(competitorTeacherConsumer::accept)
+        competitorList.forEach(competitorClazzConsumer::accept)
+        competitorList.forEach(competitorTownConsumer::accept)
+        competitorList.forEach(competitorConsumer::accept)
+    }
 }

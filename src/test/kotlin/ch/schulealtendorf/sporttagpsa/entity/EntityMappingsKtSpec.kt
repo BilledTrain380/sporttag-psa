@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.model.SportModel
+import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
