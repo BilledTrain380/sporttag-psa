@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -76,7 +76,7 @@ object EntrySafeCompetitorTownConsumerSpec: Spek({
             consumer.accept(flatCompetitor)
             
             it("should save a TownEntity based on the FlatCompetitors attributes") {
-                val expected: TownEntity = TownEntity("4000", "Musterhausen")
+                val expected: TownEntity = TownEntity(null, "4000", "Musterhausen")
                 Mockito.verify(mockTownRepo, Mockito.times(1)).save(expected)
             }
         }

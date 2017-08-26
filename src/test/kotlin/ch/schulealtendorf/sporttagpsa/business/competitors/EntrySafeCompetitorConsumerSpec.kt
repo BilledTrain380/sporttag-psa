@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
+import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
@@ -101,7 +101,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             }
             
             it("should save a CompetitorEntity based on the FlatCompetitors attributes") {
-                val expected: CompetitorEntity = CompetitorEntity("Muster", "Hans", true, Date(1), "Musterstrasse 6", townEntity, clazzEntity)
+                val expected: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, Date(1), "Musterstrasse 6", townEntity, clazzEntity)
                 Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
             }
         }
@@ -127,8 +127,8 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             consumer.accept(flatCompetitor)
             
             it("should save the TownEntity with the CompetitorEntity") {
-                val newTownEntity: TownEntity = TownEntity("4000", "Musterhausen") // it is important, that the id is not set, otherwise it would be an existing TownEntity
-                val expected: CompetitorEntity = CompetitorEntity("Muster", "Hans", true, Date(1), "Musterstrasse 6", newTownEntity, clazzEntity)
+                val newTownEntity: TownEntity = TownEntity(null, "4000", "Musterhausen") // it is important, that the id is not set, otherwise it would be an existing TownEntity
+                val expected: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, Date(1), "Musterstrasse 6", newTownEntity, clazzEntity)
                 verify(mockCompetitorRepo, times(1)).save(expected)
             }
         }

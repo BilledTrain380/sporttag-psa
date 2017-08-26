@@ -9,7 +9,7 @@ INSERT INTO UNIT (unit) VALUES
 ('Sekunden'),
 ('Punkte');
 
-INSERT INTO DISCIPLINE (name, UNIT_id) VALUES 
+INSERT INTO DISCIPLINE (name, FK_UNIT_id) VALUES 
   ('Schnelllauf', (SELECT id FROM UNIT WHERE unit = 'Sekunden')),
   (' Weitsprung', (SELECT id FROM UNIT WHERE unit = 'Meter')),
   ('Weitwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),

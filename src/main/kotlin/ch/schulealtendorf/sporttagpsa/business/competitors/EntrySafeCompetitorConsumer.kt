@@ -74,10 +74,10 @@ class EntrySafeCompetitorConsumer(
                 throw EntityNotFoundException("Competitor $competitor expecting an existing ClazzEntity: ClazzEntity not found")
         
         val townEntity: TownEntity = townRepository.findByZipAndName(competitor.zipCode, competitor.town) ?:
-                TownEntity(competitor.zipCode, competitor.town)
+                TownEntity(null, competitor.zipCode, competitor.town)
         
         val competitorEntity: CompetitorEntity = CompetitorEntity(
-                competitor.surname, competitor.prename, competitor.gender, Date(competitor.birthday.time), competitor.address, townEntity, clazzEntity)
+                null, competitor.surname, competitor.prename, competitor.gender, Date(competitor.birthday.time), competitor.address, townEntity, clazzEntity)
         
         competitorRepository.save(competitorEntity)    
     }

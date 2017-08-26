@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
+import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -73,7 +73,7 @@ object EntrySafeCompetitorTeacherConsumerSpec: Spek({
             consumer.accept(flatCompetitor)
             
             it("should save a TeacherEntity based on the FlatCompetitors attributes") {
-                val expected = TeacherEntity("Hans Müller")
+                val expected = TeacherEntity(null, "Hans Müller")
                 Mockito.verify(mockTeacherRepo, Mockito.times(1)).save(expected)
             }
         }

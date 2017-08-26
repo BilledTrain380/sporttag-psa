@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.springframework.stereotype.Component
 
@@ -61,7 +61,7 @@ class EntrySafeCompetitorTownConsumer(
     override fun accept(competitor: FlatCompetitor) {
         
         if (townRepository.findByZipAndName(competitor.zipCode, competitor.town) == null) {
-            val townEntity: TownEntity = TownEntity(competitor.zipCode, competitor.town)
+            val townEntity: TownEntity = TownEntity(null, competitor.zipCode, competitor.town)
 
             townRepository.save(townEntity)
         }

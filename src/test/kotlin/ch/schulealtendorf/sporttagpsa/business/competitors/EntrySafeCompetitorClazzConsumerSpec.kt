@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
+import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
 import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
-import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
 import org.jetbrains.spek.api.Spek
@@ -91,7 +91,7 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
             }
             
             it("should save a ClazzEntity based on the FlatCompetitors attributes") {
-                val expected: ClazzEntity = ClazzEntity("1a", teacherEntity)
+                val expected: ClazzEntity = ClazzEntity(null, "1a", teacherEntity)
                 Mockito.verify(mockClazzRepo, Mockito.times(1)).save(expected)
             }
         }

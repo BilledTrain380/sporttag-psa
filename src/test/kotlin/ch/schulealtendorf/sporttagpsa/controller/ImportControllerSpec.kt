@@ -88,11 +88,11 @@ object ImportControllerSpec: Spek({
             }
             
             it("should redirect the user to the competitor import page") {
-                Assert.assertEquals("redirect:/competitor/import", result)
+                Assert.assertEquals("redirect:/import", result)
             }
             
             it("should send a success message to the redirected page") {
-                verify(mockRedirectedAttr, times(1)).addFlashAttribute("messageSuccess", "File Upload war erfolgreich.")
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("success", true)
             }
         }
         
@@ -103,11 +103,11 @@ object ImportControllerSpec: Spek({
             val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
             
             it("should redirect the user to the import page") {
-                Assert.assertEquals("redirect:/competitor/import", result)
+                Assert.assertEquals("redirect:/import", result)
             }
             
             it("should send an error message to the redirected page") {
-                verify(mockRedirectedAttr, times(1)).addFlashAttribute("messageError", "File Upload war fehlerhaft. Stellen Sie bitte sicher, dass Sie die Regeln einhalten.")
+                verify(mockRedirectedAttr, times(1)).addFlashAttribute("success", false)
             }
         }
     }

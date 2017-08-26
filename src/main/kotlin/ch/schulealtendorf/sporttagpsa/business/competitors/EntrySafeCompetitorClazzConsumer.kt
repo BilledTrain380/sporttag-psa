@@ -70,7 +70,7 @@ class EntrySafeCompetitorClazzConsumer(
             val teacherEntity: TeacherEntity = teacherRepository.findByName(competitor.teacher) ?:
                     throw EntityNotFoundException("Clazz ${competitor.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
 
-            val clazzEntity: ClazzEntity = ClazzEntity(competitor.clazz, teacherEntity)
+            val clazzEntity: ClazzEntity = ClazzEntity(null, competitor.clazz, teacherEntity)
 
             clazzRepository.save(clazzEntity)
         }
