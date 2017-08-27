@@ -59,6 +59,6 @@ class DisciplineEntity @JvmOverloads constructor(
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_DISCIPLINE_UNIT", referencedColumnName = "id")
+        @JoinColumn(name = "fk_UNIT_id", referencedColumnName = "id")
         var unit: UnitEntity = UnitEntity()
 )
