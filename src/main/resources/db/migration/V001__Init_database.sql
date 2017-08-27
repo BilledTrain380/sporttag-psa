@@ -132,3 +132,12 @@ CREATE TABLE IF NOT EXISTS RESULT (
   REFERENCES DISCIPLINE (id)
   ON DELETE CASCADE 
   ON UPDATE CASCADE )
+;
+
+-- -----------------------------------------------------
+-- Table PARTICIPATION
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS PARTICIPATION (
+  id INT NOT NULL UNIQUE DEFAULT 1,
+  is_finished BOOLEAN NOT NULL DEFAULT FALSE )
+;

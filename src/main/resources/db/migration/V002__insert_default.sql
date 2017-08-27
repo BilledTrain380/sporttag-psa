@@ -15,3 +15,6 @@ INSERT INTO DISCIPLINE (name, FK_UNIT_id) VALUES
   ('Weitwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
   ('Zielwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
   ('Seilspringen', (SELECT id FROM UNIT WHERE unit = 'Punkte'));
+
+INSERT INTO PARTICIPATION (is_finished) VALUES
+  (FALSE);
