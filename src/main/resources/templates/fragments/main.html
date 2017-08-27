@@ -89,6 +89,9 @@
                     <li th:class="${active} == clazz-list? active : ''">
                         <a th:href="@{/clazz}">Klassenliste</a>
                     </li>
+                    <li th:class="${active} == management? active : ''">
+                        <a th:href="@{/management/basic}">Verwaltung</a>
+                    </li>
                 </ul>
             </li>
 
