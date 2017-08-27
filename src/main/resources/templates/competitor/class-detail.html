@@ -100,7 +100,7 @@
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].address}">
                                 
                                 
-                                <select class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
+                                <select th:disabled="${participationStatus}" class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
                                     <option selected th:value="0">---</option>
                                     <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
                                 </select>

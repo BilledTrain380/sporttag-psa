@@ -37,8 +37,9 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
-import ch.schulealtendorf.sporttagpsa.entity.map
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorFomModel
+import ch.schulealtendorf.sporttagpsa.entity.map
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Controller
@@ -58,7 +59,8 @@ import javax.validation.Valid
 class ClazzController(
         private val clazzRepository: ClazzRepository,
         private val sportRepository: SportRepository,
-        private val competitorProvider: CompetitorProvider
+        private val competitorProvider: CompetitorProvider,
+        private val participationStatus: ParticipationStatus
 ) {
     
     
@@ -80,6 +82,7 @@ class ClazzController(
         // TODO: May use a clazz and sport provider class
         model.addAttribute("clazz", clazzRepository.findOne(id))
         model.addAttribute("sports", sportRepository.findAll().map { it?.map() })
+        model.addAttribute("participationStatus", participationStatus.isFinished())
         model.addAttribute("competitorSportForm", SimpleCompetitorFomModel(competitorProvider.getCompetitorsByClazz(id)))
 
         return "competitor/class-detail"
