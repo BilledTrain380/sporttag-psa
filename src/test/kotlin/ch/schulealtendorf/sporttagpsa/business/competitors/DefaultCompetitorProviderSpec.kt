@@ -36,19 +36,21 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
+import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 
 /**
  * @author nmaerchy
@@ -57,49 +59,78 @@ import org.mockito.Mockito.`when`
 @RunWith(JUnitPlatform::class)
 object DefaultCompetitorProviderSpec: Spek({
     
-    var mockCompetitorRepo: CompetitorRepository = Mockito.mock(CompetitorRepository::class.java)
-    var mockSportRepo: SportRepository = Mockito.mock(SportRepository::class.java)
-    var provider: DefaultCompetitorProvider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo)
-    
-    beforeEachTest {
-        mockCompetitorRepo = Mockito.mock(CompetitorRepository::class.java)
-        mockSportRepo =  Mockito.mock(SportRepository::class.java)
-        provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo)
-    }
-    
-    describe("a DefaultCompetitorProvider") {
+    describe("a competitor provider") {
 
-        val townEntity: TownEntity = TownEntity(1, "8000", "Musterhausen")
-        val clazzEntity: ClazzEntity = ClazzEntity(1, "1a", TeacherEntity(1, "teacher"))
-        val sportEntity: SportEntity = SportEntity(1, "Brennball")
-        
-        on("updating a SimpleCompetitorModel") {
-            
-            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(1))
-            
-            `when` (mockCompetitorRepo.findOne(1)).thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
-            `when` (mockSportRepo.findOne(1)).thenReturn(sportEntity)
-            
-            provider.updateCompetitor(competitorModel)
-            
-            it("should update the CompetitorEntity with the according SportEntity") {
-                val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, sportEntity)
-                Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
-            }
+        val mockCompetitorRepo: CompetitorRepository = mock()
+        val mockSportRepo: SportRepository = mock()
+        val mockParticipationStatus: ParticipationStatus = mock()
+
+        var provider: DefaultCompetitorProvider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
+
+        beforeEachTest {
+            reset(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
+            provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
         }
         
-        on("updating a SimpleCompetitorModel with no sport selected") {
+        given("a competitor model to update") {
 
-            val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(0))
+            val townEntity = TownEntity(1, "8000", "Musterhausen")
+            val clazzEntity = ClazzEntity(1, "1a", TeacherEntity(1, "teacher"))
+            val sportEntity = SportEntity(1, "Brennball")
 
-            `when` (mockCompetitorRepo.findOne(1)).thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
-            `when` (mockSportRepo.findOne(0)).thenReturn(null)
+            on("selected sport") {
 
-            provider.updateCompetitor(competitorModel)
+                val competitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(1))
+
+                whenever(mockParticipationStatus.isFinished())
+                        .thenReturn(false)
+                
+                whenever(mockCompetitorRepo.findOne(any()))
+                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
+                
+                whenever(mockSportRepo.findOne(any()))
+                        .thenReturn(sportEntity)
+
+                provider.updateCompetitor(competitorModel)
+
+                it("should update the CompetitorEntity with the according SportEntity") {
+                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, sportEntity)
+                    Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
+                }
+            }
+
+            on("non selected sport") {
+
+                val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(0))
+
+                whenever(mockParticipationStatus.isFinished())
+                        .thenReturn(false)
+                
+                whenever(mockCompetitorRepo.findOne(any()))
+                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
+                
+                whenever(mockSportRepo.findOne(any()))
+                        .thenReturn(null)
+
+                provider.updateCompetitor(competitorModel)
+
+                it("should update the CompetitorEntity with no SportEntity") {
+                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null)
+                    Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
+                }
+            }
             
-            it("should update the CompetitorEntity with no SportEntity") {
-                val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null)
-                Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
+            on("finished participation") {
+                
+                whenever(mockParticipationStatus.isFinished())
+                        .thenReturn(true)
+                
+                provider.updateCompetitor(SimpleCompetitorModel())
+                
+                it("should do nothing") {
+                    verifyZeroInteractions(mockCompetitorRepo)
+                    verifyZeroInteractions(mockSportRepo)
+                }
             }
         }
     }

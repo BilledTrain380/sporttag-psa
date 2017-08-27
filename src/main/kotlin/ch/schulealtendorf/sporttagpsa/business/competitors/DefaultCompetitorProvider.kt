@@ -36,11 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
+import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.map
 import ch.schulealtendorf.sporttagpsa.entity.merge
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
@@ -54,7 +55,8 @@ import org.springframework.stereotype.Component
 @Component
 class DefaultCompetitorProvider(
         private val competitorRepository: CompetitorRepository,
-        private val sportRepository: SportRepository
+        private val sportRepository: SportRepository,
+        private val participationStatus: ParticipationStatus
 ): CompetitorProvider {
 
     /**
@@ -74,10 +76,7 @@ class DefaultCompetitorProvider(
      * @return the found competitor
      * @throws NullPointerException If no competitor belongs to the passed in argument.
      */
-    override fun getCompetitorById(competitorId: Int): SimpleCompetitorModel {
-        // just throw the NPE here, so it would redirect the user to the error page
-        return competitorRepository.findOne(competitorId)!!.map()
-    }
+    override fun getCompetitorById(competitorId: Int) = competitorRepository.findOne(competitorId)!!.map()
 
     /**
      * Update all properties of a single competitor depending on the passed in argument.
@@ -87,13 +86,15 @@ class DefaultCompetitorProvider(
      */
     override fun updateCompetitor(competitor: SimpleCompetitorModel) {
         
-        // just throw the NPE here, so it would redirect the user to the error page
-        val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
-        val sportEntity: SportEntity? = sportRepository.findOne(competitor.sport.id)
-        
-        competitorEntity.merge(competitor)
-        competitorEntity.sport = sportEntity
-        
-        competitorRepository.save(competitorEntity)
+        if (!participationStatus.isFinished()) {
+
+            val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
+            val sportEntity: SportEntity? = sportRepository.findOne(competitor.sport.id)
+
+            competitorEntity.merge(competitor)
+            competitorEntity.sport = sportEntity
+
+            competitorRepository.save(competitorEntity)
+        }
     }
 }
