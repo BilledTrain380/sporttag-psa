@@ -37,17 +37,21 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
+import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
 import org.springframework.stereotype.Component
 
 /**
+ * {@link CompetitorResultManager} manages the results of a competitor
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @Component
-class DefaultResultManager(
+class CompetitorResultManager(
         private val starterRepository: StarterRepository,
         private val resultRepository: ResultRepository,
         disciplineRepository: DisciplineRepository
@@ -61,6 +65,12 @@ class DefaultResultManager(
      * @param competitor the competitor to create the results for
      */
     override fun createResults(competitor: CompetitorEntity) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val starter = starterRepository.save(StarterEntity(null, competitor))
+        
+        disciplines.forEach { 
+            val result = ResultEntity(null, 1, 1, starter, it)
+            resultRepository.save(result)
+        }
     }
 }
