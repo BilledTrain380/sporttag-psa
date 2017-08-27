@@ -41,10 +41,11 @@ import org.springframework.data.repository.CrudRepository
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
 interface CompetitorRepository: CrudRepository<CompetitorEntity?, Int> {
 
     fun findByClazzId(id: Int): List<CompetitorEntity>
     
+    fun findBySportName(name: String): List<CompetitorEntity>
 }

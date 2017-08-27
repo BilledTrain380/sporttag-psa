@@ -40,11 +40,13 @@ import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
 
 /**
+ * {@link DefaultParticipationManager} manages a participation for competitors.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @Component
-class DefaultParticitationManager(
+class DefaultParticipationManager(
         private val participationStatus: ParticipationStatus,
         private val competitorRepository: CompetitorRepository,
         private val resultManager: ResultManager
@@ -55,6 +57,14 @@ class DefaultParticitationManager(
      * competitor that participates for the sport "Mehrkampf".
      */
     override fun finishParticipation() {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        if (!participationStatus.isFinished()) {
+            // TODO: Move all disciplines to an enum
+            val competitors = competitorRepository.findBySportName("Mehrkampf")
+
+            competitors.forEach(resultManager::createResults)
+
+            participationStatus.finishIt()
+        }
     }
 }
