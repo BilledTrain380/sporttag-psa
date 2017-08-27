@@ -39,7 +39,6 @@ package ch.schulealtendorf.sporttagpsa.controller
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 
 /**
  * @author nmaerchy
@@ -51,8 +50,8 @@ class ManagementController(
 ) {
     
     companion object {
-        const val BASIC = "management/basic"
-        const val FINISH_PARTICIPATION = "management/finish-participation"
+        const val BASIC = "/management/basic"
+        const val FINISH_PARTICIPATION = "/management/finish-participation"
     }
     
     @GetMapping(BASIC)

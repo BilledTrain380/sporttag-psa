@@ -61,11 +61,11 @@ class ResultEntity @JvmOverloads constructor(
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_RESULT_STARTER", referencedColumnName = "NUMBER")
+        @JoinColumn(name = "fk_STARTER_number", referencedColumnName = "number")
         var starter: StarterEntity = StarterEntity(),
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fi_RESULT_DISCIPLINE", referencedColumnName = "id")
+        @JoinColumn(name = "fk_DISCIPLINE_id", referencedColumnName = "id")
         var disciplin: DisciplineEntity = DisciplineEntity()
 )

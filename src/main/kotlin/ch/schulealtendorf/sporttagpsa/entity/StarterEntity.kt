@@ -54,6 +54,6 @@ class StarterEntity @JvmOverloads constructor(
         
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_STARTER_COMPETITOR", referencedColumnName = "id")
+        @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
         var competitor: CompetitorEntity = CompetitorEntity()
 )
