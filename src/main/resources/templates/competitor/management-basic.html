@@ -69,8 +69,12 @@
             <div class="col-lg-12">
                 
                 <br/>
+
+                <div th:if="${participationInfo}" class="alert alert-info" role="alert">
+                    Sie haben die Teilnahme abgeschlossen. Sie können nun die Startlisten exportieren.
+                </div>
                 
-                <h4>Teinahme Status
+                <h4>Teilnahme
                     <span th:if="${!participationStatus}" class="badge badge-success">offen</span>
                     <span th:if="${participationStatus}" class="badge badge-info">abgeschlossen</span>
                     <a th:if="${!participationStatus}" class="btn btn-primary btn-sm" th:href="@{/management/finish-participation}">Teilnahme abschliessen</a>

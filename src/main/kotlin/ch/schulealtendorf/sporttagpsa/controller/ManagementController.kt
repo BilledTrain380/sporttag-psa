@@ -41,6 +41,7 @@ import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 /**
  * @author nmaerchy
@@ -66,8 +67,12 @@ class ManagementController(
     }
     
     @GetMapping(FINISH_PARTICIPATION)
-    fun finishParticipation(): String {
+    fun finishParticipation(redirectAttributes: RedirectAttributes): String {
+        
         participationManager.finishParticipation()
+        
+        redirectAttributes.addFlashAttribute("participationInfo", true)
+        
         return "redirect:$BASIC"
     }
 }
