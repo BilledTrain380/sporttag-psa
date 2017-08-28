@@ -37,7 +37,9 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 
 /**
@@ -46,7 +48,8 @@ import org.springframework.web.bind.annotation.GetMapping
  */
 @Controller
 class ManagementController(
-        private val participationManager: ParticipationManager
+        private val participationManager: ParticipationManager,
+        private val participationStatus: ParticipationStatus
 ) {
     
     companion object {
@@ -55,7 +58,12 @@ class ManagementController(
     }
     
     @GetMapping(BASIC)
-    fun basic() = "competitor/management-basic"
+    fun basic(model: Model): String {
+
+        model.addAttribute("participationStatus", participationStatus.isFinished())
+        
+        return "competitor/management-basic"
+    }
     
     @GetMapping(FINISH_PARTICIPATION)
     fun finishParticipation(): String {
