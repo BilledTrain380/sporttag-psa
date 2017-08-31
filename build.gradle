@@ -60,7 +60,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-devtools")
     
     compile "com.opencsv:opencsv:3.9"
-
+	compile "com.deliveredtechnologies:rulebook-core:0.8"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
     
     // database dependencies
