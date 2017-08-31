@@ -36,30 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
-import com.deliveredtechnologies.rulebook.lang.RuleBuilder
-import com.deliveredtechnologies.rulebook.model.Rule
-
-
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-abstract class RuleFormula {
-    
-    val get: Rule<RuleTarget, Int>
-    
-    init {
-        get = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
-                .`when` { whenever(it.getStrVal(FactKeys.CONDITION.name), it.getValue(FactKeys.TARGET.name)) }
-                .then { fact, result -> result.value = formula(fact.getValue(FactKeys.TARGET.name)) }
-                .build()
-    }
-    
-    abstract val formula: (RuleTarget) -> Int
-    
-    abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
-
-    protected fun Boolean.isMale() = this
-
-    protected fun Boolean.isFemale() = !this
+enum class FactKeys {
+    CONDITION,
+    TARGET
 }
