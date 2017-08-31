@@ -47,6 +47,7 @@ abstract class RuleSet {
     protected abstract val condition: String
     
     protected inline fun condition(condition: String, action: () -> Boolean): Boolean {
-        throw UnsupportedOperationException("This method is not implemented yet.")
+        if (this.condition != condition) return false
+        return action()
     }
 }

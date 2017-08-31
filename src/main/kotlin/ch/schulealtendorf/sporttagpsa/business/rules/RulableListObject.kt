@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
+import com.deliveredtechnologies.rulebook.FactMap
 import com.deliveredtechnologies.rulebook.NameValueReferableMap
 
 /**
@@ -43,7 +44,7 @@ import com.deliveredtechnologies.rulebook.NameValueReferableMap
  * @version 0.0.1
  */
 class RulableListObject<out T> private constructor(
-        private val list: List<T>
+        val list: List<T>
 ){
     
     companion object {
@@ -51,6 +52,13 @@ class RulableListObject<out T> private constructor(
     }
     
     inline fun useFacts(condition: String, action: (element: T, facts: NameValueReferableMap<Any>) -> Unit) {
-        throw UnsupportedOperationException("This method is not implemented yet.")
+        
+        val facts: NameValueReferableMap<Any> = FactMap()
+        
+        for (element in list) {
+            facts.setValue(FactKeys.CONDITION.name, condition)
+            action(element, facts)
+            facts.clear()
+        }
     }
 }
