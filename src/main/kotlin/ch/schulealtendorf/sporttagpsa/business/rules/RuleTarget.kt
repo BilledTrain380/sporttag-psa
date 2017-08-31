@@ -37,6 +37,9 @@
 package ch.schulealtendorf.sporttagpsa.business.rules
 
 /**
+ * {@link RuleTarget} can be used for facts in a {@link CoRRuleBook}.
+ * The specific rule book MUST support this instance.
+ * 
  * @author nmaerchy
  * @version 0.0.1
  */
@@ -44,23 +47,13 @@ class RuleTarget {
     
     private val members: MutableMap<String, Any> = hashMapOf()
     
-    fun add(key: String, value: Any) {
-        throw UnsupportedOperationException("This method is not implemented yet.")
-    }
+    fun add(key: String, value: Any) = members.put(key, value)
     
-    fun getAsBoolean(key: String): Boolean {
-        throw UnsupportedOperationException("This method is not implemented yet.")
-    }
+    fun getAsBoolean(key: String) = members.getValue(key) as Boolean
     
-    fun getAsInt(key: String): Int {
-        throw UnsupportedOperationException("This method is not implemented yet.")
-    }
+    fun getAsInt(key: String) = members.getValue(key) as Int
     
-    fun getAsDouble(key: String): Double {
-        throw UnsupportedOperationException("This method is not implemented yet.")
-    }
+    fun getAsDouble(key: String) = members.getValue(key) as Double
     
-    fun getAsString(key: String): String {
-        throw UnsupportedOperationException("This method is not implemented yet.")
-    }
+    fun getAsString(key: String)= members.getValue(key) as String
 }
