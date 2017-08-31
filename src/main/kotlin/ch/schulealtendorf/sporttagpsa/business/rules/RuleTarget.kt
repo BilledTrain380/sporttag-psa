@@ -41,14 +41,20 @@ package ch.schulealtendorf.sporttagpsa.business.rules
  * The specific rule book MUST support this instance.
  * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 class RuleTarget {
     
     private val members: MutableMap<String, Any> = hashMapOf()
-    
+
+    /**
+     * Adds the ked value pair to this target.
+     * 
+     * @param key the key to use
+     * @param value the value to use
+     */
     fun add(key: String, value: Any) = members.put(key, value)
-    
+
     fun getAsBoolean(key: String) = members.getValue(key) as Boolean
     
     fun getAsInt(key: String) = members.getValue(key) as Int
