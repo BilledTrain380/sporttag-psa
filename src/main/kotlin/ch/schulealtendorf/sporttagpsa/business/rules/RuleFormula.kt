@@ -55,9 +55,9 @@ abstract class RuleFormula {
                 .build()
     }
     
-    abstract val formula: (RuleTarget) -> Int
+    protected abstract val formula: (RuleTarget) -> Int
     
-    abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
+    protected abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
 
     protected fun Boolean.isMale() = this
 
