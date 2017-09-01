@@ -37,17 +37,29 @@
 package ch.schulealtendorf.sporttagpsa.business.rules
 
 /**
+ * Defines a set of rules that can be used in a rule book.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 abstract class RuleSet {
     
     abstract val rules: Set<RuleFormula>
-    
+
+    /**
+     * Defines the condition, to apply the rule set.
+     */
     protected abstract val condition: String
-    
-    protected inline fun condition(condition: String, action: () -> Boolean): Boolean {
-        if (this.condition != condition) return false
-        return action()
+
+    /**
+     * Checks the condition and combines it with the {@code action}.
+     * 
+     * @param condition the condition that has to match
+     * @param action the condition for a specific rule to apply
+     * 
+     * @return true if the rule should be applied
+     */
+    protected inline fun check(condition: String, action: () -> Boolean): Boolean {
+        return this.condition != condition && action()
     }
 }

@@ -40,17 +40,31 @@ import com.deliveredtechnologies.rulebook.FactMap
 import com.deliveredtechnologies.rulebook.NameValueReferableMap
 
 /**
+ * Acts as a wrapper for a {@link List}. The list can be looped with facts for a rulebook.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 class RulableListObject<out T> private constructor(
         val list: List<T>
 ){
     
     companion object {
+
+        /**
+         * Creates an instance by the passed in {@code list}.
+         * @return the resulting instance
+         */
         fun <T> of(list: List<T>) = RulableListObject(list)
     }
-    
+
+    /**
+     * Loops to the list and provides each element with facts for a rulebook.
+     * Facts will be cleared after each element.
+     * 
+     * @param condition the condition the will be set to the facts
+     * @param action provides the element and the facts
+     */
     inline fun useFacts(condition: String, action: (element: T, facts: NameValueReferableMap<Any>) -> Unit) {
         
         val facts: NameValueReferableMap<Any> = FactMap()

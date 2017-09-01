@@ -41,8 +41,14 @@ import com.deliveredtechnologies.rulebook.model.Rule
 
 
 /**
+ * {@link RuleFormula} is the base class for all rules that can be used in a {@link RuleSet}.
+ * 
+ * A subclass has to override two properties.
+ * * whenever - defines the condition, when the rule should be applied
+ * * formula - the formula will be used, if the rule has to apply
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 abstract class RuleFormula {
     
@@ -55,10 +61,10 @@ abstract class RuleFormula {
                 .build()
     }
     
+    protected abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
+    
     protected abstract val formula: (RuleTarget) -> Int
     
-    protected abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
-
     protected fun Boolean.isMale() = this
 
     protected fun Boolean.isFemale() = !this

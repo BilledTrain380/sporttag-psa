@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules.books
 
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
 import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
 
 /**
@@ -51,6 +52,15 @@ class PSARuleBook: CoRRuleBook<Int>() {
     override fun defineRules() {
         
     }
-    
-    
+
+    /**
+     * Adds the rules of a rule set to this book.
+     * 
+     * @param set the set containing te rules
+     */
+    private fun addRuleSet(set: RuleSet) {
+        set.rules.forEach { 
+            addRule(it.get)
+        }
+    }
 }

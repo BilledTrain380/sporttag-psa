@@ -36,18 +36,19 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
+import ch.schulealtendorf.sporttagpsa.business.rules.books.PSARuleBook
 import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
 
 /**
+ * {@link DefaultRuleBookFactory} provides {@link CoRRuleBook} instances.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 class DefaultRuleBookFactory: RuleBookFactory {
 
     /**
-     * @return a rulebook
+     * @return a PSA rulebook
      */
-    override fun get(): CoRRuleBook<Int> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun get(): CoRRuleBook<Int> = PSARuleBook()
 }

@@ -37,8 +37,10 @@
 package ch.schulealtendorf.sporttagpsa.business.rules
 
 /**
+ * Possible facts for rules.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 enum class FactKeys {
     CONDITION,
