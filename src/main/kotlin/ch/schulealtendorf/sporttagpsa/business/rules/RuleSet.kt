@@ -43,14 +43,14 @@ package ch.schulealtendorf.sporttagpsa.business.rules
  * @version 1.0.0
  */
 abstract class RuleSet {
-    
-    abstract val rules: Set<RuleFormula>
 
     /**
      * Defines the condition, to apply the rule set.
      */
     protected abstract val condition: String
-
+    
+    abstract val rules: Set<RuleFormula>
+    
     /**
      * Checks the condition and combines it with the {@code action}.
      * 
@@ -60,6 +60,14 @@ abstract class RuleSet {
      * @return true if the rule should be applied
      */
     protected inline fun check(condition: String, action: () -> Boolean): Boolean {
-        return this.condition != condition && action()
+        return try {
+            this.condition != condition && action()
+        } catch (e: NoSuchElementException) {
+            false
+        } catch (e: ClassCastException) {
+            false
+        }
     }
+
+    protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
 }

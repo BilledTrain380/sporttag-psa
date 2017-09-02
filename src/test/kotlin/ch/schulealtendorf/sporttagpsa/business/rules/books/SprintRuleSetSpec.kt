@@ -36,31 +36,58 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules.books
 
-import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
-import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
+import ch.schulealtendorf.sporttagpsa.business.rules.FactKeys
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget
+import com.deliveredtechnologies.rulebook.FactMap
+import com.deliveredtechnologies.rulebook.NameValueReferableMap
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.given
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
+import kotlin.test.assertEquals
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-class PSARuleBook: CoRRuleBook<Int>() {
+@RunWith(JUnitPlatform::class)
+object SprintRuleSetSpec: Spek({
+    
+    describe("a sprint rule set") {
+        
+        val ruleBook = PSARuleBook()
+        val facts: NameValueReferableMap<Any> = FactMap()
+        
+        beforeEachTest {
+            
+        }
+        
+        
+        
+        given("girls 50m") {
 
-    /**
-     * The defineRules method can be optionally implemented to define rules in a either a completely
-     * custom RuleBook or in a RuleBook that extends (subclasses) an existing RuleBook implementation.
-     */
-    override fun defineRules() {
-        addRuleSet(SprintRuleSet())
-    }
-
-    /**
-     * Adds the rules of a rule set to this book.
-     * 
-     * @param set the set containing te rules
-     */
-    private fun addRuleSet(set: RuleSet) {
-        set.rules.forEach { 
-            addRule(it.get)
+            val ruleTarget = RuleTarget()
+            ruleTarget.add("gender", false)
+            ruleTarget.add("distance", "50m")
+            
+            on("using default points") {
+                facts.setValue(FactKeys.CONDITION.name, "Schnelllauf")
+                ruleTarget.add("result", 50.0)
+                facts.setValue(FactKeys.TARGET.name, ruleTarget)
+                
+                ruleBook.run(facts)
+                
+                val result = ruleBook.result.get().value
+                
+                it("should return 1") {
+                    assertEquals(1, result)
+                }
+            }
         }
     }
-}
+    
+    
+})

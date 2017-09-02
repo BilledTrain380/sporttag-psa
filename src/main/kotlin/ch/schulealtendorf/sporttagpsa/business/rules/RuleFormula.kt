@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
+import com.deliveredtechnologies.rulebook.NameValueReferableTypeConvertibleMap
 import com.deliveredtechnologies.rulebook.lang.RuleBuilder
 import com.deliveredtechnologies.rulebook.model.Rule
 
@@ -57,8 +58,8 @@ abstract class RuleFormula {
     init {
         get = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
                 .`when` { whenever(it.getStrVal(FactKeys.CONDITION.name), it.getValue(FactKeys.TARGET.name)) }
-                .then { fact, result -> result.value = formula(fact.getValue(FactKeys.TARGET.name)) }
-                .build()
+                .then { fact, result -> result.value = fact.result()
+                }.build()
     }
     
     protected abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
@@ -68,4 +69,9 @@ abstract class RuleFormula {
     protected fun Boolean.isMale() = this
 
     protected fun Boolean.isFemale() = !this
+    
+    private fun NameValueReferableTypeConvertibleMap<RuleTarget>.result(): Int {
+        val points = formula(getValue(FactKeys.TARGET.name))
+        return if (points > 1) points else 1
+    }
 }
