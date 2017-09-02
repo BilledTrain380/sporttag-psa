@@ -68,9 +68,10 @@ class RulableListObject<out T> private constructor(
     inline fun useFacts(condition: String, action: (element: T, facts: NameValueReferableMap<Any>) -> Unit) {
         
         val facts: NameValueReferableMap<Any> = FactMap()
+        val ruleTarget = RuleTarget(condition, RuleTarget.Members())
         
         for (element in list) {
-            facts.setValue(FactKeys.CONDITION.name, condition)
+            facts.setValue("target", ruleTarget)
             action(element, facts)
             facts.clear()
         }

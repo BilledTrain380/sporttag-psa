@@ -53,11 +53,14 @@ import com.deliveredtechnologies.rulebook.model.Rule
  */
 abstract class RuleFormula {
     
-    val get: Rule<RuleTarget.Members, Int>
+    val get: Rule<RuleTarget, Int>
     
     init {
-        get = RuleBuilder.create().withFactType(RuleTarget.Members::class.java).withResultType(Int::class.java)
-                .`when` { whenever(it.getStrVal(FactKeys.CONDITION.name), it.getValue(FactKeys.TARGET.name)) }
+        get = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
+                .`when` { 
+                    val target = it.getValue("target")
+                    whenever(target.condition, target.members)
+                }
                 .then { fact, result -> result.value = fact.result()
                 }.build()
     }
@@ -70,8 +73,8 @@ abstract class RuleFormula {
 
     protected fun Boolean.isFemale() = !this
     
-    private fun NameValueReferableTypeConvertibleMap<RuleTarget.Members>.result(): Int {
-        val points = formula(getValue(FactKeys.TARGET.name))
+    private fun NameValueReferableTypeConvertibleMap<RuleTarget>.result(): Int {
+        val points = formula(getValue(FactKeys.TARGET.name).members)
         return if (points > 1) points else 1
     }
 }
