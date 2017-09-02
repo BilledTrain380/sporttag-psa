@@ -57,14 +57,14 @@ import kotlin.test.assertFailsWith
  * @version 1.0.0
  */
 @RunWith(JUnitPlatform::class)
-object RuleTargetSpec: Spek({
+object MembersSpec : Spek({
     
     describe("a rule target") {
         
-        var ruleTarget = RuleTarget()
+        var ruleTarget = RuleTarget.Members()
         
         beforeEachTest { 
-            ruleTarget = RuleTarget()
+            ruleTarget = RuleTarget.Members()
         }
         
         given("a key to get a boolean") {

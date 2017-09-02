@@ -43,23 +43,29 @@ package ch.schulealtendorf.sporttagpsa.business.rules
  * @author nmaerchy
  * @version 1.0.0
  */
-class RuleTarget {
+class RuleTarget(
+        val condition: String,
+        val members: Members
+) {
     
-    private val members: MutableMap<String, Any> = hashMapOf()
+    class Members {
 
-    /**
-     * Adds the ked value pair to this target.
-     * 
-     * @param key the key to use
-     * @param value the value to use
-     */
-    fun add(key: String, value: Any) = members.put(key, value)
+        private val members: MutableMap<String, Any> = hashMapOf()
 
-    fun getAsBoolean(key: String) = members.getValue(key) as Boolean
-    
-    fun getAsInt(key: String) = members.getValue(key) as Int
-    
-    fun getAsDouble(key: String) = members.getValue(key) as Double
-    
-    fun getAsString(key: String)= members.getValue(key) as String
+        /**
+         * Adds the ked value pair to this target.
+         *
+         * @param key the key to use
+         * @param value the value to use
+         */
+        fun add(key: String, value: Any) = members.put(key, value)
+
+        fun getAsBoolean(key: String) = members.getValue(key) as Boolean
+
+        fun getAsInt(key: String) = members.getValue(key) as Int
+
+        fun getAsDouble(key: String) = members.getValue(key) as Double
+
+        fun getAsString(key: String)= members.getValue(key) as String
+    }
 }

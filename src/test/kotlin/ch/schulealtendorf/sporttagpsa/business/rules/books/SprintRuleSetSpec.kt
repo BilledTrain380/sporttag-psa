@@ -69,7 +69,7 @@ object SprintRuleSetSpec: Spek({
         
         given("girls 50m") {
 
-            val ruleTarget = RuleTarget()
+            val ruleTarget = RuleTarget.Members()
             ruleTarget.add("gender", false)
             ruleTarget.add("distance", "50m")
             

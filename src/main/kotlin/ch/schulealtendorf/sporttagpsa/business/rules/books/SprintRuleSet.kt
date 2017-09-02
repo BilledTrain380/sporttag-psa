@@ -38,7 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.rules.books
 
 import ch.schulealtendorf.sporttagpsa.business.rules.RuleFormula
 import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
-import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget.Members
 
 /**
  * @author nmaerchy
@@ -54,14 +54,14 @@ class SprintRuleSet : RuleSet() {
     override val rules: Set<RuleFormula> = setOf(
             
             object: RuleFormula() {
-                override val whenever: (condition: String, target: RuleTarget) -> Boolean = {condition, target ->
+                override val whenever: (condition: String, target: Members) -> Boolean = { condition, target ->
                     check(condition) {
                         target.getAsBoolean("gender").isFemale() &&
                         target.getAsString("distance") == "50m"
                     }    
                 }
                 
-                override val formula: (RuleTarget) -> Int = {
+                override val formula: (Members) -> Int = {
                     withResult(it) {
                         if (it > 12.06) 1 else (26.011098 * ((1236 - (it * 100) / 100) pow  2.1)).toInt()
                     }
@@ -69,13 +69,13 @@ class SprintRuleSet : RuleSet() {
             },
             
             object: RuleFormula() {
-                override val whenever: (condition: String, target: RuleTarget) -> Boolean = {condition, target -> 
+                override val whenever: (condition: String, target: Members) -> Boolean = { condition, target -> 
                     check(condition) {
                         target.getAsBoolean("gender").isFemale() &&
                         target.getAsString("distance") == "60m"
                     }
                 }
-                override val formula: (RuleTarget) -> Int = {
+                override val formula: (Members) -> Int = {
                     withResult(it) {
                         if (it > 13.83) 1 else (19.742424 * ((1417 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -83,13 +83,13 @@ class SprintRuleSet : RuleSet() {
             },
             
             object: RuleFormula() {
-                override val whenever: (condition: String, target: RuleTarget) -> Boolean = {condition, target -> 
+                override val whenever: (condition: String, target: Members) -> Boolean = { condition, target -> 
                     check(condition) {
                         target.getAsBoolean("gender").isFemale() &&
                         target.getAsString("distance") == "80m"
                     }
                 }
-                override val formula: (RuleTarget) -> Int = {
+                override val formula: (Members) -> Int = {
                     withResult(it) {
                         if (it > 17.59) 1 else (11.754907 * ((1803 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -97,13 +97,13 @@ class SprintRuleSet : RuleSet() {
             },
             
             object: RuleFormula() {
-                override val whenever: (condition: String, target: RuleTarget) -> Boolean = {condition, target -> 
+                override val whenever: (condition: String, target: Members) -> Boolean = { condition, target -> 
                     check(condition) {
                         target.getAsBoolean("gender").isMale() &&
                         target.getAsString("distance") == "50m"
                     }
                 }
-                override val formula: (RuleTarget) -> Int = {
+                override val formula: (Members) -> Int = {
                     withResult(it) {
                         if (it > 11.87) 1 else (23.327251 * ((1219 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -111,13 +111,13 @@ class SprintRuleSet : RuleSet() {
             },
 
             object: RuleFormula() {
-                override val whenever: (condition: String, target: RuleTarget) -> Boolean = {condition, target ->
+                override val whenever: (condition: String, target: Members) -> Boolean = { condition, target ->
                     check(condition) {
                         target.getAsBoolean("gender").isMale() &&
                                 target.getAsString("distance") == "60m"
                     }
                 }
-                override val formula: (RuleTarget) -> Int = {
+                override val formula: (Members) -> Int = {
                     withResult(it) {
                         if (it > 13.61) 1 else (17.686955 * ((1397 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -125,13 +125,13 @@ class SprintRuleSet : RuleSet() {
             },
 
             object: RuleFormula() {
-                override val whenever: (condition: String, target: RuleTarget) -> Boolean = {condition, target ->
+                override val whenever: (condition: String, target: Members) -> Boolean = { condition, target ->
                     check(condition) {
                         target.getAsBoolean("gender").isMale() &&
                                 target.getAsString("distance") == "80m"
                     }
                 }
-                override val formula: (RuleTarget) -> Int = {
+                override val formula: (Members) -> Int = {
                     withResult(it) {
                         if (it > 17.32) 1 else (10.54596 * ((1778 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -139,7 +139,7 @@ class SprintRuleSet : RuleSet() {
             }
     )
     
-    private inline fun withResult(target: RuleTarget, body: (Double) -> Int): Int {
+    private inline fun withResult(target: Members, body: (Double) -> Int): Int {
         return body(target.getAsDouble("result"))
     }
 }

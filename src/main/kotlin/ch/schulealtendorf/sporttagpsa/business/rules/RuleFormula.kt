@@ -53,24 +53,24 @@ import com.deliveredtechnologies.rulebook.model.Rule
  */
 abstract class RuleFormula {
     
-    val get: Rule<RuleTarget, Int>
+    val get: Rule<RuleTarget.Members, Int>
     
     init {
-        get = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
+        get = RuleBuilder.create().withFactType(RuleTarget.Members::class.java).withResultType(Int::class.java)
                 .`when` { whenever(it.getStrVal(FactKeys.CONDITION.name), it.getValue(FactKeys.TARGET.name)) }
                 .then { fact, result -> result.value = fact.result()
                 }.build()
     }
     
-    protected abstract val whenever: (condition: String, target: RuleTarget) -> Boolean
+    protected abstract val whenever: (condition: String, target: RuleTarget.Members) -> Boolean
     
-    protected abstract val formula: (RuleTarget) -> Int
+    protected abstract val formula: (RuleTarget.Members) -> Int
     
     protected fun Boolean.isMale() = this
 
     protected fun Boolean.isFemale() = !this
     
-    private fun NameValueReferableTypeConvertibleMap<RuleTarget>.result(): Int {
+    private fun NameValueReferableTypeConvertibleMap<RuleTarget.Members>.result(): Int {
         val points = formula(getValue(FactKeys.TARGET.name))
         return if (points > 1) points else 1
     }
