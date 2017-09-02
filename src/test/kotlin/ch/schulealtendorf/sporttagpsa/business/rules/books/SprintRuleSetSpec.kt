@@ -36,10 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules.books
 
-import ch.schulealtendorf.sporttagpsa.business.rules.FactKeys
 import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget
 import com.deliveredtechnologies.rulebook.FactMap
 import com.deliveredtechnologies.rulebook.NameValueReferableMap
+import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
@@ -58,25 +58,32 @@ object SprintRuleSetSpec: Spek({
     
     describe("a sprint rule set") {
         
-        val ruleBook = PSARuleBook()
+        val ruleBook = RuleBookBuilder.create(PSARuleBook::class.java)
+                .withResultType(Int::class.java)
+                .withDefaultResult(1)
+                .build()
         val facts: NameValueReferableMap<Any> = FactMap()
+
+        var ruleTarget: RuleTarget? = null
         
         beforeEachTest {
-            
+            ruleTarget = RuleTarget("Schnelllauf", RuleTarget.Members())
         }
         
-        
+        afterEachTest { 
+            facts.clear()
+        }
         
         given("girls 50m") {
 
-            val ruleTarget = RuleTarget.Members()
-            ruleTarget.add("gender", false)
-            ruleTarget.add("distance", "50m")
+            beforeEachTest {
+                ruleTarget?.members?.add("gender", false)
+                ruleTarget?.members?.add("distance", "50m")
+            }
             
             on("using default points") {
-                facts.setValue(FactKeys.CONDITION.name, "Schnelllauf")
-                ruleTarget.add("result", 50.0)
-                facts.setValue(FactKeys.TARGET.name, ruleTarget)
+                ruleTarget?.members?.add("result", 50.0)
+                facts.setValue("target", ruleTarget)
                 
                 ruleBook.run(facts)
                 

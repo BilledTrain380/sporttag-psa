@@ -61,7 +61,7 @@ abstract class RuleSet {
      */
     protected inline fun check(condition: String, action: () -> Boolean): Boolean {
         return try {
-            this.condition != condition && action()
+            this.condition == condition && action()
         } catch (e: NoSuchElementException) {
             false
         } catch (e: ClassCastException) {

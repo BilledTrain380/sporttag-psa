@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.rules
 
 import ch.schulealtendorf.sporttagpsa.business.rules.books.PSARuleBook
+import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder
 import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
 
 /**
@@ -50,5 +51,8 @@ class DefaultRuleBookFactory: RuleBookFactory {
     /**
      * @return a PSA rulebook
      */
-    override fun get(): CoRRuleBook<Int> = PSARuleBook()
+    override fun get(): CoRRuleBook<Int> = RuleBookBuilder.create(PSARuleBook::class.java)
+            .withResultType(Int::class.java)
+            .withDefaultResult(1)
+            .build() as CoRRuleBook<Int>
 }

@@ -61,7 +61,7 @@ abstract class RuleFormula {
                     val target = it.getValue("target")
                     whenever(target.condition, target.members)
                 }
-                .then { fact, result -> result.value = fact.result()
+                .then { facts, result -> result.value = facts.result()
                 }.build()
     }
     
@@ -74,7 +74,7 @@ abstract class RuleFormula {
     protected fun Boolean.isFemale() = !this
     
     private fun NameValueReferableTypeConvertibleMap<RuleTarget>.result(): Int {
-        val points = formula(getValue(FactKeys.TARGET.name).members)
+        val points = formula(getValue("target").members)
         return if (points > 1) points else 1
     }
 }
