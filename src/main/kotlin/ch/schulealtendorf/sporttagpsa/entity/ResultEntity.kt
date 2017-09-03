@@ -67,5 +67,5 @@ class ResultEntity @JvmOverloads constructor(
         @NotNull
         @ManyToOne
         @JoinColumn(name = "fk_DISCIPLINE_id", referencedColumnName = "id")
-        var disciplin: DisciplineEntity = DisciplineEntity()
+        var discipline: DisciplineEntity = DisciplineEntity()
 )
