@@ -53,9 +53,6 @@ class DisciplineEntity @JvmOverloads constructor(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int? = null,
         
-        @Size(max = 5)
-        var distance: String? = null,
-        
         @NotNull
         @Size(min = 1, max = 45)
         var name: String = "",

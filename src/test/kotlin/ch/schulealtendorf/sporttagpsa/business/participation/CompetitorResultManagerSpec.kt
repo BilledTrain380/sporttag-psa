@@ -62,8 +62,8 @@ object CompetitorResultManagerSpec : Spek({
     describe("a result manager") {
         
         val testDisciplines: Iterable<DisciplineEntity> = arrayListOf(
-                DisciplineEntity(1, null,"Weitsprung", UnitEntity()),
-                DisciplineEntity(2, null,"Weitwurf", UnitEntity())
+                DisciplineEntity(1,"Weitsprung", UnitEntity()),
+                DisciplineEntity(2,"Weitwurf", UnitEntity())
         )
         
         val mockStarterRepository: StarterRepository = mock()
