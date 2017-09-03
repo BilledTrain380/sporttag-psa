@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS UNIT (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS DISCIPLINE (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  distance VARCHAR(5) DEFAULT NULL ,
   name VARCHAR(45) NOT NULL UNIQUE ,
   FK_UNIT_id INT NOT NULL ,
   PRIMARY KEY (id)  ,
