@@ -36,7 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.controller.model.ClazzModel
+import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorFormModel
+import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -51,13 +56,38 @@ class TournamentController {
         const val TOURNAMENT = "/tournament"
     }
     
-    @GetMapping(TOURNAMENT)
+    @GetMapping("$TOURNAMENT/init")
     fun tournament(): String {
         return "redirect:$TOURNAMENT?sport_id=1&clazz_id=1&gender=true"
     }
     
     @GetMapping(TOURNAMENT)
-    fun tournament(@RequestParam("sport_id") sportId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean): String {
+    fun tournament(@RequestParam("sport_id") sportId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean, model: Model): String {
+        
+        // example data
+        val sportList: List<SportModel> = listOf(
+                SportModel(1, "Schnelllauf"),
+                SportModel(2, "Weitsprung")
+        )
+        
+        val clazzList: List<ClazzModel> = listOf(
+                ClazzModel(1, "2b"),
+                ClazzModel(2, "2a")
+        )
+        
+        val formModel = TournamentCompetitorFormModel(
+                SportModel(2, "Weitsprung"),
+                ClazzModel(1, "2a"),
+                false,
+                listOf(
+                        TournamentCompetitorModel(1, 1,"Max", "Muster", "50m", 0.0, "sec"),
+                        TournamentCompetitorModel(2, 2,"Max", "Muster", null, 0.0, "sec")
+                )
+        )
+        
+        model.addAttribute("tournamentForm", formModel)
+        model.addAttribute("sportList", sportList)
+        model.addAttribute("clazzList", clazzList)
         
         return "tournament"
     }

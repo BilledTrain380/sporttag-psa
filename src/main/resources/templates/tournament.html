@@ -43,7 +43,7 @@
 <body id="page-top">
 
 <!-- Navigation -->
-<nav th:replace="fragments/main :: navigation(tourment, tourment)">
+<nav th:replace="fragments/main :: navigation(tournament, tournament)">
 </nav>
 
 <div class="content-wrapper py-3">
@@ -51,7 +51,7 @@
     <div class="container-fluid">
 
         <div class="page-header">
-            <h1>Mehrkampq</h1>
+            <h1>Mehrkampf</h1>
         </div>
 
         <div th:if="${success}" class="alert alert-success" role="alert">
@@ -63,30 +63,27 @@
         <div class="row">
 
             <div class="col-lg-12">
-                
-                Filter
-                
-                <select>
-                    <option>---</option>
-                    <option>Schnelllauf</option>
-                </select>
 
-                <select>
-                    <option>---</option>
-                    <option>2a</option>
-                </select>
+                <form class="form-inline" th:action="@{/test}" method="post" th:object="${tournamentForm}" enctype="application/x-www-form-urlencoded">
+                    
+                    <label class="mr-sm-2">Filter</label>
 
-                <select>
-                    <option>---</option>
-                    <option>Kaben</option>
-                </select>
-                
-            </div>
+                    <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{sport.id}">
+                        <option th:each="sport : ${sportList}" th:text="${sport.name}" th:value="${sport.id}"></option>
+                    </select>
 
-            <div class="col-lg-12">
+                    <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{clazz.id}">
+                        <option th:each="clazz : ${clazzList}" th:text="${clazz.name}" th:value="${clazz.id}"></option>
+                    </select>
 
-                <form th:action="" method="post" th:object="${tourmentForm}" enctype="application/x-www-form-urlencoded">
-
+                    <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{gender}">
+                        <option th:value="true">Knaben</option>
+                        <option th:value="false">Mädchen</option>
+                    </select>
+                    
+                    <br/>
+                    <br/>
+                    
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -99,33 +96,32 @@
                         </thead>
                         <tbody>
                         <tr th:each="competitor, status : *{competitors}">
-                            <td>
-                                <a th:href="@{/competitor/} + *{competitors[__${status.index}__].id}"><i class="fa fa-fw fa-pencil-square-o"></i></a>
-                            </td>
-                            <td th:text="${competitor.surname}"></td>
+                            <td th:text="${competitor.startNumber}"></td>
                             <td th:text="${competitor.prename}"></td>
-                            <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
+                            <td th:text="${competitor.surname}"></td>
                             <td>
 
                                 <!-- send all other attributes back, needed to properly update a competitor -->
-                                <input type="hidden" th:field="*{competitors[__${status.index}__].id}"/>
-                                <input type="hidden" th:field="*{competitors[__${status.index}__].surname}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].startNumber}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].resultId}"/>
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].prename}"/>
-                                <input type="hidden" th:field="*{competitors[__${status.index}__].gender}"/>
-                                <input type="hidden" th:field="*{competitors[__${status.index}__].address}">
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].surname}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].category}"/>
 
-
-                                <select th:disabled="${participationStatus}" class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
-                                    <option selected th:value="0">---</option>
-                                    <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
-                                </select>
-
+                                <span th:text="${competitor.category}"></span>
+                                <input class="form-control" th:field="*{competitors[__${status.index}__].result}"/>
+                                <span th:text="${competitor.unit}"></span>
+                                
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].unit}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].points}"/>
+                                
                             </td>
+                            <td th:text="${competitor.points}"></td>
                         </tr>
                         </tbody>
                     </table>
 
-                    <button type="submit" class="btn btn-primary">Speichern</button>
+                    <button class="btn btn-primary">Speichern</button>
 
                 </form>
 
