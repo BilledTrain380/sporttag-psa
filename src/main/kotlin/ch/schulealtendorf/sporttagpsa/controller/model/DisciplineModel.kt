@@ -37,8 +37,10 @@
 package ch.schulealtendorf.sporttagpsa.controller.model
 
 /**
+ * Model class for a discipline.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 data class DisciplineModel @JvmOverloads constructor(
         var id: Int = 0,
