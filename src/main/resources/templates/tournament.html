@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2017 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<html lang="de">
+
+<head th:replace="fragments/main :: head(Mehrkampf)">
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav th:replace="fragments/main :: navigation(tourment, tourment)">
+</nav>
+
+<div class="content-wrapper py-3">
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+            <h1>Mehrkampq</h1>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            Änderungen wurden erfolgreich übernommen.
+        </div>
+
+        <!-- TODO: Add message when participation is not finished -->
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                
+                Filter
+                
+                <select>
+                    <option>---</option>
+                    <option>Schnelllauf</option>
+                </select>
+
+                <select>
+                    <option>---</option>
+                    <option>2a</option>
+                </select>
+
+                <select>
+                    <option>---</option>
+                    <option>Kaben</option>
+                </select>
+                
+            </div>
+
+            <div class="col-lg-12">
+
+                <form th:action="" method="post" th:object="${tourmentForm}" enctype="application/x-www-form-urlencoded">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Vorname</th>
+                            <th>Nachname</th>
+                            <th>Leistung</th>
+                            <th>Punkte</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="competitor, status : *{competitors}">
+                            <td>
+                                <a th:href="@{/competitor/} + *{competitors[__${status.index}__].id}"><i class="fa fa-fw fa-pencil-square-o"></i></a>
+                            </td>
+                            <td th:text="${competitor.surname}"></td>
+                            <td th:text="${competitor.prename}"></td>
+                            <td th:text="${competitor?.gender}? 'Männlich' : 'Weiblich'"></td>
+                            <td>
+
+                                <!-- send all other attributes back, needed to properly update a competitor -->
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].id}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].surname}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].prename}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].gender}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].address}">
+
+
+                                <select th:disabled="${participationStatus}" class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
+                                    <option selected th:value="0">---</option>
+                                    <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /.content-wrapper -->
+
+
+</body>
+
+</html>
