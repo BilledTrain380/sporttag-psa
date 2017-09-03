@@ -68,8 +68,8 @@
                     
                     <label class="mr-sm-2">Filter</label>
 
-                    <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{sport.id}">
-                        <option th:each="sport : ${sportList}" th:text="${sport.name}" th:value="${sport.id}"></option>
+                    <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{discipline.id}">
+                        <option th:each="discipline : ${disciplines}" th:text="${discipline.name}" th:value="${discipline.id}"></option>
                     </select>
 
                     <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{clazz.id}">
@@ -106,9 +106,9 @@
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].resultId}"/>
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].prename}"/>
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].surname}"/>
-                                <input type="hidden" th:field="*{competitors[__${status.index}__].category}"/>
+                                <input type="hidden" th:field="*{competitors[__${status.index}__].distance}"/>
 
-                                <span th:text="${competitor.category}"></span>
+                                <span th:text="${competitor.distance}"></span>
                                 <input class="form-control" th:field="*{competitors[__${status.index}__].result}"/>
                                 <span th:text="${competitor.unit}"></span>
                                 

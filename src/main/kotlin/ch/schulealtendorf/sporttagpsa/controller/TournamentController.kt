@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.controller.model.ClazzModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import ch.schulealtendorf.sporttagpsa.controller.model.DisciplineModel
 import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorFormModel
 import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 import org.springframework.stereotype.Controller
@@ -58,16 +58,16 @@ class TournamentController {
     
     @GetMapping("$TOURNAMENT/init")
     fun tournament(): String {
-        return "redirect:$TOURNAMENT?sport_id=1&clazz_id=1&gender=true"
+        return "redirect:$TOURNAMENT?discipline_id=1&clazz_id=1&gender=true"
     }
     
     @GetMapping(TOURNAMENT)
-    fun tournament(@RequestParam("sport_id") sportId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean, model: Model): String {
+    fun tournament(@RequestParam("discipline_id") disciplineId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean, model: Model): String {
         
         // example data
-        val sportList: List<SportModel> = listOf(
-                SportModel(1, "Schnelllauf"),
-                SportModel(2, "Weitsprung")
+        val disciplines: List<DisciplineModel> = listOf(
+                DisciplineModel(1, "Schnelllauf"),
+                DisciplineModel(2, "Weitsprung")
         )
         
         val clazzList: List<ClazzModel> = listOf(
@@ -76,7 +76,7 @@ class TournamentController {
         )
         
         val formModel = TournamentCompetitorFormModel(
-                SportModel(2, "Weitsprung"),
+                DisciplineModel(2, "Weitsprung"),
                 ClazzModel(1, "2a"),
                 false,
                 listOf(
@@ -86,7 +86,7 @@ class TournamentController {
         )
         
         model.addAttribute("tournamentForm", formModel)
-        model.addAttribute("sportList", sportList)
+        model.addAttribute("disciplines", disciplines)
         model.addAttribute("clazzList", clazzList)
         
         return "tournament"

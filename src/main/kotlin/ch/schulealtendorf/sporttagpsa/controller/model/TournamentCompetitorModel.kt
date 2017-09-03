@@ -47,7 +47,7 @@ data class TournamentCompetitorModel @JvmOverloads constructor(
         var resultId: Int = 0,
         var prename: String = "",
         var surname: String = "",
-        var category: String? = null,
+        var distance: String? = null,
         var result: Double = 0.0,
         var unit: String = "",
         var points: Int = 1

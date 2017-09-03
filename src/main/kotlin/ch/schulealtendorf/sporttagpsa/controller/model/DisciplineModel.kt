@@ -37,14 +37,10 @@
 package ch.schulealtendorf.sporttagpsa.controller.model
 
 /**
- * Form model for the tournament page.
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-class TournamentCompetitorFormModel @JvmOverloads constructor(
-        var discipline: DisciplineModel = DisciplineModel(),
-        var clazz: ClazzModel = ClazzModel(),
-        var gender: Boolean = true,
-        var competitors: List<TournamentCompetitorModel> = arrayListOf()
+data class DisciplineModel @JvmOverloads constructor(
+        var id: Int = 0,
+        var name: String = ""
 )
