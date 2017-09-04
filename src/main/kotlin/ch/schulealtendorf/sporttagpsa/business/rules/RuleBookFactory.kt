@@ -54,5 +54,5 @@ interface RuleBookFactory {
     /**
      * @return a category rulebook
      */
-    fun getCategoryRuleBook(): CoRRuleBook<String>
+    fun getCategoryRuleBook(): CoRRuleBook<String?>
 }

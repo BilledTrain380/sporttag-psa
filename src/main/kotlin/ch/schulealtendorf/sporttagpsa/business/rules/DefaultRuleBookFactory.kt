@@ -60,8 +60,8 @@ class DefaultRuleBookFactory: RuleBookFactory {
     /**
      * @return a category rulebook
      */
-    override fun getCategoryRuleBook(): CoRRuleBook<String> = RuleBookBuilder.create(CategoryRuleBook::class.java)
+    override fun getCategoryRuleBook(): CoRRuleBook<String?> = RuleBookBuilder.create(CategoryRuleBook::class.java)
             .withResultType(String::class.java)
-            .withDefaultResult("")
-            .build() as CoRRuleBook<String>
+            .withDefaultResult(null)
+            .build() as CoRRuleBook<String?>
 }

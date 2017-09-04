@@ -51,7 +51,7 @@ import com.deliveredtechnologies.rulebook.model.Rule
  */
 abstract class CategoryRule {
     
-    val rule: Rule<RuleTarget, String> = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(String::class.java)
+    val rule: Rule<RuleTarget, String?> = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(String::class.java)
             .`when` {
                 val target = it.getValue("target")
                 whenever(target.condition, target.members)
