@@ -36,32 +36,30 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
-import ch.schulealtendorf.sporttagpsa.business.rules.books.CategoryRuleBook
-import ch.schulealtendorf.sporttagpsa.business.rules.books.ResultRuleBook
-import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder
-import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
+import com.deliveredtechnologies.rulebook.lang.RuleBuilder
+import com.deliveredtechnologies.rulebook.model.Rule
 
 /**
- * {@link DefaultRuleBookFactory} provides {@link CoRRuleBook} instances.
+ * {@link CategoryRule} is the base class o all rules, than can be used in a {@link RuleSet}.
+ * 
+ * A subclass has to override two properties:
+ * * whenever - the condition, whenever this rule should be applied
+ * * then - the result, that the rule returns
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-class DefaultRuleBookFactory: RuleBookFactory {
+abstract class CategoryRule {
+    
+    val rule: Rule<RuleTarget, String> = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(String::class.java)
+            .`when` {
+                val target = it.getValue("target")
+                whenever(target.condition, target.members)
+            }
+            .then { _, result -> result.value = then()
+            }.build()
 
-    /**
-     * @return a PSA rulebook
-     */
-    override fun getResultRuleBook(): CoRRuleBook<Int> = RuleBookBuilder.create(ResultRuleBook::class.java)
-            .withResultType(Int::class.java)
-            .withDefaultResult(1)
-            .build() as CoRRuleBook<Int>
+    protected abstract val whenever: (condition: String, target: RuleTarget.Members) -> Boolean
 
-    /**
-     * @return a category rulebook
-     */
-    override fun getCategoryRuleBook(): CoRRuleBook<String> = RuleBookBuilder.create(CategoryRuleBook::class.java)
-            .withResultType(String::class.java)
-            .withDefaultResult("")
-            .build() as CoRRuleBook<String>
+    protected abstract val then: () -> String
 }

@@ -34,15 +34,30 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.rules
+package ch.schulealtendorf.sporttagpsa.business.rules.books
+
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleFormula
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
+import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
 
 /**
- * Possible facts for rules.
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-enum class FactKeys {
-    CONDITION,
-    TARGET
+class ResultRuleBook : CoRRuleBook<Int>() {
+
+    /**
+     * The defineRules method can be optionally implemented to define rules in a either a completely
+     * custom RuleBook or in a RuleBook that extends (subclasses) an existing RuleBook implementation.
+     */
+    override fun defineRules() {
+        addRuleSet(SprintRuleSet())
+    }
+
+    /**
+     * Adds the rules of a rule set to this book.
+     * 
+     * @param set the set containing te rules
+     */
+    private fun addRuleSet(set: RuleSet<RuleFormula>) = set.rules.forEach { addRule(it.get) }
 }

@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules.books
 
+import ch.schulealtendorf.sporttagpsa.business.rules.CategoryRule
 import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
 import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
 
@@ -43,24 +44,20 @@ import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
  * @author nmaerchy
  * @version 0.0.1
  */
-class PSARuleBook: CoRRuleBook<Int>() {
+class CategoryRuleBook: CoRRuleBook<String>() {
 
     /**
      * The defineRules method can be optionally implemented to define rules in a either a completely
      * custom RuleBook or in a RuleBook that extends (subclasses) an existing RuleBook implementation.
      */
     override fun defineRules() {
-        addRuleSet(SprintRuleSet())
+        super.defineRules()
     }
 
     /**
      * Adds the rules of a rule set to this book.
-     * 
+     *
      * @param set the set containing te rules
      */
-    private fun addRuleSet(set: RuleSet) {
-        set.rules.forEach { 
-            addRule(it.get)
-        }
-    }
+    private fun addRuleSet(set: RuleSet<CategoryRule>) = set.rules.forEach { addRule(it.rule) }
 }

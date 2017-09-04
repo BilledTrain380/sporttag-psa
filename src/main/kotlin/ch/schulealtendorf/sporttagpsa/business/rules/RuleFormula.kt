@@ -53,17 +53,13 @@ import com.deliveredtechnologies.rulebook.model.Rule
  */
 abstract class RuleFormula {
     
-    val get: Rule<RuleTarget, Int>
-    
-    init {
-        get = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
-                .`when` { 
-                    val target = it.getValue("target")
-                    whenever(target.condition, target.members)
-                }
-                .then { facts, result -> result.value = facts.result()
-                }.build()
-    }
+    val get: Rule<RuleTarget, Int> = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
+            .`when` {
+                val target = it.getValue("target")
+                whenever(target.condition, target.members)
+            }
+            .then { facts, result -> result.value = facts.result()
+            }.build()
     
     protected abstract val whenever: (condition: String, target: RuleTarget.Members) -> Boolean
     

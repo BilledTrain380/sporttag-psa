@@ -58,7 +58,7 @@ object SprintRuleSetSpec: Spek({
     
     describe("a sprint rule set") {
         
-        val ruleBook = RuleBookBuilder.create(PSARuleBook::class.java)
+        val ruleBook = RuleBookBuilder.create(ResultRuleBook::class.java)
                 .withResultType(Int::class.java)
                 .withDefaultResult(1)
                 .build()

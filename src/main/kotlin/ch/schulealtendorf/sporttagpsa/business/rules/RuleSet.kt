@@ -42,14 +42,14 @@ package ch.schulealtendorf.sporttagpsa.business.rules
  * @author nmaerchy
  * @version 1.0.0
  */
-abstract class RuleSet {
+abstract class RuleSet<out T> {
 
     /**
      * Defines the condition, to apply the rule set.
      */
     protected abstract val condition: String
     
-    abstract val rules: Set<RuleFormula>
+    abstract val rules: Set<T>
     
     /**
      * Checks the condition and combines it with the {@code action}.

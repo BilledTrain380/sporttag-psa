@@ -47,7 +47,12 @@ import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
 interface RuleBookFactory {
 
     /**
-     * @return a rulebook
+     * @return a result rulebook
      */
-    fun get(): CoRRuleBook<Int>
+    fun getResultRuleBook(): CoRRuleBook<Int>
+
+    /**
+     * @return a category rulebook
+     */
+    fun getCategoryRuleBook(): CoRRuleBook<String>
 }

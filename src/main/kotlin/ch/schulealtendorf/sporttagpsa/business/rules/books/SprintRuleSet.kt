@@ -44,7 +44,7 @@ import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget.Members
  * @author nmaerchy
  * @version 0.0.1
  */
-class SprintRuleSet : RuleSet() {
+class SprintRuleSet : RuleSet<RuleFormula>() {
 
     /**
      * Defines the condition, to apply the rule set.
