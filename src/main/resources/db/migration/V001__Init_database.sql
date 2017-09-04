@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS STARTER (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS RESULT (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  distance VARCHAR(5) DEFAULT NULL ,
   performance BIGINT NOT NULL DEFAULT 0 ,
   points INT NOT NULL DEFAULT 0 ,
   FK_STARTER_number INT NOT NULL ,

@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.entity
 
 import javax.persistence.*
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
@@ -46,12 +47,15 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 @Table(name = "RESULT")
-class ResultEntity @JvmOverloads constructor(
+data class ResultEntity @JvmOverloads constructor(
 
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int? = null,
+        
+        @Size(max = 5)
+        var distance: String? = null,
 
         @NotNull
         var performance: Int = 1,

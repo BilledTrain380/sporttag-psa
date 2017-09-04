@@ -69,7 +69,7 @@ class CompetitorResultManager(
         val starter = starterRepository.save(StarterEntity(null, competitor))
         
         disciplines.forEach { 
-            val result = ResultEntity(null, 1, 1, starter, it)
+            val result = ResultEntity(null, null,1, 1, starter, it)
             resultRepository.save(result)
         }
     }
