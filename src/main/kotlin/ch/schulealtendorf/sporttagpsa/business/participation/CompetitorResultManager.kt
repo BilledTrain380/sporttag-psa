@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleBookFactory
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
@@ -54,10 +55,12 @@ import org.springframework.stereotype.Component
 class CompetitorResultManager(
         private val starterRepository: StarterRepository,
         private val resultRepository: ResultRepository,
-        disciplineRepository: DisciplineRepository
+        disciplineRepository: DisciplineRepository,
+        ruleBookFactory: RuleBookFactory
 ): ResultManager {
     
     private val disciplines = disciplineRepository.findAll()
+    private val ruleBook = ruleBookFactory.getCategoryRuleBook()
 
     /**
      * Creates results for each discipline for the passed in {@code competitor}.

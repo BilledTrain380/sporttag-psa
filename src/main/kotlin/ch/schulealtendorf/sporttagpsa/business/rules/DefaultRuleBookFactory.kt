@@ -40,6 +40,7 @@ import ch.schulealtendorf.sporttagpsa.business.rules.books.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.business.rules.books.ResultRuleBook
 import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder
 import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
+import org.springframework.stereotype.Component
 
 /**
  * {@link DefaultRuleBookFactory} provides {@link CoRRuleBook} instances.
@@ -47,6 +48,7 @@ import com.deliveredtechnologies.rulebook.model.rulechain.cor.CoRRuleBook
  * @author nmaerchy
  * @version 1.0.0
  */
+@Component
 class DefaultRuleBookFactory: RuleBookFactory {
 
     /**
