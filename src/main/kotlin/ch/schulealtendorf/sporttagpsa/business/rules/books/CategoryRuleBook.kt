@@ -59,5 +59,5 @@ class CategoryRuleBook: CoRRuleBook<String>() {
      *
      * @param set the set containing te rules
      */
-    private fun addRuleSet(set: RuleSet<CategoryRule>) = set.rules.forEach { addRule(it.rule) }
+    private fun addRuleSet(set: RuleSet<CategoryRule, Int>) = set.rules.forEach { addRule(it.get) }
 }
