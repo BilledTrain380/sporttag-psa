@@ -36,43 +36,36 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
-import com.deliveredtechnologies.rulebook.NameValueReferableTypeConvertibleMap
-import com.deliveredtechnologies.rulebook.lang.RuleBuilder
 import com.deliveredtechnologies.rulebook.model.Rule
 
 /**
- * {@link CategoryRule} is the base class o all rules, than can be used in a {@link RuleSet}.
+ * Base class for all rules, that can be used in a rule set.
  * 
- * A subclass has to override two properties:
- * * whenever - the condition, whenever this rule should be applied
- * * then - the result, that the rule returns
+ * * T - the condition type that is passed in the {@code whenever} method
+ * * U - the result type of the rule
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-abstract class CategoryRule: BaseRule<Int, String>() {
+abstract class BaseRule<T, U> {
 
     /**
-     * @return a rule that uses the {@code whenever} and {@code then} methods.
+     * @return the specific rule that is used in a {@link CoRRuleBook}.
      */
-    override val get: Rule<RuleTarget<Int>, String> = RuleBuilder.create()
-            .withFactType(typeRef<RuleTarget<Int>>())
-            .withResultType(String::class.java)
-            .`when` { 
-                val target = it.one
-                whenever(target.condition, target.members) 
-            }
-            .then{ facts, result -> result.value = facts.result() }
-            .build()
-    
-    abstract override val whenever: (condition: Int, target: RuleTarget.Members) -> Boolean
-    
-    abstract override val then: (RuleTarget.Members) -> String
+    abstract val get: Rule<RuleTarget<T>, U>
 
     /**
-     * @return the {@code then} return value
+     * @return true if the rule should apply, otherwise false
      */
-    private fun NameValueReferableTypeConvertibleMap<RuleTarget<Int>>.result(): String {
-        return then(getValue("target").members)
-    }
+    protected abstract val whenever: (condition: T, target: RuleTarget.Members) -> Boolean
+
+    /**
+     * @return the result, if the rule applies
+     */
+    protected abstract val then: (RuleTarget.Members) -> U
+
+    /**
+     * Helper function to get the reference of generic objects.
+     */
+    protected inline fun <reified T: Any> typeRef() = T::class.java
 }

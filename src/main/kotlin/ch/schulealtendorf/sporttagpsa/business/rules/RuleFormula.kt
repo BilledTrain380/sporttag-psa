@@ -42,35 +42,41 @@ import com.deliveredtechnologies.rulebook.model.Rule
 
 
 /**
- * {@link RuleFormula} is the base class for all rules that can be used in a {@link RuleSet}.
+ * {@link RuleFormula} is the base class for rules that can be used in a {@link RuleSet}.
  * 
  * A subclass has to override two properties.
  * * whenever - defines the condition, when the rule should be applied
- * * formula - the formula will be used, if the rule has to apply
+ * * then - the return value will be used, if the rule has to apply
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-abstract class RuleFormula {
-    
-    val get: Rule<RuleTarget, Int> = RuleBuilder.create().withFactType(RuleTarget::class.java).withResultType(Int::class.java)
-            .`when` {
-                val target = it.getValue("target")
-                whenever(target.condition, target.members)
-            }
-            .then { facts, result -> result.value = facts.result()
-            }.build()
-    
-    protected abstract val whenever: (condition: String, target: RuleTarget.Members) -> Boolean
-    
-    protected abstract val formula: (RuleTarget.Members) -> Int
-    
-    protected fun Boolean.isMale() = this
+abstract class RuleFormula: BaseRule<String, Int>() {
 
-    protected fun Boolean.isFemale() = !this
+    /**
+     * @return a rule that uses the {@code whenever} and {@code then} methods.
+     */
+    override val get: Rule<RuleTarget<String>, Int> = RuleBuilder.create()
+            .withFactType(typeRef<RuleTarget<String>>())
+            .withResultType(Int::class.java)
+            .`when` { 
+                val target = it.one
+                whenever(target.condition, target.members)
+            }.then { facts, result -> result.value = facts.result() }
+            .build()
     
-    private fun NameValueReferableTypeConvertibleMap<RuleTarget>.result(): Int {
-        val points = formula(getValue("target").members)
+    abstract override val whenever: (condition: String, target: RuleTarget.Members) -> Boolean
+    
+    abstract override val then: (RuleTarget.Members) -> Int
+
+    /**
+     * Gets the result by the facts.
+     * If the result is lower than 1, 1 will be returned
+     * 
+     * @return the resulting result
+     */
+    private fun NameValueReferableTypeConvertibleMap<RuleTarget<String>>.result(): Int {
+        val points = then(getValue("target").members)
         return if (points > 1) points else 1
     }
 }

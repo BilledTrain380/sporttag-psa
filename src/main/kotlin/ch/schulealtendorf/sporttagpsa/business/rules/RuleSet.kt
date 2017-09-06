@@ -39,15 +39,18 @@ package ch.schulealtendorf.sporttagpsa.business.rules
 /**
  * Defines a set of rules that can be used in a rule book.
  * 
+ * * T - the type of rules that this set should contain
+ * * U - the type for the condition that this set uses
+ * 
  * @author nmaerchy
  * @version 1.0.0
  */
-abstract class RuleSet<out T> {
+abstract class RuleSet<out T, in U> {
 
     /**
      * Defines the condition, to apply the rule set.
      */
-    protected abstract val condition: String
+    protected abstract val condition: (U) -> Boolean
     
     abstract val rules: Set<T>
     
@@ -59,15 +62,13 @@ abstract class RuleSet<out T> {
      * 
      * @return true if the rule should be applied
      */
-    protected inline fun check(condition: String, action: () -> Boolean): Boolean {
+    protected inline fun check(condition: U, action: () -> Boolean): Boolean {
         return try {
-            this.condition == condition && action()
+            condition(condition) && action()
         } catch (e: NoSuchElementException) {
             false
         } catch (e: ClassCastException) {
             false
         }
     }
-
-    protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
 }

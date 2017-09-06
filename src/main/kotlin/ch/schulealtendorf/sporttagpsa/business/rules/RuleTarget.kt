@@ -40,11 +40,13 @@ package ch.schulealtendorf.sporttagpsa.business.rules
  * {@link RuleTarget} can be used for facts in a {@link CoRRuleBook}.
  * The specific rule book MUST support this instance.
  * 
+ * * T - the condition type that is used in a rule set
+ * 
  * @author nmaerchy
  * @version 1.0.0
  */
-class RuleTarget(
-        val condition: String,
+class RuleTarget<out T>(
+        val condition: T,
         val members: Members
 ) {
     

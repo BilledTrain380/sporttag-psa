@@ -34,45 +34,32 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.rules
+package ch.schulealtendorf.sporttagpsa.business.rules.books
 
-import com.deliveredtechnologies.rulebook.NameValueReferableTypeConvertibleMap
-import com.deliveredtechnologies.rulebook.lang.RuleBuilder
-import com.deliveredtechnologies.rulebook.model.Rule
+import ch.schulealtendorf.sporttagpsa.business.rules.CategoryRule
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
+import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget
 
 /**
- * {@link CategoryRule} is the base class o all rules, than can be used in a {@link RuleSet}.
- * 
- * A subclass has to override two properties:
- * * whenever - the condition, whenever this rule should be applied
- * * then - the result, that the rule returns
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-abstract class CategoryRule: BaseRule<Int, String>() {
+class CategoryRuleSet: RuleSet<CategoryRule, Int>() {
 
     /**
-     * @return a rule that uses the {@code whenever} and {@code then} methods.
+     * Defines the condition, to apply the rule set.
      */
-    override val get: Rule<RuleTarget<Int>, String> = RuleBuilder.create()
-            .withFactType(typeRef<RuleTarget<Int>>())
-            .withResultType(String::class.java)
-            .`when` { 
-                val target = it.one
-                whenever(target.condition, target.members) 
+    override val condition: (Int) -> Boolean = { it in 6..9 }
+    
+    override val rules: Set<CategoryRule> = setOf(
+            
+            object: CategoryRule() {
+                override val whenever: (condition: Int, target: RuleTarget.Members) -> Boolean = { condition, target -> 
+                        check(condition) {
+                            target.getAsString("discipline") == "Schnelllauf"
+                        }
+                    }
+                override val then: (RuleTarget.Members) -> String = { "50m" }
             }
-            .then{ facts, result -> result.value = facts.result() }
-            .build()
-    
-    abstract override val whenever: (condition: Int, target: RuleTarget.Members) -> Boolean
-    
-    abstract override val then: (RuleTarget.Members) -> String
-
-    /**
-     * @return the {@code then} return value
-     */
-    private fun NameValueReferableTypeConvertibleMap<RuleTarget<Int>>.result(): String {
-        return then(getValue("target").members)
-    }
+    )
 }

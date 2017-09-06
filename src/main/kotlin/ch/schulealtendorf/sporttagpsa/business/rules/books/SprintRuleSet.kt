@@ -36,21 +36,21 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules.books
 
+import ch.schulealtendorf.sporttagpsa.business.rules.ResultRuleSet
 import ch.schulealtendorf.sporttagpsa.business.rules.RuleFormula
-import ch.schulealtendorf.sporttagpsa.business.rules.RuleSet
 import ch.schulealtendorf.sporttagpsa.business.rules.RuleTarget.Members
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @version 0.0.2
  */
-class SprintRuleSet : RuleSet<RuleFormula>() {
+class SprintRuleSet : ResultRuleSet() {
 
     /**
      * Defines the condition, to apply the rule set.
      */
-    override val condition: String = "Schnelllauf"
-    
+    override val condition: (String) -> Boolean = { it == "Schnelllauf" }
+
     override val rules: Set<RuleFormula> = setOf(
             
             object: RuleFormula() {
@@ -58,10 +58,10 @@ class SprintRuleSet : RuleSet<RuleFormula>() {
                     check(condition) {
                         target.getAsBoolean("gender").isFemale() &&
                         target.getAsString("distance") == "50m"
-                    }    
+                    }
                 }
                 
-                override val formula: (Members) -> Int = {
+                override val then: (Members) -> Int = {
                     withResult(it) {
                         if (it > 12.06) 1 else (26.011098 * ((1236 - (it * 100) / 100) pow  2.1)).toInt()
                     }
@@ -75,7 +75,7 @@ class SprintRuleSet : RuleSet<RuleFormula>() {
                         target.getAsString("distance") == "60m"
                     }
                 }
-                override val formula: (Members) -> Int = {
+                override val then: (Members) -> Int = {
                     withResult(it) {
                         if (it > 13.83) 1 else (19.742424 * ((1417 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -89,7 +89,7 @@ class SprintRuleSet : RuleSet<RuleFormula>() {
                         target.getAsString("distance") == "80m"
                     }
                 }
-                override val formula: (Members) -> Int = {
+                override val then: (Members) -> Int = {
                     withResult(it) {
                         if (it > 17.59) 1 else (11.754907 * ((1803 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -103,7 +103,7 @@ class SprintRuleSet : RuleSet<RuleFormula>() {
                         target.getAsString("distance") == "50m"
                     }
                 }
-                override val formula: (Members) -> Int = {
+                override val then: (Members) -> Int = {
                     withResult(it) {
                         if (it > 11.87) 1 else (23.327251 * ((1219 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -117,7 +117,7 @@ class SprintRuleSet : RuleSet<RuleFormula>() {
                                 target.getAsString("distance") == "60m"
                     }
                 }
-                override val formula: (Members) -> Int = {
+                override val then: (Members) -> Int = {
                     withResult(it) {
                         if (it > 13.61) 1 else (17.686955 * ((1397 - (it * 100) / 100) pow 2.1)).toInt()
                     }
@@ -131,15 +131,11 @@ class SprintRuleSet : RuleSet<RuleFormula>() {
                                 target.getAsString("distance") == "80m"
                     }
                 }
-                override val formula: (Members) -> Int = {
+                override val then: (Members) -> Int = {
                     withResult(it) {
                         if (it > 17.32) 1 else (10.54596 * ((1778 - (it * 100) / 100) pow 2.1)).toInt()
                     }
                 }
             }
     )
-    
-    private inline fun withResult(target: Members, body: (Double) -> Int): Int {
-        return body(target.getAsDouble("result"))
-    }
 }

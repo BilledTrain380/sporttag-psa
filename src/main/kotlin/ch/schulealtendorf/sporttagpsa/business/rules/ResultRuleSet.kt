@@ -36,43 +36,29 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rules
 
-import com.deliveredtechnologies.rulebook.NameValueReferableTypeConvertibleMap
-import com.deliveredtechnologies.rulebook.lang.RuleBuilder
-import com.deliveredtechnologies.rulebook.model.Rule
-
 /**
- * {@link CategoryRule} is the base class o all rules, than can be used in a {@link RuleSet}.
- * 
- * A subclass has to override two properties:
- * * whenever - the condition, whenever this rule should be applied
- * * then - the result, that the rule returns
+ * Defines basic methods for a rule set, that contains math.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-abstract class CategoryRule: BaseRule<Int, String>() {
+abstract class ResultRuleSet: RuleSet<RuleFormula, String>() {
+
+    protected fun Boolean.isMale() = this
+    
+    protected fun Boolean.isFemale() = !this
+    
+    protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
 
     /**
-     * @return a rule that uses the {@code whenever} and {@code then} methods.
+     * Invokes the {@code body} with the result from the {@code target}.
+     * 
+     * @param target member to use - has to contain the key 'result'
+     * @param body the lambda that will be invoked
+     * 
+     * @return the resulting result
      */
-    override val get: Rule<RuleTarget<Int>, String> = RuleBuilder.create()
-            .withFactType(typeRef<RuleTarget<Int>>())
-            .withResultType(String::class.java)
-            .`when` { 
-                val target = it.one
-                whenever(target.condition, target.members) 
-            }
-            .then{ facts, result -> result.value = facts.result() }
-            .build()
-    
-    abstract override val whenever: (condition: Int, target: RuleTarget.Members) -> Boolean
-    
-    abstract override val then: (RuleTarget.Members) -> String
-
-    /**
-     * @return the {@code then} return value
-     */
-    private fun NameValueReferableTypeConvertibleMap<RuleTarget<Int>>.result(): String {
-        return then(getValue("target").members)
+    protected inline fun withResult(target: RuleTarget.Members, body: (Double) -> Int): Int {
+        return body(target.getAsDouble("result"))
     }
 }
