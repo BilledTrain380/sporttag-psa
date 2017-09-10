@@ -36,6 +36,7 @@
               <option value="$KOTLIN_BUNDLED$/lib/noarg-compiler-plugin.jar" />
             </array>
           </option>
+          <option name="version" value="true" />
         </compilerArguments>
       </configuration>
     </facet>
