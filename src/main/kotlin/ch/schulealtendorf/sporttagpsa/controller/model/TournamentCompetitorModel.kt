@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.model
 
+import ch.schulealtendorf.sporttagpsa.business.rulebook.Category
+
 /**
  * Model class for a competitor on the tournament page.
  * 
@@ -47,6 +49,7 @@ data class TournamentCompetitorModel @JvmOverloads constructor(
         var resultId: Int = 0,
         var prename: String = "",
         var surname: String = "",
+        var category: Category,
         var distance: String? = null,
         var result: Double = 0.0,
         var unit: String = "",

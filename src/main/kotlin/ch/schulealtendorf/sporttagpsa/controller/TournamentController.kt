@@ -36,6 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.business.rulebook.Category
+import ch.schulealtendorf.sporttagpsa.business.rulebook.FormulaModel
+import ch.schulealtendorf.sporttagpsa.business.rulebook.PSARuleBook
+import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentProvider
 import ch.schulealtendorf.sporttagpsa.controller.model.ClazzModel
 import ch.schulealtendorf.sporttagpsa.controller.model.DisciplineModel
 import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorFormModel
@@ -43,14 +47,21 @@ import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import javax.validation.Valid
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
 @Controller
-class TournamentController {
+class TournamentController(
+        private val tournamentProvider: TournamentProvider,
+        private val ruleBook: PSARuleBook
+) {
     
     companion object {
         const val TOURNAMENT = "/tournament"
@@ -80,8 +91,8 @@ class TournamentController {
                 ClazzModel(1, "2a"),
                 false,
                 listOf(
-                        TournamentCompetitorModel(1, 1,"Max", "Muster", "50m", 0.0, "sec"),
-                        TournamentCompetitorModel(2, 2,"Max", "Muster", null, 0.0, "sec")
+                        TournamentCompetitorModel(1, 1,"Max", "Muster", Category.A, "50m", 0.0, "sec"),
+                        TournamentCompetitorModel(2, 2,"Max", "Muster", Category.B, null, 0.0, "sec")
                 )
         )
         
@@ -90,5 +101,28 @@ class TournamentController {
         model.addAttribute("clazzList", clazzList)
         
         return "tournament"
+    }
+    
+    @PostMapping(TOURNAMENT)
+    fun saveResults(@Valid @ModelAttribute tournamentModel: TournamentCompetitorFormModel, redirectAttributes: RedirectAttributes): String {
+        
+        tournamentModel.competitors.forEach { 
+            
+            val ruleModel = FormulaModel(
+                    tournamentModel.discipline.name,
+                    it.category,
+                    it.result
+            )
+  
+            it.points = ruleBook.run(ruleModel)
+            
+            tournamentProvider.updateResult(it)
+        }
+        
+        val discipline = tournamentModel.discipline.id
+        val clazz = tournamentModel.clazz.id
+        val gender = tournamentModel.gender
+        
+        return "redirect:$TOURNAMENT?discipline_id=$discipline&clazz_id=$clazz&gender=$gender"
     }
 }
