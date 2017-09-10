@@ -1,0 +1,15 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.1.4'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+    }
+}
+
+dependencies {
+    compile "com.deliveredtechnologies:rulebook-core:0.8"
+}
