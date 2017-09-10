@@ -34,23 +34,22 @@
  *
  */
 
-package ch.schulealtendorf.rules
+package ch.schulealtendorf.sporttagpsa.business.rulebook
+
+import ch.schulealtendorf.rules.Rule
 
 /**
- * Describes a basic rule with a when condition, then do..
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-abstract class Rule<T, out K> {
+abstract class FormulaRule: Rule<FormulaModel, Int>() {
 
-    /**
-     * @return true, if this rule should be applied, otherwise false
-     */
-    abstract var whenever: (T) -> Boolean
-
+    protected abstract val formula: (Double) -> Int
+    
     /**
      * @return the result for this rule
      */
-    abstract val then: (T) -> K
+    override val then: (FormulaModel) -> Int = { formula(it.result) }
+    
+    protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
 }

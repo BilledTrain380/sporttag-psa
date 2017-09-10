@@ -34,23 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.rules
+package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-/**
- * Describes a basic rule with a when condition, then do..
- * 
- * @author nmaerchy
- * @version 1.0.0
- */
-abstract class Rule<T, out K> {
-
-    /**
-     * @return true, if this rule should be applied, otherwise false
-     */
-    abstract var whenever: (T) -> Boolean
-
-    /**
-     * @return the result for this rule
-     */
-    abstract val then: (T) -> K
+enum class Category {
+    A, B, C
 }
+
+data class FormulaModel(
+        val discipline: String,
+        val category: Category,
+        val result: Double
+)

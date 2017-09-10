@@ -34,23 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.rules
+package ch.schulealtendorf.sporttagpsa.business.rulebook
+
+import ch.schulealtendorf.rules.RuleBook
+import org.springframework.stereotype.Component
 
 /**
- * Describes a basic rule with a when condition, then do..
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-abstract class Rule<T, out K> {
-
-    /**
-     * @return true, if this rule should be applied, otherwise false
-     */
-    abstract var whenever: (T) -> Boolean
-
-    /**
-     * @return the result for this rule
-     */
-    abstract val then: (T) -> K
+@Component
+class PSARuleBook: RuleBook<FormulaModel, Int>(FormulaModel::class, Int::class) {
+    
+    init {
+        // TODO: Add rules here...
+    }
 }
