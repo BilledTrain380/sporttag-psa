@@ -37,12 +37,20 @@
 package ch.schulealtendorf.rules
 
 /**
+ * Describes a basic rule with a when condition, then do..
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-abstract class Rule<T, K> {
-    
+abstract class Rule<T, out K> {
+
+    /**
+     * @return true, if this rule should be applied, otherwise false
+     */
     internal abstract var whenever: (T) -> Boolean
-    
+
+    /**
+     * @return the result for this rule
+     */
     internal abstract val then: (T) -> K
 }

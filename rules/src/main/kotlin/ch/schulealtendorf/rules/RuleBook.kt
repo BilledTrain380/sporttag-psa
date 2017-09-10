@@ -36,33 +36,56 @@
 
 package ch.schulealtendorf.rules
 
+import com.deliveredtechnologies.rulebook.FactMap
+import com.deliveredtechnologies.rulebook.NameValueReferableMap
 import com.deliveredtechnologies.rulebook.lang.RuleBookBuilder
+import com.deliveredtechnologies.rulebook.lang.RuleBuilder
 import com.deliveredtechnologies.rulebook.model.RuleBook
 import kotlin.reflect.KClass
 
 /**
+ * Describes a rule book to add rules and run facts.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 open class RuleBook<T: Any, K: Any>(
         private val fact: KClass<T>,
-        private val result: KClass<T>
+        private val result: KClass<K>
 ) {
     
-    private val ruleBook: RuleBook<T> = RuleBookBuilder.create()
+    private val ruleBook: RuleBook<K> = RuleBookBuilder.create()
             .withResultType(result.java)
-            .withDefaultResult(Any() as T)
+            .withDefaultResult(Any() as K)
             .build()
     
     fun addRule(rule: Rule<T, K>) {
-        throw UnsupportedOperationException("This method is not implemented yet.")
+        
+        val ruleModel: com.deliveredtechnologies.rulebook.model.Rule<T, K> = RuleBuilder.create()
+                .withFactType(fact.java)
+                .withResultType(result.java)
+                .`when` { rule.whenever(it.getValue("input")) }
+                .then { facts, result -> result.value = rule.then(facts.getValue("input")) }
+                .build()
+        
+        ruleBook.addRule(ruleModel)
     }
     
     fun addRuleSet(ruleSet: RuleSet<T, K>) {
-        throw UnsupportedOperationException("This method is not implemented yet.")
+        ruleSet.getRules().forEach { addRule(it) }
     }
     
     fun run(fact: T): K {
-        throw UnsupportedOperationException("This method is not implemented yet.")
+
+        val facts: NameValueReferableMap<Any> = FactMap()
+        facts.setValue("input", fact)
+
+        ruleBook.run(facts)
+
+        if (ruleBook.result.isPresent) {
+            return ruleBook.result.get().value
+        }
+        
+        throw IllegalStateException("No result is available.")
     }
 }

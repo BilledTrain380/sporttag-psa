@@ -37,20 +37,35 @@
 package ch.schulealtendorf.rules
 
 /**
+ * Describes a set of rules, with a condition that applies for
+ * all rules. The rules itself can have further conditions.
+ * @see Rule#whenever
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 abstract class RuleSet<T, K> {
     
     private val rules: MutableSet<Rule<T, K>> = HashSet()
-    
+
+    /**
+     * @return true if the rules of this rule set can be used, otherwise false
+     */
     internal abstract val whenever: (T) -> Boolean
-    
+
+    /**
+     * Adds the {@code whenever} of this rule set to the given rule.
+     * 
+     * @param rule the rule to add
+     */
     fun addRule(rule: Rule<T, K>) {
-        throw UnsupportedOperationException("This method is not implemented yet.")
+        
+        rule.whenever = { whenever(it) && rule.whenever(it) }
+        rules.add(rule)
     }
-    
-    fun getRules(): Set<Rule<T, K>> {
-        throw UnsupportedOperationException("This method is not implemented yet.")
-    }
+
+    /**
+     * @return the rules of this rule set
+     */
+    fun getRules(): Set<Rule<T, K>> = rules
 }
