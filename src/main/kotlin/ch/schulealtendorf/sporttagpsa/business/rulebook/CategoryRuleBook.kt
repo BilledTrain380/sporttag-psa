@@ -36,13 +36,21 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-data class CategoryModel(
-        val age: Int,
-        val discipline: String
-)
+import ch.schulealtendorf.rules.RuleBook
+import org.springframework.stereotype.Component
 
-data class FormulaModel(
-        val discipline: String,
-        val distance: String?,
-        val result: Double
-)
+/**
+ * 
+ * @author nmaerchy
+ * @version 0.0.1
+ */
+@Component
+class CategoryRuleBook: RuleBook<CategoryModel, String>(
+        CategoryModel::class,
+        String::class
+) {
+    
+    init {
+        // TODO: Add rules here...
+    }
+}
