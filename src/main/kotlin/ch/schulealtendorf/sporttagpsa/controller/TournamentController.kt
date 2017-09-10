@@ -36,7 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
-import ch.schulealtendorf.sporttagpsa.business.rulebook.Category
 import ch.schulealtendorf.sporttagpsa.business.rulebook.FormulaModel
 import ch.schulealtendorf.sporttagpsa.business.rulebook.PSARuleBook
 import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentProvider
@@ -91,8 +90,8 @@ class TournamentController(
                 ClazzModel(1, "2a"),
                 false,
                 listOf(
-                        TournamentCompetitorModel(1, 1,"Max", "Muster", Category.A, "50m", 0.0, "sec"),
-                        TournamentCompetitorModel(2, 2,"Max", "Muster", Category.B, null, 0.0, "sec")
+                        TournamentCompetitorModel(1, 1,"Max", "Muster", "50m", 0.0, "sec"),
+                        TournamentCompetitorModel(2, 2,"Max", "Muster", null, 0.0, "sec")
                 )
         )
         
@@ -110,7 +109,7 @@ class TournamentController(
             
             val ruleModel = FormulaModel(
                     tournamentModel.discipline.name,
-                    it.category,
+                    it.distance,
                     it.result
             )
   

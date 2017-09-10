@@ -42,6 +42,6 @@ enum class Category {
 
 data class FormulaModel(
         val discipline: String,
-        val category: Category,
+        val distance: String?,
         val result: Double
 )
