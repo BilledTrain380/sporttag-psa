@@ -34,43 +34,31 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
+package ch.schulealtendorf.sporttagpsa.business.tournament
 
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
-import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
-import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
-import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
-import org.springframework.stereotype.Component
+import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 
 /**
- * {@link CompetitorResultManager} manages the results of a competitor
+ * Describes a provider for the tournament data.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-@Component
-class CompetitorResultManager(
-        private val starterRepository: StarterRepository,
-        private val resultRepository: ResultRepository,
-        disciplineRepository: DisciplineRepository
-): ResultManager {
-    
-    private val disciplines = disciplineRepository.findAll()
+interface TournamentProvider {
 
     /**
-     * Creates results for each discipline for the passed in {@code competitor}.
-     *
-     * @param competitor the competitor to create the results for
+     * Finds all competitors by the given filter.
+     * 
+     * @param filter the filter to get competitors
+     * 
+     * @return the resulting competitor list
      */
-    override fun createResults(competitor: CompetitorEntity) {
-        
-        val starter = starterRepository.save(StarterEntity(null, competitor))
-        
-        disciplines.forEach { 
-            val result = ResultEntity(null, null,1, 1, starter, it)
-            resultRepository.save(result)
-        }
-    }
+    fun findByFilter(filter: TournamentFilter): List<TournamentCompetitorModel>
+
+    /**
+     * Updates the result of the given competitor.
+     * 
+     * @param model holds the result to update
+     */
+    fun updateResult(model: TournamentCompetitorModel)
 }

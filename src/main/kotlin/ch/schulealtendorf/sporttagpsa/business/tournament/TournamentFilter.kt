@@ -34,43 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
-
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
-import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
-import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
-import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
-import org.springframework.stereotype.Component
+package ch.schulealtendorf.sporttagpsa.business.tournament
 
 /**
- * {@link CompetitorResultManager} manages the results of a competitor
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-@Component
-class CompetitorResultManager(
-        private val starterRepository: StarterRepository,
-        private val resultRepository: ResultRepository,
-        disciplineRepository: DisciplineRepository
-): ResultManager {
-    
-    private val disciplines = disciplineRepository.findAll()
-
-    /**
-     * Creates results for each discipline for the passed in {@code competitor}.
-     *
-     * @param competitor the competitor to create the results for
-     */
-    override fun createResults(competitor: CompetitorEntity) {
-        
-        val starter = starterRepository.save(StarterEntity(null, competitor))
-        
-        disciplines.forEach { 
-            val result = ResultEntity(null, null,1, 1, starter, it)
-            resultRepository.save(result)
-        }
-    }
-}
+data class TournamentFilter(
+        val disciplineId: Int,
+        val clazzId: Int,
+        val gender: Boolean
+)

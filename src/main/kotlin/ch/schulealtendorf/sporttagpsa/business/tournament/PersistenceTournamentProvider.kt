@@ -34,43 +34,41 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
+package ch.schulealtendorf.sporttagpsa.business.tournament
 
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
-import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
-import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
 import org.springframework.stereotype.Component
 
 /**
- * {@link CompetitorResultManager} manages the results of a competitor
+ * {@link PersistenceTournamentProvider} provides tournament data
+ * from a persistence source.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
 @Component
-class CompetitorResultManager(
-        private val starterRepository: StarterRepository,
-        private val resultRepository: ResultRepository,
-        disciplineRepository: DisciplineRepository
-): ResultManager {
-    
-    private val disciplines = disciplineRepository.findAll()
+class PersistenceTournamentProvider(
+        private val resultRepository: ResultRepository
+): TournamentProvider {
 
     /**
-     * Creates results for each discipline for the passed in {@code competitor}.
+     * Finds all competitors by the given filter.
      *
-     * @param competitor the competitor to create the results for
+     * @param filter the filter to get competitors
+     *
+     * @return the resulting competitor list
      */
-    override fun createResults(competitor: CompetitorEntity) {
-        
-        val starter = starterRepository.save(StarterEntity(null, competitor))
-        
-        disciplines.forEach { 
-            val result = ResultEntity(null, null,1, 1, starter, it)
-            resultRepository.save(result)
-        }
+    override fun findByFilter(filter: TournamentFilter): List<TournamentCompetitorModel> {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    /**
+     * Updates the result of the given competitor.
+     *
+     * @param model holds the result to update
+     */
+    override fun updateResult(model: TournamentCompetitorModel) {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
     }
 }
