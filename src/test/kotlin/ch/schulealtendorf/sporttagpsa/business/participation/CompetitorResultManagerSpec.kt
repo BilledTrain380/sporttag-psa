@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryModel
+import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
@@ -46,8 +48,10 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
+import org.joda.time.DateTime
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
+import java.sql.Date
 
 /**
  * Spec for {@link CompetitorResultManager}.
@@ -69,25 +73,47 @@ object CompetitorResultManagerSpec : Spek({
         val mockStarterRepository: StarterRepository = mock()
         val mockResultRepository: ResultRepository = mock()
         val mockDisciplineRepository: DisciplineRepository = mock()
+        val mockRuleBook: CategoryRuleBook = mock()
         
-        var manager = CompetitorResultManager(mockStarterRepository, mockResultRepository, mockDisciplineRepository)
+        var manager = CompetitorResultManager(mockStarterRepository, mockResultRepository, mockRuleBook, mockDisciplineRepository)
         
         beforeEachTest { 
-            reset(mockStarterRepository, mockResultRepository, mockDisciplineRepository)
+            reset(mockStarterRepository, mockResultRepository, mockDisciplineRepository, mockRuleBook)
             whenever(mockDisciplineRepository.findAll())
                     .thenReturn(testDisciplines)
             
-            manager = CompetitorResultManager(mockStarterRepository, mockResultRepository, mockDisciplineRepository)
+            manager = CompetitorResultManager(mockStarterRepository, mockResultRepository, mockRuleBook, mockDisciplineRepository)
         }
         
         given("a competitor to create results for") {
+
+            val weitsprungCategory = CategoryModel(
+                    8, "Weitsprung"
+            )
+
+            val weitwurfCategory = CategoryModel(
+                    8, "Weitwurf"
+            )
+            
+            val birthday = Date(DateTime.now().minusYears(8).millis)
             
             on("creating the results") {
 
                 whenever(mockStarterRepository.save(any<StarterEntity>()))
                         .thenReturn(StarterEntity())
                 
-                manager.createResults(CompetitorEntity())
+                doReturn("2m").whenever(mockRuleBook).run(weitsprungCategory)
+                doReturn("5m").whenever(mockRuleBook).run(weitwurfCategory)
+                
+//                whenever(mockRuleBook.run(weitsprungCategory))
+//                        .thenReturn("2m")
+//                
+//                whenever(mockRuleBook.run(weitwurfCategory))
+//                        .thenReturn("5m")
+                
+                val competitor = CompetitorEntity(1, "Muster", "max", true, birthday)
+                
+                manager.createResults(competitor)
                 
                 it("should create a starter") {
                     verify(mockStarterRepository, times(1))
@@ -97,6 +123,13 @@ object CompetitorResultManagerSpec : Spek({
                 it("should create a result for each discipline") {
                     verify(mockResultRepository, times(2))
                             .save(any<ResultEntity>())
+                }
+                
+                it("should consider the category rule book to get the distance") {
+                    verify(mockRuleBook, times(1))
+                            .run(weitsprungCategory)
+                    verify(mockRuleBook, times(1))
+                            .run(weitwurfCategory)
                 }
             }
         }

@@ -56,7 +56,7 @@ open class RuleBook<T: Any, K: Any>(
     
     private val ruleBook: RuleBook<K> = RuleBookBuilder.create()
             .withResultType(result.java)
-            .withDefaultResult(Any() as K)
+            .withDefaultResult(null)
             .build()
     
     fun addRule(rule: Rule<T, K>) {
@@ -75,7 +75,7 @@ open class RuleBook<T: Any, K: Any>(
         ruleSet.getRules().forEach { addRule(it) }
     }
     
-    fun run(fact: T): K {
+    fun run(fact: T): K? {
 
         val facts: NameValueReferableMap<Any> = FactMap()
         facts.setValue("input", fact)

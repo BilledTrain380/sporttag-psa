@@ -36,13 +36,17 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryModel
+import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
+import org.joda.time.DateTime
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * {@link CompetitorResultManager} manages the results of a competitor
@@ -54,6 +58,7 @@ import org.springframework.stereotype.Component
 class CompetitorResultManager(
         private val starterRepository: StarterRepository,
         private val resultRepository: ResultRepository,
+        private val ruleBook: CategoryRuleBook,
         disciplineRepository: DisciplineRepository
 ): ResultManager {
     
@@ -61,6 +66,7 @@ class CompetitorResultManager(
 
     /**
      * Creates results for each discipline for the passed in {@code competitor}.
+     * The results distance is determined by the {@link CategoryRuleBook}.
      *
      * @param competitor the competitor to create the results for
      */
@@ -68,9 +74,28 @@ class CompetitorResultManager(
         
         val starter = starterRepository.save(StarterEntity(null, competitor))
         
-        disciplines.forEach { 
-            val result = ResultEntity(null, null,1, 1, starter, it)
+        disciplines.forEach {
+            val distance = starter distanceFor  it.name
+            
+            val result = ResultEntity(null, distance,1, 1, starter, it)
             resultRepository.save(result)
         }
+    }
+
+    /**
+     * Runs the rulebook with the starters age and the given category.
+     * 
+     * @return the resulting distance
+     */
+    private infix fun StarterEntity.distanceFor(category: String) = ruleBook.run(CategoryModel(competitor.birthday.age(), category))
+
+    /**
+     * @return the difference in years between now and the date
+     */
+    private fun Date.age(): Int {
+        val todayYears = DateTime().year
+        val actualYears = DateTime(this).year
+        
+        return todayYears - actualYears
     }
 }
