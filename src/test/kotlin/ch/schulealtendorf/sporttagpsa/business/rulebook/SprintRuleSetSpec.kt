@@ -36,24 +36,48 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import ch.schulealtendorf.rules.Rule
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.given
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
+import kotlin.test.assertEquals
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-abstract class FormulaRule: Rule<FormulaModel, Int>() {
-
-    protected abstract val formula: (Double) -> Int
+@RunWith(JUnitPlatform::class)
+object SprintRuleSetSpec: Spek({
     
-    /**
-     * @return the result for this rule
-     */
-    override val then: (FormulaModel) -> Int = { formula(it.result) }
-    
-    protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
-    
-    protected fun Boolean.isMale() = this
-    
-    protected fun Boolean.isFemale() = !this
-}
+    describe("a sprint rule set") {
+        
+        val male = true
+        val female = false
+        
+        val ruleSet = SprintRuleSet()
+        
+        given("a formula model") {
+            
+            on("girls 50m") {
+                
+                val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
+                
+                var points: Int = Int.MIN_VALUE
+                
+                ruleSet.getRules().forEach { 
+                    if (it.whenever(model)) {
+                        points = it.then(model)
+                    }
+                }
+                
+                it("should return the resulting points") {
+                    val expected = 224
+                    assertEquals(expected, points)
+                }
+            }
+        }
+    }
+})

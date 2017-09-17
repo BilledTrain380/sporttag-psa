@@ -44,5 +44,6 @@ data class CategoryModel(
 data class FormulaModel(
         val discipline: String,
         val distance: String?,
-        val result: Double
+        val result: Double,
+        val gender: Boolean
 )

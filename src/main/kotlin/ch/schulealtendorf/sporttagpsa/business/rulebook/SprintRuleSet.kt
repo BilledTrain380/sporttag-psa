@@ -36,24 +36,30 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import ch.schulealtendorf.rules.Rule
+import ch.schulealtendorf.rules.RuleSet
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-abstract class FormulaRule: Rule<FormulaModel, Int>() {
+class SprintRuleSet: RuleSet<FormulaModel, Int>() {
 
-    protected abstract val formula: (Double) -> Int
-    
     /**
-     * @return the result for this rule
+     * @return true if the rules of this rule set can be used, otherwise false
      */
-    override val then: (FormulaModel) -> Int = { formula(it.result) }
+    override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Schnelllauf" }
     
-    protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
-    
-    protected fun Boolean.isMale() = this
-    
-    protected fun Boolean.isFemale() = !this
+    init {
+        
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { if (it > 13.83) 1 else (19.742424 * (((1417 - (it * 100)) / 100) pow 2.1)).toInt() }
+                    /**
+                     * @return true, if this rule should be applied, otherwise false
+                     */
+                    override var whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "60m"}
+                }
+        )
+        
+    }
 }
