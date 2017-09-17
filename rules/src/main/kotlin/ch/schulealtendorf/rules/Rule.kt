@@ -40,14 +40,29 @@ package ch.schulealtendorf.rules
  * Describes a basic rule with a when condition, then do..
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.0.1
  */
 abstract class Rule<T, out K> {
 
     /**
+     * Used by a rule book. Combines the condition of the rule
+     * and the condition of a rule set.
+     * If the rule is not used in a rule set, the rule sets condition
+     * will always return true
+     * 
+     * @return true if this rule should be applied, otherwise false
+     */
+    internal val wheneverMod: (T) -> Boolean = { whenever(it) && wheneverSet(it) }
+
+    /**
+     * Additional whenever condition for a rule set
+     */
+    internal var wheneverSet: (T) -> Boolean = { true }
+    
+    /**
      * @return true, if this rule should be applied, otherwise false
      */
-    abstract var whenever: (T) -> Boolean
+    abstract val whenever: (T) -> Boolean
 
     /**
      * @return the result for this rule

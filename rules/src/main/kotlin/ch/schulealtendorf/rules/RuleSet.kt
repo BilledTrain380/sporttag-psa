@@ -42,7 +42,7 @@ package ch.schulealtendorf.rules
  * @see Rule#whenever
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.0.1
  */
 abstract class RuleSet<T, K> {
     
@@ -51,7 +51,7 @@ abstract class RuleSet<T, K> {
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
-    internal abstract val whenever: (T) -> Boolean
+    protected abstract val whenever: (T) -> Boolean
 
     /**
      * Adds the {@code whenever} of this rule set to the given rule.
@@ -60,7 +60,7 @@ abstract class RuleSet<T, K> {
      */
     fun addRule(rule: Rule<T, K>) {
         
-        rule.whenever = { whenever(it) && rule.whenever(it) }
+        rule.wheneverSet = { whenever(it) }
         rules.add(rule)
     }
 

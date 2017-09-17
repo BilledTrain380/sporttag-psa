@@ -47,7 +47,7 @@ import kotlin.reflect.KClass
  * Describes a rule book to add rules and run facts.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.0.1
  */
 open class RuleBook<T: Any, K: Any>(
         private val fact: KClass<T>,
@@ -64,7 +64,7 @@ open class RuleBook<T: Any, K: Any>(
         val ruleModel: com.deliveredtechnologies.rulebook.model.Rule<T, K> = RuleBuilder.create()
                 .withFactType(fact.java)
                 .withResultType(result.java)
-                .`when` { rule.whenever(it.getValue("input")) }
+                .`when` { rule.wheneverMod(it.getValue("input")) }
                 .then { facts, result -> result.value = rule.then(facts.getValue("input")) }
                 .build()
         
