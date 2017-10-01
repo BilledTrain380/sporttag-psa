@@ -46,8 +46,10 @@ import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 /**
+ * Specification for a sprint rule set.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @RunWith(JUnitPlatform::class)
 object SprintRuleSetSpec: Spek({

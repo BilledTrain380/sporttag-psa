@@ -39,8 +39,10 @@ package ch.schulealtendorf.sporttagpsa.business.rulebook
 import ch.schulealtendorf.rules.RuleSet
 
 /**
+ * Defines all the rules that can be applied to a sprint.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 class SprintRuleSet: RuleSet<FormulaModel, Int>() {
 
