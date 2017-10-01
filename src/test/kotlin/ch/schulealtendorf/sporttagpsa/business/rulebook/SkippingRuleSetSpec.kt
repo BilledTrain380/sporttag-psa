@@ -46,41 +46,41 @@ import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 /**
- * Specification for a sprint rule set.
+ * Specification for a skipping rule set.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
 @RunWith(JUnitPlatform::class)
-object SprintRuleSetSpec: Spek({
+object SkippingRuleSetSpec: Spek({
     
-    describe("a sprint rule set") {
-        
+    describe("a skipping rule set") {
+
         val male = true
         val female = false
         
-        val ruleSet = SprintRuleSet()
+        val ruleSet = SkippingRuleSet()
         
         given("a formula model") {
             
-            on("girls 60m") {
-                
-                val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
+            on("girls") {
+
+                val model = FormulaModel("Seilspringen", null, 170.0, female)
                 val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
                 
                 it("should return the resulting points") {
-                    val expected = 224
+                    val expected = 598
                     assertEquals(expected, points)
                 }
             }
             
-            on("boys 60m") {
+            on("boys") {
 
-                val model = FormulaModel("Schnelllauf", "60m", 11.4, male)
+                val model = FormulaModel("Seilspringen", null, 88.0, male)
                 val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
                 it("should return the resulting points") {
-                    val expected = 128
+                    val expected = 275
                     assertEquals(expected, points)
                 }
             }

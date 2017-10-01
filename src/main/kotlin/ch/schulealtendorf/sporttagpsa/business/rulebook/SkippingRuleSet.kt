@@ -36,54 +36,37 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
-import kotlin.test.assertEquals
+import ch.schulealtendorf.rules.RuleSet
 
 /**
- * Specification for a sprint rule set.
+ * Defines all the rules that can be applied to a skipping.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-@RunWith(JUnitPlatform::class)
-object SprintRuleSetSpec: Spek({
+class SkippingRuleSet: RuleSet<FormulaModel, Int>() {
+
+    /**
+     * @return true if the rules of this rule set can be used, otherwise false
+     */
+    override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Seilspringen" }
     
-    describe("a sprint rule set") {
+    init {
         
-        val male = true
-        val female = false
-        
-        val ruleSet = SprintRuleSet()
-        
-        given("a formula model") {
-            
-            on("girls 60m") {
-                
-                val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-                
-                it("should return the resulting points") {
-                    val expected = 224
-                    assertEquals(expected, points)
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { (1 * ((it - 0) pow 1.245)).toInt() }
+                   
+                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
                 }
-            }
-            
-            on("boys 60m") {
-
-                val model = FormulaModel("Schnelllauf", "60m", 11.4, male)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 128
-                    assertEquals(expected, points)
+        )
+        
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { (1.4 * ((it - 0) pow 1.18)).toInt() }
+                    
+                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
                 }
-            }
-        }
+        )
     }
-})
+}
