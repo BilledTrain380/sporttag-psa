@@ -46,41 +46,63 @@ import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 /**
- * Specification for a ball thorwing rule set.
+ * Specification for a basket throwing.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
 @RunWith(JUnitPlatform::class)
-object BallThrowingRuleSetSpec: Spek({
-    
-    describe("a ball throwing rule set") {
+object BasketThrowingRuleSetSpec: Spek({
+
+    describe("a basket throwing set") {
 
         val male = true
         val female = false
 
-        val ruleSet = BallThrowingRuleSet()
+        val ruleSet = BasketThrowingRuleSet()
 
         given("a formula model") {
 
-            on("girls") {
+            on("girls 2m") {
 
-                val model = FormulaModel("Ballwurf", "60m", 32.96, female)
+                val model = FormulaModel("Korbeinwurf", "2m", 2.0, female)
                 val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
                 it("should return the resulting points") {
-                    val expected = 440
+                    val expected = 62
                     assertEquals(expected, points)
                 }
             }
 
-            on("boys") {
+            on("girls 2.5m") {
 
-                val model = FormulaModel("Ballwurf", "60m", 16.32, male)
+                val model = FormulaModel("Korbeinwurf", "2.5m", 10.0, female)
                 val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
                 it("should return the resulting points") {
-                    val expected = 121
+                    val expected = 402
+                    assertEquals(expected, points)
+                }
+            }
+
+            on("boys 2m") {
+
+                val model = FormulaModel("Korbeinwurf", "2m", 8.0, male)
+                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
+
+                it("should return the resulting points") {
+                    val expected = 264
+                    assertEquals(expected, points)
+                }
+            }
+
+            on("boys 2.5m") {
+
+                val model = FormulaModel("Korbeinwurf", "2.5m", 8.0, male)
+                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
+
+                it("should return the resulting points") {
+                    val expected = 292
                     assertEquals(expected, points)
                 }
             }

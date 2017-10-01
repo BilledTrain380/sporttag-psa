@@ -36,54 +36,53 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
-import kotlin.test.assertEquals
+import ch.schulealtendorf.rules.RuleSet
 
 /**
- * Specification for a ball thorwing rule set.
+ * Defines all the rules that can be applied to a basket throwing.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-@RunWith(JUnitPlatform::class)
-object BallThrowingRuleSetSpec: Spek({
+class BasketThrowingRuleSet: RuleSet<FormulaModel, Int>() {
+
+    /**
+     * @return true if the rules of this rule set can be used, otherwise false
+     */
+    override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Korbeinwurf" }
     
-    describe("a ball throwing rule set") {
-
-        val male = true
-        val female = false
-
-        val ruleSet = BallThrowingRuleSet()
-
-        given("a formula model") {
-
-            on("girls") {
-
-                val model = FormulaModel("Ballwurf", "60m", 32.96, female)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 440
-                    assertEquals(expected, points)
+    init {
+        
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { (29 * ((it - 0) pow 1.1)).toInt() }
+                    
+                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "2m" }
                 }
-            }
+        )
 
-            on("boys") {
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { (32 * ((it - 0) pow 1.1)).toInt() }
 
-                val model = FormulaModel("Ballwurf", "60m", 16.32, male)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 121
-                    assertEquals(expected, points)
+                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "2.5m" }
                 }
-            }
-        }
+        )
+
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { (28 * ((it - 0) pow 1.08)).toInt() }
+
+                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "2m" }
+                }
+        )
+
+        addRule(
+                object: FormulaRule() {
+                    override val formula: (Double) -> Int = { (31 * ((it - 0) pow 1.08)).toInt() }
+
+                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "2.5m" }
+                }
+        )
     }
-})
+}
