@@ -61,7 +61,7 @@ object SprintRuleSetSpec: Spek({
         
         given("a formula model") {
             
-            on("girls 50m") {
+            on("girls 60m") {
                 
                 val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
                 
@@ -75,6 +75,24 @@ object SprintRuleSetSpec: Spek({
                 
                 it("should return the resulting points") {
                     val expected = 224
+                    assertEquals(expected, points)
+                }
+            }
+            
+            on("boys 60m") {
+
+                val model = FormulaModel("Schnelllauf", "60m", 11.4, male)
+
+                var points: Int = Int.MIN_VALUE
+
+                ruleSet.getRules().forEach {
+                    if (it.whenever(model)) {
+                        points = it.then(model)
+                    }
+                }
+
+                it("should return the resulting points") {
+                    val expected = 128
                     assertEquals(expected, points)
                 }
             }
