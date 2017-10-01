@@ -40,13 +40,20 @@ import ch.schulealtendorf.rules.RuleBook
 import org.springframework.stereotype.Component
 
 /**
+ * Contains all the rules that are used in a PSA sport tournament.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @Component
 class PSARuleBook: RuleBook<FormulaModel, Int>(FormulaModel::class, Int::class) {
     
     init {
-        // TODO: Add rules here...
+        addRuleSet(SprintRuleSet())
+        addRuleSet(SkippingRuleSet())
+        addRuleSet(TargetThrowingRuleSet())
+        addRuleSet(BroadJumpRuleSet())
+        addRuleSet(BallThrowingRuleSet())
+        addRuleSet(BasketThrowingRuleSet())
     }
 }
