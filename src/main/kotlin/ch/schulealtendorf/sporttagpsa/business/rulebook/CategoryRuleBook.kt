@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import ch.schulealtendorf.rules.RuleBook
+import ch.schulealtendorf.rules.BasicRuleBook
 import org.springframework.stereotype.Component
 
 /**
@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component
  * @version 0.0.1
  */
 @Component
-class CategoryRuleBook: RuleBook<CategoryModel, String>(
+class CategoryRuleBook: BasicRuleBook<CategoryModel, String>(
         CategoryModel::class,
         String::class
 ) {

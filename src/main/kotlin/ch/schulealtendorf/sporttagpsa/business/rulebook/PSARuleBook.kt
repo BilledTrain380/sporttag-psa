@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import ch.schulealtendorf.rules.RuleBook
+import ch.schulealtendorf.rules.BasicRuleBook
 import org.springframework.stereotype.Component
 
 /**
@@ -46,7 +46,7 @@ import org.springframework.stereotype.Component
  * @version 1.0.0
  */
 @Component
-class PSARuleBook: RuleBook<FormulaModel, Int>(FormulaModel::class, Int::class) {
+class PSARuleBook: BasicRuleBook<FormulaModel, Int>(FormulaModel::class, Int::class) {
     
     init {
         addRuleSet(SprintRuleSet())

@@ -49,7 +49,7 @@ import kotlin.reflect.KClass
  * @author nmaerchy
  * @version 1.0.1
  */
-open class RuleBook<T: Any, K: Any>(
+open class BasicRuleBook<T: Any, K: Any>(
         private val fact: KClass<T>,
         private val result: KClass<K>
 ) {
