@@ -42,7 +42,7 @@ package ch.schulealtendorf.sporttagpsa.controller.model
  * @author nmaerchy
  * @version 1.0.0
  */
-data class TournamentCompetitorModel @JvmOverloads constructor(
+data class TournamentCompetitorModel(
         var startNumber: Int = 0,
         var resultId: Int = 0,
         var prename: String = "",
