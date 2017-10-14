@@ -83,11 +83,11 @@ class CompetitorResultManager(
     }
 
     /**
-     * Runs the rulebook with the starters age and the given category.
+     * Runs the rulebook with the starters age and the given discipline.
      * 
      * @return the resulting distance
      */
-    private infix fun StarterEntity.distanceFor(category: String) = ruleBook.run(CategoryModel(competitor.birthday.age(), category))
+    private infix fun StarterEntity.distanceFor(discipline: String) = ruleBook.run(CategoryModel(competitor.birthday.age(), discipline))
 
     /**
      * @return the difference in years between now and the date
