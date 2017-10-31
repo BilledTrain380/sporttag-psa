@@ -43,6 +43,9 @@ import org.springframework.data.repository.CrudRepository
  * Describes a CRUD repository for a {@link ResultEntity}.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.1.0
  */
-interface ResultRepository: CrudRepository<ResultEntity, Int?>
+interface ResultRepository: CrudRepository<ResultEntity, Int> {
+    
+    fun findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(disciplineId: Int, gender: Boolean, clazzId: Int): List<ResultEntity>
+}

@@ -58,7 +58,7 @@ data class ResultEntity @JvmOverloads constructor(
         var distance: String? = null,
 
         @NotNull
-        var performance: Int = 1,
+        var result: Double = 1.0,
 
         @NotNull
         var points: Int = 1,
