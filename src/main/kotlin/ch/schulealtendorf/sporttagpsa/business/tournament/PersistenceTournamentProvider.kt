@@ -60,7 +60,22 @@ class PersistenceTournamentProvider(
      * @return the resulting competitor list
      */
     override fun findByFilter(filter: TournamentFilter): List<TournamentCompetitorModel> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val results = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(filter.disciplineId, filter.gender, filter.clazzId)
+        
+        return results.map { 
+            TournamentCompetitorModel(
+                    it.starter.number!!,
+                    it.id!!,
+                    it.starter.competitor.prename,
+                    it.starter.competitor.surname,
+                    it.starter.competitor.gender,
+                    it.distance,
+                    it.result,
+                    it.discipline.unit.unit,
+                    it.points
+            )
+        }
     }
 
     /**
