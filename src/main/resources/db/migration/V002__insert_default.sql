@@ -12,9 +12,10 @@ INSERT INTO UNIT (unit) VALUES
 INSERT INTO DISCIPLINE (name, FK_UNIT_id) VALUES 
   ('Schnelllauf', (SELECT id FROM UNIT WHERE unit = 'Sekunden')),
   ('Weitsprung', (SELECT id FROM UNIT WHERE unit = 'Meter')),
-  ('Weitwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
-  ('Zielwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
-  ('Seilspringen', (SELECT id FROM UNIT WHERE unit = 'Punkte'));
+  ('Ballwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
+  ('Ballzielwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
+  ('Seilspringen', (SELECT id FROM UNIT WHERE unit = 'Punkte')),
+  ('Korbeinwurf', (SELECT id FROM UNIT WHERE unit = 'Punkte'));
 
 INSERT INTO PARTICIPATION (is_finished) VALUES
   (FALSE);
