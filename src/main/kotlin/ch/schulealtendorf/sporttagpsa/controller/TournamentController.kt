@@ -36,13 +36,15 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
+import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
 import ch.schulealtendorf.sporttagpsa.business.rulebook.FormulaModel
 import ch.schulealtendorf.sporttagpsa.business.rulebook.PSARuleBook
+import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentFilter
 import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentProvider
 import ch.schulealtendorf.sporttagpsa.controller.model.ClazzModel
 import ch.schulealtendorf.sporttagpsa.controller.model.DisciplineModel
 import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorFormModel
-import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -53,13 +55,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
 /**
+ * Controller for the tournament.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @Controller
 class TournamentController(
         private val tournamentProvider: TournamentProvider,
-        private val ruleBook: PSARuleBook
+        private val ruleBook: PSARuleBook,
+        private val disciplineProvider: DisciplineProvider,
+        private val clazzProvider: ClazzProvider
 ) {
     
     companion object {
@@ -68,35 +74,36 @@ class TournamentController(
     
     @GetMapping("$TOURNAMENT/init")
     fun tournament(): String {
-        return "redirect:$TOURNAMENT?discipline_id=1&clazz_id=1&gender=true"
+        
+        val disciplineId = disciplineProvider.getAll().first().id
+        val clazzId = clazzProvider.getAll().first().id
+        
+        // TODO: show error page if no clazz exist yet
+        
+        return "redirect:$TOURNAMENT?discipline_id=$disciplineId&clazz_id=$clazzId&gender=true"
     }
     
     @GetMapping(TOURNAMENT)
     fun tournament(@RequestParam("discipline_id") disciplineId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean, model: Model): String {
         
-        // example data
-        val disciplines: List<DisciplineModel> = listOf(
-                DisciplineModel(1, "Schnelllauf"),
-                DisciplineModel(2, "Weitsprung")
-        )
+        val disciplineList: List<DisciplineModel> = disciplineProvider.getAll().map { DisciplineModel(it.id, it.name) }
+        val clazzList: List<ClazzModel> = clazzProvider.getAll().map { ClazzModel(it.id, it.name) }
         
-        val clazzList: List<ClazzModel> = listOf(
-                ClazzModel(1, "2b"),
-                ClazzModel(2, "2a")
-        )
+        val filter = TournamentFilter(disciplineId, clazzId, gender)
+        val results = tournamentProvider.findByFilter(filter)
+        
+        val currentDiscipline = disciplineList.first { it.id == disciplineId }
+        val currentClazz = clazzList.first { it.id == clazzId }
         
         val formModel = TournamentCompetitorFormModel(
-                DisciplineModel(2, "Weitsprung"),
-                ClazzModel(1, "2a"),
-                false,
-                listOf(
-                        TournamentCompetitorModel(1, 1,"Max", "Muster", "50m", 0.0, "sec"),
-                        TournamentCompetitorModel(2, 2,"Max", "Muster", null, 0.0, "sec")
-                )
+                currentDiscipline,
+                currentClazz,
+                gender,
+                results
         )
         
         model.addAttribute("tournamentForm", formModel)
-        model.addAttribute("disciplines", disciplines)
+        model.addAttribute("disciplines", disciplineList)
         model.addAttribute("clazzList", clazzList)
         
         return "tournament"
@@ -110,10 +117,11 @@ class TournamentController(
             val ruleModel = FormulaModel(
                     tournamentModel.discipline.name,
                     it.distance,
-                    it.result
+                    it.result,
+                    it.gender
             )
   
-            it.points = ruleBook.run(ruleModel)
+            it.points = ruleBook.run(ruleModel)!!
             
             tournamentProvider.updateResult(it)
         }
