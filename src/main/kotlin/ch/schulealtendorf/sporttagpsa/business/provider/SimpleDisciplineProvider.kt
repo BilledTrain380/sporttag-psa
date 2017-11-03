@@ -36,16 +36,26 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import org.springframework.stereotype.Component
+
 /**
+ * Provider for {@link DisciplineEntity}.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class SimpleDisciplineProvider: DisciplineProvider {
+@Component
+class SimpleDisciplineProvider(
+        private val disciplineRepository: DisciplineRepository
+): DisciplineProvider {
 
     /**
      * @return all the data from this provider
      */
     override fun getAll(): Collection<SimpleDiscipline> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        return disciplineRepository.findAll().map { 
+            SimpleDiscipline(it?.id!!, it.name)
+        }
     }
 }

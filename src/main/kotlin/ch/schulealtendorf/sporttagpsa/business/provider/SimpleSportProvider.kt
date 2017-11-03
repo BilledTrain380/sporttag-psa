@@ -36,16 +36,26 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.repository.SportRepository
+import org.springframework.stereotype.Component
+
 /**
+ * Provider for {@link SportEntity}.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class SimpleSportProvider: SportProvider {
+@Component
+class SimpleSportProvider(
+        private val sportRepository: SportRepository
+): SportProvider {
 
     /**
      * @return all the data from this provider
      */
     override fun getAll(): Collection<SimpleSport> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        return sportRepository.findAll().map { 
+            SimpleSport(it?.id!!, it.name)
+        }
     }
 }

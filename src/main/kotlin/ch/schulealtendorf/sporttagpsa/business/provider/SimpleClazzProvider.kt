@@ -36,16 +36,26 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
+import org.springframework.stereotype.Component
+
 /**
+ * Provider for {@link ClazzEntity}.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class SimpleClazzProvider: ClazzProvider {
+@Component
+class SimpleClazzProvider(
+        private val clazzRepository: ClazzRepository
+): ClazzProvider {
 
     /**
      * @return all the data from this provider
      */
     override fun getAll(): Collection<SimpleClazz> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        return clazzRepository.findAll().map { 
+            SimpleClazz(it?.id!!, it.name)
+        }
     }
 }
