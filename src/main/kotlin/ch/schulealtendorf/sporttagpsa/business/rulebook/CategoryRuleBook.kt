@@ -37,12 +37,14 @@
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
 import ch.schulealtendorf.rules.BasicRuleBook
+import ch.schulealtendorf.rules.Rule
 import org.springframework.stereotype.Component
 
 /**
+ * Rulebook that determines the distance by the age and discipline.
  * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @Component
 class CategoryRuleBook: BasicRuleBook<CategoryModel, String>(
@@ -51,6 +53,49 @@ class CategoryRuleBook: BasicRuleBook<CategoryModel, String>(
 ) {
     
     init {
-        // TODO: Add rules here...
+        addRule(
+                object: Rule<CategoryModel, String>() {
+                    
+                    override val whenever: (CategoryModel) -> Boolean = { it.discipline == "Schnelllauf" }
+                    
+                    override val then: (CategoryModel) -> String = { "60m" }
+                }
+        )
+        
+        addRule(
+                object: Rule<CategoryModel, String>() {
+                    
+                    override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Ballzielwurf"}
+                    
+                    override val then: (CategoryModel) -> String = { "4m" }
+                }
+        )
+        
+        addRule(
+                object: Rule<CategoryModel, String>() {
+                    
+                    override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Ballzielwurf" }
+                    
+                    override val then: (CategoryModel) -> String = { "5m" }
+                }
+        )
+        
+        addRule(
+                object: Rule<CategoryModel, String>() {
+                    
+                    override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Korbeinwurf" }
+                    
+                    override val then: (CategoryModel) -> String = { "2m" }
+                }
+        )
+
+        addRule(
+                object: Rule<CategoryModel, String>() {
+
+                    override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Korbeinwurf" }
+
+                    override val then: (CategoryModel) -> String = { "2.5m" }
+                }
+        )
     }
 }
