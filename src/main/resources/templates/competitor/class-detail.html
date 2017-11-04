@@ -57,8 +57,10 @@
         <div th:if="${success}" class="alert alert-success" role="alert">
             Änderungen wurden erfolgreich übernommen.
         </div>
-
-        <!-- TODO: Add message when participation is already finished -->
+        
+        <div th:if="${participationStatus}" class="alert alert-info" role="alert">
+            Die Teilnahme ist bereits abgeschlossen. Sie können die Sportart nicht mehr ändern.
+        </div>
         
         <div class="row">
 

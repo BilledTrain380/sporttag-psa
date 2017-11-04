@@ -58,7 +58,9 @@
             Änderungen wurden erfolgreich übernommen.
         </div>
 
-        <!-- TODO: Add message when participation is not finished -->
+        <div th:if="${participationStatus}" class="alert alert-info" role="alert">
+            Um Resultate zu erfassen müsses Sie erst die Teilnahme abschliessen. <a th:href="@{/management/basic}">zur Teilnahme Verwaltung</a>
+        </div>
 
         <div class="row">
 

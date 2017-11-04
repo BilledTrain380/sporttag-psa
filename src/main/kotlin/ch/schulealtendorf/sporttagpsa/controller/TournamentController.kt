@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
 import ch.schulealtendorf.sporttagpsa.business.rulebook.FormulaModel
@@ -65,7 +66,8 @@ class TournamentController(
         private val tournamentProvider: TournamentProvider,
         private val ruleBook: PSARuleBook,
         private val disciplineProvider: DisciplineProvider,
-        private val clazzProvider: ClazzProvider
+        private val clazzProvider: ClazzProvider,
+        private val participationStatus: ParticipationStatus
 ) {
     
     companion object {
@@ -105,6 +107,7 @@ class TournamentController(
         model.addAttribute("tournamentForm", formModel)
         model.addAttribute("disciplines", disciplineList)
         model.addAttribute("clazzList", clazzList)
+        model.addAttribute("participationStatus", !participationStatus.isFinished())
         
         return "tournament"
     }
