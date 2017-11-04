@@ -84,6 +84,11 @@ class PersistenceTournamentProvider(
      * @param model holds the result to update
      */
     override fun updateResult(model: TournamentCompetitorModel) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val result = resultRepository.findOne(model.resultId)
+        result.result = model.result
+        result.points = model.points
+        
+        resultRepository.save(result)
     }
 }
