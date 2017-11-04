@@ -121,7 +121,7 @@ class TournamentController(
                     it.gender
             )
   
-            it.points = ruleBook.run(ruleModel)!!
+            it.points = ruleBook.run(ruleModel) ?: 1
             
             tournamentProvider.updateResult(it)
         }
@@ -129,6 +129,8 @@ class TournamentController(
         val discipline = tournamentModel.discipline.id
         val clazz = tournamentModel.clazz.id
         val gender = tournamentModel.gender
+
+        redirectAttributes.addFlashAttribute("success", true)
         
         return "redirect:$TOURNAMENT?discipline_id=$discipline&clazz_id=$clazz&gender=$gender"
     }
