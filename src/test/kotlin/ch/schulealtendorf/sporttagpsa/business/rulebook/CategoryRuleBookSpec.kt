@@ -46,8 +46,10 @@ import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 /**
+ * Specification for {@link CategoryRuleBook}.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @RunWith(JUnitPlatform::class)
 object CategoryRuleBookSpec: Spek({
@@ -117,6 +119,27 @@ object CategoryRuleBookSpec: Spek({
                 // Assert
                 it("should return 2.5m") {
                     val expected = "2.5m"
+                    assertEquals(expected, distance)
+                }
+            }
+        }
+        
+        given("a skipping discipline") {
+        
+            on("running after an applied rule") {
+        
+                // Arrange
+                val ballThrowing = CategoryModel(12, "Korbeinwurf")
+                val skipping = CategoryModel(12, "Seilspringen")
+                
+                ruleBook.run(ballThrowing)
+                
+                // Act
+                val distance = ruleBook.run(skipping)
+                
+                // Assert
+                it("should return null") {
+                    val expected = null
                     assertEquals(expected, distance)
                 }
             }

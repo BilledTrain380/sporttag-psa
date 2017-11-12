@@ -80,8 +80,9 @@ open class BasicRuleBook<T: Any, K: Any>(
         val facts: NameValueReferableMap<Any> = FactMap()
         facts.setValue("input", fact)
 
+        ruleBook.setDefaultResult(null)
         ruleBook.run(facts)
-
+        
         if (ruleBook.result.isPresent) {
             return ruleBook.result.get().value
         }
