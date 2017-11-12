@@ -75,12 +75,18 @@ class TournamentController(
     }
     
     @GetMapping("$TOURNAMENT/init")
-    fun tournament(): String {
+    fun tournament(model: Model): String {
+        
+        val clazzes = clazzProvider.getAll()
+        
+        if (clazzes.isEmpty()) {
+            
+            model.addAttribute("missingClazzes", true)
+            return "tournament"
+        }
         
         val disciplineId = disciplineProvider.getAll().first().id
-        val clazzId = clazzProvider.getAll().first().id
-        
-        // TODO: show error page if no clazz exist yet
+        val clazzId = clazzes.first().id
         
         return "redirect:$TOURNAMENT?discipline_id=$disciplineId&clazz_id=$clazzId&gender=true"
     }

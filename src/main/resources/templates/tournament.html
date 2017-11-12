@@ -59,10 +59,14 @@
         </div>
 
         <div th:if="${participationStatus}" class="alert alert-info" role="alert">
-            Um Resultate zu erfassen müsses Sie erst die Teilnahme abschliessen. <a th:href="@{/management/basic}">zur Teilnahme Verwaltung</a>
+            Um Resultate erfassen zu können, müssen Sie erst die Teilnahme abschliessen. <a th:href="@{/management/basic}">Zur Teilnahme Verwaltung</a>
         </div>
 
-        <div class="row">
+        <div th:if="${missingClazzes}" class="alert alert-info" role="alert">
+            Es existieren noch keine Klassen. Stellen Sie sicher, dass sie erst Teilnehmer importieren. <a th:href="@{/import}">Zum Import</a>
+        </div>
+
+        <div class="row" th:if="!${missingClazzes}">
 
             <div class="col-lg-12">
 
