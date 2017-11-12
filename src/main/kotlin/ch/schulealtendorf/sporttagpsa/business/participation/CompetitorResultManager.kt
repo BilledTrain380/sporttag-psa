@@ -77,7 +77,7 @@ class CompetitorResultManager(
         disciplines.forEach {
             val distance = starter distanceFor  it.name
             
-            val result = ResultEntity(null, distance,1, 1, starter, it)
+            val result = ResultEntity(null, distance,0.0, 1, starter, it)
             resultRepository.save(result)
         }
     }
@@ -87,7 +87,7 @@ class CompetitorResultManager(
      * 
      * @return the resulting distance
      */
-    private infix fun StarterEntity.distanceFor(discipline: String) = ruleBook.run(CategoryModel(competitor.birthday.age(), discipline))
+    private infix fun StarterEntity.distanceFor(discipline: String) = ruleBook.getDistance(CategoryModel(competitor.birthday.age(), discipline))
 
     /**
      * @return the difference in years between now and the date

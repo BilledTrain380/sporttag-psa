@@ -36,66 +36,21 @@
 
 package ch.schulealtendorf.sporttagpsa.business.rulebook
 
-import ch.schulealtendorf.rules.BasicRuleBook
-import ch.schulealtendorf.rules.Rule
-import org.springframework.stereotype.Component
-
 /**
- * Rulebook that determines the distance by the age and discipline.
+ * Describes a rule book that provides the distance for a specific category.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-@Component
-class CategoryRuleBook: BasicRuleBook<CategoryModel, String>(
-        CategoryModel::class,
-        String::class
-) {
-    
-    init {
-        addRule(
-                object: Rule<CategoryModel, String>() {
-                    
-                    override val whenever: (CategoryModel) -> Boolean = { it.discipline == "Schnelllauf" }
-                    
-                    override val then: (CategoryModel) -> String = { "60m" }
-                }
-        )
-        
-        addRule(
-                object: Rule<CategoryModel, String>() {
-                    
-                    override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Ballzielwurf"}
-                    
-                    override val then: (CategoryModel) -> String = { "4m" }
-                }
-        )
-        
-        addRule(
-                object: Rule<CategoryModel, String>() {
-                    
-                    override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Ballzielwurf" }
-                    
-                    override val then: (CategoryModel) -> String = { "5m" }
-                }
-        )
-        
-        addRule(
-                object: Rule<CategoryModel, String>() {
-                    
-                    override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Korbeinwurf" }
-                    
-                    override val then: (CategoryModel) -> String = { "2m" }
-                }
-        )
+interface CategoryRuleBook {
 
-        addRule(
-                object: Rule<CategoryModel, String>() {
-
-                    override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Korbeinwurf" }
-
-                    override val then: (CategoryModel) -> String = { "2.5m" }
-                }
-        )
-    }
+    /**
+     * Defines the category depending on the given 
+     * {@code fact} and then determines the distance.
+     * 
+     * @param fact the fact to use
+     * 
+     * @return the resulting distance or null if no distance applies for the given {@code fact}
+     */
+    fun getDistance(fact: CategoryModel): String?
 }

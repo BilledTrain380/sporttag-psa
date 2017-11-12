@@ -99,22 +99,22 @@ object CompetitorResultManagerSpec : Spek({
             
             on("creating the results") {
 
-                whenever(mockStarterRepository.save(any<StarterEntity>()))
-                        .thenReturn(StarterEntity())
-                
-                doReturn("2m").whenever(mockRuleBook).run(weitsprungCategory)
-                doReturn("5m").whenever(mockRuleBook).run(weitwurfCategory)
-                
-//                whenever(mockRuleBook.run(weitsprungCategory))
-//                        .thenReturn("2m")
-//                
-//                whenever(mockRuleBook.run(weitwurfCategory))
-//                        .thenReturn("5m")
-                
+                // Arrange
                 val competitor = CompetitorEntity(1, "Muster", "max", true, birthday)
                 
+                whenever(mockStarterRepository.save(any<StarterEntity>()))
+                        .thenReturn(StarterEntity(1, competitor))
+                
+                whenever(mockRuleBook.getDistance(weitsprungCategory))
+                        .thenReturn("2m")
+
+                whenever(mockRuleBook.getDistance(weitwurfCategory))
+                        .thenReturn("5m")
+                
+                // Act
                 manager.createResults(competitor)
                 
+                // Assert
                 it("should create a starter") {
                     verify(mockStarterRepository, times(1))
                             .save(any<StarterEntity>())
@@ -127,9 +127,9 @@ object CompetitorResultManagerSpec : Spek({
                 
                 it("should consider the category rule book to get the distance") {
                     verify(mockRuleBook, times(1))
-                            .run(weitsprungCategory)
+                            .getDistance(weitsprungCategory)
                     verify(mockRuleBook, times(1))
-                            .run(weitwurfCategory)
+                            .getDistance(weitwurfCategory)
                 }
             }
         }

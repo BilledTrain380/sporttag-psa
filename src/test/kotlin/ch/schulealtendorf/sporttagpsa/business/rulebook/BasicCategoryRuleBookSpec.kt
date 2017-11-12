@@ -52,11 +52,11 @@ import kotlin.test.assertEquals
  * @version 1.0.0
  */
 @RunWith(JUnitPlatform::class)
-object CategoryRuleBookSpec: Spek({
+object BasicCategoryRuleBookSpec : Spek({
     
     describe("a category rule book") {
         
-        val ruleBook = CategoryRuleBook()
+        val ruleBook = BasicCategoryRuleBook()
         
         given("a target throwing discipline") {
             

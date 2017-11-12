@@ -40,7 +40,7 @@ import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
 import ch.schulealtendorf.sporttagpsa.business.rulebook.FormulaModel
-import ch.schulealtendorf.sporttagpsa.business.rulebook.PSARuleBook
+import ch.schulealtendorf.sporttagpsa.business.rulebook.ResultRuleBook
 import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentFilter
 import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentProvider
 import ch.schulealtendorf.sporttagpsa.controller.model.ClazzModel
@@ -59,12 +59,12 @@ import javax.validation.Valid
  * Controller for the tournament.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.0.1
  */
 @Controller
 class TournamentController(
         private val tournamentProvider: TournamentProvider,
-        private val ruleBook: PSARuleBook,
+        private val ruleBook: ResultRuleBook,
         private val disciplineProvider: DisciplineProvider,
         private val clazzProvider: ClazzProvider,
         private val participationStatus: ParticipationStatus
@@ -124,7 +124,7 @@ class TournamentController(
                     it.gender
             )
   
-            it.points = ruleBook.run(ruleModel) ?: 1
+            it.points = ruleBook.calc(ruleModel)
             
             tournamentProvider.updateResult(it)
         }
