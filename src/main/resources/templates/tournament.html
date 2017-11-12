@@ -73,10 +73,12 @@
                     <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{discipline.id}">
                         <option th:each="discipline : ${disciplines}" th:text="${discipline.name}" th:value="${discipline.id}"></option>
                     </select>
+                    <input type="hidden" th:field="*{discipline.name}"/>
 
                     <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{clazz.id}">
                         <option th:each="clazz : ${clazzList}" th:text="${clazz.name}" th:value="${clazz.id}"></option>
                     </select>
+                    <input type="hidden" th:field="*{clazz.name}"/>
 
                     <select class="form-control mb-2 mr-sm-2 mb-sm-0" th:field="*{gender}">
                         <option th:value="true">Knaben</option>
