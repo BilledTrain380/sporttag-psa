@@ -46,14 +46,14 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "SPORT")
-data class SportEntity(
+data class SportEntity @JvmOverloads constructor(
         
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int?,
+        var id: Int? = null,
         
         @NotNull
         @Size(min = 1, max = 45)
-        var name: String
+        var name: String = ""
 )

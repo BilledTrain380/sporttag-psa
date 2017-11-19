@@ -89,9 +89,16 @@
                     <li th:class="${active} == clazz-list? active : ''">
                         <a th:href="@{/clazz}">Klassenliste</a>
                     </li>
+                    <li th:class="${active} == management? active : ''">
+                        <a th:href="@{/management/basic}">Verwaltung</a>
+                    </li>
                 </ul>
             </li>
 
+            <li class="nav-item" th:classappend="${menu} == tournament? active : ''">
+                <a class="nav-link" th:href="@{/tournament/init}"><i class="fa fa-fw fa-futbol-o"></i> Mehrkampf</a>
+            </li>
+            
             <!-- copy when using multilevel -->
             <!--<li class="nav-item">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti"><i class="fa fa-fw fa-sitemap"></i> Menu Levels</a>

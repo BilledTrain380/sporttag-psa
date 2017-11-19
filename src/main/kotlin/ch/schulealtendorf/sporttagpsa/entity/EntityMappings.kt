@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.model.SportModel
+import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
 
 /**
  * This file contains extension functions to map entity classes to the according model class

@@ -57,7 +57,11 @@
         <div th:if="${success}" class="alert alert-success" role="alert">
             Änderungen wurden erfolgreich übernommen.
         </div>
-
+        
+        <div th:if="${participationStatus}" class="alert alert-info" role="alert">
+            Die Teilnahme ist bereits abgeschlossen. Sie können die Sportart nicht mehr ändern.
+        </div>
+        
         <div class="row">
 
             <div class="col-lg-12">
@@ -100,7 +104,7 @@
                                 <input type="hidden" th:field="*{competitors[__${status.index}__].address}">
                                 
                                 
-                                <select class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
+                                <select th:disabled="${participationStatus}" class="form-control" th:field="*{competitors[__${status.index}__].sport.id}">
                                     <option selected th:value="0">---</option>
                                     <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
                                 </select>

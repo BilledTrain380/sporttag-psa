@@ -47,43 +47,40 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "COMPETITOR")
-data class CompetitorEntity(
-        
+data class CompetitorEntity @JvmOverloads constructor(
+
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int?,
-        
+        var id: Int? = null,
+
         @NotNull
         @Size(min = 1, max = 30)
-        var surname: String,
-        
+        var surname: String = "",
+
         @NotNull
         @Size(min = 1, max = 30)
-        var prename: String,
-        
+        var prename: String = "",
+
         @NotNull
-        var gender: Boolean,
-        
+        var gender: Boolean = true,
+
         @NotNull
-        var birthday: Date,
-        
+        var birthday: Date = Date(0),
+
         @NotNull
         @Size(min = 1, max = 80)
-        var address: String,
-        
+        var address: String = "",
+
         @ManyToOne
         @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
-        var town: TownEntity,
-        
+        var town: TownEntity = TownEntity(),
+
         @ManyToOne
         @JoinColumn(name = "FK_CLAZZ_id", referencedColumnName = "id")
-        var clazz: ClazzEntity,
-        
+        var clazz: ClazzEntity = ClazzEntity(),
+
         @ManyToOne
         @JoinColumn(name = "FK_SPORT_id", referencedColumnName = "id")
-        var sport: SportEntity?
-) {
-        constructor(surname: String, prename: String, gender: Boolean, birthday: Date, address: String, town: TownEntity, clazz: ClazzEntity):
-                this(null, surname, prename, gender, birthday, address, town, clazz, null)
-}
+        var sport: SportEntity? = null
+)

@@ -46,20 +46,18 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "TOWN")
-data class TownEntity(
+data class TownEntity @JvmOverloads constructor(
         
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int?,
+        var id: Int? = null,
         
         @NotNull
         @Size(min = 4, max = 4)
-        var zip: String,
+        var zip: String = "",
         
         @NotNull
         @Size(min = 1, max = 50)
-        var name: String
-) {
-    constructor(zip: String, name: String) : this(null, zip, name)
-}
+        var name: String = ""
+)
