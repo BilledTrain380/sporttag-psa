@@ -70,5 +70,8 @@ class PSARuleBook: BasicRuleBook<FormulaModel, Int>(
      *
      * @return the resulting result
      */
-    override fun calc(fact: FormulaModel): Int = run(fact) ?: 1
+    override fun calc(fact: FormulaModel): Int {
+        val result = run(fact) ?: 1
+        return if (result < 1) 1 else result
+    }
 }
