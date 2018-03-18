@@ -53,7 +53,7 @@ interface Reporter<T> {
      * @param data the data for the report/s
      * 
      * @return all generated reports
-     * @throws ReportGenerationException if the report generation fails due an IOException
+     * @throws ReportGenerationException if the report generation fails
      */
     fun generateReport(data: T): Set<File>
 }

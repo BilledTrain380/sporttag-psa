@@ -36,14 +36,34 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
+import ch.schulealtendorf.pra.api.ReportAPIException
+import ch.schulealtendorf.pra.api.TotalRankingAPI
+import ch.schulealtendorf.pra.pojo.Discipline
+import ch.schulealtendorf.pra.pojo.Result
+import ch.schulealtendorf.pra.pojo.TotalCompetitor
+import ch.schulealtendorf.pra.pojo.TotalRanking
 import ch.schulealtendorf.sporttagpsa.business.export.TotalRankingExportModel
+import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
+import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
+import org.joda.time.DateTime
+import org.springframework.stereotype.Component
 import java.io.File
+import java.io.IOException
+import java.time.Year
 
 /**
+ * Reporter for {@link TotalRankingExportModel} which uses PRA report api.
+ * https://github.com/BilledTrain380/PRA
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class PRATotalRankingReporter: TotalRankingReporter {
+@Component
+class PRATotalRankingReporter(
+        private val storageManager: StorageManager,
+        private val starterRepository: StarterRepository,
+        private val totalRankingAPI: TotalRankingAPI
+): TotalRankingReporter {
 
     /**
      * Generates reports depending on the given {@code data}.
@@ -51,8 +71,103 @@ class PRATotalRankingReporter: TotalRankingReporter {
      * @param data the data for the report/s
      *
      * @return all generated reports
+     * @throws ReportGenerationException if the report generation fails
      */
     override fun generateReport(data: TotalRankingExportModel): Set<File> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+
+        try {
+
+            val reports: MutableSet<File> = mutableSetOf()
+
+            if(data.male) {
+                reports.addAll(generateReport(true))
+            }
+
+            if(data.female) {
+                reports.addAll(generateReport(false))
+            }
+
+            return reports
+
+        } catch (ex: IOException) {
+            throw ReportGenerationException("Could not create report due IOException: ${ex.message}", ex)
+        } catch (ex: ReportAPIException) {
+            throw ReportGenerationException("Could not create report due ReportAPIException: ${ex.message}", ex)
+        }
+    }
+    
+    private fun generateReport(gender: Boolean): Set<File> {
+        
+        val competitors = starterRepository.findByCompetitorGender(gender)
+        
+        return competitors
+                .groupBy { DateTime(it.competitor.birthday).year }
+                .map { 
+                    
+                    val ranking = TotalRanking().apply { 
+                     
+                        year = Year.of(it.key)
+                        isGender = gender
+                        this.competitors = it.value.map { 
+                            TotalCompetitor().apply { 
+                                prename = it.competitor.prename
+                                surname = it.competitor.surname
+                                clazz = it.competitor.clazz.name
+                                
+                                weitsprung = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                                
+                                seilspringen = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Seilspringen" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                                
+                                schelllauf = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                                
+                                korbeinwurf = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Korbeinwurf" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                                
+                                ballzielWurf = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Ballzielwurf" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                                
+                                ballwurf = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                            }
+                        }
+                    }
+                    
+                    val report = totalRankingAPI.createReport(ranking)
+                    
+                    storageManager.write("Rangliste ${if(gender) "Knaben" else "Mädchen"} Gesamt ${it.key}.pdf", report)
+                }.toSet()
     }
 }

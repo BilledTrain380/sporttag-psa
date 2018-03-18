@@ -36,23 +36,116 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
+import ch.schulealtendorf.pra.api.DisciplineGroupRankingAPI
+import ch.schulealtendorf.pra.api.ReportAPIException
+import ch.schulealtendorf.pra.pojo.Discipline
+import ch.schulealtendorf.pra.pojo.DisciplineGroupCompetitor
+import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
+import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineGroupRankingExportModel
+import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
+import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
+import org.joda.time.DateTime
+import org.springframework.stereotype.Component
 import java.io.File
+import java.io.IOException
+import java.time.Year
 
 /**
+ * Reporter for {@link DisciplineGroupRankingExportModel} which uses PRA report api.
+ * https://github.com/BilledTrain380/PRA
+ *
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class PRADisciplineGroupRankingReporter: DisciplineGroupRankingReporter {
+@Component
+class PRADisciplineGroupRankingReporter(
+        private val storageManager: StorageManager,
+        private val starterRepository: StarterRepository,
+        private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI
+): DisciplineGroupRankingReporter {
 
     /**
      * Generates reports depending on the given {@code data}.
      *
+     * Generates reports for discipline group.
+     * The reports are grouped by the gender and age of the competitors.
+     * 
      * @param data the data for the report/s
      *
      * @return all generated reports
+     * @throws ReportGenerationException if the report generation fails
      */
     override fun generateReport(data: DisciplineGroupRankingExportModel): Set<File> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+
+        try {
+
+            val reports: MutableSet<File> = mutableSetOf()
+
+            if(data.male) {
+                reports.addAll(generateReport(true))
+            }
+
+            if(data.female) {
+                reports.addAll(generateReport(false))
+            }
+
+            return reports
+
+        } catch (ex: IOException) {
+            throw ReportGenerationException("Could not create Report due IOException: ${ex.message}", ex)
+        } catch (ex: ReportAPIException) {
+            throw ReportGenerationException("Could not create report due ReportAPIException: ${ex.message}", ex)
+        }
+    }
+    
+    private fun generateReport(gender: Boolean): Set<File> {
+        
+        val competitors = starterRepository.findByCompetitorGender(gender)
+
+        return competitors
+                .groupBy { DateTime(it.competitor.birthday).year }
+                .map {
+
+                    val ranking = DisciplineGroupRanking().apply {
+                        year = Year.of(it.key)
+                        isGender = gender
+                        this.competitors = it.value.map {
+                            DisciplineGroupCompetitor().apply {
+                                prename = it.competitor.prename
+                                surname = it.competitor.surname
+                                clazz = it.competitor.clazz.name
+
+                                ballwurf = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+
+                                weitsprung = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+
+                                schnelllauf = Discipline().apply {
+                                    val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
+
+                                    setDistance(resultEntity.distance)
+                                    result = Result(resultEntity.result)
+                                    points = resultEntity.points
+                                }
+                            }
+                        }
+                    }
+
+                    val report = disciplineGroupRankingAPI.createReport(ranking)
+
+                    storageManager.write("Rangliste ${if(gender) "Knaben" else "Mädchen"} 3-Kampf ${it.key}.pdf", report)
+                }.toSet()
     }
 }

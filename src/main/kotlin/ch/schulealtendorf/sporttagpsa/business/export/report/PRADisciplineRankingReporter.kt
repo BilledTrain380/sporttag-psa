@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
 import ch.schulealtendorf.pra.api.DisciplineRankingAPI
+import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.DisciplineCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
@@ -72,7 +73,7 @@ class PRADisciplineRankingReporter(
      * @param data the data for the report/s
      *
      * @return all generated reports
-     * @throws ReportGenerationException if the report generation fails due an IOException
+     * @throws ReportGenerationException if the report generation fails
      */
     override fun generateReport(data: DisciplineRankingExportModel): Set<File> {
         
@@ -92,6 +93,8 @@ class PRADisciplineRankingReporter(
             
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not create Report due IOException: ${ex.message}", ex)
+        } catch (ex: ReportAPIException) {
+            throw ReportGenerationException("Could not create report due ReportAPIException: ${ex.message}", ex)
         }
     }
     
