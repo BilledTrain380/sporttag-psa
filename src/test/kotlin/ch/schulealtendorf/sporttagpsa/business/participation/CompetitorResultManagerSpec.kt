@@ -51,7 +51,6 @@ import org.jetbrains.spek.api.dsl.on
 import org.joda.time.DateTime
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
-import java.sql.Date
 
 /**
  * Spec for {@link CompetitorResultManager}.
@@ -95,7 +94,7 @@ object CompetitorResultManagerSpec : Spek({
                     8, "Weitwurf"
             )
             
-            val birthday = Date(DateTime.now().minusYears(8).millis)
+            val birthday = DateTime.now().minusYears(8).millis
             
             on("creating the results") {
 

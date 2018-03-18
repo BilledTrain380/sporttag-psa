@@ -46,7 +46,6 @@ import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * {@link CompetitorResultManager} manages the results of a competitor
@@ -92,7 +91,7 @@ class CompetitorResultManager(
     /**
      * @return the difference in years between now and the date
      */
-    private fun Date.age(): Int {
+    private fun Long.age(): Int {
         val todayYears = DateTime().year
         val actualYears = DateTime(this).year
         

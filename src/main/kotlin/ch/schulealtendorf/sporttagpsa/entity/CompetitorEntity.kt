@@ -36,7 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import java.sql.Date
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -66,7 +65,7 @@ data class CompetitorEntity @JvmOverloads constructor(
         var gender: Boolean = true,
 
         @NotNull
-        var birthday: Date = Date(0),
+        var birthday: Long = 0,
 
         @NotNull
         @Size(min = 1, max = 80)
