@@ -36,28 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-import java.io.File
-
 /**
- * Describes a manager for the rankings.
+ * Indicates, that an export process could not be finished.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-interface RankingExportManager {
-
-    /**
-     * @return a {@link RankingExportModel} which contains discipline data
-     */
-    fun getPreparedModel(): RankingExportModel
-
-    /**
-     * Generates a zip file by the given {@code model}.
-     * 
-     * @param model contains data to generate reports
-     * 
-     * @return the created zip file
-     * @throws RankingExportException if the zip could not be created
-     */
-    fun generateZip(model: RankingExportModel): File
+class RankingExportException: RuntimeException {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+    constructor(message: String?, cause: Throwable?, enableSuppression: Boolean, writableStackTrace: Boolean) : super(message, cause, enableSuppression, writableStackTrace)
 }

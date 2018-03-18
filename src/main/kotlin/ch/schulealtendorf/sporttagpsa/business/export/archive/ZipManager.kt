@@ -58,6 +58,7 @@ class ZipManager(
     
     /**
      * Creates an archive with the given {@code files}.
+     * This method considers the platform depended special directory.
      *
      * @param files files to include in the archive
      *
