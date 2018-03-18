@@ -34,16 +34,25 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.configuration
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import net.harawata.appdirs.AppDirs
-import net.harawata.appdirs.AppDirsFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import java.io.File
 
-@Configuration
-class AppDirsBean {
-    
-    @Bean
-    fun appDirs(): AppDirs = AppDirsFactory.getInstance()
+/**
+ * Describes a reporter which generates
+ * one or more reports.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface Reporter<T> {
+
+    /**
+     * Generates reports depending on the given {@code data}.
+     * 
+     * @param data the data for the report/s
+     * 
+     * @return all generated reports
+     */
+    fun generateReport(data: T): Set<File>
 }

@@ -34,16 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.configuration
+package ch.schulealtendorf.sporttagpsa.business.export
 
-import net.harawata.appdirs.AppDirs
-import net.harawata.appdirs.AppDirsFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+data class RankingExportModel(
+        val disciplines: List<DisciplineRankingExportModel>,
+        val disciplineGroup: DisciplineGroupRankingExportModel,
+        val total: TotalRankingExportModel
+)
 
-@Configuration
-class AppDirsBean {
-    
-    @Bean
-    fun appDirs(): AppDirs = AppDirsFactory.getInstance()
-}
+data class DisciplineRankingExportModel(
+        val name: String,
+        val male: Boolean,
+        val female: Boolean
+)
+
+data class DisciplineGroupRankingExportModel(
+        val male: Boolean,
+        val female: Boolean
+)
+
+data class TotalRankingExportModel(
+        val male: Boolean,
+        val female: Boolean
+)

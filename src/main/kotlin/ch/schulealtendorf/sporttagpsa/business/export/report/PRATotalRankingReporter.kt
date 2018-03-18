@@ -34,16 +34,25 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.configuration
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import net.harawata.appdirs.AppDirs
-import net.harawata.appdirs.AppDirsFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import ch.schulealtendorf.sporttagpsa.business.export.TotalRankingExportModel
+import java.io.File
 
-@Configuration
-class AppDirsBean {
-    
-    @Bean
-    fun appDirs(): AppDirs = AppDirsFactory.getInstance()
+/**
+ * @author nmaerchy
+ * @version 0.0.1
+ */
+class PRATotalRankingReporter: TotalRankingReporter {
+
+    /**
+     * Generates reports depending on the given {@code data}.
+     *
+     * @param data the data for the report/s
+     *
+     * @return all generated reports
+     */
+    override fun generateReport(data: TotalRankingExportModel): Set<File> {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    }
 }

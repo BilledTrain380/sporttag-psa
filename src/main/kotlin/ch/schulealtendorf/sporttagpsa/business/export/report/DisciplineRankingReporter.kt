@@ -34,16 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.configuration
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import net.harawata.appdirs.AppDirs
-import net.harawata.appdirs.AppDirsFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import ch.schulealtendorf.sporttagpsa.business.export.DisciplineRankingExportModel
 
-@Configuration
-class AppDirsBean {
-    
-    @Bean
-    fun appDirs(): AppDirs = AppDirsFactory.getInstance()
-}
+/**
+ * Describes a reporter for a single discipline ranking.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface DisciplineRankingReporter: Reporter<DisciplineRankingExportModel>
