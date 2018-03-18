@@ -34,47 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export.archive
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
-import net.lingala.zip4j.core.ZipFile
-import net.lingala.zip4j.model.ZipParameters
-import net.lingala.zip4j.util.Zip4jConstants
-import org.springframework.stereotype.Component
-import java.io.File
+import java.io.IOException
 
 /**
- * Archive manager which manages .zip files.
+ * Indicates an exception during the report generation.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-@Component
-class ZipManager(
-        private val storageManager: StorageManager
-): ArchiveManager {
-    
-    private val ZIP_OUTPUT = "Ranglisten.zip"
-    
-    /**
-     * Creates an archive with the given {@code files}.
-     *
-     * @param files files to include in the archive
-     *
-     * @return the generated archive
-     */
-    override fun createArchive(files: Iterable<File>): File {
-        
-        val zipFile = storageManager.getApplicationDir().resolve(ZIP_OUTPUT)
-        
-        val rankingZip = ZipFile(zipFile)
-        val parameters = ZipParameters().apply { 
-            compressionMethod = Zip4jConstants.COMP_DEFLATE
-            compressionLevel = Zip4jConstants.DEFLATE_LEVEL_NORMAL
-        }
-        
-        files.forEach { rankingZip.addFile(it, parameters) }
-        
-        return zipFile
-    }
+class ReportGenerationException: IOException {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
 }

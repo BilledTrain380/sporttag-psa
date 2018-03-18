@@ -37,12 +37,37 @@
 package ch.schulealtendorf.sporttagpsa.business.storage
 
 import java.io.File
-import java.util.function.Supplier
+import java.io.InputStream
 
 /**
- * Describes a supplier for the storage location.
+ * Describes a manager for the storage.
+ * The manager considers the platform depended special directory.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-interface StorageSupplier: Supplier<File>
+interface StorageManager {
+
+    /**
+     * Provides a path to the platform depended special directory.
+     * https://github.com/harawata/appdirs
+     * 
+     * @return the OS depended application directory
+     */
+    fun getApplicationDir(): File
+
+    /**
+     * Writes the given {@code input} to the given {@code file}.
+     * 
+     * The file path is relative to the platform depended special directory.
+     * 
+     * If the file exists already it will be replaced.
+     * 
+     * @param relativeFile relative file from the platform's special directory
+     * @param input content to write to the file
+     * 
+     * @return the created file
+     * @throws java.io.IOException if the write process fails
+     */
+    fun write(relativeFile: String, input: InputStream): File
+}

@@ -34,28 +34,20 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.storage
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import net.harawata.appdirs.AppDirs
-import org.springframework.stereotype.Component
-import java.io.File
+import ch.schulealtendorf.pra.ReportAPIFactory
+import ch.schulealtendorf.pra.api.DisciplineRankingAPI
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
 /**
- * OS specific storage supplier.
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 0.0.1
  */
-@Component
-class OSStorageSupplier(
-        private val appDirs: AppDirs
-): StorageSupplier {
+@Configuration
+class PRABeanConfiguration {
     
-    /**
-     * Gets the application supported storage location of the specific OS.
-     * More info: https://github.com/harawata/appdirs
-     * 
-     * @return the site data dir
-     */
-    override fun get() = File(appDirs.getSiteDataDir("Sporttage PSA", "1.0.0", "BilledTrain380"))
+    @Bean
+    fun disciplineRankingAPI(): DisciplineRankingAPI = ReportAPIFactory.getDisciplineRanking()
 }
