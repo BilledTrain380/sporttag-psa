@@ -36,14 +36,30 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.sporttagpsa.business.export.SportExportModel
+import ch.schulealtendorf.pra.api.ParticipantListAPI
+import ch.schulealtendorf.pra.api.ReportAPIException
+import ch.schulealtendorf.pra.pojo.Participant
+import ch.schulealtendorf.pra.pojo.ParticipantList
+import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExportModel
+import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import org.springframework.stereotype.Component
 import java.io.File
+import java.io.IOException
 
 /**
+ * Reporter for {@link ParticipantExportModel} which uses PRA report api.
+ * https://github.com/BilledTrain380/PRA
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class PRAParticipantListReporter: ParticipantListReporter {
+@Component
+class PRAParticipantListReporter(
+        private val storageManager: StorageManager,
+        private val competitorRepository: CompetitorRepository,
+        private val participantListAPI: ParticipantListAPI
+): ParticipantListReporter {
 
     /**
      * Generates reports depending on the given {@code data}.
@@ -53,7 +69,36 @@ class PRAParticipantListReporter: ParticipantListReporter {
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: SportExportModel): Set<File> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    override fun generateReport(data: ParticipantExportModel): Set<File> {
+
+        try {
+            return data.sports
+                    .filter { it.include }
+                    .map {
+    
+                        val participants = competitorRepository.findBySportName(it.name)
+    
+                        val participantList = ParticipantList().apply {
+                            sport = it.name
+                            this.participants = participants.map {
+                                Participant().apply {
+                                    prename = it.prename
+                                    surname = it.surname
+                                    isGender = it.gender
+                                    clazz = it.clazz.name
+                                    teacher = it.clazz.teacher.name
+                                }
+                            }
+                        }
+    
+                        val report = participantListAPI.createReport(participantList)
+    
+                        storageManager.write("Teilnehmerliste ${it.name}.pdf", report)
+                    }.toSet()
+        } catch (ex: IOException) {
+            throw ReportGenerationException("Could not create report due IOException: ${ex.message}", ex)
+        } catch (ex: ReportAPIException) {
+            throw ReportGenerationException("Could not create report due ReportAPIException: ${ex.message}", ex)
+        }
     }
 }

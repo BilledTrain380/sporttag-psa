@@ -63,7 +63,6 @@ data class ParticipantExportModel(
 )
 
 data class SportExportModel(
-        var id: Int = 0,
         var name: String = "",
         var include: Boolean = false
 )

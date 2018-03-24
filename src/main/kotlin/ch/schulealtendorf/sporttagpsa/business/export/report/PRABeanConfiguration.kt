@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.export.report
 import ch.schulealtendorf.pra.ReportAPIFactory
 import ch.schulealtendorf.pra.api.DisciplineGroupRankingAPI
 import ch.schulealtendorf.pra.api.DisciplineRankingAPI
+import ch.schulealtendorf.pra.api.ParticipantListAPI
 import ch.schulealtendorf.pra.api.TotalRankingAPI
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -54,4 +55,7 @@ class PRABeanConfiguration {
     
     @Bean
     fun totalRankingAPI(): TotalRankingAPI = ReportAPIFactory.getTotalRanking()
+    
+    @Bean
+    fun participantListAPI(): ParticipantListAPI = ReportAPIFactory.getParticipantList()
 }

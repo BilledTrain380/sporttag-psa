@@ -36,21 +36,35 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.sporttagpsa.business.export.archive.ZipManager
+import ch.schulealtendorf.sporttagpsa.business.export.report.ParticipantListReporter
+import org.springframework.stereotype.Component
 import java.io.File
 
 /**
  * Default export manager implementation.
  * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-class ParticipantExportManagerImpl: ParticipantExportManager {
+@Component
+class ParticipantExportManagerImpl(
+        private val participantListReporter: ParticipantListReporter,
+        private val zipManager: ZipManager
+): ParticipantExportManager {
 
     /**
      * @return a {@link ParticipantExportModel} which contains sports data
      */
     override fun getPreparedModel(): ParticipantExportModel {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        return ParticipantExportModel(
+                listOf(
+                        SportExportModel("Velo- Rollerblades"),
+                        SportExportModel("Brennball"),
+                        SportExportModel("Mehrkampf"),
+                        SportExportModel("Schatzsuche")
+                )
+        )
     }
 
     /**
@@ -62,6 +76,15 @@ class ParticipantExportManagerImpl: ParticipantExportManager {
      * @throws RankingExportException if the zip could not be created
      */
     override fun generateZip(model: ParticipantExportModel): File {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        try {
+
+            val reports = participantListReporter.generateReport(model)
+
+            return zipManager.createArchive(reports)
+            
+        } catch (ex: Exception) {
+            throw RankingExportException("Could not create zip: ${ex.message}", ex)
+        }
     }
 }
