@@ -50,9 +50,10 @@ interface ArchiveManager {
      * Creates an archive with the given {@code files}.
      * This method considers the platform depended special directory.
      * 
+     * @param outputFileName the file name of the created archive without the extension
      * @param files files to include in the archive
      * 
      * @return the generated archive
      */
-    fun createArchive(files: Iterable<File>): File
+    fun createArchive(outputFileName: String, files: Iterable<File>): File
 }

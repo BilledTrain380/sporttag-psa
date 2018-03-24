@@ -81,7 +81,7 @@ class ParticipantExportManagerImpl(
 
             val reports = participantListReporter.generateReport(model)
 
-            return zipManager.createArchive(reports)
+            return zipManager.createArchive("Teilnehmerlisten", reports)
             
         } catch (ex: Exception) {
             throw RankingExportException("Could not create zip: ${ex.message}", ex)

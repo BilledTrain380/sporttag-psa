@@ -53,29 +53,29 @@ import java.io.File
 class ZipManager(
         private val storageManager: StorageManager
 ): ArchiveManager {
-    
-    private val ZIP_OUTPUT = "Ranglisten.zip"
-    
+
     /**
      * Creates an archive with the given {@code files}.
      * This method considers the platform depended special directory.
      *
+     * @param outputFileName the file name of the created archive without the extension
      * @param files files to include in the archive
      *
      * @return the generated archive
      */
-    override fun createArchive(files: Iterable<File>): File {
+    override fun createArchive(outputFileName: String, files: Iterable<File>): File {
         
-        val zipFile = storageManager.getApplicationDir().resolve(ZIP_OUTPUT)
-        
+        val zipFile = storageManager.getApplicationDir().resolve("$outputFileName.zip")
+        zipFile.delete()
+
         val rankingZip = ZipFile(zipFile)
-        val parameters = ZipParameters().apply { 
+        val parameters = ZipParameters().apply {
             compressionMethod = Zip4jConstants.COMP_DEFLATE
             compressionLevel = Zip4jConstants.DEFLATE_LEVEL_NORMAL
         }
-        
+
         files.forEach { rankingZip.addFile(it, parameters) }
-        
+
         return zipFile
     }
 }

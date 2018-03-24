@@ -94,7 +94,7 @@ class RankingExportManagerImpl(
             reports.addAll(disciplineGroupRankingReporter.generateReport(model.disciplineGroup))
             reports.addAll(totalRankingReporter.generateReport(model.total))
 
-            return zipManager.createArchive(reports)
+            return zipManager.createArchive("Ranglisten", reports)
             
         } catch (ex: Exception) {
             throw RankingExportException("Could not create zip: ${ex.message}", ex)
