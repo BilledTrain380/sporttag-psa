@@ -38,13 +38,20 @@ package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.business.export.RankingExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.RankingExportModel
-import org.springframework.core.io.FileSystemResource
+import org.springframework.core.io.InputStreamResource
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import java.io.File
+import java.io.FileInputStream
 import javax.validation.Valid
+
 
 /**
  * @author nmaerchy
@@ -64,10 +71,31 @@ class RankingExportController(
     }
     
     @PostMapping("/ranking")
-    fun export(@Valid @ModelAttribute("rankingExportModel") rankingExportModel: RankingExportModel): FileSystemResource {
+    fun export(@Valid @ModelAttribute("rankingExportModel") rankingExportModel: RankingExportModel): ResponseEntity<InputStreamResource> {
         
         val zip = rankingExportManager.generateZip(rankingExportModel)
 
-        return FileSystemResource(zip)
+        val respHeaders = HttpHeaders()
+        respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
+        respHeaders.contentLength = zip.length()
+        respHeaders.setContentDispositionFormData("attachment", zip.name)
+
+        val isr = InputStreamResource(FileInputStream(zip))
+        return ResponseEntity(isr, respHeaders, HttpStatus.OK)
+    }
+    
+    @GetMapping("/ranking-archive")
+    fun get(): ResponseEntity<InputStreamResource> {
+
+        val zip = File("/Users/nmaerchy/Library/Application Support/Sporttag PSA/1.0.0/Ranglisten.zip")
+        
+
+        val respHeaders = HttpHeaders()
+        respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
+        respHeaders.contentLength = zip.length()
+        respHeaders.setContentDispositionFormData("attachment", zip.name)
+
+        val isr = InputStreamResource(FileInputStream(zip))
+        return ResponseEntity(isr, respHeaders, HttpStatus.OK)
     }
 }
