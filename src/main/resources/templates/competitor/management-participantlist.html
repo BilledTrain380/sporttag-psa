@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2017 by Nicolas Märchy
+  ~ Copyright (c) 2018 by Nicolas Märchy
   ~
   ~ This file is part of Sporttag PSA.
   ~
@@ -60,35 +60,48 @@
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/management/basic}">Allgemein</a>
+                        <a class="nav-link" th:href="@{/management/basic}">Allgemein</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/management/participant-list}">Teilnehmerliste</a>
+                        <a class="nav-link active" th:href="@{/management/participant-list}">Teilnehmerliste</a>
                     </li>
                 </ul>
-                
-            </div>
-            
-            <div class="col-lg-12">
-                
-                <br/>
 
-                <div th:if="${participationInfo}" class="alert alert-info" role="alert">
-                    Sie haben die Teilnahme abgeschlossen. Sie können nun die Startlisten exportieren.
-                </div>
-                
-                <h4>Teilnahme
-                    <span th:if="${!participationStatus}" class="badge badge-success">offen</span>
-                    <span th:if="${participationStatus}" class="badge badge-info">abgeschlossen</span>
-                    <a th:if="${!participationStatus}" class="btn btn-primary btn-sm" th:href="@{/management/finish-participation}">Teilnahme abschliessen</a>
-                </h4>
-                <p>
-                    Schliessen Sie die Teilnahme am Sporttag ab, um die Startlisten zu generieren.
-                    Wenn Sie diese Aktion ausführen können Sie nicht länger Änderungen an der Sportart
-                    in der Klassenliste vornehmen.
-                </p>
-                
+            </div>
+
+            <div class="col-lg-12">
+
+                <form class="row" th:action="@{/management/participant-list}" method="post" th:object="${participantModel}"} enctype="application/x-www-form-urlencoded">
+
+                    <ul class="multi">
+                        <li class="col-lg-12">
+                            <input class="select-element" type="checkbox" name="all" id="all">
+                            <label for="all">alle</label>
+
+                            <!-- disciplines -->
+                            <ul class="row">
+
+                                <!-- node -->
+                                <li class="col-lg-12" th:each="sport, status : *{sports}">
+
+                                    <input class="select-element" type="checkbox" th:field="*{sports[__${status.index}__].include}"/>
+                                    <input type="hidden" th:field="*{sports[__${status.index}__].name}"/>
+                                    <label th:text="${sport.name}"></label>
+                                    
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                    </ul>
+
+                    <div class="col-lg-12">
+                        <button id="export" type="submit" class="btn btn-primary">Export</button>
+                    </div>
+                </form>
+
             </div>
 
         </div>

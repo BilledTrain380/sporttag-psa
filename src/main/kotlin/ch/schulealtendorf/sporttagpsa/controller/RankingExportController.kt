@@ -48,7 +48,6 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import java.io.File
 import java.io.FileInputStream
 import javax.validation.Valid
 
@@ -74,21 +73,6 @@ class RankingExportController(
     fun export(@Valid @ModelAttribute("rankingExportModel") rankingExportModel: RankingExportModel): ResponseEntity<InputStreamResource> {
         
         val zip = rankingExportManager.generateZip(rankingExportModel)
-
-        val respHeaders = HttpHeaders()
-        respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
-        respHeaders.contentLength = zip.length()
-        respHeaders.setContentDispositionFormData("attachment", zip.name)
-
-        val isr = InputStreamResource(FileInputStream(zip))
-        return ResponseEntity(isr, respHeaders, HttpStatus.OK)
-    }
-    
-    @GetMapping("/ranking-archive")
-    fun get(): ResponseEntity<InputStreamResource> {
-
-        val zip = File("/Users/nmaerchy/Library/Application Support/Sporttag PSA/1.0.0/Ranglisten.zip")
-        
 
         val respHeaders = HttpHeaders()
         respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
