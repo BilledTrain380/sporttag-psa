@@ -72,6 +72,8 @@
 
             <div class="col-lg-12">
 
+                <p></p>
+                
                 <form class="row" th:action="@{/management/participant-list}" method="post" th:object="${participantModel}"} enctype="application/x-www-form-urlencoded">
 
                     <ul class="multi">
@@ -112,6 +114,13 @@
 </div>
 <!-- /.content-wrapper -->
 
+<script src="/js/indeterminate-checkbox.js"></script>
+
+<script>
+
+    IndeterminateCheckbox.init();
+
+</script>
 
 </body>
 
