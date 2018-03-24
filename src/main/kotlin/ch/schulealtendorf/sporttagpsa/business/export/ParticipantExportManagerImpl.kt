@@ -36,34 +36,32 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import java.io.File
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+/**
+ * Default export manager implementation.
+ * 
+ * @author nmaerchy
+ * @version 0.0.1
+ */
+class ParticipantExportManagerImpl: ParticipantExportManager {
 
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+    /**
+     * @return a {@link ParticipantExportModel} which contains sports data
+     */
+    override fun getPreparedModel(): ParticipantExportModel {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    }
 
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-data class SportExportModel(
-        var id: Int = 0,
-        var name: String = "",
-        var include: Boolean = false
-)
+    /**
+     * Generates a zip file by the given {@code model}.
+     *
+     * @param model contains data to generate reports
+     *
+     * @return the created zip file
+     * @throws RankingExportException if the zip could not be created
+     */
+    override fun generateZip(model: ParticipantExportModel): File {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    }
+}

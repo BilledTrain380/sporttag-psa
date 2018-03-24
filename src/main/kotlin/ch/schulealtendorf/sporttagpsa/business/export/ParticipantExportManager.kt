@@ -36,34 +36,28 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import java.io.File
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+/**
+ * Describes a manager to export the participant list.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface ParticipantExportManager {
 
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+    /**
+     * @return a {@link ParticipantExportModel} which contains sports data
+     */
+    fun getPreparedModel(): ParticipantExportModel
 
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-data class SportExportModel(
-        var id: Int = 0,
-        var name: String = "",
-        var include: Boolean = false
-)
+    /**
+     * Generates a zip file by the given {@code model}.
+     *
+     * @param model contains data to generate reports
+     *
+     * @return the created zip file
+     * @throws RankingExportException if the zip could not be created
+     */
+    fun generateZip(model: ParticipantExportModel): File
+}

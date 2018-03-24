@@ -34,36 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import ch.schulealtendorf.sporttagpsa.business.export.SportExportModel
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-data class SportExportModel(
-        var id: Int = 0,
-        var name: String = "",
-        var include: Boolean = false
-)
+/**
+ * Describes a reporter for a single {@link SportExportModel}.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface ParticipantListReporter: Reporter<SportExportModel>

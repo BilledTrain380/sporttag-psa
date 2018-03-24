@@ -34,36 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.business.export.report
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import ch.schulealtendorf.sporttagpsa.business.export.SportExportModel
+import java.io.File
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+/**
+ * @author nmaerchy
+ * @version 0.0.1
+ */
+class PRAParticipantListReporter: ParticipantListReporter {
 
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-data class SportExportModel(
-        var id: Int = 0,
-        var name: String = "",
-        var include: Boolean = false
-)
+    /**
+     * Generates reports depending on the given {@code data}.
+     *
+     * @param data the data for the report/s
+     *
+     * @return all generated reports
+     * @throws ReportGenerationException if the report generation fails
+     */
+    override fun generateReport(data: SportExportModel): Set<File> {
+        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    }
+}
