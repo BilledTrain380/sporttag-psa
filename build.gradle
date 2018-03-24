@@ -20,6 +20,8 @@ version = "${sporttagPSAVersion}"
 
 allprojects {
 
+	// TODO: Remove kotlin stuff
+	
 	apply plugin: 'idea'
 	apply plugin: 'kotlin'
 
@@ -41,8 +43,16 @@ allprojects {
 	}
 	
 	dependencies {
-		compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 		compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+	}
+}
+
+project(":filesystem") {
+    
+    apply plugin: 'kotlin-spring'
+    
+	dependencies {
+		compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.5.3.RELEASE'
 	}
 }
 
@@ -67,6 +77,8 @@ junitPlatform {
 }
 
 dependencies {
+	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+	
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-devtools")

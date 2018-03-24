@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,6 +34,22 @@
  *
  */
 
-include 'rules'
-include 'filesystem'
+package ch.schulealtendorf.sporttagpsa.filesystem
 
+import net.harawata.appdirs.AppDirs
+import net.harawata.appdirs.AppDirsFactory
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+/**
+ * Bean configuration for the Sporttag PSA file system.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+@Configuration
+class BeanConfiguration {
+    
+    @Bean
+    fun appDirs(): AppDirs = AppDirsFactory.getInstance()
+}
