@@ -45,7 +45,7 @@ import java.io.File
  * @author nmaerchy
  * @version 1.0.0
  */
-interface Reporter<T> {
+interface Reporter<in T> {
 
     /**
      * Generates reports depending on the given {@code data}.

@@ -36,17 +36,31 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
+import ch.schulealtendorf.pra.api.EventSheetAPI
+import ch.schulealtendorf.pra.api.ReportAPIException
+import ch.schulealtendorf.pra.pojo.Competitor
+import ch.schulealtendorf.pra.pojo.EventSheet
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetExport
+import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
+import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
+import org.springframework.stereotype.Component
 import java.io.File
+import java.io.IOException
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-class PRAEventSheetReporter: EventSheetReporter {
+@Component
+class PRAEventSheetReporter(
+        private val resultRepository: ResultRepository,
+        private val storageManager: StorageManager,
+        private val eventSheetAPI: EventSheetAPI
+): EventSheetReporter {
 
     /**
-     * Generates reports depending on the given {@code data}.
+     * Generates a report for each given {@link EventSheetExport}.
+     * The {@link StorageManager} determines where the reports are being saved.
      *
      * @param data the data for the report/s
      *
@@ -54,6 +68,36 @@ class PRAEventSheetReporter: EventSheetReporter {
      * @throws ReportGenerationException if the report generation fails
      */
     override fun generateReport(data: Iterable<EventSheetExport>): Set<File> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+
+        try {
+            return data.map { 
+                
+                val resultList = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(it.discipline.id, it.gender, it.clazz.id)
+    
+                val eventSheet = EventSheet().apply { 
+                    clazz = it.clazz.name
+                    discipline = it.discipline.name
+                    isGender = it.gender
+                    competitors = resultList.map {
+                        Competitor().apply { 
+                            startnumber = it.starter.number!!
+                            prename = it.starter.competitor.prename
+                            surname = it.starter.competitor.surname
+                            setDistance(it.distance)
+                        }
+                    }
+                }
+                
+                val report = eventSheetAPI.createReport(eventSheet)
+                
+                storageManager.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
+            }.toSet()
+        } catch (ex: IOException) {
+            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
+        } catch (ex: ReportAPIException) {
+            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
+        }
     }
+    
+    private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
 }

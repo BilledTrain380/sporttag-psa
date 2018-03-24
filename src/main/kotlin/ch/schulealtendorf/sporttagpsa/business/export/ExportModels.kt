@@ -68,7 +68,17 @@ data class SportExportModel(
 )
 
 data class EventSheetExport @JvmOverloads constructor(
-        val discipline: String,
-        val clazz: String,
+        val discipline: SimpleDiscipline,
+        val clazz: SimpleClazz,
         val gender: Boolean = false
+)
+
+data class SimpleClazz(
+        val id: Int,
+        val name: String
+)
+
+data class SimpleDiscipline(
+        val id: Int,
+        val name: String
 )
