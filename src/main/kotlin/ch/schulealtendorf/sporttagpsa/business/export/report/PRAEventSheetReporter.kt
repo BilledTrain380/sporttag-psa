@@ -40,21 +40,24 @@ import ch.schulealtendorf.pra.api.EventSheetAPI
 import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.Competitor
 import ch.schulealtendorf.pra.pojo.EventSheet
-import ch.schulealtendorf.sporttagpsa.business.export.EventSheetExport
-import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
+import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
+import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
 
 /**
+ * Event sheet reporter that uses PRA.
+ * https://github.com/BilledTrain380/PRA
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 @Component
 class PRAEventSheetReporter(
         private val resultRepository: ResultRepository,
-        private val storageManager: StorageManager,
+        private val fileSystem: FileSystem,
         private val eventSheetAPI: EventSheetAPI
 ): EventSheetReporter {
 
@@ -67,7 +70,7 @@ class PRAEventSheetReporter(
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: Iterable<EventSheetExport>): Set<File> {
+    override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
 
         try {
             return data.map { 
@@ -90,7 +93,7 @@ class PRAEventSheetReporter(
                 
                 val report = eventSheetAPI.createReport(eventSheet)
                 
-                storageManager.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
+                fileSystem.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
             }.toSet()
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)

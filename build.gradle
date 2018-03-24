@@ -89,6 +89,7 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
     
 	compile project(":rules")
+    compile project(":filesystem")
 
 	compile group: 'net.lingala.zip4j', name: 'zip4j', version: '1.3.2'
 

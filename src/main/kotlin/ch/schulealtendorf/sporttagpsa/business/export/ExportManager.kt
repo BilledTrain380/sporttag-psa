@@ -54,5 +54,25 @@ interface ExportManager {
      * @return the generated archive
      * @throws ArchiveGenerationException if the archive could not be generated
      */
-    fun generateArchive(data: Iterable<EventSheetExport>): File
+    fun generateArchive(data: EventSheetExport): File
+
+    /**
+     * Generates an archive file by the given {@code data}.
+     * 
+     * @param data contains the data to generate the archive
+     * 
+     * @return the generated archive
+     * @throws ArchiveGenerationException if the archive could not be generated
+     */
+    fun generateArchive(data: RankingExport): File
+
+    /**
+     * Generates an archive file by the given {@code data}.
+     *
+     * @param data contains the data to generate the archive
+     *
+     * @return the generated archive
+     * @throws ArchiveGenerationException if the archive could not be generated
+     */
+    fun generateArchive(data: ParticipantExport): File
 }

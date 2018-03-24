@@ -36,12 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.sporttagpsa.business.export.DisciplineRankingExportModel
+import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 
 /**
- * Describes a reporter for a single discipline ranking.
+ * Describes a reporter discipline ranking.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-interface DisciplineRankingReporter: Reporter<DisciplineRankingExportModel>
+interface DisciplineRankingReporter: Reporter<Iterable<DisciplineExport>>

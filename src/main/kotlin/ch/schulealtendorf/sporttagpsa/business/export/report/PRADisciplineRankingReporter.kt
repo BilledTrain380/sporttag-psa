@@ -41,8 +41,8 @@ import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.DisciplineCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
-import ch.schulealtendorf.sporttagpsa.business.export.DisciplineRankingExportModel
-import ch.schulealtendorf.sporttagpsa.business.storage.StorageManager
+import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
+import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
@@ -51,7 +51,7 @@ import java.io.IOException
 import java.time.Year
 
 /**
- * Reporter for {@link DisciplineRankingExportModel} which uses PRA report api.
+ * Discipline ranking reporter that uses PRA.
  * https://github.com/BilledTrain380/PRA
  * 
  * @author nmaerchy
@@ -59,71 +59,57 @@ import java.time.Year
  */
 @Component
 class PRADisciplineRankingReporter(
-        private val storageManager: StorageManager,
+        private val fileSystem: FileSystem,
         private val resultRepository: ResultRepository,
         private val disciplineRankingAPI: DisciplineRankingAPI
 ): DisciplineRankingReporter {
 
     /**
-     * Generates reports depending on the given {@code data}.
+     * Generates reports for all given disciplines.
      * 
-     * Generates reports for a singe discipline.
-     * The reports are grouped by the gender and age of the competitors.
-     *
      * @param data the data for the report/s
      *
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: DisciplineRankingExportModel): Set<File> {
-        
+    override fun generateReport(data: Iterable<DisciplineExport>): Set<File> {
+
         try {
-
-            val reports: MutableSet<File> = mutableSetOf()
-
-            if(data.male) {
-                reports.addAll(generateReport(true, data.name))
-            }
-
-            if(data.female) {
-                reports.addAll(generateReport(false, data.name))
-            }
-
-            return reports
+            return data.map { disciplineExport ->
+    
+                val results = resultRepository.findByDisciplineNameAndStarterCompetitorGender(disciplineExport.discipline.name, disciplineExport.gender)
+    
+                results
+                    .groupBy { DateTime(it.starter.competitor.birthday).year }
+                    .map {
+    
+                        val ranking = DisciplineRanking().apply {
+                            year = Year.of(it.key)
+                            isGender = true
+                            this.discipline = discipline
+                            competitors = it.value.map {
+                                DisciplineCompetitor().apply {
+                                    prename = it.starter.competitor.prename
+                                    surname = it.starter.competitor.surname
+                                    clazz = it.starter.competitor.clazz.name
+                                    result = Result(it.result)
+                                    points = it.points
+                                }
+                            }
+                        }
+    
+                        val report = disciplineRankingAPI.createReport(ranking)
+    
+                        fileSystem.write("Rangliste ${disciplineExport.gender.text()} ${disciplineExport.discipline.name} ${it.key}.pdf", report)
+                    }.toSet()
+            }.flatten().toSet()
             
         } catch (ex: IOException) {
-            throw ReportGenerationException("Could not create Report due IOException: ${ex.message}", ex)
+            throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
         } catch (ex: ReportAPIException) {
-            throw ReportGenerationException("Could not create report due ReportAPIException: ${ex.message}", ex)
+            throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
         }
     }
     
-    private fun generateReport(gender: Boolean, discipline: String): Set<File> {
-
-        val results = resultRepository.findByDisciplineNameAndStarterCompetitorGender(discipline, gender)
-        
-        return results
-                .groupBy { DateTime(it.starter.competitor.birthday).year }
-                .map {
-
-                    val ranking = DisciplineRanking().apply {
-                        year = Year.of(it.key)
-                        isGender = true
-                        this.discipline = discipline
-                        competitors = it.value.map {
-                            DisciplineCompetitor().apply {
-                                prename = it.starter.competitor.prename
-                                surname = it.starter.competitor.surname
-                                clazz = it.starter.competitor.clazz.name
-                                result = Result(it.result)
-                                points = it.points
-                            }
-                        }
-                    }
-
-                    val report = disciplineRankingAPI.createReport(ranking)
-
-                    storageManager.write("Rangliste ${if(gender) "Knaben" else "Mädchen"} $discipline ${it.key}.pdf", report)
-                }.toSet()
-    }
+    private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
 }
