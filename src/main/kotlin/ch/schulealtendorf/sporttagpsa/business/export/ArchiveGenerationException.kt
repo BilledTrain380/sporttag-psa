@@ -36,39 +36,17 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import java.io.IOException
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-data class SportExportModel(
-        var name: String = "",
-        var include: Boolean = false
-)
-
-data class EventSheetExport @JvmOverloads constructor(
-        val discipline: String,
-        val clazz: String,
-        val gender: Boolean = false
-)
+/**
+ * Indicates that an archive could not be generated.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+class ArchiveGenerationException: IOException {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+}

@@ -36,39 +36,23 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import java.io.File
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+/**
+ * Describes a manager that generates files that can be exported.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface ExportManager {
 
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-data class SportExportModel(
-        var name: String = "",
-        var include: Boolean = false
-)
-
-data class EventSheetExport @JvmOverloads constructor(
-        val discipline: String,
-        val clazz: String,
-        val gender: Boolean = false
-)
+    /**
+     * Generates an archive file by the given {@code data}.
+     * 
+     * @param data contains the data to generate an archive
+     * 
+     * @return the generated archive
+     * @throws ArchiveGenerationException if the archive could not be generated
+     */
+    fun generateArchive(data: Iterable<EventSheetExport>): File
+}
