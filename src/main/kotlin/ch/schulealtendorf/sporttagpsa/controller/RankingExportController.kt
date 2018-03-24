@@ -34,26 +34,40 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.controller
 
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
+import ch.schulealtendorf.sporttagpsa.business.export.RankingExportManager
+import ch.schulealtendorf.sporttagpsa.business.export.RankingExportModel
+import org.springframework.core.io.FileSystemResource
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PostMapping
+import javax.validation.Valid
 
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+/**
+ * @author nmaerchy
+ * @version 0.0.1
+ */
+@Controller
+class RankingExportController(
+        private val rankingExportManager: RankingExportManager
+) {
 
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+    @GetMapping("/ranking")
+    fun index(model: Model): String {
+        
+        model.addAttribute("rankingExportModel", rankingExportManager.getPreparedModel())
+        
+        return "ranking"
+    }
+    
+    @PostMapping("/ranking")
+    fun export(@Valid @ModelAttribute("rankingExportModel") rankingExportModel: RankingExportModel): FileSystemResource {
+        
+        val zip = rankingExportManager.generateZip(rankingExportModel)
 
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+        return FileSystemResource(zip)
+    }
+}

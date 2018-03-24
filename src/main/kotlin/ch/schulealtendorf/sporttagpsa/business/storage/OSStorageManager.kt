@@ -59,7 +59,7 @@ class OSStorageManager(
      *
      * @return the OS depended application directory
      */
-    override fun getApplicationDir() = File(appDirs.getSiteDataDir("Sporttage PSA", "1.0.0", "BilledTrain380"))
+    override fun getApplicationDir() = File(appDirs.getUserDataDir("Sporttag PSA", "1.0.0", "BilledTrain380"))
 
     /**
      * Writes the given {@code input} to the given {@code file}.

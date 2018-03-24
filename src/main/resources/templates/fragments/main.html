@@ -64,6 +64,15 @@
     <script src="/webjars/tether/1.4.0/js/tether.min.js"></script>
     <script src="/webjars/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 
+    <style>
+
+        ul.multi, .multi ul {
+
+            list-style: none;
+        }
+        
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -97,6 +106,10 @@
 
             <li class="nav-item" th:classappend="${menu} == tournament? active : ''">
                 <a class="nav-link" th:href="@{/tournament/init}"><i class="fa fa-fw fa-futbol-o"></i> Mehrkampf</a>
+            </li>
+
+            <li class="nav-item" th:classappend="${menu} == ranking? active : ''">
+                <a class="nav-link" th:href="@{/ranking}"><i class="fa fa-fw fa-archive"></i> Rangliste</a>
             </li>
             
             <!-- copy when using multilevel -->
