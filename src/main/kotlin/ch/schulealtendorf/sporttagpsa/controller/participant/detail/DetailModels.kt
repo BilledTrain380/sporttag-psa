@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,16 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.model
+package ch.schulealtendorf.sporttagpsa.controller.participant.detail
 
-/**
- * Model class for sport.
- * 
- * @author nmaerchy
- * @version 1.0.0
- */
-@Deprecated("")
-data class ClazzModel @JvmOverloads constructor(
+data class SimpleParticipant(
         var id: Int = 0,
-        var name: String = ""
+        var surname: String = "",
+        var prename: String = "",
+        var gender: Boolean = true,
+        var address: String = ""
 )

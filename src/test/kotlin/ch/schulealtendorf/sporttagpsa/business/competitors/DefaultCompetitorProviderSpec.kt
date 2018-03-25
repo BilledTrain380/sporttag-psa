@@ -37,8 +37,6 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
@@ -65,7 +63,7 @@ object DefaultCompetitorProviderSpec: Spek({
         val mockSportRepo: SportRepository = mock()
         val mockParticipationStatus: ParticipationStatus = mock()
 
-        var provider: DefaultCompetitorProvider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
+        var provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
 
         beforeEachTest {
             reset(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
@@ -80,7 +78,7 @@ object DefaultCompetitorProviderSpec: Spek({
 
             on("selected sport") {
 
-                val competitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(1))
+                val competitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SimpleSportModel(1, ""))
 
                 whenever(mockParticipationStatus.isFinished())
                         .thenReturn(false)
@@ -101,7 +99,7 @@ object DefaultCompetitorProviderSpec: Spek({
 
             on("non selected sport") {
 
-                val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SportModel(0))
+                val competitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SimpleSportModel(1, ""))
 
                 whenever(mockParticipationStatus.isFinished())
                         .thenReturn(false)
@@ -115,7 +113,7 @@ object DefaultCompetitorProviderSpec: Spek({
                 provider.updateCompetitor(competitorModel)
 
                 it("should update the CompetitorEntity with no SportEntity") {
-                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null)
+                    val expected = CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null)
                     Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
                 }
             }
@@ -125,7 +123,7 @@ object DefaultCompetitorProviderSpec: Spek({
                 whenever(mockParticipationStatus.isFinished())
                         .thenReturn(true)
                 
-                provider.updateCompetitor(SimpleCompetitorModel())
+                provider.updateCompetitor(ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel(1, "", "", true, ""))
                 
                 it("should do nothing") {
                     verifyZeroInteractions(mockCompetitorRepo)

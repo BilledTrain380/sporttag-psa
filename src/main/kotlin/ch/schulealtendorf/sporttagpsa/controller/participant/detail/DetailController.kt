@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,49 +34,45 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.controller.participant.detail
 
 import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
-/**
- * Controller for GET and PATCH competitors.
- * 
- * @author nmaerchy
- * @version 0.0.2
- */
 @Controller
-class CompetitorController(
+@RequestMapping("/participant/detail")
+class DetailController(
         private val competitorProvider: CompetitorProvider
 ) {
-    
-    companion object {
-        const val COMPETITOR: String = "/competitor"
-    }
 
-    @GetMapping("$COMPETITOR/{id}")
+    @GetMapping("/{id}")
     fun getCompetitor(@PathVariable id: Int, model: Model): String {
         
-        model.addAttribute("competitor", competitorProvider.getCompetitorById(id))
+        val participant = competitorProvider.getCompetitorById(id)
         
-        return "competitor/competitor-detail"
+        model.addAttribute("participant", participant.toSimpleParticipant())
+        
+        return "participant/detail/competitor-detail"
     }
 
-    @PostMapping("$COMPETITOR/{id}")
-    fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("competitor") competitor: SimpleCompetitorModel, redirectAttributes: RedirectAttributes): String {
+    @PostMapping("/{id}")
+    fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("participant") participant: SimpleParticipant, redirectAttributes: RedirectAttributes): String {
         
-        competitorProvider.updateCompetitor(competitor)
+        competitorProvider.updateCompetitor(participant.toSimpleCompetitorModel())
         
         redirectAttributes.addFlashAttribute("success", true)
         
-        return "redirect:$COMPETITOR/$id"
+        return "redirect:/participant/detail/$id"
+    }
+    
+    private fun ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel.toSimpleParticipant() = SimpleParticipant(id, surname, prename, gender, address)
+    
+    private fun SimpleParticipant.toSimpleCompetitorModel(): SimpleCompetitorModel {
+        return SimpleCompetitorModel(id, surname, prename, gender, address)
     }
 }

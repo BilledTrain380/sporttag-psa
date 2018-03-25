@@ -40,6 +40,15 @@ package ch.schulealtendorf.sporttagpsa.business.provider
  * Describes a provider for school classes.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.1.0
  */
-interface ClazzProvider: Provider<SimpleClazz>
+interface ClazzProvider: Provider<SimpleClazz> {
+
+    /**
+     * @param id id of the class
+     * 
+     * @return the class matching the given {@code id}
+     * @throws NoSuchElementException if the class with the given id does not exist
+     */
+    fun getOne(id: Int): SimpleClazz
+}

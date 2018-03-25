@@ -37,7 +37,6 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.map
@@ -50,7 +49,7 @@ import org.springframework.stereotype.Component
  * Provider for competitors.
  * 
  * @author nmaerchy
- * @version 0.0.2
+ * @version 1.0.0
  */
 @Component
 class DefaultCompetitorProvider(
@@ -89,7 +88,7 @@ class DefaultCompetitorProvider(
         if (!participationStatus.isFinished()) {
 
             val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
-            val sportEntity: SportEntity? = sportRepository.findOne(competitor.sport.id)
+            val sportEntity: SportEntity? = if(competitor.sport == null) null else sportRepository.findOne(competitor.sport.id)
 
             competitorEntity.merge(competitor)
             competitorEntity.sport = sportEntity

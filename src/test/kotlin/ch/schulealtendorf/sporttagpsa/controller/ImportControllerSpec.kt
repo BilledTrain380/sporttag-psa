@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.controller
 
 import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorListConsumer
 import ch.schulealtendorf.sporttagpsa.business.parsing.FileReader
+import ch.schulealtendorf.sporttagpsa.controller.participant.importpage.ImportController
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -88,7 +89,7 @@ object ImportControllerSpec: Spek({
             }
             
             it("should redirect the user to the competitor import page") {
-                Assert.assertEquals("redirect:/import", result)
+                Assert.assertEquals("redirect:/participant/import", result)
             }
             
             it("should send a success message to the redirected page") {
@@ -103,7 +104,7 @@ object ImportControllerSpec: Spek({
             val result: String = importCtrl.handleFileUpload(mockFile, mockRedirectedAttr)
             
             it("should redirect the user to the import page") {
-                Assert.assertEquals("redirect:/import", result)
+                Assert.assertEquals("redirect:/participant/import", result)
             }
             
             it("should send an error message to the redirected page") {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2017 by Nicolas Märchy
+  ~ Copyright (c) 2018 by Nicolas Märchy
   ~
   ~ This file is part of Sporttag PSA.
   ~
@@ -59,7 +59,7 @@
             <div class="col-lg-2">
 
                 <div class="list-group">
-                    <a th:each="clazz : ${clazzes}"  th:href="@{/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">
+                    <a th:each="clazz : ${clazzes}"  th:href="@{/participant/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">
                         Klasse [[${clazz.name}]]
                     </a>
                 </div>

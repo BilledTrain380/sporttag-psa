@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2017 by Nicolas Märchy
+  ~ Copyright (c) 2018 by Nicolas Märchy
   ~
   ~ This file is part of Sporttag PSA.
   ~
@@ -65,7 +65,7 @@
         <div class="row">
 
             <div class="col-lg-12">
-                <a th:href="@{/clazz}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
+                <a th:href="@{/participant/clazz}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
             </div>
             
             <div class="col-lg-12">
@@ -74,7 +74,7 @@
                 
                 <h3 th:text="${clazz.name}"></h3>
                 
-                <form th:action="@{/clazz/} + ${clazz.id}" method="post" th:object="${competitorSportForm}" enctype="application/x-www-form-urlencoded">
+                <form th:action="@{/participant/clazz/} + ${clazz.id}" method="post" th:object="${participantForm}" enctype="application/x-www-form-urlencoded">
 
                     <table class="table table-striped">
                         <thead>
@@ -89,7 +89,7 @@
                         <tbody>
                         <tr th:each="competitor, status : *{competitors}">
                             <td>
-                                <a th:href="@{/competitor/} + *{competitors[__${status.index}__].id}"><i class="fa fa-fw fa-pencil-square-o"></i></a>
+                                <a th:href="@{/participant/detail/} + *{competitors[__${status.index}__].id}"><i class="fa fa-fw fa-pencil-square-o"></i></a>
                             </td>
                             <td th:text="${competitor.surname}"></td>
                             <td th:text="${competitor.prename}"></td>

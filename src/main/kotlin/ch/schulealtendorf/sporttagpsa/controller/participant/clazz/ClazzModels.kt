@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,16 +34,22 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.model
+package ch.schulealtendorf.sporttagpsa.controller.participant.clazz
 
-/**
- * Model class for a discipline.
- * 
- * @author nmaerchy
- * @version 1.0.0
- */
-@Deprecated("")
-data class DisciplineModel @JvmOverloads constructor(
+data class ParticipantForm(
+        var competitors: List<Participant> = ArrayList()
+)
+
+data class Participant(
+        var id: Int = 0,
+        var surname: String = "",
+        var prename: String = "",
+        var gender: Boolean = true,
+        var address: String = "",
+        var sport: ParticipantSport? = null
+)
+
+data class ParticipantSport(
         var id: Int = 0,
         var name: String = ""
 )

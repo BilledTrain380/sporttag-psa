@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-
 /**
  * Describes a provider for competitors.
  * 

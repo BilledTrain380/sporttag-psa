@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,13 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.controller.participant.importpage
 
 import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorListConsumer
 import ch.schulealtendorf.sporttagpsa.business.parsing.FileReader
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
@@ -52,17 +53,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
  * @version 0.0.1
  */
 @Controller
+@RequestMapping("/participant/import")
 class ImportController(
         private val fileReader: FileReader,
-        private val competitorConsumer: CompetitorListConsumer) {
+        private val competitorConsumer: CompetitorListConsumer
+) {
     
-    companion object {
-        const val IMPORT = "/import"
-    }
-    
-    @GetMapping(IMPORT)
+    @GetMapping
     fun import(): String {
-        return "competitor/import"
+        return "participant/import/import"
     }
 
     /**
@@ -76,22 +75,22 @@ class ImportController(
      * 
      * @return a thymeleaf template
      */
-    @PostMapping(IMPORT)
+    @PostMapping
     fun handleFileUpload(@RequestParam("competitor-input") file: MultipartFile, redirectAttributes: RedirectAttributes): String {
-        
-        try {
-            
+
+        return try {
+
             competitorConsumer.accept(fileReader.parseToCompetitor(file))
-            
+
             redirectAttributes.addFlashAttribute("success", true)
 
-            return "redirect:$IMPORT"
-            
+            "redirect:/participant/import"
+
         } catch (ex: IllegalArgumentException) {
-            
+
             redirectAttributes.addFlashAttribute("success", false)
 
-            return "redirect:$IMPORT"
+            "redirect:/participant/import"
         }
     }
 }

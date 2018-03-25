@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component
  * Provider for {@link ClazzEntity}.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.1.0
  */
 @Component
 class SimpleClazzProvider(
@@ -57,5 +57,18 @@ class SimpleClazzProvider(
         return clazzRepository.findAll().map { 
             SimpleClazz(it?.id!!, it.name)
         }
+    }
+
+    /**
+     * @param id id of the class
+     *
+     * @return the class matching the given {@code id}
+     * @throws NoSuchElementException if the class with the given id does not exist
+     */
+    override fun getOne(id: Int): SimpleClazz {
+        
+        val clazz = clazzRepository.findOne(id) ?: throw NoSuchElementException("Class does not exits: id=$id")
+
+        return SimpleClazz(clazz.id!!, clazz.name)
     }
 }

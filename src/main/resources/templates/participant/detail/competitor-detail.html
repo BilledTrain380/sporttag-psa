@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2017 by Nicolas Märchy
+  ~ Copyright (c) 2018 by Nicolas Märchy
   ~
   ~ This file is part of Sporttag PSA.
   ~
@@ -51,14 +51,14 @@
     <div class="container-fluid">
 
         <div class="page-header">
-            <h1>Teilnehmer <small th:text="${competitor.surname} + ' ' + ${competitor.prename}"></small></h1>
+            <h1>Teilnehmer <small th:text="${participant.surname} + ' ' + ${participant.prename}"></small></h1>
         </div>
 
         <div th:if="${success}" class="alert alert-success" role="alert">
-            .Änderungen wurden erfolgreich übernommen.
+            Änderungen wurden erfolgreich übernommen.
         </div>
         
-        <form th:object="${competitor}" th:action="@{/competitor/} + *{id}" method="post">
+        <form th:object="${participant}" th:action="@{/participant/detail/} + *{id}" method="post">
         
             <div class="form-group row">
                 <label class="col-2 col-form-label">Vorname</label>
@@ -90,11 +90,6 @@
                     <input class="form-control" type="text" th:field="*{address}">
                 </div>
             </div>
-
-            <!-- send all other attributes back, needed to properly update a competitor -->
-            <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{sport.id}">
-            <input type="hidden" th:field="*{sport.name}">
 
             <button type="submit" class="btn btn-primary">Speichern</button>
             

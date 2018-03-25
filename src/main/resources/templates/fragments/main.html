@@ -94,10 +94,10 @@
                 <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" th:classappend="${active} == competitor? active : ''" data-toggle="collapse" href="#competitor-menu"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
                 <ul class="sidebar-second-level collapse" th:classappend="${menu} == competitor? show : ''" id="competitor-menu">
                     <li th:class="${active} == import? active : ''">
-                        <a th:href="@{/import}">Import</a>
+                        <a th:href="@{/participant/import}">Import</a>
                     </li>
                     <li th:class="${active} == clazz-list? active : ''">
-                        <a th:href="@{/clazz}">Klassenliste</a>
+                        <a th:href="@{/participant/clazz}">Klassenliste</a>
                     </li>
                     <li th:class="${active} == management? active : ''">
                         <a th:href="@{/participant/management/general}">Verwaltung</a>

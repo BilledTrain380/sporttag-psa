@@ -36,15 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.controller.model.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
+import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleSportModel
 
 /**
  * This file contains extension functions to map entity classes to the according model class
  * or merge model classes with the according entity class.
- * 
- * @author nmaerchy
- * @version 0.0.4
  */
 
 /**
@@ -53,7 +50,7 @@ import ch.schulealtendorf.sporttagpsa.controller.model.SportModel
  * @return the mapped model class
  */
 fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) SportModel() else this.sport!!.map())
+    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) null else this.sport!!.map())
 }
 
 /**
@@ -74,6 +71,6 @@ fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
  * 
  * @return the mapped model class
  */
-fun SportEntity.map(): SportModel {
-    return SportModel(if (this.id == null) 0 else this.id!!, this.name)
+fun SportEntity.map(): SimpleSportModel {
+    return SimpleSportModel(if (this.id == null) 0 else this.id!!, this.name)
 }
