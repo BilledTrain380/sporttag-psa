@@ -36,7 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.business.tournament
 
-import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import org.springframework.stereotype.Component
 
@@ -45,7 +44,7 @@ import org.springframework.stereotype.Component
  * from a persistence source.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
  */
 @Component
 class PersistenceTournamentProvider(
@@ -59,12 +58,12 @@ class PersistenceTournamentProvider(
      *
      * @return the resulting competitor list
      */
-    override fun findByFilter(filter: TournamentFilter): List<TournamentCompetitorModel> {
+    override fun findByFilter(filter: TournamentFilter): List<TournamentCompetitor> {
         
         val results = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(filter.disciplineId, filter.gender, filter.clazzId)
         
         return results.map { 
-            TournamentCompetitorModel(
+            TournamentCompetitor(
                     it.starter.number!!,
                     it.id!!,
                     it.starter.competitor.prename,
@@ -81,14 +80,14 @@ class PersistenceTournamentProvider(
     /**
      * Updates the result of the given competitor.
      *
-     * @param model holds the result to update
+     * @param result holds the result to update
      */
-    override fun updateResult(model: TournamentCompetitorModel) {
+    override fun updateResult(result: TournamentResult) {
         
-        val result = resultRepository.findOne(model.resultId)
-        result.result = model.result
-        result.points = model.points
+        val resultEntity = resultRepository.findOne(result.id)
+        resultEntity.result = result.result
+        resultEntity.points = result.points
         
-        resultRepository.save(result)
+        resultRepository.save(resultEntity)
     }
 }

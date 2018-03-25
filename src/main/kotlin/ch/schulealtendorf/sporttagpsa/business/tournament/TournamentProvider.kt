@@ -36,13 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.tournament
 
-import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorModel
-
 /**
  * Describes a provider for the tournament data.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
  */
 interface TournamentProvider {
 
@@ -53,12 +51,12 @@ interface TournamentProvider {
      * 
      * @return the resulting competitor list
      */
-    fun findByFilter(filter: TournamentFilter): List<TournamentCompetitorModel>
+    fun findByFilter(filter: TournamentFilter): List<TournamentCompetitor>
 
     /**
-     * Updates the result of the given competitor.
+     * Updates the given {@code result}.
      * 
-     * @param model holds the result to update
+     * @param result holds the result to update
      */
-    fun updateResult(model: TournamentCompetitorModel)
+    fun updateResult(result: TournamentResult)
 }

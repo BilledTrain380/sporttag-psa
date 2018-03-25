@@ -86,7 +86,7 @@ object DefaultCompetitorProviderSpec: Spek({
                         .thenReturn(false)
                 
                 whenever(mockCompetitorRepo.findOne(any()))
-                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
+                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null))
                 
                 whenever(mockSportRepo.findOne(any()))
                         .thenReturn(sportEntity)
@@ -94,7 +94,7 @@ object DefaultCompetitorProviderSpec: Spek({
                 provider.updateCompetitor(competitorModel)
 
                 it("should update the CompetitorEntity with the according SportEntity") {
-                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, sportEntity)
+                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, sportEntity)
                     Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
                 }
             }
@@ -107,7 +107,7 @@ object DefaultCompetitorProviderSpec: Spek({
                         .thenReturn(false)
                 
                 whenever(mockCompetitorRepo.findOne(any()))
-                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null))
+                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null))
                 
                 whenever(mockSportRepo.findOne(any()))
                         .thenReturn(null)
@@ -115,7 +115,7 @@ object DefaultCompetitorProviderSpec: Spek({
                 provider.updateCompetitor(competitorModel)
 
                 it("should update the CompetitorEntity with no SportEntity") {
-                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, java.sql.Date(1), "address", townEntity, clazzEntity, null)
+                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null)
                     Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
                 }
             }

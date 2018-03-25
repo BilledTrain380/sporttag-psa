@@ -55,5 +55,8 @@ class StarterEntity @JvmOverloads constructor(
         @NotNull
         @ManyToOne
         @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
-        var competitor: CompetitorEntity = CompetitorEntity()
+        var competitor: CompetitorEntity = CompetitorEntity(),
+        
+        @OneToMany(mappedBy = "starter")
+        var results: Set<ResultEntity> = setOf()
 )

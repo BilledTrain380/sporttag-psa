@@ -45,4 +45,9 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 1.0.0
  */
-interface StarterRepository: CrudRepository<StarterEntity, Int>
+interface StarterRepository: CrudRepository<StarterEntity, Int> {
+    
+    fun findByCompetitorGender(gender: Boolean): List<StarterEntity>
+    
+    fun findByCompetitorGenderAndCompetitorClazzName(gender: Boolean, clazz: String): List<StarterEntity>
+}

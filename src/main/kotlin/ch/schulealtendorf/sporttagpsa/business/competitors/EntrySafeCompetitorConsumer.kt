@@ -36,15 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
+import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.springframework.stereotype.Component
-import java.sql.Date
 import javax.persistence.EntityNotFoundException
 
 /**
@@ -77,7 +76,7 @@ class EntrySafeCompetitorConsumer(
                 TownEntity(null, competitor.zipCode, competitor.town)
         
         val competitorEntity: CompetitorEntity = CompetitorEntity(
-                null, competitor.surname, competitor.prename, competitor.gender, Date(competitor.birthday.time), competitor.address, townEntity, clazzEntity)
+                null, competitor.surname, competitor.prename, competitor.gender, competitor.birthday.time, competitor.address, townEntity, clazzEntity)
         
         competitorRepository.save(competitorEntity)    
     }

@@ -42,6 +42,7 @@ package ch.schulealtendorf.sporttagpsa.controller.model
  * @author nmaerchy
  * @version 1.0.0
  */
+@Deprecated("")
 data class TournamentCompetitorFormModel @JvmOverloads constructor(
         var discipline: DisciplineModel = DisciplineModel(),
         var clazz: ClazzModel = ClazzModel(),

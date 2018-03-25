@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem.iml" group="filesystem" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem/filesystem_main.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem/filesystem_main.iml" group="filesystem" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem/filesystem_test.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem/filesystem_test.iml" group="filesystem" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules.iml" group="rules" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules_main.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules_main.iml" group="rules" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules_test.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules_test.iml" group="rules" />

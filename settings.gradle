@@ -35,3 +35,5 @@
  */
 
 include 'rules'
+include 'filesystem'
+

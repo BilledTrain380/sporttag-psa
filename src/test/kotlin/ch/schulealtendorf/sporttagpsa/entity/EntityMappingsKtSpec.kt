@@ -44,7 +44,6 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
-import java.sql.Date
 import kotlin.test.assertEquals
 
 /**
@@ -62,7 +61,7 @@ object EntityMappingsKtSpec: Spek({
         
         on("a CompetitorEntity with a SportEntity") {
             
-            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", true, java.sql.Date(1), "address",
+            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", true, 1, "address",
                     townEntity,
                     clazzEntity,
                     sportEntity)
@@ -75,7 +74,7 @@ object EntityMappingsKtSpec: Spek({
         
         on("a CompetitorEntity with no SportEntity") {
 
-            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", true, java.sql.Date(1), "address",
+            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", true, 1, "address",
                     townEntity,
                     clazzEntity,
                     null)
@@ -88,7 +87,7 @@ object EntityMappingsKtSpec: Spek({
         
         on("a CompetitorEntity with no id") {
 
-            val competitorEntity: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, java.sql.Date(1), "address",
+            val competitorEntity: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, 1, "address",
                     townEntity,
                     clazzEntity,
                     null)
@@ -101,13 +100,13 @@ object EntityMappingsKtSpec: Spek({
         
         on("merging a SimpleCompetitorModel") {
             
-            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", false, Date(1), "address", townEntity, clazzEntity, sportEntity)
+            val competitorEntity: CompetitorEntity = CompetitorEntity(1, "Muster", "Hans", false, 1, "address", townEntity, clazzEntity, sportEntity)
             val competitorModel: SimpleCompetitorModel = SimpleCompetitorModel(2, "merged Muster", "merged Hans", true, "merged address")
             
             competitorEntity.merge(competitorModel)
             
             it("should only merge primitive properties without the id") {
-                val expected: CompetitorEntity = CompetitorEntity(1, "merged Muster", "merged Hans", true, Date(1), "merged address", townEntity, clazzEntity, sportEntity)
+                val expected: CompetitorEntity = CompetitorEntity(1, "merged Muster", "merged Hans", true, 1, "merged address", townEntity, clazzEntity, sportEntity)
                 assertEquals(expected, competitorEntity)
             }
         }

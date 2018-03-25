@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,45 +34,33 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.controller.tournament
 
-import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
+data class TournamentCompetitorFormModel(
+        var discipline: TournamentDisciplineModel = TournamentDisciplineModel(),
+        var clazz: TournamentClazzModel = TournamentClazzModel(),
+        var gender: Boolean = true,
+        var competitors: List<TournamentCompetitorModel> = arrayListOf()
+)
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
-@Controller
-class ManagementController(
-        private val participationManager: ParticipationManager,
-        private val participationStatus: ParticipationStatus
-) {
-    
-    companion object {
-        const val BASIC = "/management/basic"
-        const val FINISH_PARTICIPATION = "/management/finish-participation"
-    }
-    
-    @GetMapping(BASIC)
-    fun basic(model: Model): String {
+data class TournamentCompetitorModel(
+        var startNumber: Int = 0,
+        var resultId: Int = 0,
+        var prename: String = "",
+        var surname: String = "",
+        var gender: Boolean = true,
+        var distance: String? = null,
+        var result: Double = 0.0,
+        var unit: String = "",
+        var points: Int = 1
+)
 
-        model.addAttribute("participationStatus", participationStatus.isFinished())
-        
-        return "competitor/management-basic"
-    }
-    
-    @GetMapping(FINISH_PARTICIPATION)
-    fun finishParticipation(redirectAttributes: RedirectAttributes): String {
-        
-        participationManager.finishParticipation()
-        
-        redirectAttributes.addFlashAttribute("participationInfo", true)
-        
-        return "redirect:$BASIC"
-    }
-}
+data class TournamentClazzModel(
+        var id: Int = 0,
+        var name: String = ""
+)
+
+data class TournamentDisciplineModel(
+        var id: Int = 0,
+        var name: String = ""
+)

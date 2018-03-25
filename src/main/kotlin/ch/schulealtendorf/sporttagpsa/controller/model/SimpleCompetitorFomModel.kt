@@ -42,6 +42,7 @@ package ch.schulealtendorf.sporttagpsa.controller.model
  * @author nmaerchy
  * @version 0.0.2
  */
+@Deprecated("")
 data class SimpleCompetitorFomModel @JvmOverloads constructor(
         var competitors: List<SimpleCompetitorModel> = ArrayList<SimpleCompetitorModel>()
 )

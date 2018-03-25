@@ -42,6 +42,7 @@ package ch.schulealtendorf.sporttagpsa.controller.model
  * @author nmaerchy
  * @version 0.0.1
  */
+@Deprecated("")
 data class SportModel @JvmOverloads constructor(
         var id: Int = 0,
         var name: String = ""

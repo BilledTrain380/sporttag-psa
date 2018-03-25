@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.1.51'
+		kotlin_version = '1.2.30'
 		springBootVersion = '1.5.3.RELEASE'
 		sporttagPSAVersion = '0.0.1'
 	}
@@ -9,10 +9,10 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
 		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
-        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlin_version}"
 	}
 }
 
@@ -20,6 +20,8 @@ version = "${sporttagPSAVersion}"
 
 allprojects {
 
+	// TODO: Remove kotlin stuff
+	
 	apply plugin: 'idea'
 	apply plugin: 'kotlin'
 
@@ -41,8 +43,23 @@ allprojects {
 	}
 	
 	dependencies {
-		compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
-		compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+		compile("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
+	}
+}
+
+project(":filesystem") {
+    
+    apply plugin: 'kotlin-spring'
+    
+	dependencies {
+		compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.5.3.RELEASE'
+	}
+}
+
+repositories {
+	maven { url 'https://jitpack.io' }
+	maven {
+		url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
 	}
 }
 
@@ -60,6 +77,8 @@ junitPlatform {
 }
 
 dependencies {
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-devtools")
@@ -67,9 +86,12 @@ dependencies {
     compile "com.opencsv:opencsv:3.9"
 	compile "joda-time:joda-time:2.9.9"
 	compile "com.deliveredtechnologies:rulebook-core:0.8"
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
-    
+	compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
+	
 	compile project(":rules")
+    compile project(":filesystem")
+
+	compile 'com.github.BilledTrain380:Alberta:develop-SNAPSHOT'
 	
     // database dependencies
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')

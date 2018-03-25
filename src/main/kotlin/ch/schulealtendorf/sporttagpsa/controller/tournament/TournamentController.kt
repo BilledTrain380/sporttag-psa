@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,24 +34,20 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.controller.tournament
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
 import ch.schulealtendorf.sporttagpsa.business.rulebook.FormulaModel
 import ch.schulealtendorf.sporttagpsa.business.rulebook.ResultRuleBook
+import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentCompetitor
 import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentFilter
 import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentProvider
-import ch.schulealtendorf.sporttagpsa.controller.model.ClazzModel
-import ch.schulealtendorf.sporttagpsa.controller.model.DisciplineModel
-import ch.schulealtendorf.sporttagpsa.controller.model.TournamentCompetitorFormModel
+import ch.schulealtendorf.sporttagpsa.business.tournament.TournamentResult
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
@@ -62,6 +58,7 @@ import javax.validation.Valid
  * @version 1.0.1
  */
 @Controller
+@RequestMapping("/tournament/result")
 class TournamentController(
         private val tournamentProvider: TournamentProvider,
         private val ruleBook: ResultRuleBook,
@@ -70,35 +67,32 @@ class TournamentController(
         private val participationStatus: ParticipationStatus
 ) {
     
-    companion object {
-        const val TOURNAMENT = "/tournament"
-    }
-    
-    @GetMapping("$TOURNAMENT/init")
-    fun tournament(model: Model): String {
+    @GetMapping("/index")
+    fun index(model: Model): String {
         
         val clazzes = clazzProvider.getAll()
         
         if (clazzes.isEmpty()) {
             
             model.addAttribute("missingClazzes", true)
-            return "tournament"
+            
+            return "tournament/result"
         }
         
         val disciplineId = disciplineProvider.getAll().first().id
         val clazzId = clazzes.first().id
         
-        return "redirect:$TOURNAMENT?discipline_id=$disciplineId&clazz_id=$clazzId&gender=true"
+        return "redirect:/tournament/result?discipline_id=$disciplineId&clazz_id=$clazzId&gender=true"
     }
     
-    @GetMapping(TOURNAMENT)
+    @GetMapping
     fun tournament(@RequestParam("discipline_id") disciplineId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean, model: Model): String {
         
-        val disciplineList: List<DisciplineModel> = disciplineProvider.getAll().map { DisciplineModel(it.id, it.name) }
-        val clazzList: List<ClazzModel> = clazzProvider.getAll().map { ClazzModel(it.id, it.name) }
+        val disciplineList: List<TournamentDisciplineModel> = disciplineProvider.getAll().map { TournamentDisciplineModel(it.id, it.name) }
+        val clazzList: List<TournamentClazzModel> = clazzProvider.getAll().map { TournamentClazzModel(it.id, it.name) }
         
         val filter = TournamentFilter(disciplineId, clazzId, gender)
-        val results = tournamentProvider.findByFilter(filter)
+        val results = tournamentProvider.findByFilter(filter).map { it.toModel() }
         
         val currentDiscipline = disciplineList.first { it.id == disciplineId }
         val currentClazz = clazzList.first { it.id == clazzId }
@@ -115,10 +109,10 @@ class TournamentController(
         model.addAttribute("clazzList", clazzList)
         model.addAttribute("participationStatus", !participationStatus.isFinished())
         
-        return "tournament"
+        return "tournament/result"
     }
     
-    @PostMapping(TOURNAMENT)
+    @PostMapping("/save")
     fun saveResults(@Valid @ModelAttribute tournamentModel: TournamentCompetitorFormModel, redirectAttributes: RedirectAttributes): String {
         
         tournamentModel.competitors.forEach { 
@@ -132,7 +126,7 @@ class TournamentController(
   
             it.points = ruleBook.calc(ruleModel)
             
-            tournamentProvider.updateResult(it)
+            tournamentProvider.updateResult(it.toResult())
         }
         
         val discipline = tournamentModel.discipline.id
@@ -141,6 +135,28 @@ class TournamentController(
 
         redirectAttributes.addFlashAttribute("success", true)
         
-        return "redirect:$TOURNAMENT?discipline_id=$discipline&clazz_id=$clazz&gender=$gender"
+        return "redirect:/tournament/result?discipline_id=$discipline&clazz_id=$clazz&gender=$gender"
+    }
+    
+    private fun TournamentCompetitor.toModel(): TournamentCompetitorModel {
+        return TournamentCompetitorModel(
+                startNumber,
+                resultId,
+                prename,
+                surname,
+                gender,
+                distance,
+                result,
+                unit,
+                points
+        )
+    }
+    
+    private fun TournamentCompetitorModel.toResult(): TournamentResult {
+        return TournamentResult(
+                resultId,
+                result,
+                points
+        )
     }
 }

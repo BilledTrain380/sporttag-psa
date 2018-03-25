@@ -52,7 +52,6 @@ import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.*
-import java.sql.Date
 import javax.persistence.EntityNotFoundException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -101,7 +100,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             }
             
             it("should save a CompetitorEntity based on the FlatCompetitors attributes") {
-                val expected: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, Date(1), "Musterstrasse 6", townEntity, clazzEntity)
+                val expected: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, 1, "Musterstrasse 6", townEntity, clazzEntity)
                 Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
             }
         }
@@ -128,7 +127,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             
             it("should save the TownEntity with the CompetitorEntity") {
                 val newTownEntity: TownEntity = TownEntity(null, "4000", "Musterhausen") // it is important, that the id is not set, otherwise it would be an existing TownEntity
-                val expected: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, Date(1), "Musterstrasse 6", newTownEntity, clazzEntity)
+                val expected: CompetitorEntity = CompetitorEntity(null, "Muster", "Hans", true, 1, "Musterstrasse 6", newTownEntity, clazzEntity)
                 verify(mockCompetitorRepo, times(1)).save(expected)
             }
         }
