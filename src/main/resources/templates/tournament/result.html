@@ -89,9 +89,6 @@
                         <option th:value="false">Mädchen</option>
                     </select>
                     
-                    <br/>
-                    <br/>
-                    
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -155,7 +152,7 @@
             var clazz = $("#clazz\\.id").val();
             var gender = $("#gender").val();
             
-            window.location = "tournament?discipline_id=" + discipline +"&clazz_id=" + clazz + "&gender=" + gender
+            window.location = "/tournament/result?discipline_id=" + discipline +"&clazz_id=" + clazz + "&gender=" + gender
             
         });
     });

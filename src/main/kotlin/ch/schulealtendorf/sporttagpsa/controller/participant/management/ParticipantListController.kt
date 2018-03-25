@@ -63,7 +63,7 @@ class ParticipantListController(
     
     private val sports = sportProvider.getAll()
     
-    @GetMapping("/")
+    @GetMapping
     fun index(model: Model): String {
         
         val participantListForm = ParticipantListForm(sports.map { ParticipantSport(it.id, it.name) })

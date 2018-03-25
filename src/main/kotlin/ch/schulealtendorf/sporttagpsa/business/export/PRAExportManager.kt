@@ -71,7 +71,7 @@ class PRAExportManager(
 
             val reports = eventSheetReporter.generateReport(data.disciplines)
 
-            return fileSystem.createArchive("Wettkampfblätter.zip", reports)
+            return fileSystem.createArchive("Wettkampfblätter", reports)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -95,7 +95,7 @@ class PRAExportManager(
                     disciplineRankingReporter.generateReport(data.disciplines)
             ).flatten()
 
-            return fileSystem.createArchive("Rangliste.zip", reports)
+            return fileSystem.createArchive("Rangliste", reports)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -115,7 +115,7 @@ class PRAExportManager(
 
             val reports = participantListReporter.generateReport(data.sports)
 
-            return fileSystem.createArchive("Teilnehmerliste.zip", reports)
+            return fileSystem.createArchive("Teilnehmerliste", reports)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
