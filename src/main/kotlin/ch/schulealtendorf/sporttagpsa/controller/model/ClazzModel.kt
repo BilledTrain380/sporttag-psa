@@ -42,6 +42,7 @@ package ch.schulealtendorf.sporttagpsa.controller.model
  * @author nmaerchy
  * @version 1.0.0
  */
+@Deprecated("")
 data class ClazzModel @JvmOverloads constructor(
         var id: Int = 0,
         var name: String = ""

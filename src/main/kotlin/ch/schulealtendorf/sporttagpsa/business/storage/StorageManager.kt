@@ -46,6 +46,7 @@ import java.io.InputStream
  * @author nmaerchy
  * @version 1.0.0
  */
+@Deprecated("")
 interface StorageManager {
 
     /**

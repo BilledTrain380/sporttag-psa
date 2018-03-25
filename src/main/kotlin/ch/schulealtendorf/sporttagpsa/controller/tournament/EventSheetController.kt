@@ -54,7 +54,7 @@ import java.io.FileInputStream
 import javax.validation.Valid
 
 @Controller
-@RequestMapping("/event-sheet")
+@RequestMapping("/tournament/event-sheet")
 class EventSheetController(
         private val exportManager: ExportManager,
         clazzProvider: ClazzProvider,

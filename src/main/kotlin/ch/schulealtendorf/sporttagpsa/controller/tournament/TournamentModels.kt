@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,18 +34,33 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.model
+package ch.schulealtendorf.sporttagpsa.controller.tournament
 
-/**
- * Form model for the tournament page.
- * 
- * @author nmaerchy
- * @version 1.0.0
- */
-@Deprecated("")
-data class TournamentCompetitorFormModel @JvmOverloads constructor(
-        var discipline: DisciplineModel = DisciplineModel(),
-        var clazz: ClazzModel = ClazzModel(),
+data class TournamentCompetitorFormModel(
+        var discipline: TournamentDisciplineModel = TournamentDisciplineModel(),
+        var clazz: TournamentClazzModel = TournamentClazzModel(),
         var gender: Boolean = true,
         var competitors: List<TournamentCompetitorModel> = arrayListOf()
+)
+
+data class TournamentCompetitorModel(
+        var startNumber: Int = 0,
+        var resultId: Int = 0,
+        var prename: String = "",
+        var surname: String = "",
+        var gender: Boolean = true,
+        var distance: String? = null,
+        var result: Double = 0.0,
+        var unit: String = "",
+        var points: Int = 1
+)
+
+data class TournamentClazzModel(
+        var id: Int = 0,
+        var name: String = ""
+)
+
+data class TournamentDisciplineModel(
+        var id: Int = 0,
+        var name: String = ""
 )

@@ -85,13 +85,14 @@
     <a class="navbar-brand" href="#">Sporttag PSA</a>
     <div class="collapse navbar-collapse" id="navbar-psa">
         <ul class="sidebar-nav navbar-nav">
+            
             <li class="nav-item" th:classappend="${menu} == dashboard? active : ''">
                 <a class="nav-link" href="#"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" th:classappend="${active} == competitor? active : ''" data-toggle="collapse" href="#competitor-multi"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
-                <ul class="sidebar-second-level collapse" th:classappend="${menu} == competitor? show : ''" id="competitor-multi">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" th:classappend="${active} == competitor? active : ''" data-toggle="collapse" href="#competitor-menu"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == competitor? show : ''" id="competitor-menu">
                     <li th:class="${active} == import? active : ''">
                         <a th:href="@{/import}">Import</a>
                     </li>
@@ -104,8 +105,16 @@
                 </ul>
             </li>
 
-            <li class="nav-item" th:classappend="${menu} == tournament? active : ''">
-                <a class="nav-link" th:href="@{/tournament/init}"><i class="fa fa-fw fa-futbol-o"></i> Mehrkampf</a>
+            <li class="nav-item">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != tournament? collapsed : ''" th:classappend="${active} == tournament? active : ''" data-toggle="collapse" href="#tournament-menu"><i class="fa fa-fw fa-futbol-o"></i> Mehrkampf</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == tournament? show : ''" id="tournament-menu">
+                    <li th:class="${active} == event-sheet? active : ''">
+                        <a th:href="@{/tournament/event-sheet}">Wettkampfblätter</a>
+                    </li>
+                    <li th:class="${active} == result? active : ''">
+                        <a th:href="@{/tournament/result}">Resultate</a>
+                    </li>
+                </ul>
             </li>
 
             <li class="nav-item" th:classappend="${menu} == ranking? active : ''">
