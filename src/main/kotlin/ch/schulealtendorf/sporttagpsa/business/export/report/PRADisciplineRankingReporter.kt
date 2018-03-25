@@ -86,7 +86,7 @@ class PRADisciplineRankingReporter(
                         val ranking = DisciplineRanking().apply {
                             year = Year.of(it.key)
                             isGender = true
-                            this.discipline = discipline
+                            discipline = disciplineExport.discipline.name
                             competitors = it.value.map {
                                 DisciplineCompetitor().apply {
                                     prename = it.starter.competitor.prename
