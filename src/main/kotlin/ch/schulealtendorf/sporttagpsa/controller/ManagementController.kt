@@ -36,23 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
-import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExportManager
-import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExportModel
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.io.FileInputStream
-import javax.validation.Valid
 
 /**
  * @author nmaerchy
@@ -61,8 +50,7 @@ import javax.validation.Valid
 @Controller
 class ManagementController(
         private val participationManager: ParticipationManager,
-        private val participationStatus: ParticipationStatus,
-        private val participantExportManager: ParticipantExportManager
+        private val participationStatus: ParticipationStatus
 ) {
     
     companion object {
@@ -86,27 +74,5 @@ class ManagementController(
         redirectAttributes.addFlashAttribute("participationInfo", true)
         
         return "redirect:$BASIC"
-    }
-    
-    @GetMapping("/management/participant-list")
-    fun participantList(model: Model): String {
-        
-        model.addAttribute("participantModel", participantExportManager.getPreparedModel())
-        
-        return "competitor/management-participantlist"
-    }
-    
-    @PostMapping("/management/participant-list")
-    fun exportParticipantList(@Valid @ModelAttribute("participantModel") model: ParticipantExportModel): ResponseEntity<InputStreamResource> {
-
-        val zip = participantExportManager.generateZip(model)
-
-        val respHeaders = HttpHeaders()
-        respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
-        respHeaders.contentLength = zip.length()
-        respHeaders.setContentDispositionFormData("attachment", zip.name)
-
-        val isr = InputStreamResource(FileInputStream(zip))
-        return ResponseEntity(isr, respHeaders, HttpStatus.OK)
     }
 }

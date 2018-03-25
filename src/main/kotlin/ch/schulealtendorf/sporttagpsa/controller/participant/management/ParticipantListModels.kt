@@ -34,30 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.controller.participant.management
 
-import java.io.File
+data class ParticipantListForm(
+        var sports: List<ParticipantSport> = ArrayList()
+)
 
-/**
- * Describes a manager to export the participant list.
- * 
- * @author nmaerchy
- * @version 1.0.0
- */
-interface ParticipantExportManager {
-
-    /**
-     * @return a {@link ParticipantExportModel} which contains sports data
-     */
-    fun getPreparedModel(): ParticipantExportModel
-
-    /**
-     * Generates a zip file by the given {@code model}.
-     *
-     * @param model contains data to generate reports
-     *
-     * @return the created zip file
-     * @throws RankingExportException if the zip could not be created
-     */
-    fun generateZip(model: ParticipantExportModel): File
-}
+data class ParticipantSport(
+        var id: Int = 0,
+        var name: String = "",
+        var include: Boolean = false
+)
