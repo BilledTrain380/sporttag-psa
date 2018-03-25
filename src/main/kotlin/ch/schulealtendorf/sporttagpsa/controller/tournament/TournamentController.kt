@@ -85,7 +85,7 @@ class TournamentController(
         return "redirect:/tournament/result?discipline_id=$disciplineId&clazz_id=$clazzId&gender=true"
     }
     
-    @GetMapping("/")
+    @GetMapping
     fun tournament(@RequestParam("discipline_id") disciplineId: Int, @RequestParam("clazz_id") clazzId: Int, @RequestParam("gender") gender: Boolean, model: Model): String {
         
         val disciplineList: List<TournamentDisciplineModel> = disciplineProvider.getAll().map { TournamentDisciplineModel(it.id, it.name) }

@@ -64,7 +64,7 @@ class EventSheetController(
     private val clazzes = clazzProvider.getAll()
     private val disciplines = disciplineProvider.getAll()
     
-    @GetMapping("/")
+    @GetMapping
     fun index(model: Model): String {
         
         val eventSheetForm = EventSheetForm(

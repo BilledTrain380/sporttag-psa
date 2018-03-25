@@ -106,8 +106,8 @@ class PlatformFileSystem(
                 }
 
             } finally {
-                it.close()
                 it.flush()
+                it.close()
             }
         }
 

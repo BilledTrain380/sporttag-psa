@@ -64,7 +64,7 @@ class RankingExportController(
 
     private val disciplines = disciplineProvider.getAll()
     
-    @GetMapping("/")
+    @GetMapping
     fun index(model: Model): String {
         
         val rankingForm = RankingForm(
@@ -77,7 +77,7 @@ class RankingExportController(
         
         model.addAttribute("rankingForm", rankingForm)
         
-        return "ranking"
+        return "ranking/ranking"
     }
     
     @PostMapping("/export")

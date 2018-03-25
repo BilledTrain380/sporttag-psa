@@ -37,7 +37,7 @@
 
 <html lang="de">
 
-<head th:replace="fragments/main :: head(Mehrkampf - Wettkampfblätter)">
+<head th:replace="fragments/main :: head('Mehrkampf - Wettkampfblätter')">
 </head>
 
 <body id="page-top">
@@ -54,7 +54,7 @@
             <h1>Mehrkampf <small>Wettkampfblätter</small></h1>
         </div>
 
-        <form class="row" th:action="@{/event-sheet/export}" method="post" th:object="${eventSheetForm}"} enctype="application/x-www-form-urlencoded">
+        <form class="row" th:action="@{/tournament/event-sheet/export}" method="post" th:object="${eventSheetForm}"} enctype="application/x-www-form-urlencoded">
 
             <ul class="multi">
                 <li class="col-lg-12">
@@ -64,7 +64,7 @@
                     <!-- disciplines -->
                     <ul class="row">
                         
-                        <li class="col-lg-2" th:each="discipline, status : *{disciplines}">
+                        <li class="col-lg-4" th:each="discipline, status : *{disciplines}">
 
                             <input class="select-element" type="checkbox"/>
                             <label th:text="${discipline.name}"></label>
@@ -73,7 +73,7 @@
 
                             <ul class="row">
                                 
-                                <li class="col-lg-2" th:each="clazz, clazzStatus : *{disciplines[__${status.index}__].clazzes}">
+                                <li class="col-lg-6" th:each="clazz, clazzStatus : *{disciplines[__${status.index}__].clazzes}">
                                     
                                     <input class="select-element" type="checkbox"/>
                                     <label th:text="${clazz.name}"></label>

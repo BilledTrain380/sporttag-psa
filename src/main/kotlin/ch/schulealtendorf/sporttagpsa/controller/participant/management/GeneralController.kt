@@ -34,30 +34,38 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.controller.participant.management
 
-import java.io.File
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
-/**
- * Describes a manager for the rankings.
- * 
- * @author nmaerchy
- * @version 1.0.0
- */
-interface RankingExportManager {
+@Controller
+@RequestMapping("/participant/management/general")
+class GeneralController(
+        private val participationManager: ParticipationManager,
+        private val participationStatus: ParticipationStatus
+) {
+    
+    @GetMapping
+    fun index(model: Model): String {
 
-    /**
-     * @return a {@link RankingExportModel} which contains discipline data
-     */
-    fun getPreparedModel(): RankingExportModel
-
-    /**
-     * Generates a zip file by the given {@code model}.
-     * 
-     * @param model contains data to generate reports
-     * 
-     * @return the created zip file
-     * @throws RankingExportException if the zip could not be created
-     */
-    fun generateZip(model: RankingExportModel): File
+        model.addAttribute("participationStatus", participationStatus.isFinished())
+        
+        return "participant/management/general"
+    }
+    
+    @GetMapping("/finish-participation")
+    fun finishParticipation(redirectAttributes: RedirectAttributes): String {
+        
+        participationManager.finishParticipation()
+        
+        redirectAttributes.addFlashAttribute("participationInfo", true)
+        
+        return "redirect:/participant/management/general"
+    }
 }
