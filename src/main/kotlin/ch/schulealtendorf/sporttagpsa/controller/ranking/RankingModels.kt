@@ -34,81 +34,27 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.controller.ranking
 
-@Deprecated("")
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
+data class RankingForm(
+        var disciplines: List<DisciplineRankingForm> = ArrayList(),
+        var disciplineGroup: DisciplineGroupRankingForm = DisciplineGroupRankingForm(),
+        var total: TotalRankingForm = TotalRankingForm()
 )
 
-@Deprecated("")
-data class DisciplineRankingExportModel(
+data class DisciplineRankingForm(
+        var id: Int = 0,
         var name: String = "",
         var male: Boolean = false,
         var female: Boolean = false
 )
 
-@Deprecated("")
-data class DisciplineGroupRankingExportModel(
+data class DisciplineGroupRankingForm(
         var male: Boolean = false,
         var female: Boolean = false
 )
 
-@Deprecated("")
-data class TotalRankingExportModel(
+data class TotalRankingForm(
         var male: Boolean = false,
         var female: Boolean = false
-)
-
-@Deprecated("")
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-@Deprecated("")
-data class SportExportModel(
-        var name: String = "",
-        var include: Boolean = false
-)
-
-data class RankingExport(
-        val disciplines: Iterable<DisciplineExport>,
-        val disciplineGroup: Iterable<Boolean>,
-        val total: Iterable<Boolean>
-)
-
-data class EventSheetExport(
-        val disciplines: Iterable<EventSheetDisciplineExport>
-)
-
-data class ParticipantExport(
-        val sports: Iterable<SimpleSport>
-)
-
-data class DisciplineExport @JvmOverloads constructor(
-        val discipline: SimpleDiscipline,
-        val gender: Boolean = false
-)
-
-data class EventSheetDisciplineExport @JvmOverloads constructor(
-        val discipline: SimpleDiscipline,
-        val clazz: SimpleClazz,
-        val gender: Boolean = false
-)
-
-data class SimpleClazz(
-        val id: Int,
-        val name: String
-)
-
-data class SimpleDiscipline(
-        val id: Int,
-        val name: String
-)
-
-data class SimpleSport(
-        val id: Int,
-        val name: String
 )

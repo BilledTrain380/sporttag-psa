@@ -34,10 +34,13 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller
+package ch.schulealtendorf.sporttagpsa.controller.ranking
 
-import ch.schulealtendorf.sporttagpsa.business.export.RankingExportManager
-import ch.schulealtendorf.sporttagpsa.business.export.RankingExportModel
+import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
+import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
+import ch.schulealtendorf.sporttagpsa.business.export.RankingExport
+import ch.schulealtendorf.sporttagpsa.business.export.SimpleDiscipline
+import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -48,31 +51,39 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import java.io.FileInputStream
 import javax.validation.Valid
 
-
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
 @Controller
+@RequestMapping("/ranking")
 class RankingExportController(
-        private val rankingExportManager: RankingExportManager
+        private val exportManager: ExportManager,
+        disciplineProvider: DisciplineProvider
 ) {
 
-    @GetMapping("/ranking")
+    private val disciplines = disciplineProvider.getAll()
+    
+    @GetMapping("/")
     fun index(model: Model): String {
         
-        model.addAttribute("rankingExportModel", rankingExportManager.getPreparedModel())
+        val rankingForm = RankingForm(
+                disciplines.map { 
+                    DisciplineRankingForm(it.id, it.name)
+                },
+                DisciplineGroupRankingForm(),
+                TotalRankingForm()
+        )
+        
+        model.addAttribute("rankingForm", rankingForm)
         
         return "ranking"
     }
     
-    @PostMapping("/ranking")
-    fun export(@Valid @ModelAttribute("rankingExportModel") rankingExportModel: RankingExportModel): ResponseEntity<InputStreamResource> {
+    @PostMapping("/export")
+    fun export(@Valid @ModelAttribute("rankingForm") rankingForm: RankingForm): ResponseEntity<InputStreamResource> {
         
-        val zip = rankingExportManager.generateZip(rankingExportModel)
+        val zip = exportManager.generateArchive(rankingForm.toRankingExport())
 
         val respHeaders = HttpHeaders()
         respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
@@ -81,5 +92,33 @@ class RankingExportController(
 
         val isr = InputStreamResource(FileInputStream(zip))
         return ResponseEntity(isr, respHeaders, HttpStatus.OK)
+    }
+    
+    private fun RankingForm.toRankingExport(): RankingExport {
+
+        val disciplineExport = listOf(
+                disciplines
+                        .filter { it.male }
+                        .map { DisciplineExport(SimpleDiscipline(it.id, it.name), true) },
+                disciplines
+                        .filter { it.female }
+                        .map { DisciplineExport(SimpleDiscipline(it.id, it.name)) }
+        ).flatten()
+
+        val disciplineGroupExport = listOf(
+                disciplineGroup.female,
+                disciplineGroup.male
+        ).filter { it }
+
+        val totalExport = listOf(
+                total.female,
+                total.male
+        ).filter { it }
+
+        return RankingExport(
+                disciplineExport,
+                disciplineGroupExport,
+                totalExport
+        )
     }
 }
