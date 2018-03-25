@@ -92,22 +92,9 @@ class PlatformFileSystem(
 
         file.createNewFile()
 
-        val bufferedInputStream = input.buffered()
-
-        file.bufferedWriter().use {
-
-            try {
-
-                var bytes = bufferedInputStream.read()
-
-                while (bytes != -1) {
-                    it.write(bytes)
-                    bytes = bufferedInputStream.read()
-                }
-
-            } finally {
-                it.flush()
-                it.close()
+        input.use { 
+            file.outputStream().use { fileOut ->
+                it.copyTo(fileOut)
             }
         }
 
