@@ -54,7 +54,7 @@
             <h1>Rangliste</h1>
         </div>
         
-            <form class="row" th:action="@{/ranking/export}" method="post" th:object="${rankingForm}"} enctype="application/x-www-form-urlencoded">
+            <form class="row" th:action="@{/ranking/export}" method="post" th:object="${rankingForm}" enctype="application/x-www-form-urlencoded">
                 
                 <ul class="multi">
                     <li class="col-lg-12">
@@ -68,8 +68,8 @@
                             <li class="col-lg-12">
 
 
-                                <input class="select-element" type="checkbox" name="disciplines" id="disciplines">
-                                <label for="disciplines">Disziplinen</label>
+                                <input class="select-element" type="checkbox" name="discipline-ranking" id="discipline-ranking">
+                                <label for="discipline-ranking">Disziplinen</label>
 
 
                                 <!-- nodes -->
