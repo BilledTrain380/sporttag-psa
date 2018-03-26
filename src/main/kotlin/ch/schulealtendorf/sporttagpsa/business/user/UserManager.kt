@@ -34,20 +34,60 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.user
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import java.util.*
 
-@Entity
-@Table(name = "AUTHORITY")
-data class AuthorityEntity(
-        
-        @Id
-        @NotNull
-        @Size(min = 1, max = 20)
-        var role: String = "USER"
-)
+/**
+ * Describes a manager to create, update or delete a user.
+ * The manager encrypts the password field.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface UserManager {
+
+    /**
+     * Creates the given {@code user}.
+     * The {@code FreshUser#password} field will be encrypted.
+     * 
+     * @param user the user to create
+     */
+    fun create(user: FreshUser)
+
+    /**
+     * Updates the password for the given {@code user}.
+     * The {@code UserPassword#password} field will be encrypted.
+     * 
+     * @param user the user password to update
+     */
+    fun update(user: UserPassword)
+
+    /**
+     * Updates the given {@code user}.
+     * 
+     * @param user the user to update
+     */
+    fun update(user: User)
+
+    /**
+     * @return all users
+     */
+    fun getAll(): List<User>
+
+    /**
+     * Gets the user by the given {@code userId}.
+     * 
+     * @param userId id of the user
+     * 
+     * @return an {@code Optional} of the user
+     */
+    fun getOne(userId: Int): Optional<User>
+
+    /**
+     * Deletes the user matching the given {@code userId}.
+     * 
+     * @param userId id of the user to delete
+     */
+    fun delete(userId: Int)
+}

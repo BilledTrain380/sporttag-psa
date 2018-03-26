@@ -34,20 +34,21 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.user
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+data class FreshUser(
+        val username: String,
+        val password: String,
+        val enabled: Boolean
+)
 
-@Entity
-@Table(name = "AUTHORITY")
-data class AuthorityEntity(
-        
-        @Id
-        @NotNull
-        @Size(min = 1, max = 20)
-        var role: String = "USER"
+data class UserPassword(
+        val userId: Int,
+        val password: String
+)
+
+data class User(
+        val userId: Int,
+        val username: String,
+        val enabled: Boolean
 )

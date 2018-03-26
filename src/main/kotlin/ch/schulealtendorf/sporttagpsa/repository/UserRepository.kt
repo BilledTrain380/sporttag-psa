@@ -34,20 +34,15 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.repository
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.sporttagpsa.entity.UserEntity
+import org.springframework.data.repository.CrudRepository
 
-@Entity
-@Table(name = "AUTHORITY")
-data class AuthorityEntity(
-        
-        @Id
-        @NotNull
-        @Size(min = 1, max = 20)
-        var role: String = "USER"
-)
+/**
+ * Describes a CRUD repository for a user.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface UserRepository: CrudRepository<UserEntity, Int>
