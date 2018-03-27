@@ -48,6 +48,8 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy
@@ -81,6 +83,46 @@ object UserManagerImplSpec: Spek({
                             AuthorityEntity("USER")
                     ))
                     verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {  
+                        expected.id == it.id &&
+                                expected.username == it.username &&
+                                BCryptPasswordEncoder(4).matches(expected.password, it.password) &&
+                                expected.enabled == it.enabled &&
+                                expected.authorities == it.authorities
+                    })
+                }
+            }
+            
+            on("already existing username") {
+                
+                whenever(mockUserRepository.findByUsername(any())).thenReturn(UserEntity())
+                
+                it("should throw a user already exists exception") {
+                    
+                    val exception = assertFailsWith<UserAlreadyExistsException> { 
+                        userManager.create(FreshUser("mmuster", "", true))
+                    }
+                    
+                    assertEquals("User exists already: username=mmuster", exception.message)
+                }
+            }
+        }
+        
+        given("a password to update") {
+            
+            on("saving the user") {
+                
+                whenever(mockUserRepository.findOne(1)).thenReturn(
+                        UserEntity(1, "mmuster", "old password", true, listOf(
+                                AuthorityEntity("USER")
+                        )))
+                
+                userManager.update(UserPassword(1, "password"))
+                
+                it("should encode the password") {
+                    val expected = UserEntity(1, "mmuster", "password", true, listOf(
+                            AuthorityEntity("USER")
+                    ))
+                    verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
                         expected.id == it.id &&
                                 expected.username == it.username &&
                                 BCryptPasswordEncoder(4).matches(expected.password, it.password) &&

@@ -40,18 +40,22 @@ import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Component
 
 /**
+ * Default implementation for managing a user.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
+@Component
 class UserManagerImpl(
         private val userRepository: UserRepository
 ): UserManager {
 
     /**
      * Creates the given {@code user}.
-     * The {@code FreshUser#password} field will be encrypted.
+     * The {@code FreshUser#password} field will be encrypted with {@link BCryptPasswordEncoder}.
      *
      * @param user the user to create
      * 
@@ -59,9 +63,11 @@ class UserManagerImpl(
      */
     override fun create(user: FreshUser) {
         
-        val encodedPassword = BCryptPasswordEncoder(4).encode(user.password)
+        if(userRepository.findByUsername(user.username) != null) {
+            throw UserAlreadyExistsException("User exists already: username=${user.username}")
+        }
         
-        val userEntity = UserEntity(null, user.username, encodedPassword, user.enabled, listOf(
+        val userEntity = UserEntity(null, user.username, user.password.encode(), user.enabled, listOf(
                 AuthorityEntity("USER")
         ))
         
@@ -75,7 +81,12 @@ class UserManagerImpl(
      * @param user the user password to update
      */
     override fun update(user: UserPassword) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val userEntity = userRepository.findOne(user.userId)
+        
+        userEntity.password = user.password.encode()
+        
+        userRepository.save(userEntity)
     }
 
     /**
@@ -126,4 +137,6 @@ class UserManagerImpl(
     override fun delete(userId: Int) {
         userRepository.delete(userId)
     }
+    
+    private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 }

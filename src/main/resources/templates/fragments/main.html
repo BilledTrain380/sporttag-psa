@@ -120,6 +120,15 @@
             <li class="nav-item" th:classappend="${menu} == ranking? active : ''">
                 <a class="nav-link" th:href="@{/ranking}"><i class="fa fa-fw fa-archive"></i> Rangliste</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != settings? collapsed : ''" th:classappend="${active} == settings? active : ''" data-toggle="collapse" href="#settings-menu"><i class="fa fa-fw fa-cog"></i> Einstellungen</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == settings? show : ''" id="settings-menu">
+                    <li th:class="${active} == user? active : ''">
+                        <a th:href="@{/settings/user}">Benutzer</a>
+                    </li>
+                </ul>
+            </li>
             
             <!-- copy when using multilevel -->
             <!--<li class="nav-item">
