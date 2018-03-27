@@ -48,6 +48,8 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy
@@ -87,6 +89,20 @@ object UserManagerImplSpec: Spek({
                                 expected.enabled == it.enabled &&
                                 expected.authorities == it.authorities
                     })
+                }
+            }
+            
+            on("already existing username") {
+                
+                whenever(mockUserRepository.findByUsername(any())).thenReturn(UserEntity())
+                
+                it("should throw a user already exists exception") {
+                    
+                    val exception = assertFailsWith<UserAlreadyExistsException> { 
+                        userManager.create(FreshUser("mmuster", "", true))
+                    }
+                    
+                    assertEquals("User exists already: username=mmuster", exception.message)
                 }
             }
         }

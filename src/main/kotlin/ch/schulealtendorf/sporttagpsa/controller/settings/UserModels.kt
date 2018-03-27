@@ -34,37 +34,11 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.controller.settings
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
-
-@Entity
-@Table(name = "USER")
-data class UserEntity(
-        
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = 0,
-        
-        @NotNull
-        @Size(min = 1, max = 50)
+data class UserForm(
         var username: String = "",
-        
-        @NotNull
-        @Size(min = 1, max = 128)
         var password: String = "",
-        
-        @NotNull
-        var enabled: Boolean = false,
-        
-        @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(
-                name = "USER_AUTHORITY",
-                joinColumns = [(JoinColumn(name = "user_id", referencedColumnName = "id"))],
-                inverseJoinColumns = [(JoinColumn(name = "authority", referencedColumnName = "role"))]
-        )
-        var authorities: List<AuthorityEntity> = listOf()
+        var passwordRepeat: String = "",
+        var enabled: Boolean = false
 )

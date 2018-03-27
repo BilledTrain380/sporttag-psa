@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS PARTICIPATION (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS USER (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
-  username VARCHAR(50) NOT NULL,
+  username VARCHAR(50) NOT NULL UNIQUE ,
   password VARCHAR(128) NOT NULL,
   enabled BOOLEAN NOT NULL DEFAULT false ,
   PRIMARY KEY (id)
@@ -172,11 +172,11 @@ CREATE TABLE IF NOT EXISTS AUTHORITY (
 );
 
 CREATE TABLE IF NOT EXISTS USER_AUTHORITY(
-  userId INT NOT NULL ,
+  user_id INT NOT NULL ,
   authority VARCHAR(20) NOT NULL ,
-  PRIMARY KEY (userId, authority),
+  PRIMARY KEY (user_id, authority),
   CONSTRAINT fk_authority_user
-    FOREIGN KEY (userId)
+    FOREIGN KEY (user_id)
     REFERENCES USER (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE ,

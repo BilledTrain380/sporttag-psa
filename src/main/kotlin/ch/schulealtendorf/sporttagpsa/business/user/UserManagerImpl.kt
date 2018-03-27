@@ -40,24 +40,32 @@ import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Component
 
 /**
+ * Default implementation for managing a user.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
+@Component
 class UserManagerImpl(
         private val userRepository: UserRepository
 ): UserManager {
 
     /**
      * Creates the given {@code user}.
-     * The {@code FreshUser#password} field will be encrypted.
+     * The {@code FreshUser#password} field will be encrypted with {@link BCryptPasswordEncoder}.
      *
      * @param user the user to create
      * 
      * @throws UserAlreadyExistsException if the user exists already
      */
     override fun create(user: FreshUser) {
+        
+        if(userRepository.findByUsername(user.username) != null) {
+            throw UserAlreadyExistsException("User exists already: username=${user.username}")
+        }
         
         val encodedPassword = BCryptPasswordEncoder(4).encode(user.password)
         

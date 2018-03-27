@@ -45,4 +45,7 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 1.0.0
  */
-interface UserRepository: CrudRepository<UserEntity, Int>
+interface UserRepository: CrudRepository<UserEntity, Int> {
+    
+    fun findByUsername(username: String): UserEntity?
+}
