@@ -36,58 +36,17 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import java.io.IOException
+
 /**
- * Describes a manager to create, update or delete a user.
- * The manager encrypts the password field.
+ * Indicates that a user exists already.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-interface UserManager {
-
-    /**
-     * Creates the given {@code user}.
-     * The {@code FreshUser#password} field will be encrypted.
-     * 
-     * @param user the user to create
-     * 
-     * @throws UserAlreadyExistsException if the user exists already
-     */
-    fun create(user: FreshUser)
-
-    /**
-     * Updates the password for the given {@code user}.
-     * The {@code UserPassword#password} field will be encrypted.
-     * 
-     * @param user the user password to update
-     */
-    fun update(user: UserPassword)
-
-    /**
-     * Updates the given {@code user}.
-     * 
-     * @param user the user to update
-     */
-    fun update(user: User)
-
-    /**
-     * @return all users
-     */
-    fun getAll(): List<User>
-
-    /**
-     * Gets the user by the given {@code userId}.
-     * 
-     * @param userId id of the user
-     * 
-     * @return the resulting user
-     */
-    fun getOne(userId: Int): User
-
-    /**
-     * Deletes the user matching the given {@code userId}.
-     * 
-     * @param userId id of the user to delete
-     */
-    fun delete(userId: Int)
+class UserAlreadyExistsException: IOException {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
 }

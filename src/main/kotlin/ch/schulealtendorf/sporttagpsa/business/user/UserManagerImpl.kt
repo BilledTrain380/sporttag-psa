@@ -36,8 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
+import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
-import java.util.*
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 /**
  * @author nmaerchy
@@ -52,9 +54,18 @@ class UserManagerImpl(
      * The {@code FreshUser#password} field will be encrypted.
      *
      * @param user the user to create
+     * 
+     * @throws UserAlreadyExistsException if the user exists already
      */
     override fun create(user: FreshUser) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val encodedPassword = BCryptPasswordEncoder(4).encode(user.password)
+        
+        val userEntity = UserEntity(null, user.username, encodedPassword, user.enabled, listOf(
+                AuthorityEntity("USER")
+        ))
+        
+        userRepository.save(userEntity)
     }
 
     /**
@@ -73,14 +84,24 @@ class UserManagerImpl(
      * @param user the user to update
      */
     override fun update(user: User) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val userEntity: UserEntity = userRepository.findOne(user.userId)
+        
+        userEntity.username = user.username
+        userEntity.enabled = user.enabled
+        
+        userRepository.save(userEntity)
     }
 
     /**
      * @return all users
      */
     override fun getAll(): List<User> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        return userRepository.findAll()
+                .map { 
+                    User(it.id!!, it.username, it.enabled)
+                }
     }
 
     /**
@@ -90,8 +111,11 @@ class UserManagerImpl(
      *
      * @return an {@code Optional} of the user
      */
-    override fun getOne(userId: Int): Optional<User> {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+    override fun getOne(userId: Int): User {
+        
+        val userEntity: UserEntity = userRepository.findOne(userId)
+        
+        return User(userEntity.id!!, userEntity.username, userEntity.enabled)
     }
 
     /**
@@ -100,6 +124,6 @@ class UserManagerImpl(
      * @param userId id of the user to delete
      */
     override fun delete(userId: Int) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        userRepository.delete(userId)
     }
 }
