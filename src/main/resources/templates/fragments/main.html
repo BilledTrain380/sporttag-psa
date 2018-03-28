@@ -127,6 +127,9 @@
                     <li th:class="${active} == user? active : ''">
                         <a th:href="@{/settings/user}">Benutzer</a>
                     </li>
+                    <li th:class="${active} == database? active : ''">
+                        <a th:href="@{/settings/database}">Datenbank</a>
+                    </li>
                 </ul>
             </li>
             

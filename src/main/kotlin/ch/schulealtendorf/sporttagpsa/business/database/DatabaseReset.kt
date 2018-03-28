@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,29 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
-
-import javax.persistence.*
-import javax.validation.constraints.NotNull
+package ch.schulealtendorf.sporttagpsa.business.database
 
 /**
+ * Describes a {@link Runnable} to reset the database.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-@Entity
-@Table(name = "STARTER")
-class StarterEntity @JvmOverloads constructor(
-        
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var number: Int? = null,
-        
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
-        var competitor: CompetitorEntity = CompetitorEntity(),
-        
-        @OneToMany(mappedBy = "starter", cascade = [CascadeType.REMOVE])
-        var results: Set<ResultEntity> = setOf()
-)
+interface DatabaseReset: Runnable

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,29 +34,39 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.controller.settings
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
+import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
-@Entity
-@Table(name = "STARTER")
-class StarterEntity @JvmOverloads constructor(
+@Controller
+@RequestMapping("/settings/database")
+class DatabaseController(
+        private val databaseReset: DatabaseReset
+) {
+    
+    @GetMapping
+    fun index(): String {
         
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var number: Int? = null,
+        return "settings/database/database"
+    }
+    
+    @GetMapping("/delete")
+    fun confirm(): String {
+        return "/settings/database/database-delete"
+    }
+    
+    @PostMapping
+    fun reset(redirectedAttributes: RedirectAttributes): String {
         
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
-        var competitor: CompetitorEntity = CompetitorEntity(),
+        databaseReset.run()
         
-        @OneToMany(mappedBy = "starter", cascade = [CascadeType.REMOVE])
-        var results: Set<ResultEntity> = setOf()
-)
+        redirectedAttributes.addFlashAttribute("resetStatus", true)
+        
+        return "redirect:/settings/database"
+    }
+}

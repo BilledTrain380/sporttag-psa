@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,29 +34,36 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.database
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
+import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import org.springframework.stereotype.Component
 
 /**
+ * Resets the database.
+ * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
-@Entity
-@Table(name = "STARTER")
-class StarterEntity @JvmOverloads constructor(
+@Component
+class DatabaseResetImpl(
+        private val competitorRepository: CompetitorRepository,
+        private val starterRepository: CompetitorRepository,
+        private val clazzRepository: ClazzRepository
+): DatabaseReset {
+
+    /**
+     * Resets the database by deleting all competitor related data.
+     * - competitors
+     * - results
+     * - classes
+     * - teachers
+     */
+    override fun run() {
         
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var number: Int? = null,
-        
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
-        var competitor: CompetitorEntity = CompetitorEntity(),
-        
-        @OneToMany(mappedBy = "starter", cascade = [CascadeType.REMOVE])
-        var results: Set<ResultEntity> = setOf()
-)
+        starterRepository.deleteAll()
+        competitorRepository.deleteAll()
+        clazzRepository.deleteAll()
+    }
+}
