@@ -62,7 +62,7 @@ class UserController(
     @GetMapping
     fun index(model: Model): String {
         
-        model.addAttribute("userList", userManager.getAll().filter { it.username != "admin" })
+        model.addAttribute("userList", userManager.getAll())
         model.addAttribute("userForm", UserForm())
         
         return "settings/user/user-list"

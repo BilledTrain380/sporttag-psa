@@ -63,7 +63,7 @@
         </div>
 
         <div th:if="${missingClazzes}" class="alert alert-info" role="alert">
-            Es existieren noch keine Klassen. Stellen Sie sicher, dass sie erst Teilnehmer importieren. <a th:href="@{/import}">Zum Import</a>
+            Es existieren noch keine Klassen. Stellen Sie sicher, dass sie erst Teilnehmer importieren. <a th:href="@{/participant/import}" th:if="${#httpServletRequest.remoteUser} == 'admin'">Zum Import</a>
         </div>
 
         <div class="row" th:if="!${missingClazzes}">
