@@ -60,12 +60,10 @@ class ClazzController(
     private val sports = sportProvider.getAll()
             .map { ParticipantSport(it.id, it.name) }
     
-    private val clazzes = clazzProvider.getAll()
-    
     @GetMapping
     fun getClazzList(model: Model): String {
 
-        model.addAttribute("clazzes", clazzes)
+        model.addAttribute("clazzes", clazzProvider.getAll())
 
         return "participant/clazz/clazz-list"
     }
