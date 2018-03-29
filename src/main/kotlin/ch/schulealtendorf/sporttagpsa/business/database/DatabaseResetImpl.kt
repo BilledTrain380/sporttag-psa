@@ -38,19 +38,21 @@ package ch.schulealtendorf.sporttagpsa.business.database
 
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
 import org.springframework.stereotype.Component
 
 /**
  * Resets the database.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.0.1
  */
 @Component
 class DatabaseResetImpl(
         private val competitorRepository: CompetitorRepository,
         private val starterRepository: CompetitorRepository,
-        private val clazzRepository: ClazzRepository
+        private val clazzRepository: ClazzRepository,
+        private val participationRepository: ParticipationRepository
 ): DatabaseReset {
 
     /**
@@ -65,5 +67,8 @@ class DatabaseResetImpl(
         starterRepository.deleteAll()
         competitorRepository.deleteAll()
         clazzRepository.deleteAll()
+        participationRepository.save(
+                participationRepository.findAll().first().apply { isFinished = false }
+        )
     }
 }

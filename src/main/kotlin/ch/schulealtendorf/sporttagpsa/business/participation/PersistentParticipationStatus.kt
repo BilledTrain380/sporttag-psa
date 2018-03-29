@@ -43,25 +43,27 @@ import org.springframework.stereotype.Component
  * {@link PersistentParticipationStatus} persists the status.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.0.1
  */
 @Component
 class PersistentParticipationStatus(
         private val participationRepository: ParticipationRepository
 ): ParticipationStatus {
     
-    private val participation = participationRepository.findOne(1)
-    
     /**
      * @return true if the participation is finished, otherwise false
      */
-    override fun isFinished() = participation.isFinished
+    override fun isFinished(): Boolean {
+        return participationRepository.findAll().first().isFinished
+    }
 
     /**
      * Finishes the participation and persists its status.
      */
     override fun finishIt() {
-        participation.isFinished = true
-        participationRepository.save(participation)
+        
+        participationRepository.save(
+                participationRepository.findAll().first().apply { isFinished = true }
+        )
     }
 }
