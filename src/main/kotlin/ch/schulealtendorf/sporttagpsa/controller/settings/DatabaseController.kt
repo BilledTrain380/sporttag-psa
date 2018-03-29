@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,36 +34,39 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
+package ch.schulealtendorf.sporttagpsa.controller.settings
 
-import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
-import org.springframework.stereotype.Component
+import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
-/**
- * {@link PersistentParticipationStatus} persists the status.
- * 
- * @author nmaerchy
- * @version 1.0.1
- */
-@Component
-class PersistentParticipationStatus(
-        private val participationRepository: ParticipationRepository
-): ParticipationStatus {
+@Controller
+@RequestMapping("/settings/database")
+class DatabaseController(
+        private val databaseReset: DatabaseReset
+) {
     
-    /**
-     * @return true if the participation is finished, otherwise false
-     */
-    override fun isFinished(): Boolean {
-        return participationRepository.findAll().first().isFinished
-    }
-
-    /**
-     * Finishes the participation and persists its status.
-     */
-    override fun finishIt() {
+    @GetMapping
+    fun index(): String {
         
-        participationRepository.save(
-                participationRepository.findAll().first().apply { isFinished = true }
-        )
+        return "settings/database/database"
+    }
+    
+    @GetMapping("/delete")
+    fun confirm(): String {
+        return "/settings/database/database-delete"
+    }
+    
+    @PostMapping
+    fun reset(redirectedAttributes: RedirectAttributes): String {
+        
+        databaseReset.run()
+        
+        redirectedAttributes.addFlashAttribute("resetStatus", true)
+        
+        return "redirect:/settings/database"
     }
 }

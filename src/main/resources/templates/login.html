@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<html lang="en">
+<head th:replace="fragments/main :: head(Login)">
+</head>
+
+<body id="page-top">
+
+<div class="container" style="width: 300px; margin-top: 50px">
+    
+    <form method="post" th:action="@{/login}">
+        
+        <h2 style="color: #fff;">Bitte einloggen</h2>
+
+        <div th:if="${logout}" class="alert alert-success" role="alert">
+            Erfolgreich abgemeldet
+        </div>
+
+        <div th:if="${loginFailed}" class="alert alert-danger" role="alert">
+            Login fehlgeschlagen
+        </div>
+        
+        <label for="username" class="sr-only">Benutzername</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Benutzername" required autofocus>
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Passwort" required>
+        
+        <br>
+        
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+
+</div> <!-- /container -->
+
+</body>
+
+</html>

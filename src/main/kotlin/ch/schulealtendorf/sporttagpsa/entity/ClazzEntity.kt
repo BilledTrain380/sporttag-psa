@@ -58,7 +58,7 @@ data class ClazzEntity @JvmOverloads constructor(
         var name: String = "",
         
         @NotNull
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.REMOVE])
         @JoinColumn(name = "FK_TEACHER_id", referencedColumnName = "id")
         var teacher: TeacherEntity = TeacherEntity()
 

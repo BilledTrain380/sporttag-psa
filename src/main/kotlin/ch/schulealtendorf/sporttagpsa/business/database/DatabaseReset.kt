@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,36 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
-
-import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
-import org.springframework.stereotype.Component
+package ch.schulealtendorf.sporttagpsa.business.database
 
 /**
- * {@link PersistentParticipationStatus} persists the status.
+ * Describes a {@link Runnable} to reset the database.
  * 
  * @author nmaerchy
- * @version 1.0.1
+ * @version 1.0.0
  */
-@Component
-class PersistentParticipationStatus(
-        private val participationRepository: ParticipationRepository
-): ParticipationStatus {
-    
-    /**
-     * @return true if the participation is finished, otherwise false
-     */
-    override fun isFinished(): Boolean {
-        return participationRepository.findAll().first().isFinished
-    }
-
-    /**
-     * Finishes the participation and persists its status.
-     */
-    override fun finishIt() {
-        
-        participationRepository.save(
-                participationRepository.findAll().first().apply { isFinished = true }
-        )
-    }
-}
+interface DatabaseReset: Runnable

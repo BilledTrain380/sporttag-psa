@@ -106,5 +106,31 @@ object UserManagerImplSpec: Spek({
                 }
             }
         }
+        
+        given("a password to update") {
+            
+            on("saving the user") {
+                
+                whenever(mockUserRepository.findOne(1)).thenReturn(
+                        UserEntity(1, "mmuster", "old password", true, listOf(
+                                AuthorityEntity("USER")
+                        )))
+                
+                userManager.update(UserPassword(1, "password"))
+                
+                it("should encode the password") {
+                    val expected = UserEntity(1, "mmuster", "password", true, listOf(
+                            AuthorityEntity("USER")
+                    ))
+                    verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
+                        expected.id == it.id &&
+                                expected.username == it.username &&
+                                BCryptPasswordEncoder(4).matches(expected.password, it.password) &&
+                                expected.enabled == it.enabled &&
+                                expected.authorities == it.authorities
+                    })
+                }
+            }
+        }
     }
 })

@@ -42,3 +42,14 @@ data class UserForm(
         var passwordRepeat: String = "",
         var enabled: Boolean = false
 )
+
+data class UserEditForm(
+        var userId: Int = 0,
+        var username: String = "",
+        var enabled: Boolean = false
+)
+
+data class UserPasswdForm(
+        var password: String = "",
+        var passwordRepeat: String = ""
+)

@@ -57,11 +57,10 @@ import javax.validation.Valid
 @RequestMapping("/tournament/event-sheet")
 class EventSheetController(
         private val exportManager: ExportManager,
-        clazzProvider: ClazzProvider,
+        private val clazzProvider: ClazzProvider,
         disciplineProvider: DisciplineProvider
 ) {
     
-    private val clazzes = clazzProvider.getAll()
     private val disciplines = disciplineProvider.getAll()
     
     @GetMapping
@@ -73,7 +72,7 @@ class EventSheetController(
                     DisciplineEventSheetForm(
                             it.id,
                             it.name,
-                            clazzes.map {
+                            clazzProvider.getAll().map {
                                 ClazzEventSheetForm(
                                         it.id,
                                         it.name

@@ -57,6 +57,6 @@ class StarterEntity @JvmOverloads constructor(
         @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
         var competitor: CompetitorEntity = CompetitorEntity(),
         
-        @OneToMany(mappedBy = "starter")
+        @OneToMany(mappedBy = "starter", cascade = [CascadeType.REMOVE])
         var results: Set<ResultEntity> = setOf()
 )

@@ -37,13 +37,12 @@
 package ch.schulealtendorf.sporttagpsa.controller.settings
 
 import ch.schulealtendorf.sporttagpsa.business.user.FreshUser
+import ch.schulealtendorf.sporttagpsa.business.user.User
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
+import ch.schulealtendorf.sporttagpsa.business.user.UserPassword
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
@@ -53,13 +52,20 @@ class UserController(
         private val userManager: UserManager
 ) {
     
+    companion object {
+        private const val USER_ACTION_STATUS = "user_action_status"
+        private const val EDITED_SUCCESSFUL = "edited_successful"
+        private const val ADDED_SUCCESSFUL = "added_successful"
+        private const val DELETED_SUCCESSFUL = "deleted_successful"
+    }
+    
     @GetMapping
     fun index(model: Model): String {
         
         model.addAttribute("userList", userManager.getAll())
         model.addAttribute("userForm", UserForm())
         
-        return "settings/user/user"
+        return "settings/user/user-list"
     }
     
     @PostMapping
@@ -72,28 +78,81 @@ class UserController(
             return "redirect:/settings/user"
         }
         
-        userManager.create(
-                FreshUser(user.username, user.password, user.enabled)
-        )
+        userManager.create(FreshUser(user.username, user.password, user.enabled))
+        
+        redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, ADDED_SUCCESSFUL)
         
         return "redirect:/settings/user"
     }
     
     @GetMapping("/{id}")
-    fun editUser(): String {
+    fun editUser(@PathVariable id: Int, model: Model): String {
         
-        return "settings/user/edit-user"
+        val user = userManager.getOne(id)
+        
+        model.addAttribute("user", UserEditForm(user.userId, user.username, user.enabled))
+        
+        return "settings/user/user-edit"
+    }
+    
+    @PostMapping("/{id}")
+    fun editUser(@Valid @ModelAttribute("user") userEditForm: UserEditForm, @PathVariable id: Int, redirectedAttributes: RedirectAttributes): String {
+        
+        val user = User(id, userEditForm.username, userEditForm.enabled)
+        
+        userManager.update(user)
+        
+        redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, EDITED_SUCCESSFUL)
+        
+        return "redirect:/settings/user"
     }
     
     @GetMapping("/{id}/passwd")
-    fun changePassword(): String {
+    fun changePassword(@PathVariable id: Int, model: Model): String {
         
-        return "settings/user/edit-passwd"
+        val user = userManager.getOne(id)
+        
+        model.addAttribute("userId", user.userId)
+        model.addAttribute("username", user.username)
+        model.addAttribute("userPasswd", UserPasswdForm())
+        
+        return "settings/user/user-passwd"
+    }
+    
+    @PostMapping("/{id}/passwd")
+    fun changePassword(@Valid @ModelAttribute("userPasswd") userPasswdForm: UserPasswdForm, @PathVariable id: Int, redirectedAttributes: RedirectAttributes): String {
+
+        if (userPasswdForm.password != userPasswdForm.passwordRepeat) {
+
+            redirectedAttributes.addFlashAttribute("invalidForm", "passwordMissMatch")
+
+            return "redirect:/settings/user/$id/passwd"
+        }
+        
+        val userPassword = UserPassword(id, userPasswdForm.password)
+        
+        userManager.update(userPassword)
+        
+        redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, EDITED_SUCCESSFUL)
+        
+        return "redirect:/settings/user"
     }
     
     @GetMapping("/{id}/delete")
-    fun delete(): String {
+    fun delete(@PathVariable id: Int, model: Model): String {
         
-        return "settings/user/delete-user"
+        model.addAttribute("userId", id)
+        
+        return "settings/user/user-delete"
+    }
+    
+    @PostMapping("/{id}/delete")
+    fun delete(@PathVariable id: Int, redirectedAttributes: RedirectAttributes): String {
+        
+        userManager.delete(id)
+        
+        redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, DELETED_SUCCESSFUL)
+        
+        return "redirect:/settings/user"
     }
 }

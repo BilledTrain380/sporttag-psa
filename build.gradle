@@ -81,7 +81,8 @@ dependencies {
 	
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.0.3.RELEASE'
+	//compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.0.3.RELEASE'
+	compile('org.springframework.boot:spring-boot-starter-security:1.5.3.RELEASE')
 	compile("org.springframework.boot:spring-boot-devtools")
     
     compile "com.opencsv:opencsv:3.9"

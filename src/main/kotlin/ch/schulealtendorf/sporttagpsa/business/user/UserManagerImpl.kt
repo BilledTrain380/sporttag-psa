@@ -67,9 +67,7 @@ class UserManagerImpl(
             throw UserAlreadyExistsException("User exists already: username=${user.username}")
         }
         
-        val encodedPassword = BCryptPasswordEncoder(4).encode(user.password)
-        
-        val userEntity = UserEntity(null, user.username, encodedPassword, user.enabled, listOf(
+        val userEntity = UserEntity(null, user.username, user.password.encode(), user.enabled, listOf(
                 AuthorityEntity("USER")
         ))
         
@@ -83,7 +81,12 @@ class UserManagerImpl(
      * @param user the user password to update
      */
     override fun update(user: UserPassword) {
-        throw UnsupportedOperationException("This method is not implemented yet.") //To change body of created functions use File | Settings | File Templates.
+        
+        val userEntity = userRepository.findOne(user.userId)
+        
+        userEntity.password = user.password.encode()
+        
+        userRepository.save(userEntity)
     }
 
     /**
@@ -134,4 +137,6 @@ class UserManagerImpl(
     override fun delete(userId: Int) {
         userRepository.delete(userId)
     }
+    
+    private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 }

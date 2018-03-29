@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,36 +34,41 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
+package ch.schulealtendorf.sporttagpsa.business.database
 
+import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
 import org.springframework.stereotype.Component
 
 /**
- * {@link PersistentParticipationStatus} persists the status.
+ * Resets the database.
  * 
  * @author nmaerchy
  * @version 1.0.1
  */
 @Component
-class PersistentParticipationStatus(
+class DatabaseResetImpl(
+        private val competitorRepository: CompetitorRepository,
+        private val starterRepository: CompetitorRepository,
+        private val clazzRepository: ClazzRepository,
         private val participationRepository: ParticipationRepository
-): ParticipationStatus {
-    
-    /**
-     * @return true if the participation is finished, otherwise false
-     */
-    override fun isFinished(): Boolean {
-        return participationRepository.findAll().first().isFinished
-    }
+): DatabaseReset {
 
     /**
-     * Finishes the participation and persists its status.
+     * Resets the database by deleting all competitor related data.
+     * - competitors
+     * - results
+     * - classes
+     * - teachers
      */
-    override fun finishIt() {
+    override fun run() {
         
+        starterRepository.deleteAll()
+        competitorRepository.deleteAll()
+        clazzRepository.deleteAll()
         participationRepository.save(
-                participationRepository.findAll().first().apply { isFinished = true }
+                participationRepository.findAll().first().apply { isFinished = false }
         )
     }
 }

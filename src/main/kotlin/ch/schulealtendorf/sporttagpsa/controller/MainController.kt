@@ -37,14 +37,16 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
 @Controller
-class MainController() {
+class MainController {
 
     companion object {
         const val DASHBOARD = "/"
@@ -53,5 +55,23 @@ class MainController() {
     @GetMapping(DASHBOARD)
     fun index(): String {
         return "index"
+    }
+    
+    @GetMapping("/login")
+    fun login(
+            @RequestParam(value = "error", required = false) error: String?,
+            @RequestParam(value = "logout", required = false) logout: String?,
+            model: Model
+    ): String {
+        
+        if (error != null) {
+            model.addAttribute("loginFailed", true)
+        }
+        
+        if(logout != null) {
+            model.addAttribute("logout", true)
+        }
+        
+        return "login"
     }
 }
