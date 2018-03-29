@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS TOWN (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   zip VARCHAR(4) NOT NULL,
   name VARCHAR(50) NOT NULL,
-  PRIMARY KEY (id));
+  PRIMARY KEY (id)
+);
 
 
 
@@ -15,7 +16,8 @@ CREATE TABLE IF NOT EXISTS TOWN (
 CREATE TABLE IF NOT EXISTS TEACHER (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   name VARCHAR(100) NOT NULL,
-  PRIMARY KEY (id));
+  PRIMARY KEY (id)
+);
 
 
 
@@ -31,7 +33,8 @@ CREATE TABLE IF NOT EXISTS CLAZZ (
     FOREIGN KEY (FK_TEACHER_id)
     REFERENCES TEACHER (id)
     ON DELETE RESTRICT 
-    ON UPDATE RESTRICT );
+    ON UPDATE RESTRICT
+);
 
 
 -- -----------------------------------------------------
@@ -40,7 +43,8 @@ CREATE TABLE IF NOT EXISTS CLAZZ (
 CREATE TABLE IF NOT EXISTS SPORT (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
   name VARCHAR(45) NOT NULL UNIQUE ,
-  PRIMARY KEY (id));
+  PRIMARY KEY (id)
+);
 
   
 -- -----------------------------------------------------
@@ -71,7 +75,8 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
     FOREIGN KEY (FK_SPORT_id)
     REFERENCES SPORT (id)
     ON DELETE RESTRICT
-    ON UPDATE RESTRICT );
+    ON UPDATE RESTRICT
+);
 
 
 -- -----------------------------------------------------
@@ -80,7 +85,8 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
 CREATE TABLE IF NOT EXISTS UNIT (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
   unit VARCHAR(15) NOT NULL UNIQUE ,
-  PRIMARY KEY (id));
+  PRIMARY KEY (id)
+);
 
 
 -- -----------------------------------------------------
@@ -95,7 +101,8 @@ CREATE TABLE IF NOT EXISTS DISCIPLINE (
   FOREIGN KEY (FK_UNIT_id)
   REFERENCES UNIT (id)
   ON DELETE RESTRICT 
-  ON UPDATE RESTRICT );
+  ON UPDATE RESTRICT
+);
 
 
 -- -----------------------------------------------------
@@ -109,7 +116,8 @@ CREATE TABLE IF NOT EXISTS STARTER (
   FOREIGN KEY (FK_COMPETITOR_id)
   REFERENCES COMPETITOR (id)
   ON DELETE CASCADE 
-  ON UPDATE CASCADE );
+  ON UPDATE CASCADE
+);
 
 
 -- -----------------------------------------------------
@@ -132,8 +140,8 @@ CREATE TABLE IF NOT EXISTS RESULT (
   FOREIGN KEY (FK_DISCIPLINE_id)
   REFERENCES DISCIPLINE (id)
   ON DELETE CASCADE 
-  ON UPDATE CASCADE )
-;
+  ON UPDATE CASCADE
+);
 
 -- -----------------------------------------------------
 -- Table PARTICIPATION
@@ -141,5 +149,40 @@ CREATE TABLE IF NOT EXISTS RESULT (
 CREATE TABLE IF NOT EXISTS PARTICIPATION (
   id INT NOT NULL DEFAULT 1 UNIQUE ,
   is_finished BOOLEAN NOT NULL DEFAULT FALSE ,
-  PRIMARY KEY (id) )
-;
+  PRIMARY KEY (id)
+);
+
+-- -----------------------------------------------------
+-- Table USER
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS USER (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  username VARCHAR(50) NOT NULL UNIQUE ,
+  password VARCHAR(128) NOT NULL,
+  enabled BOOLEAN NOT NULL DEFAULT false ,
+  PRIMARY KEY (id)
+);
+
+-- -----------------------------------------------------
+-- Table AUTHORITY
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS AUTHORITY (
+  role VARCHAR(20) NOT NULL UNIQUE ,
+  PRIMARY KEY (role)
+);
+
+CREATE TABLE IF NOT EXISTS USER_AUTHORITY(
+  user_id INT NOT NULL ,
+  authority VARCHAR(20) NOT NULL ,
+  PRIMARY KEY (user_id, authority),
+  CONSTRAINT fk_authority_user
+    FOREIGN KEY (user_id)
+    REFERENCES USER (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE ,
+  CONSTRAINT fk_user_authority
+    FOREIGN KEY (authority)
+    REFERENCES AUTHORITY (role)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT 
+);
