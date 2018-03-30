@@ -36,24 +36,29 @@
 
 package ch.schulealtendorf.sporttagpsa.controller
 
+import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
+import ch.schulealtendorf.sporttagpsa.business.provider.SportProvider
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
 @Controller
-class MainController {
+class MainController(
+        private val sportProvider: SportProvider,
+        private val disciplineProvider: DisciplineProvider
+) {
 
     companion object {
         const val DASHBOARD = "/"
     }
     
     @GetMapping(DASHBOARD)
-    fun index(): String {
+    fun index(model: Model): String {
+        
+        model.addAttribute("sports", sportProvider.getAll())
+        model.addAttribute("disciplines", disciplineProvider.getAll())
+        
         return "index"
     }
     

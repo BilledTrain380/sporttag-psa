@@ -15,11 +15,104 @@
 
         <div class="container-fluid">
 
-            <!-- Breadcrumbs -->
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <hr>
+            </div>
             
+            <div class="row">
+                
+                <!-- Cards for admin users -->
+                <div class="col-lg-3 col-md-6 mb-3" th:if="${#httpServletRequest.remoteUser} == 'admin'">
+                    <div class="card card-inverse card-primary">
+                        <div class="card-block">
+                            <h3 class="card-title">Import</h3>
+                            <p class="card-text">Importieren Sie Teilnehmer.</p>
+                            <a th:href="@{/participant/import}" class="btn btn-secondary">zum Import</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3" th:if="${#httpServletRequest.remoteUser} == 'admin'">
+                    <div class="card card-inverse card-success">
+                        <div class="card-block">
+                            <h3 class="card-title">Klassenliste</h3>
+                            <p class="card-text">Teilen Sie Teilnehmer einer Sportart zu.</p>
+                            <a th:href="@{/participant/clazz}" class="btn btn-secondary">Zur Klassenliste</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3" th:if="${#httpServletRequest.remoteUser} == 'admin'">
+                    <div class="card card-inverse card-info">
+                        <div class="card-block">
+                            <h3 class="card-title">Teilnehmerliste</h3>
+                            <p class="card-text">Exportieren Sie die Teilnehmerliste.</p>
+                            <a th:href="@{/participant/management/participant-list}" class="btn btn-secondary">Zur Teilnehmerliste</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-3" th:if="${#httpServletRequest.remoteUser} == 'admin'">
+                    <div class="card card-inverse card-warning">
+                        <div class="card-block">
+                            <h3 class="card-title">Rangliste</h3>
+                            <p class="card-text">Exportieren Sie die Rangliste.</p>
+                            <a th:href="@{/ranking}" class="btn btn-secondary">Zur Rangliste</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards for non-admin users -->
+                <div class="col-lg-6 mb-3" th:if="${#httpServletRequest.remoteUser} != 'admin'">
+                    <div class="card card-inverse card-primary">
+                        <div class="card-block">
+                            <h3 class="card-title">Mehrkampf</h3>
+                            <p class="card-text">Erfassen Sie Resultate der Wettkämpfer</p>
+                            <a th:href="@{/tournament/result/index}" class="btn btn-secondary">Zum Wettkampf</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-3" th:if="${#httpServletRequest.remoteUser} != 'admin'">
+                    <div class="card card-inverse card-info">
+                        <div class="card-block">
+                            <h3 class="card-title">Rangliste</h3>
+                            <p class="card-text">Exportieren Sie die Rangliste.</p>
+                            <a th:href="@{/ranking}" class="btn btn-secondary">Zur Rangliste</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 mb-3">
+
+                    <div class="card">
+                        <h3 class="card-header">Verfügbare Sportarten</h3>
+                        <div class="card-block">
+
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="sport : ${sports}" th:text="${sport.name}"></li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6 mb-3">
+
+                    <div class="card">
+                        <h3 class="card-header">Verfügbare Disziplinen</h3>
+                        <div class="card-block">
+
+                            <li class="list-group-item" th:each="discipline : ${disciplines}" th:text="${discipline.name}"></li>
+                            
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
 
         </div>
         <!-- /.container-fluid -->
