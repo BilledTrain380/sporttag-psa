@@ -71,6 +71,10 @@
             list-style: none;
         }
         
+        body {
+            background-color: white;
+        }
+        
     </style>
 
 </head>
@@ -82,7 +86,7 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-psa" aria-controls="navbar-psa" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Sporttag PSA</a>
+    <a class="navbar-brand" th:href="@{/}"><img height="35px" src="/img/PSA logo.png"> Sporttag PSA</a>
     <div class="collapse navbar-collapse" id="navbar-psa">
         <ul class="sidebar-nav navbar-nav">
             

@@ -51,7 +51,7 @@
     <div class="container-fluid">
 
         <div class="page-header">
-            <h1>Settings <small>Benutzer</small></h1>
+            <h1>Einstellungen <small>Benutzer</small></h1>
             <hr>
         </div>
 
@@ -59,6 +59,18 @@
             
             <div class="col-lg-12">
 
+                <div th:if="${user_action_status} == 'edited_successful'" class="alert alert-success" role="alert">
+                    Änderungen erfolgreich gespeichert.
+                </div>
+
+                <div th:if="${user_action_status} == 'added_successful'" class="alert alert-success" role="alert">
+                    Benutzer erfolgreich hinzugefügt.
+                </div>
+
+                <div th:if="${user_action_status} == 'deleted_successful'" class="alert alert-success" role="alert">
+                    Benutzer erfolgreich gelöscht.
+                </div>
+                
                 <div class="card">
                     <h3 class="card-header">Benutzerliste</h3>
                     <div class="card-block">
@@ -82,9 +94,9 @@
                                             Aktion
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" th:href="@{/settings/user/} + ${user.userId}">Bearbeiten</a>
+                                            <a class="dropdown-item" th:href="@{/settings/user/} + ${user.userId}" th:if="${user.username} != 'admin'">Bearbeiten</a>
                                             <a class="dropdown-item" th:href="@{/settings/user/} + ${user.userId} + '/passwd'">Passwort ändern</a>
-                                            <a class="dropdown-item" th:href="@{/settings/user/} + ${user.userId} + '/delete'">Löschen</a>
+                                            <a class="dropdown-item" th:href="@{/settings/user/} + ${user.userId} + '/delete'" th:if="${user.username} != 'admin'">Löschen</a>
                                         </div>
                                     </div>
 

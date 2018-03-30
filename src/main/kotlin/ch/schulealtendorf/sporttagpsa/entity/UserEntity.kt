@@ -60,7 +60,7 @@ data class UserEntity(
         @NotNull
         var enabled: Boolean = false,
         
-        @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "USER_AUTHORITY",
                 joinColumns = [(JoinColumn(name = "user_id", referencedColumnName = "id"))],

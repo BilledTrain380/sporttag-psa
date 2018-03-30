@@ -65,7 +65,7 @@ class UserController(
         model.addAttribute("userList", userManager.getAll())
         model.addAttribute("userForm", UserForm())
         
-        return "settings/user/user-list"
+        return "settings/user/user"
     }
     
     @PostMapping

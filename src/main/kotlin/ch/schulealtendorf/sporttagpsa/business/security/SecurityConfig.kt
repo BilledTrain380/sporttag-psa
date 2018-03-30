@@ -80,6 +80,7 @@ class SecurityConfig(
         http?.authorizeRequests()
                 ?.antMatchers("/css/**")?.permitAll()
                 ?.antMatchers("/js/**")?.permitAll()
+                ?.antMatchers("/favicon.ico")?.permitAll()
                 ?.antMatchers("/webjars/**")?.permitAll()
                 ?.antMatchers("/settings/**")
                     ?.hasAuthority("ROLE_ADMIN")

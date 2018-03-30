@@ -73,22 +73,24 @@
 
                 <form id="tournament" class="form-inline" th:action="@{/tournament/result/save}" method="post" th:object="${tournamentForm}" enctype="application/x-www-form-urlencoded">
                     
-                    <label class="mr-sm-2">Filter</label>
+                    <div class="mb-3">
 
-                    <select class="form-control mb-2 mr-sm-2 mb-sm-0 filter" th:field="*{discipline.id}">
-                        <option th:each="discipline : ${disciplines}" th:text="${discipline.name}" th:value="${discipline.id}"></option>
-                    </select>
-                    <input type="hidden" th:field="*{discipline.name}"/>
+                        <select class="form-control mb-2 mr-sm-2 mb-sm-0 filter" th:field="*{discipline.id}">
+                            <option th:each="discipline : ${disciplines}" th:text="${discipline.name}" th:value="${discipline.id}"></option>
+                        </select>
+                        <input type="hidden" th:field="*{discipline.name}"/>
 
-                    <select class="form-control mb-2 mr-sm-2 mb-sm-0 filter" th:field="*{clazz.id}">
-                        <option th:each="clazz : ${clazzList}" th:text="${clazz.name}" th:value="${clazz.id}"></option>
-                    </select>
-                    <input type="hidden" th:field="*{clazz.name}"/>
+                        <select class="form-control mb-2 mr-sm-2 mb-sm-0 filter" th:field="*{clazz.id}">
+                            <option th:each="clazz : ${clazzList}" th:text="${clazz.name}" th:value="${clazz.id}"></option>
+                        </select>
+                        <input type="hidden" th:field="*{clazz.name}"/>
 
-                    <select class="form-control mb-2 mr-sm-2 mb-sm-0 filter" th:field="*{gender}">
-                        <option th:value="true">Knaben</option>
-                        <option th:value="false">Mädchen</option>
-                    </select>
+                        <select class="form-control mb-2 mr-sm-2 mb-sm-0 filter" th:field="*{gender}">
+                            <option th:value="true">Knaben</option>
+                            <option th:value="false">Mädchen</option>
+                        </select>
+                        
+                    </div>
                     
                     <table class="table table-striped">
                         <thead>
