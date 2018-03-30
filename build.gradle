@@ -5,7 +5,11 @@ buildscript {
 		sporttagPSAVersion = '0.0.1'
 	}
 	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 		mavenCentral()
+        
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -13,8 +17,15 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
 		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
         classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlin_version}"
+        classpath("com.github.cr0:gradle-macappbundle-plugin:3.1.0")
 	}
 }
+
+apply plugin: 'kotlin-spring'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "kotlin-jpa"
+apply plugin: "com.github.cr0.macappbundle"
 
 version = "${sporttagPSAVersion}"
 
@@ -56,6 +67,15 @@ project(":filesystem") {
 	}
 }
 
+project(":macos") {
+
+	apply plugin: 'kotlin-spring'
+
+	dependencies {
+		compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.5.3.RELEASE'
+	}
+}
+
 repositories {
 	maven { url 'https://jitpack.io' }
 	maven {
@@ -63,10 +83,34 @@ repositories {
 	}
 }
 
-apply plugin: 'kotlin-spring'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: "kotlin-jpa"
+macAppBundle {
+    appName = "Sporttag PSA"
+    appCategory = "public.app-category.utilities"
+    icon = "macos/icon/psa-logo.icns"
+    agent = true
+    version = "${sporttagPSAVersion}"
+    shortVersion = "${sporttagPSAVersion}"
+    // DO NOT USE THE MAIN CLASS OF YOUR APPLICATION!!!
+    // With gradle task build, the bootRepackage goal will be executed.
+    // If this is the case, the JarLauncher class of spring is needed as main class.
+    // Otherwise your main class will not be found, because the bootRepackage goal will
+    // change your directory structure and MANIFEST.inf
+    mainClassName = "org.springframework.boot.loader.JarLauncher"
+    bundleJRE = true
+    jreHome = System.getenv("JAVA_HOME")
+    bundleExecutable = "Sporttag-psa"
+    bundleIdentifier = "ch.schulealtendorf.sporttagpsa"
+    bundleCopyright = "Copyright (C) 2018 Sporttag PSA"
+    volumeName = "Sporttag PSA ${sporttagPSAVersion}"
+    archiveName = "Sporttag PSA ${sporttagPSAVersion}"
+    javaXProperties=[
+            "ms25M",
+            "mx80M",
+            "X:+UseG1GC"
+    ]
+}
+
+createApp.dependsOn(bootRepackage)
 
 junitPlatform {
 	filters {
@@ -81,7 +125,6 @@ dependencies {
 	
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	//compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.0.3.RELEASE'
 	compile('org.springframework.boot:spring-boot-starter-security:1.5.3.RELEASE')
 	compile("org.springframework.boot:spring-boot-devtools")
     
@@ -92,6 +135,7 @@ dependencies {
 	
 	compile project(":rules")
     compile project(":filesystem")
+    compile project(":macos")
 
 	compile 'com.github.BilledTrain380:Alberta:develop-SNAPSHOT'
 	

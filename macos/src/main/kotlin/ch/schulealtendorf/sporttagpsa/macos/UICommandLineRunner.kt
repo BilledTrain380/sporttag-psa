@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,7 +34,27 @@
  *
  */
 
-include 'rules'
-include 'filesystem'
-include 'macos'
+package ch.schulealtendorf.sporttagpsa.macos
 
+import javafx.application.Application
+import org.springframework.boot.CommandLineRunner
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+/**
+ * Configuration to start a very small JavaFX UI.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+@Configuration
+class UICommandLineRunner {
+    
+    @Bean
+    fun startUI(): CommandLineRunner {
+        
+        return CommandLineRunner {
+            Application.launch(MacOSApplication::class.java)
+        }
+    }
+}
