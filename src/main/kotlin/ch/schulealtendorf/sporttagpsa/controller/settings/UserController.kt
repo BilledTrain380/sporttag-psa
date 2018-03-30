@@ -36,10 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.settings
 
-import ch.schulealtendorf.sporttagpsa.business.user.FreshUser
-import ch.schulealtendorf.sporttagpsa.business.user.User
-import ch.schulealtendorf.sporttagpsa.business.user.UserManager
-import ch.schulealtendorf.sporttagpsa.business.user.UserPassword
+import ch.schulealtendorf.sporttagpsa.business.user.*
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -57,6 +54,7 @@ class UserController(
         private const val EDITED_SUCCESSFUL = "edited_successful"
         private const val ADDED_SUCCESSFUL = "added_successful"
         private const val DELETED_SUCCESSFUL = "deleted_successful"
+        private const val USER_EXISTS_ALREADY = "user_exists_already"
     }
     
     @GetMapping
@@ -71,18 +69,28 @@ class UserController(
     @PostMapping
     fun addUser(@Valid @ModelAttribute("userForm") user: UserForm, redirectedAttributes: RedirectAttributes): String {
         
-        if (user.password != user.passwordRepeat) {
+        try {
+
+            if (user.password != user.passwordRepeat) {
+
+                redirectedAttributes.addFlashAttribute("invalidForm", "passwordMissMatch")
+
+                return "redirect:/settings/user"
+            }
+
+            userManager.create(FreshUser(user.username, user.password, user.enabled))
+
+            redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, ADDED_SUCCESSFUL)
+
+            return "redirect:/settings/user"
             
-            redirectedAttributes.addFlashAttribute("invalidForm", "passwordMissMatch")
-            
+        } catch (ex: UserAlreadyExistsException) {
+         
+            redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, USER_EXISTS_ALREADY)
+            redirectedAttributes.addFlashAttribute("user_exists_name", user.username)
+
             return "redirect:/settings/user"
         }
-        
-        userManager.create(FreshUser(user.username, user.password, user.enabled))
-        
-        redirectedAttributes.addFlashAttribute(USER_ACTION_STATUS, ADDED_SUCCESSFUL)
-        
-        return "redirect:/settings/user"
     }
     
     @GetMapping("/{id}")

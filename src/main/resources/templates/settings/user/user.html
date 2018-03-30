@@ -70,6 +70,10 @@
                 <div th:if="${user_action_status} == 'deleted_successful'" class="alert alert-success" role="alert">
                     Benutzer erfolgreich gelöscht.
                 </div>
+
+                <div th:if="${user_action_status} == 'user_exists_already'" th:inline="text" class="alert alert-danger" role="alert">
+                    Der Benutzer [[${user_exists_name}]] existiert bereits.
+                </div>
                 
                 <div class="card">
                     <h3 class="card-header">Benutzerliste</h3>
