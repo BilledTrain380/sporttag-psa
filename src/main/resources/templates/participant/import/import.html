@@ -52,6 +52,7 @@
 
         <div class="page-header">
             <h1>Teilnehmer <small>Import</small></h1>
+            <hr>
         </div>
 
         <div th:if="${success} != null AND !${success}" class="alert alert-danger" role="alert">
@@ -73,7 +74,7 @@
 
                 <form th:action="@{/participant/import}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="competitor-input-file">Datei Import</label>
+                        <label for="competitor-input-file"><b>Datei Import</b></label>
                         <input id="competitor-input-file" class="form-control" name="competitor-input" type="file" accept="text/csv" required>
                         <ul>
                             <li>Die Datei DARF NICHT grösser als 1MB sein.</li>
