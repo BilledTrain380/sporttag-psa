@@ -37,25 +37,29 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.SportEntity
-import ch.schulealtendorf.sporttagpsa.entity.map
-import ch.schulealtendorf.sporttagpsa.entity.merge
+import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Competitor
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * Provider for competitors.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.1.0
  */
 @Component
 class DefaultCompetitorProvider(
         private val competitorRepository: CompetitorRepository,
         private val sportRepository: SportRepository,
-        private val participationStatus: ParticipationStatus
+        private val participationStatus: ParticipationStatus,
+        private val absentCompetitorRepository: AbsentCompetitorRepository
 ): CompetitorProvider {
 
     /**
@@ -95,5 +99,78 @@ class DefaultCompetitorProvider(
 
             competitorRepository.save(competitorEntity)
         }
+    }
+
+    /**
+     * Get all competitors that belongs the the class matching the given {@code clazzId}.
+     *
+     * If the {@code clazzId} does not exists, an empty list will be returned.
+     *
+     * @param clazzId the id of the class
+     *
+     * @return a list of competitors
+     */
+    override fun getCompetitorListByClazz(clazzId: Int): List<Competitor> {
+
+        val absentCompetitorList = absentCompetitorRepository.findAll()
+
+        return competitorRepository.findByClazzId(clazzId)
+                .map {
+                    Competitor(
+                            it.id!!,
+                            it.surname,
+                            it.prename,
+                            Gender(it.gender),
+                            Birthday(it.birthday),
+                            it.address,
+                            absentCompetitorList.any { absent -> absent.competitor.id == it.id },
+                            Optional.ofNullable(it.sport())
+                    )
+                }
+    }
+
+    /**
+     * Marks the competitor matching the given {@code competitorId} as absent.
+     * If the given {@code competitorId} does not exists, this method will do nothing.
+     *
+     * @param competitorId id of the competitor to mark as absent
+     */
+    override fun markAsAbsent(competitorId: Int) {
+
+        val competitorEntity = competitorRepository.findOne(competitorId)
+
+        if (competitorEntity != null) {
+
+            val absentCompetitorList = absentCompetitorRepository.findAll()
+
+            if (!absentCompetitorList.any { it.competitor.id == competitorId }) {
+                absentCompetitorRepository.save(AbsentCompetitorEntity(null, competitorEntity))
+            }
+        }
+    }
+
+    /**
+     * Counter part of {@code markAsAbsent}.
+     * Marks the competitor matching the given {@code competitorId} as present.
+     * If the given {@code competitorId} does not exists, this method will do nothing.
+     *
+     * @param competitorId id of the competitor to mark as present
+     */
+    override fun markAsPresent(competitorId: Int) {
+
+        val absentCompetitor = absentCompetitorRepository.findByCompetitorId(competitorId)
+
+        if (absentCompetitor != null) {
+            absentCompetitorRepository.delete(absentCompetitor)
+        }
+    }
+
+    private fun CompetitorEntity.sport(): Sport? {
+
+        if (sport == null) {
+            return null
+        }
+
+        return Sport(sport!!.id!!, sport!!.name)
     }
 }

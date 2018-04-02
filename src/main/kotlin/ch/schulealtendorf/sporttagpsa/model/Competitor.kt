@@ -34,18 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.model
 
-import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
-import org.springframework.data.repository.CrudRepository
+import java.util.*
 
-/**
- * Describes a CRUD repository for {@link AbsentCompetitorEntity}.
- *
- * @author nmaerchy
- * @version 1.0.0
- */
-interface AbsentCompetitorRepository: CrudRepository<AbsentCompetitorEntity, Int> {
-
-    fun findByCompetitorId(competitorId: Int): AbsentCompetitorEntity?
-}
+data class Competitor(
+        val id: Int,
+        val surname: String,
+        val prename: String,
+        val gender: Gender,
+        val birthday: Birthday,
+        val address: String,
+        val absent: Boolean,
+        val sport: Optional<Sport>
+)

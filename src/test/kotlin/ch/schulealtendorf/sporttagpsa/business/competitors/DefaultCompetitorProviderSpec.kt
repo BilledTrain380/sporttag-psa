@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import com.nhaarman.mockito_kotlin.*
@@ -49,6 +50,7 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import kotlin.math.abs
 
 /**
  * @author nmaerchy
@@ -62,12 +64,13 @@ object DefaultCompetitorProviderSpec: Spek({
         val mockCompetitorRepo: CompetitorRepository = mock()
         val mockSportRepo: SportRepository = mock()
         val mockParticipationStatus: ParticipationStatus = mock()
+        val mockAbsentCompetitorRepository: AbsentCompetitorRepository = mock()
 
-        var provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
+        var provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
 
         beforeEachTest {
-            reset(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
-            provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus)
+            reset(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
+            provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
         }
         
         given("a competitor model to update") {
@@ -128,6 +131,94 @@ object DefaultCompetitorProviderSpec: Spek({
                 it("should do nothing") {
                     verifyZeroInteractions(mockCompetitorRepo)
                     verifyZeroInteractions(mockSportRepo)
+                }
+            }
+        }
+
+        given("a competitor id to mark as absent") {
+
+            whenever(mockCompetitorRepo.findOne(1)).thenReturn(null)
+
+
+            provider.markAsAbsent(1)
+
+
+            on("not existing competitor") {
+
+                it("should not save any absent competitor") {
+                    verifyZeroInteractions(mockAbsentCompetitorRepository)
+                }
+            }
+
+            on("already marked competitor") {
+
+                val competitor = CompetitorEntity(1, "Muster", "Hans")
+
+                whenever(mockCompetitorRepo.findOne(1)).thenReturn(competitor)
+
+                whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(
+                        listOf(
+                                AbsentCompetitorEntity(1, competitor)
+                        )
+                )
+
+
+                provider.markAsAbsent(1)
+
+
+                it("should not save any absent competitor") {
+                    verify(mockAbsentCompetitorRepository, times(1)).findAll()
+                    verifyNoMoreInteractions(mockAbsentCompetitorRepository)
+                }
+            }
+
+            on("not marked competitor") {
+
+                val competitor = CompetitorEntity(1, "Muster", "Hans")
+
+                whenever(mockCompetitorRepo.findOne(1)).thenReturn(competitor)
+
+                whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf())
+
+
+                provider.markAsAbsent(1)
+
+
+                it("should create a new absent competitor entity") {
+                    verify(mockAbsentCompetitorRepository, times(1))
+                            .save(AbsentCompetitorEntity(null, competitor))
+                }
+            }
+        }
+
+        given("a competitor id to mark as present") {
+
+            on("already present competitor") {
+
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(1)).thenReturn(null)
+
+
+                provider.markAsPresent(1)
+
+
+                it("should not mark the competitor as present") {
+                    verify(mockAbsentCompetitorRepository, times(1)).findByCompetitorId(1)
+                    verifyNoMoreInteractions(mockAbsentCompetitorRepository)
+                }
+            }
+
+            on("absent marked competitor") {
+
+                val absentCompetitor = AbsentCompetitorEntity(1, CompetitorEntity(1, "Muster", "Hans"))
+
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(1)).thenReturn(absentCompetitor)
+
+
+                provider.markAsPresent(1)
+
+
+                it("should mark the competitor as present") {
+                    verify(mockAbsentCompetitorRepository, times(1)).delete(absentCompetitor)
                 }
             }
         }
