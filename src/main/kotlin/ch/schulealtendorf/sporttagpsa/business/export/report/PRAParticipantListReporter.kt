@@ -42,6 +42,7 @@ import ch.schulealtendorf.pra.pojo.Participant
 import ch.schulealtendorf.pra.pojo.ParticipantList
 import ch.schulealtendorf.sporttagpsa.business.export.SimpleSport
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
 import java.io.File
@@ -58,7 +59,8 @@ import java.io.IOException
 class PRAParticipantListReporter(
         private val fileSystem: FileSystem,
         private val competitorRepository: CompetitorRepository,
-        private val participantListAPI: ParticipantListAPI
+        private val participantListAPI: ParticipantListAPI,
+        private val absentCompetitorRepository: AbsentCompetitorRepository
 ): ParticipantListReporter {
 
     /**
@@ -72,30 +74,35 @@ class PRAParticipantListReporter(
     override fun generateReport(data: Iterable<SimpleSport>): Set<File> {
 
         try {
-            return data.map {
-    
-                val participants = competitorRepository.findBySportName(it.name)
-    
-                val participantList = ParticipantList().apply {
-                    sport = it.name
-                    this.participants = participants.map {
-                        Participant().apply {
-                            prename = it.prename
-                            surname = it.surname
-                            isGender = it.gender
-                            clazz = it.clazz.name
-                            teacher = it.clazz.teacher.name
+            val absentCompetitorList = absentCompetitorRepository.findAll()
+
+            return data
+                    .map {
+
+                        val participants = competitorRepository.findBySportName(it.name)
+
+                        val participantList = ParticipantList().apply {
+                            sport = it.name
+                            this.participants = participants
+                                    .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.id } }
+                                    .map {
+                                        Participant().apply {
+                                            prename = it.prename
+                                            surname = it.surname
+                                            isGender = it.gender
+                                            clazz = it.clazz.name
+                                            teacher = it.clazz.teacher.name
+                                        }
+                                    }
                         }
-                    }
-                }
-    
-                val report = participantListAPI.createReport(participantList)
-    
-                fileSystem.write("Teilnehmerliste ${it.name}.pdf", report)
-                
-            }.toSet()
-            
-        }  catch (ex: IOException) {
+
+                        val report = participantListAPI.createReport(participantList)
+
+                        fileSystem.write("Teilnehmerliste ${it.name}.pdf", report)
+
+                    }.toSet()
+
+        } catch (ex: IOException) {
             throw ReportGenerationException("Could not generate participant list: cause=${ex.message}", ex)
         } catch (ex: ReportAPIException) {
             throw ReportGenerationException("Could not generate participant list: cause=${ex.message}", ex)

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<html lang="de">
+
+<head th:replace="fragments/main :: head(Absenzen)">
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav th:replace="fragments/main :: navigation(competitor, absences)">
+</nav>
+
+<div class="content-wrapper py-3">
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+            <h1>Absenzen</h1>
+            <hr>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            Änderungen wurden erfolgreich übernommen.
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <a th:href="@{/participant/absences}" class="btn btn-secondary"><i class="fa fa-fw fa-chevron-circle-left"></i> zur Klassenliste</a>
+            </div>
+
+            <div class="col-lg-12">
+
+                <hr/>
+
+                <h3 th:text="${clazz.name}"></h3>
+
+                <form th:action="@{/participant/absences/} + ${clazz.id}" method="post" th:object="${absencesForm}" enctype="application/x-www-form-urlencoded">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Vorname</th>
+                            <th>Geschlecht</th>
+                            <th>Abwesend</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="competitor, status : *{competitorList}">
+                            <td th:text="${competitor.surname}"></td>
+                            <td th:text="${competitor.prename}"></td>
+                            <td th:text="${competitor.gender}"></td>
+                            <td>
+
+                                <!-- send all other attributes back, needed to properly update a competitor -->
+                                <input type="hidden" th:field="*{competitorList[__${status.index}__].id}"/>
+                                <input type="hidden" th:field="*{competitorList[__${status.index}__].surname}"/>
+                                <input type="hidden" th:field="*{competitorList[__${status.index}__].prename}"/>
+                                <input type="hidden" th:field="*{competitorList[__${status.index}__].gender}"/>
+
+                                <input type="checkbox" th:field="*{competitorList[__${status.index}__].absent}"/>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /.content-wrapper -->
+
+
+</body>
+
+</html>

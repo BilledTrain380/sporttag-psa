@@ -80,6 +80,21 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
 
 
 -- -----------------------------------------------------
+-- Table ABSENT_COMPETITOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ABSENT_COMPETITOR (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  FK_competitor INT NOT NULL UNIQUE ,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_ABSENT_COMPETITOR
+    FOREIGN KEY (FK_competitor)
+    REFERENCES COMPETITOR (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+-- -----------------------------------------------------
 -- Table UNIT
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS UNIT (

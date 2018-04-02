@@ -43,6 +43,7 @@ import ch.schulealtendorf.pra.pojo.DisciplineGroupCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
@@ -61,7 +62,8 @@ import java.time.Year
 class PRADisciplineGroupRankingReporter(
         private val fileSystem: FileSystem,
         private val starterRepository: StarterRepository,
-        private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI
+        private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI,
+        private val absentCompetitorRepository: AbsentCompetitorRepository
 ): DisciplineGroupRankingReporter {
 
     /**
@@ -75,9 +77,13 @@ class PRADisciplineGroupRankingReporter(
     override fun generateReport(data: Iterable<Boolean>): Set<File> {
 
         try {
+
+            val absentCompetitorList = absentCompetitorRepository.findAll()
+
             return data.map { gender ->
     
                 starterRepository.findByCompetitorGender(gender)
+                    .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.competitor.id } }
                     .groupBy { DateTime(it.competitor.birthday).year }
                     .map {
     
