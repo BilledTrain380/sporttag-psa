@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS ABSENT_COMPETITOR (
     REFERENCES COMPETITOR (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-)
+);
 
 
 -- -----------------------------------------------------
