@@ -34,22 +34,20 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.participant.clazz
+package ch.schulealtendorf.sporttagpsa.business.competitors
 
-data class ParticipantForm(
-        var competitors: List<Participant> = ArrayList()
-)
+import java.io.IOException
 
-data class Participant(
-        var id: Int = 0,
-        var surname: String = "",
-        var prename: String = "",
-        var gender: Boolean = true,
-        var address: String = "",
-        var sport: ParticipantSport = ParticipantSport()
-)
+/**
+ * Indicates, that a competitor was not found.
+ *
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+class CompetitorNotFoundException: IOException {
 
-data class ParticipantSport(
-        var id: Int = 0,
-        var name: String = ""
-)
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+}

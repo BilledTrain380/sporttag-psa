@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.absences
 
-import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -48,7 +48,7 @@ import javax.validation.Valid
 @RequestMapping("/participant/absences")
 class AbsencesController(
         private val clazzProvider: ClazzProvider,
-        private val competitorProvider: CompetitorProvider
+        private val competitorManager: CompetitorManager
 ) {
 
     @GetMapping
@@ -62,7 +62,7 @@ class AbsencesController(
     @GetMapping("/{id}")
     fun getClazz(@PathVariable id: Int, model: Model): String {
 
-        val competitorList = competitorProvider.getCompetitorListByClazz(id)
+        val competitorList = competitorManager.getCompetitorListByClazz(id)
                 .map { AbsentCompetitorFormModel(it.id, it.surname, it.prename, it.gender.toString(), it.absent) }
 
         model.addAttribute("clazz", clazzProvider.getOne(id))
@@ -79,9 +79,9 @@ class AbsencesController(
                 .forEach {
 
                     if(it.key) {
-                        it.value.forEach { competitorProvider.markAsAbsent(it.id) }
+                        it.value.forEach { competitorManager.markAsAbsent(it.id) }
                     } else {
-                        it.value.forEach { competitorProvider.markAsPresent(it.id) }
+                        it.value.forEach { competitorManager.markAsPresent(it.id) }
                     }
                 }
 

@@ -38,10 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.entity.*
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
@@ -55,12 +52,12 @@ import java.util.*
  * @version 1.1.0
  */
 @Component
-class DefaultCompetitorProvider(
+class DefaultCompetitorManager(
         private val competitorRepository: CompetitorRepository,
         private val sportRepository: SportRepository,
         private val participationStatus: ParticipationStatus,
         private val absentCompetitorRepository: AbsentCompetitorRepository
-): CompetitorProvider {
+): CompetitorManager {
 
     /**
      * Gets all competitors that belong to the clazz with the passed in argument.
@@ -70,35 +67,6 @@ class DefaultCompetitorProvider(
      */
     override fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel> {
         return competitorRepository.findByClazzId(clazzId).map { it.map() }
-    }
-
-    /**
-     * Gets a single competitor by the passed in argument.
-     * 
-     * @param competitorId id of the competitor wanted
-     * @return the found competitor
-     * @throws NullPointerException If no competitor belongs to the passed in argument.
-     */
-    override fun getCompetitorById(competitorId: Int) = competitorRepository.findOne(competitorId)!!.map()
-
-    /**
-     * Update all properties of a single competitor depending on the passed in argument.
-     * 
-     * @param competitor competitor model containing properties to update
-     * @throws NullPointerException If the id of the passed in competitor does not exist.
-     */
-    override fun updateCompetitor(competitor: SimpleCompetitorModel) {
-        
-        if (!participationStatus.isFinished()) {
-
-            val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
-            val sportEntity: SportEntity? = if(competitor.sport == null) null else sportRepository.findOne(competitor.sport.id)
-
-            competitorEntity.merge(competitor)
-            competitorEntity.sport = sportEntity
-
-            competitorRepository.save(competitorEntity)
-        }
     }
 
     /**
@@ -127,6 +95,93 @@ class DefaultCompetitorProvider(
                             Optional.ofNullable(it.sport())
                     )
                 }
+    }
+
+    /**
+     * Returns a {@link SimpleCompetitor} matching the given {@code id}.
+     *
+     * @param id id of the competitor
+     *
+     * @return the resulting competitor
+     * @throws CompetitorNotFoundException if the given {@code id} does no exists
+     */
+    override fun getCompetitor(id: Int): SimpleCompetitor {
+
+        val competitor: CompetitorEntity = competitorRepository.findOne(id) ?: throw CompetitorNotFoundException("Could not found competitor: id=$id")
+
+        return SimpleCompetitor(
+                competitor.id!!,
+                competitor.surname,
+                competitor.prename,
+                Gender(competitor.gender),
+                competitor.address
+        )
+    }
+
+    /**
+     * Saves the given {@code competitor}.
+     *
+     * @param competitor competitor data to save
+     */
+    override fun saveCompetitor(competitor: SimpleCompetitor) {
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
+
+        competitorEntity.apply {
+            prename = competitor.prename
+            surname = competitor.surname
+            gender = competitor.gender.value
+            address = competitor.address
+        }
+
+        competitorRepository.save(competitorEntity)
+    }
+
+    /**
+     * Sets the sport matching the given {@code sportId}
+     * to the competitor matching the given {@code competitorId}.
+     *
+     * This method considers the {@link ParticipationStatus}.
+     *
+     * @param competitorId the competitor id to set the sport for
+     * @param sportId the sport id to set to the competitor
+     *
+     * @throws IllegalStateException if the participation is already finished
+     */
+    override fun setSport(competitorId: Int, sportId: Int) {
+
+        if (participationStatus.isFinished()) {
+            throw IllegalStateException("Can not set sport: participation already finished")
+        }
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitorId)!!
+        val sportEntity: SportEntity = sportRepository.findOne(sportId)!!
+
+        competitorEntity.sport = sportEntity
+
+        competitorRepository.save(competitorEntity)
+    }
+
+    /**
+     * Un-sets the sport of the competitor matching the given {@code competitorId}.
+     *
+     * This method considers the {@link ParticipationStatus}.
+     *
+     * @param competitorId the competitor id to set the sport for
+     *
+     * @throws IllegalStateException if the participation is already finished
+     */
+    override fun unsetSport(competitorId: Int) {
+
+        if (participationStatus.isFinished()) {
+            throw IllegalStateException("Can not un-set sport: participation already finished")
+        }
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitorId)!!
+
+        competitorEntity.sport = null
+
+        competitorRepository.save(competitorEntity)
     }
 
     /**

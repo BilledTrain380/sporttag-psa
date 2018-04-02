@@ -36,12 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.clazz
 
-import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel
 import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleSportModel
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import ch.schulealtendorf.sporttagpsa.business.provider.SportProvider
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -51,7 +52,7 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/participant/clazz")
 class ClazzController(
-        private val competitorProvider: CompetitorProvider,
+        private val competitorManager: CompetitorManager,
         private val participationStatus: ParticipationStatus,
         private val clazzProvider: ClazzProvider,
         sportProvider: SportProvider
@@ -72,7 +73,7 @@ class ClazzController(
     fun getClazz(@PathVariable id: Int, model: Model): String {
 
         val competitorForm = ParticipantForm(
-                competitorProvider.getCompetitorsByClazz(id)
+                competitorManager.getCompetitorsByClazz(id)
                         .map { Participant(it.id, it.surname, it.prename, it.gender, it.address, it.sport.toParticipantSport()) }
         )
         
@@ -85,12 +86,17 @@ class ClazzController(
     }
 
     @PostMapping("/{id}")
-    fun updateCompetitors(@PathVariable id: Int, @Valid @ModelAttribute("participantForm") competitorForm: ParticipantForm, redirectAttributes: RedirectAttributes): String {
+    fun setSport(@PathVariable id: Int, @Valid @ModelAttribute("participantForm") competitorForm: ParticipantForm, redirectAttributes: RedirectAttributes): String {
 
         competitorForm.competitors
-                .map { 
-                    SimpleCompetitorModel(it.id, it.surname, it.prename, it.gender, it.address, it.sport.toSimpleSportModel())
-                }.forEach { competitorProvider.updateCompetitor(it) }
+                .forEach {
+
+                    if (it.sport.id == 0) {
+                        competitorManager.unsetSport(it.id)
+                    } else {
+                        competitorManager.setSport(it.id, it.sport.id)
+                    }
+                }
 
         redirectAttributes.addFlashAttribute("success", true)
 
@@ -103,12 +109,5 @@ class ClazzController(
         }
         
         return ParticipantSport(id, name)
-    }
-    
-    private fun ParticipantSport?.toSimpleSportModel(): SimpleSportModel? {
-        if (this == null)
-            return null
-        
-        return SimpleSportModel(id, name)
     }
 }

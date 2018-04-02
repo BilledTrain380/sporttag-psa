@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.model.Competitor
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
 
 /**
  * Describes a provider for competitors.
@@ -44,7 +45,7 @@ import ch.schulealtendorf.sporttagpsa.model.Competitor
  * @author nmaerchy
  * @version 1.0.0
  */
-interface CompetitorProvider {
+interface CompetitorManager {
 
     /**
      * Gets all competitors that belong to the clazz with the passed in argument.
@@ -54,20 +55,6 @@ interface CompetitorProvider {
      */
     fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel>
 
-    /**
-     * Gets a single competitor by the passed in argument.
-     *
-     * @param competitorId id of the competitor wanted
-     * @return the found competitor
-     */
-    fun getCompetitorById(competitorId: Int): SimpleCompetitorModel
-
-    /**
-     * Updates the passed in argument.
-     *
-     * @param competitor competitor model containing properties to update
-     */
-    fun updateCompetitor(competitor: SimpleCompetitorModel)
 
     /**
      * Get all competitors that belongs the the class matching the given {@code clazzId}.
@@ -79,6 +66,46 @@ interface CompetitorProvider {
      * @return a list of competitors
      */
     fun getCompetitorListByClazz(clazzId: Int): List<Competitor>
+
+    /**
+     * Returns a {@link SimpleCompetitor} matching the given {@code id}.
+     *
+     * @param id id of the competitor
+     *
+     * @return the resulting competitor
+     * @throws CompetitorNotFoundException if the given {@code id} does no exists
+     */
+    fun getCompetitor(id: Int): SimpleCompetitor
+
+    /**
+     * Saves the given {@code competitor}.
+     *
+     * @param competitor competitor data to save
+     */
+    fun saveCompetitor(competitor: SimpleCompetitor)
+
+    /**
+     * Sets the sport matching the given {@code sportId}
+     * to the competitor matching the given {@code competitorId}.
+     *
+     * This method considers the {@link ParticipationStatus}.
+     *
+     * @param competitorId the competitor id to set the sport for
+     * @param sportId the sport id to set to the competitor
+     *
+     * @throws IllegalStateException if the participation is already finished
+     */
+    fun setSport(competitorId: Int, sportId: Int)
+
+    /**
+     * Un-sets the sport of the competitor matching the given {@code competitorId}.
+     *
+     * This method considers the {@link ParticipationStatus}.
+     *
+     * @param competitorId the competitor id to set the sport for
+     * @throws IllegalStateException if the participation is already finished
+     */
+    fun unsetSport(competitorId: Int)
 
     /**
      * Marks the competitor matching the given {@code competitorId} as absent.

@@ -49,15 +49,13 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import kotlin.math.abs
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
 @RunWith(JUnitPlatform::class)
-object DefaultCompetitorProviderSpec: Spek({
+object DefaultCompetitorManagerSpec: Spek({
     
     describe("a competitor provider") {
 
@@ -66,73 +64,11 @@ object DefaultCompetitorProviderSpec: Spek({
         val mockParticipationStatus: ParticipationStatus = mock()
         val mockAbsentCompetitorRepository: AbsentCompetitorRepository = mock()
 
-        var provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
+        var provider = DefaultCompetitorManager(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
 
         beforeEachTest {
             reset(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
-            provider = DefaultCompetitorProvider(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
-        }
-        
-        given("a competitor model to update") {
-
-            val townEntity = TownEntity(1, "8000", "Musterhausen")
-            val clazzEntity = ClazzEntity(1, "1a", TeacherEntity(1, "teacher"))
-            val sportEntity = SportEntity(1, "Brennball")
-
-            on("selected sport") {
-
-                val competitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SimpleSportModel(1, ""))
-
-                whenever(mockParticipationStatus.isFinished())
-                        .thenReturn(false)
-                
-                whenever(mockCompetitorRepo.findOne(any()))
-                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null))
-                
-                whenever(mockSportRepo.findOne(any()))
-                        .thenReturn(sportEntity)
-
-                provider.updateCompetitor(competitorModel)
-
-                it("should update the CompetitorEntity with the according SportEntity") {
-                    val expected: CompetitorEntity = CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, sportEntity)
-                    Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
-                }
-            }
-
-            on("non selected sport") {
-
-                val competitorModel = SimpleCompetitorModel(1, "Wirbelwind", "Will", false, "address", SimpleSportModel(1, ""))
-
-                whenever(mockParticipationStatus.isFinished())
-                        .thenReturn(false)
-                
-                whenever(mockCompetitorRepo.findOne(any()))
-                        .thenReturn(CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null))
-                
-                whenever(mockSportRepo.findOne(any()))
-                        .thenReturn(null)
-
-                provider.updateCompetitor(competitorModel)
-
-                it("should update the CompetitorEntity with no SportEntity") {
-                    val expected = CompetitorEntity(1, "Wirbelwind", "Will", false, 1, "address", townEntity, clazzEntity, null)
-                    Mockito.verify(mockCompetitorRepo, Mockito.times(1)).save(expected)
-                }
-            }
-            
-            on("finished participation") {
-                
-                whenever(mockParticipationStatus.isFinished())
-                        .thenReturn(true)
-                
-                provider.updateCompetitor(ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel(1, "", "", true, ""))
-                
-                it("should do nothing") {
-                    verifyZeroInteractions(mockCompetitorRepo)
-                    verifyZeroInteractions(mockSportRepo)
-                }
-            }
+            provider = DefaultCompetitorManager(mockCompetitorRepo, mockSportRepo, mockParticipationStatus, mockAbsentCompetitorRepository)
         }
 
         given("a competitor id to mark as absent") {

@@ -36,8 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.detail
 
-import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorProvider
+import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -47,32 +49,42 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/participant/detail")
 class DetailController(
-        private val competitorProvider: CompetitorProvider
+        private val competitorManager: CompetitorManager
 ) {
 
     @GetMapping("/{id}")
     fun getCompetitor(@PathVariable id: Int, model: Model): String {
-        
-        val participant = competitorProvider.getCompetitorById(id)
-        
-        model.addAttribute("participant", participant.toSimpleParticipant())
+
+        val competitor = competitorManager.getCompetitor(id)
+
+        val participant = SimpleParticipant(
+                competitor.id,
+                competitor.surname,
+                competitor.prename,
+                competitor.gender.value,
+                competitor.address
+        )
+
+        model.addAttribute("participant", participant)
         
         return "participant/detail/competitor-detail"
     }
 
     @PostMapping("/{id}")
     fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("participant") participant: SimpleParticipant, redirectAttributes: RedirectAttributes): String {
-        
-        competitorProvider.updateCompetitor(participant.toSimpleCompetitorModel())
+
+        val simpleCompetitor = SimpleCompetitor(
+                participant.id,
+                participant.surname,
+                participant.prename,
+                Gender(participant.gender),
+                participant.address
+        )
+
+        competitorManager.saveCompetitor(simpleCompetitor)
         
         redirectAttributes.addFlashAttribute("success", true)
         
         return "redirect:/participant/detail/$id"
-    }
-    
-    private fun ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel.toSimpleParticipant() = SimpleParticipant(id, surname, prename, gender, address)
-    
-    private fun SimpleParticipant.toSimpleCompetitorModel(): SimpleCompetitorModel {
-        return SimpleCompetitorModel(id, surname, prename, gender, address)
     }
 }
