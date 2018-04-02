@@ -43,6 +43,7 @@ import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.pra.pojo.TotalCompetitor
 import ch.schulealtendorf.pra.pojo.TotalRanking
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
@@ -61,7 +62,8 @@ import java.time.Year
 class PRATotalRankingReporter(
         private val fileSystem: FileSystem,
         private val starterRepository: StarterRepository,
-        private val totalRankingAPI: TotalRankingAPI
+        private val totalRankingAPI: TotalRankingAPI,
+        private val absentCompetitorRepository: AbsentCompetitorRepository
 ): TotalRankingReporter {
 
     /**
@@ -75,79 +77,83 @@ class PRATotalRankingReporter(
     override fun generateReport(data: Iterable<Boolean>): Set<File> {
 
         try {
+
+            val absentCompetitorList = absentCompetitorRepository.findAll()
+
             return data.map { gender ->
-    
+
                 starterRepository.findByCompetitorGender(gender)
-                    .groupBy { DateTime(it.competitor.birthday).year }
-                    .map {
-    
-                        val ranking = TotalRanking().apply {
-                            year = Year.of(it.key)
-                            isGender = gender
-                            this.competitors = it.value.map {
-                                TotalCompetitor().apply {
-                                    prename = it.competitor.prename
-                                    surname = it.competitor.surname
-                                    clazz = it.competitor.clazz.name
-    
-                                    weitsprung = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
-    
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
-                                        points = resultEntity.points
-                                    }
-    
-                                    seilspringen = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Seilspringen" }
-    
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
-                                        points = resultEntity.points
-                                    }
-    
-                                    schelllauf = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
-    
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
-                                        points = resultEntity.points
-                                    }
-    
-                                    korbeinwurf = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Korbeinwurf" }
-    
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
-                                        points = resultEntity.points
-                                    }
-    
-                                    ballzielWurf = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Ballzielwurf" }
-    
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
-                                        points = resultEntity.points
-                                    }
-    
-                                    ballwurf = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
-    
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
-                                        points = resultEntity.points
+                        .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.competitor.id } }
+                        .groupBy { DateTime(it.competitor.birthday).year }
+                        .map {
+
+                            val ranking = TotalRanking().apply {
+                                year = Year.of(it.key)
+                                isGender = gender
+                                this.competitors = it.value.map {
+                                    TotalCompetitor().apply {
+                                        prename = it.competitor.prename
+                                        surname = it.competitor.surname
+                                        clazz = it.competitor.clazz.name
+
+                                        weitsprung = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.result)
+                                            points = resultEntity.points
+                                        }
+
+                                        seilspringen = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Seilspringen" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.result)
+                                            points = resultEntity.points
+                                        }
+
+                                        schelllauf = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.result)
+                                            points = resultEntity.points
+                                        }
+
+                                        korbeinwurf = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Korbeinwurf" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.result)
+                                            points = resultEntity.points
+                                        }
+
+                                        ballzielWurf = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Ballzielwurf" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.result)
+                                            points = resultEntity.points
+                                        }
+
+                                        ballwurf = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.result)
+                                            points = resultEntity.points
+                                        }
                                     }
                                 }
                             }
-                        }
-    
-                        val report = totalRankingAPI.createReport(ranking)
-    
-                        fileSystem.write("Rangliste ${gender.text()} Gesamt ${it.key}.pdf", report)
-                    }.toSet()
-                
+
+                            val report = totalRankingAPI.createReport(ranking)
+
+                            fileSystem.write("Rangliste ${gender.text()} Gesamt ${it.key}.pdf", report)
+                        }.toSet()
+
             }.flatten().toSet()
-            
+
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not generate total ranking: cause=${ex.message}", ex)
         } catch (ex: ReportAPIException) {

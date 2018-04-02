@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.tournament
 
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import org.springframework.stereotype.Component
 
@@ -48,7 +49,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class PersistenceTournamentProvider(
-        private val resultRepository: ResultRepository
+        private val resultRepository: ResultRepository,
+        private val absentCompetitorRepository: AbsentCompetitorRepository
 ): TournamentProvider {
 
     /**
@@ -59,22 +61,26 @@ class PersistenceTournamentProvider(
      * @return the resulting competitor list
      */
     override fun findByFilter(filter: TournamentFilter): List<TournamentCompetitor> {
-        
+
+        val absentCompetitorList = absentCompetitorRepository.findAll()
+
         val results = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(filter.disciplineId, filter.gender, filter.clazzId)
-        
-        return results.map { 
-            TournamentCompetitor(
-                    it.starter.number!!,
-                    it.id!!,
-                    it.starter.competitor.prename,
-                    it.starter.competitor.surname,
-                    it.starter.competitor.gender,
-                    it.distance,
-                    it.result,
-                    it.discipline.unit.unit,
-                    it.points
-            )
-        }
+
+        return results
+                .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.starter.competitor.id } }
+                .map {
+                    TournamentCompetitor(
+                            it.starter.number!!,
+                            it.id!!,
+                            it.starter.competitor.prename,
+                            it.starter.competitor.surname,
+                            it.starter.competitor.gender,
+                            it.distance,
+                            it.result,
+                            it.discipline.unit.unit,
+                            it.points
+                    )
+                }
     }
 
     /**
