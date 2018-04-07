@@ -36,20 +36,28 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
+import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
- * {@link DefaultParticipationManager} manages a participation for competitors.
+ * {@link DefaultParticipationManager} manages a participation for participantModelList.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.1.0
  */
 @Component
 class DefaultParticipationManager(
-        private val participationStatus: ParticipationStatus,
         private val competitorRepository: CompetitorRepository,
-        private val resultManager: ResultManager
+        private val sportRepository: SportRepository,
+        private val absentCompetitorRepository: AbsentCompetitorRepository,
+        private val sportMiddleware: SportMiddleware
 ): ParticipationManager {
 
     /**
@@ -57,14 +65,141 @@ class DefaultParticipationManager(
      * competitor that participates for the sport "Mehrkampf".
      */
     override fun finishParticipation() {
-        
-        if (!participationStatus.isFinished()) {
-            // TODO: Move all disciplines to an enum
-            val competitors = competitorRepository.findBySportName("Mehrkampf")
+        TODO()
+    }
 
-            competitors.forEach(resultManager::createResults)
+    /**
+     * Returns a list of participants which are in the given {@code clazz}.
+     * If the given {@code clazz} does not exists, an empty list will be returned.
+     *
+     * @param clazz the clazz to get its participants
+     *
+     * @return the resulting list
+     */
+    override fun getParticipantListByClazz(clazz: Clazz): List<Participant> {
 
-            participationStatus.finishIt()
+        val absentCompetitorList = absentCompetitorRepository.findAll()
+
+        return competitorRepository.findByClazzId(clazz.id)
+                .map {
+                    Participant(
+                            it.id!!,
+                            it.surname,
+                            it.prename,
+                            Gender(it.gender),
+                            Birthday(it.birthday),
+                            it.address,
+                            absentCompetitorList.any { absent -> absent.competitor.id == it.id },
+                            Optional.ofNullable(it.sport())
+                    )
+                }
+    }
+
+    /**
+     * @return the participant matching the given {@code id}
+     * @throws IllegalArgumentException if the participant matching the given id does not exists
+     */
+    override fun getParticipant(id: Int): SingleParticipant {
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(id) ?: throw IllegalArgumentException("Could not find competitor: id$id")
+
+        return SingleParticipant(
+                competitorEntity.id!!,
+                competitorEntity.surname,
+                competitorEntity.prename,
+                Gender(competitorEntity.gender),
+                competitorEntity.address
+        )
+    }
+
+    /**
+     * Updates the given {@code participant}.
+     *
+     * @param participant participant data to update
+     *
+     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     */
+    override fun updateParticipant(participant: SingleParticipant) {
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(participant.id)
+                ?: throw IllegalArgumentException("Could not find participant: id=${participant.id}")
+
+        competitorEntity.apply {
+            prename = participant.prename
+            surname = participant.surname
+            gender = participant.gender.value
+            address = participant.address
         }
+
+        competitorRepository.save(competitorEntity)
+    }
+
+    /**
+     * Sets the given {@code sport} on the given {@code participant}.
+     * Invokes the {@link SportMiddleware} before the sport will be set.
+     *
+     * @param participant the participant to set the sport on
+     * @param sport the sport to set on the participant
+     *
+     * @throws IllegalArgumentException if either the participant or the sport could not be found
+     */
+    override fun setSport(participant: SingleParticipant, sport: Sport) {
+
+        sportMiddleware.accept(participant, sport)
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(participant.id)
+                ?: throw IllegalArgumentException("Could not find participant: id=${participant.id}")
+
+        val sportEntity: SportEntity = sportRepository.findOne(sport.id)
+                ?: throw IllegalArgumentException("Could not find sport: id=${sport.id}")
+
+        competitorEntity.sport = sportEntity
+
+        competitorRepository.save(competitorEntity)
+    }
+
+    /**
+     * Marks the given {@code participant} as absent.
+     *
+     * @param participant the participant to set as absent
+     *
+     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     */
+    override fun markAsAbsent(participant: SingleParticipant) {
+
+        val competitorEntity: CompetitorEntity = competitorRepository.findOne(participant.id)
+                ?: throw IllegalArgumentException("Could not find participant: id=${participant.id}")
+
+        val absentCompetitorList = absentCompetitorRepository.findAll()
+
+        if (!absentCompetitorList.any { it.competitor.id == participant.id }) {
+            absentCompetitorRepository.save(AbsentCompetitorEntity(null, competitorEntity))
+        }
+    }
+
+    /**
+     * As a counter part of {@code markAsAbsent},
+     * marks the given {@code participant} as present.
+     *
+     * @param participant the participant to set as present
+     *
+     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     */
+    override fun markAsPresent(participant: SingleParticipant) {
+
+        val absentCompetitor: AbsentCompetitorEntity? = absentCompetitorRepository.findByCompetitorId(participant.id)
+
+        if (absentCompetitor != null) {
+            absentCompetitorRepository.delete(absentCompetitor)
+        }
+    }
+
+    private fun CompetitorEntity.sport(): Sport? {
+
+        if (sport == null) {
+            return null
+        }
+
+        return Sport(sport!!.id!!, sport!!.name)
     }
 }

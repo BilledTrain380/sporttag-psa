@@ -37,19 +37,20 @@
 package ch.schulealtendorf.sporttagpsa.controller.participant.clazz
 
 data class ParticipantForm(
-        var competitors: List<Participant> = ArrayList()
+        var participantModelList: List<ParticipantModel> = ArrayList()
 )
 
-data class Participant(
+data class ParticipantModel(
         var id: Int = 0,
         var surname: String = "",
         var prename: String = "",
         var gender: Boolean = true,
         var address: String = "",
-        var sport: ParticipantSport = ParticipantSport()
+        var sport: ParticipantSportModel = ParticipantSportModel(),
+        var absent: Boolean = false
 )
 
-data class ParticipantSport(
+data class ParticipantSportModel(
         var id: Int = 0,
         var name: String = ""
 )

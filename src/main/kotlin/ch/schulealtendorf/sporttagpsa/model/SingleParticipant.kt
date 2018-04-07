@@ -34,12 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.participant.detail
+package ch.schulealtendorf.sporttagpsa.model
 
-data class SingleParticipantModel(
-        var id: Int = 0,
-        var surname: String = "",
-        var prename: String = "",
-        var gender: Boolean = true,
-        var address: String = ""
+data class SingleParticipant(
+        val id: Int,
+        val surname: String,
+        val prename: String,
+        val gender: Gender,
+        val address: String
 )

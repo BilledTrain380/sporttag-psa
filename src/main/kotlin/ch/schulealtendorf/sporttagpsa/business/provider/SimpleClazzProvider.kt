@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.model.Clazz
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import org.springframework.stereotype.Component
 
@@ -53,9 +54,9 @@ class SimpleClazzProvider(
     /**
      * @return all the data from this provider
      */
-    override fun getAll(): Collection<SimpleClazz> {
+    override fun getAll(): Collection<Clazz> {
         return clazzRepository.findAll().map { 
-            SimpleClazz(it?.id!!, it.name)
+            Clazz(it?.id!!, it.name, it.teacher.name)
         }
     }
 
@@ -63,12 +64,12 @@ class SimpleClazzProvider(
      * @param id id of the class
      *
      * @return the class matching the given {@code id}
-     * @throws NoSuchElementException if the class with the given id does not exist
+     * @throws IllegalArgumentException if the class with the given id does not exist
      */
-    override fun getOne(id: Int): SimpleClazz {
+    override fun getOne(id: Int): Clazz {
         
-        val clazz = clazzRepository.findOne(id) ?: throw NoSuchElementException("Class does not exits: id=$id")
+        val clazz = clazzRepository.findOne(id) ?: throw IllegalArgumentException("Class does not exits: id=$id")
 
-        return SimpleClazz(clazz.id!!, clazz.name)
+        return Clazz(clazz.id!!, clazz.name, clazz.teacher.name)
     }
 }

@@ -36,8 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -46,66 +50,126 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
+import java.util.*
+import kotlin.test.assertEquals
 
-/**
- * @author nmaerchy
- * *
- * @version 0.0.1
- */
+
 @RunWith(JUnitPlatform::class)
 object DefaultParticipationManagerSpec: Spek({
     
     describe("a participation manager") {
         
         val mockCompetitorRepository: CompetitorRepository = mock()
-        val mockParticipationStatus: ParticipationStatus = mock()
-        val mockResultManager: ResultManager = mock()
+        val mockSportRepository: SportRepository = mock()
+        val mockAbsentCompetitorRepository: AbsentCompetitorRepository = mock()
+        val mockSportMiddleware: SportMiddleware = mock()
         
-        var manager = DefaultParticipationManager(mockParticipationStatus, mockCompetitorRepository, mockResultManager)
+        var manager = DefaultParticipationManager(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportMiddleware)
         
         beforeEachTest { 
-            reset(mockCompetitorRepository, mockParticipationStatus, mockResultManager)
-            manager = DefaultParticipationManager(mockParticipationStatus, mockCompetitorRepository, mockResultManager)
+            reset(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportMiddleware)
+            manager = DefaultParticipationManager(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportMiddleware)
         }
-        
-        given("a participation to finish") {
-            
-            on("participation status is not finished") {
 
-                whenever(mockParticipationStatus.isFinished())
-                        .thenReturn(false)
-                
-                whenever(mockCompetitorRepository.findBySportName(any()))
-                        .thenReturn(listOf(CompetitorEntity(), CompetitorEntity()))
-                
-                manager.finishParticipation()
-                
-                it("should get all competitors for sport 'Mehrkampf'") {
-                    verify(mockCompetitorRepository, times(1))
-                            .findBySportName(eq("Mehrkampf"))
-                }
-                
-                it("should create results for each competitor") {
-                    verify(mockResultManager, times(2))
-                            .createResults(any())
-                }
-                
-                it("should finish the participation status") {
-                    verify(mockParticipationStatus, times(1))
-                            .finishIt()
+        given("a clazz to get participants") {
+
+            on("present participant") {
+
+                whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf())
+
+                whenever(mockCompetitorRepository.findByClazzId(1)).thenReturn(
+                        listOf(
+                                CompetitorEntity(1, "Muster", "Max", true, 0, "")
+                        )
+                )
+
+
+                it("should map the participant as present") {
+                    val expected = Participant(1, "Muster", "Max", Gender(true), Birthday(0), "", false, Optional.empty())
+                    assertEquals(listOf(expected), manager.getParticipantListByClazz(Clazz(1, "2a", "")))
                 }
             }
-            
-            on("participation status is finished") {
-                
-                whenever(mockParticipationStatus.isFinished())
-                        .thenReturn(true)
-                
-                manager.finishParticipation()
-                
-                it("should do nothing") {
-                    verifyZeroInteractions(mockCompetitorRepository)
-                    verifyZeroInteractions(mockResultManager)
+
+            on("absent participant") {
+
+                val competitor = CompetitorEntity(1, "Muster", "Max", true, 0, "")
+
+                whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf(AbsentCompetitorEntity(1, competitor)))
+
+                whenever(mockCompetitorRepository.findByClazzId(1)).thenReturn(
+                        listOf(
+                                CompetitorEntity(1, "Muster", "Max", true, 0, "")
+                        )
+                )
+
+
+                it("should map the participant as absent") {
+                    val expected = Participant(1, "Muster", "Max", Gender(true), Birthday(0), "", true, Optional.empty())
+                    assertEquals(listOf(expected), manager.getParticipantListByClazz(Clazz(1, "2a", "")))
+                }
+            }
+        }
+
+        given("a participant to mark as absent") {
+
+            on("marked as present") {
+
+                val competitor = CompetitorEntity(1, "Muster", "Max", true, 0, "")
+
+                whenever(mockCompetitorRepository.findOne(1)).thenReturn(competitor)
+
+                whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf())
+
+
+                val singleParticipant = SingleParticipant(1, "Muster", "Max", Gender(true), "")
+                manager.markAsAbsent(singleParticipant)
+
+
+                it("should create an absent competitor") {
+                    val expected = AbsentCompetitorEntity(null, competitor)
+                    verify(mockAbsentCompetitorRepository, times(1)).save(expected)
+                }
+            }
+
+            on("already marked as absent") {
+
+                val competitor = CompetitorEntity(1, "Muster", "Max", true, 0, "")
+
+                whenever(mockCompetitorRepository.findOne(1)).thenReturn(competitor)
+
+                whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(
+                        listOf(
+                                AbsentCompetitorEntity(1, competitor)
+                        )
+                )
+
+
+                val singleParticipant = SingleParticipant(1, "Muster", "Max", Gender(true), "")
+                manager.markAsAbsent(singleParticipant)
+
+
+                it("should not create any absent competitor") {
+                    verify(mockAbsentCompetitorRepository, times(1)).findAll()
+                    verifyNoMoreInteractions(mockAbsentCompetitorRepository)
+                }
+            }
+        }
+
+        given("a participant to mark as present") {
+
+            on("marked as absent") {
+
+                val absentCompetitor = AbsentCompetitorEntity(1, CompetitorEntity(1, "Muster", "Max", true, 0, ""))
+
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(1)).thenReturn(absentCompetitor)
+
+
+                val singleParticipant = SingleParticipant(1, "Muster", "Max", Gender(true), "")
+                manager.markAsPresent(singleParticipant)
+
+
+                it("should delete the according absent competitor") {
+                    verify(mockAbsentCompetitorRepository, times(1)).delete(absentCompetitor)
                 }
             }
         }

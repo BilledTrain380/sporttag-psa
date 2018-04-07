@@ -36,10 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.detail
 
-import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorManager
-import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
+import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -49,39 +48,39 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/participant/detail")
 class DetailController(
-        private val competitorManager: CompetitorManager
+        private val participationManager: ParticipationManager
 ) {
 
     @GetMapping("/{id}")
     fun getCompetitor(@PathVariable id: Int, model: Model): String {
 
-        val competitor = competitorManager.getCompetitor(id)
+        val participant = participationManager.getParticipant(id)
 
-        val participant = SimpleParticipant(
-                competitor.id,
-                competitor.surname,
-                competitor.prename,
-                competitor.gender.value,
-                competitor.address
+        val participantModel = SingleParticipantModel(
+                participant.id,
+                participant.surname,
+                participant.prename,
+                participant.gender.value,
+                participant.address
         )
 
-        model.addAttribute("participant", participant)
+        model.addAttribute("participant", participantModel)
         
         return "participant/detail/competitor-detail"
     }
 
     @PostMapping("/{id}")
-    fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("participant") participant: SimpleParticipant, redirectAttributes: RedirectAttributes): String {
+    fun updateCompetitor(@PathVariable id: Int, @Valid @ModelAttribute("participantModel") participantModel: SingleParticipantModel, redirectAttributes: RedirectAttributes): String {
 
-        val simpleCompetitor = SimpleCompetitor(
-                participant.id,
-                participant.surname,
-                participant.prename,
-                Gender(participant.gender),
-                participant.address
+        val participant = SingleParticipant(
+                participantModel.id,
+                participantModel.surname,
+                participantModel.prename,
+                Gender(participantModel.gender),
+                participantModel.address
         )
 
-        competitorManager.saveCompetitor(simpleCompetitor)
+        participationManager.updateParticipant(participant)
         
         redirectAttributes.addFlashAttribute("success", true)
         

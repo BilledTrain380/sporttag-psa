@@ -34,12 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.participant.detail
+package ch.schulealtendorf.sporttagpsa.model
 
-data class SingleParticipantModel(
-        var id: Int = 0,
-        var surname: String = "",
-        var prename: String = "",
-        var gender: Boolean = true,
-        var address: String = ""
+import java.util.*
+
+data class Participant(
+        val id: Int,
+        val surname: String,
+        val prename: String,
+        val gender: Gender,
+        val birthday: Birthday,
+        val address: String,
+        val absent: Boolean,
+        val sport: Optional<Sport>
 )

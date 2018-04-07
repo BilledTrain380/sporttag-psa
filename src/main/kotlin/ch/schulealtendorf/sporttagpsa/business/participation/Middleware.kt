@@ -34,12 +34,41 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.model
+package ch.schulealtendorf.sporttagpsa.business.participation
 
-data class SimpleCompetitor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val address: String
-)
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import org.springframework.stereotype.Component
+import java.util.function.BiConsumer
+
+/**
+ * Describes a middleware that will be invoked when the participation will be finished.
+ * @see ParticipationStatus.finishIt
+ *
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface ParticipationMiddleware: Runnable
+
+@Component
+class EmptyParticipationMiddleware: ParticipationMiddleware {
+
+    override fun run() {/* TODO: Add warning log */}
+}
+
+/**
+ * Describes a middleware that will be called, when a sport for a competitor is set.
+ * @see ParticipationManager.setSport
+ *
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface SportMiddleware: BiConsumer<SingleParticipant, Sport>
+
+@Component
+class EmptySportMiddleware: SportMiddleware {
+
+
+    override fun accept(t: SingleParticipant, u: Sport) {/* TODO: Add warning log */}
+}

@@ -36,19 +36,21 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.model.Clazz
+
 /**
- * Describes a provider for school classes.
+ * Describes a provider for classes.
  * 
  * @author nmaerchy
- * @version 1.1.0
+ * @version 2.0.0
  */
-interface ClazzProvider: Provider<SimpleClazz> {
+interface ClazzProvider: Provider<Clazz> {
 
     /**
      * @param id id of the class
      * 
      * @return the class matching the given {@code id}
-     * @throws NoSuchElementException if the class with the given id does not exist
+     * @throws IllegalArgumentException if the class with the given id does not exist
      */
-    fun getOne(id: Int): SimpleClazz
+    fun getOne(id: Int): Clazz
 }

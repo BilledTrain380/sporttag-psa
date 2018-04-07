@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
 
 /**
- * Describes a provider for competitors.
+ * Describes a provider for participantModelList.
  * 
  * @author nmaerchy
  * @version 1.0.0
@@ -48,41 +48,45 @@ import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
 interface CompetitorManager {
 
     /**
-     * Gets all competitors that belong to the clazz with the passed in argument.
+     * Gets all participantModelList that belong to the clazz with the passed in argument.
      *
      * @param clazzId the id of the clazz wanted
-     * @return a list of found competitors
+     * @return a list of found participantModelList
      */
+    @Deprecated("")
     fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel>
 
 
     /**
-     * Get all competitors that belongs the the class matching the given {@code clazzId}.
+     * Get all participantModelList that belongs the the class matching the given {@code clazzId}.
      *
      * If the {@code clazzId} does not exists, an empty list will be returned.
      *
      * @param clazzId the id of the class
      *
-     * @return a list of competitors
+     * @return a list of participantModelList
      */
-    fun getCompetitorListByClazz(clazzId: Int): List<Competitor>
+    @Deprecated("")
+    fun getCompetitorListByClazz(clazzId: Int): List<Participant>
 
     /**
-     * Returns a {@link SimpleCompetitor} matching the given {@code id}.
+     * Returns a {@link SingleParticipant} matching the given {@code id}.
      *
      * @param id id of the competitor
      *
      * @return the resulting competitor
      * @throws CompetitorNotFoundException if the given {@code id} does no exists
      */
-    fun getCompetitor(id: Int): SimpleCompetitor
+    @Deprecated("")
+    fun getCompetitor(id: Int): SingleParticipant
 
     /**
      * Saves the given {@code competitor}.
      *
      * @param competitor competitor data to save
      */
-    fun saveCompetitor(competitor: SimpleCompetitor)
+    @Deprecated("")
+    fun saveCompetitor(competitor: SingleParticipant)
 
     /**
      * Sets the sport matching the given {@code sportId}
@@ -95,6 +99,7 @@ interface CompetitorManager {
      *
      * @throws IllegalStateException if the participation is already finished
      */
+    @Deprecated("")
     fun setSport(competitorId: Int, sportId: Int)
 
     /**
@@ -105,6 +110,7 @@ interface CompetitorManager {
      * @param competitorId the competitor id to set the sport for
      * @throws IllegalStateException if the participation is already finished
      */
+    @Deprecated("")
     fun unsetSport(competitorId: Int)
 
     /**
@@ -113,6 +119,7 @@ interface CompetitorManager {
      *
      * @param competitorId id of the competitor to mark as absent
      */
+    @Deprecated("")
     fun markAsAbsent(competitorId: Int)
 
     /**
@@ -122,5 +129,6 @@ interface CompetitorManager {
      *
      * @param competitorId id of the competitor to mark as present
      */
+    @Deprecated("")
     fun markAsPresent(competitorId: Int)
 }

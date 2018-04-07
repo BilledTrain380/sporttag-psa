@@ -36,16 +36,77 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
+import ch.schulealtendorf.sporttagpsa.model.Sport
+
 /**
- * Describes a manager for the participation of a sport.
+ * Describes a manager for the participation.
  * 
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
  */
 interface ParticipationManager {
 
     /**
      * Finishes a participation
      */
+    @Deprecated("Will be removed")
     fun finishParticipation()
+
+    /**
+     * Returns a list of participants which are in the given {@code clazz}.
+     * If the given {@code clazz} does not exists, an empty list will be returned.
+     *
+     * @param clazz the clazz to get its participants
+     *
+     * @return the resulting list
+     */
+    fun getParticipantListByClazz(clazz: Clazz): List<Participant>
+
+    /**
+     * @return the participant matching the given {@code id}
+     * @throws IllegalArgumentException if the participant matching the given id does not exists
+     */
+    fun getParticipant(id: Int): SingleParticipant
+
+    /**
+     * Updates the given {@code participant}.
+     *
+     * @param participant participant data to update
+     *
+     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     */
+    fun updateParticipant(participant: SingleParticipant)
+
+    /**
+     * Sets the given {@code sport} on the given {@code participant}.
+     * Invokes the {@link SportMiddleware} before the sport will be set.
+     *
+     * @param participant the participant to set the sport on
+     * @param sport the sport to set on the participant
+     *
+     * @throws IllegalArgumentException if either the participant or the sport could not be found
+     */
+    fun setSport(participant: SingleParticipant, sport: Sport)
+
+    /**
+     * Marks the given {@code participant} as absent.
+     *
+     * @param participant the participant to set as absent
+     *
+     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     */
+    fun markAsAbsent(participant: SingleParticipant)
+
+    /**
+     * As a counter part of {@code markAsAbsent},
+     * marks the given {@code participant} as present.
+     *
+     * @param participant the participant to set as present
+     *
+     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     */
+    fun markAsPresent(participant: SingleParticipant)
 }

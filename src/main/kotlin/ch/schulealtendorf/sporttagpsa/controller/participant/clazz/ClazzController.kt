@@ -36,13 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.clazz
 
-import ch.schulealtendorf.sporttagpsa.business.competitors.CompetitorManager
-import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleCompetitorModel
-import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleSportModel
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import ch.schulealtendorf.sporttagpsa.business.provider.SportProvider
-import ch.schulealtendorf.sporttagpsa.model.SimpleCompetitor
+import ch.schulealtendorf.sporttagpsa.model.*
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -52,14 +50,14 @@ import javax.validation.Valid
 @Controller
 @RequestMapping("/participant/clazz")
 class ClazzController(
-        private val competitorManager: CompetitorManager,
         private val participationStatus: ParticipationStatus,
         private val clazzProvider: ClazzProvider,
+        private val participationManager: ParticipationManager,
         sportProvider: SportProvider
 ) {
 
     private val sports = sportProvider.getAll()
-            .map { ParticipantSport(it.id, it.name) }
+            .map { ParticipantSportModel(it.id, it.name) }
     
     @GetMapping
     fun getClazzList(model: Model): String {
@@ -72,42 +70,57 @@ class ClazzController(
     @GetMapping("/{id}")
     fun getClazz(@PathVariable id: Int, model: Model): String {
 
-        val competitorForm = ParticipantForm(
-                competitorManager.getCompetitorsByClazz(id)
-                        .map { Participant(it.id, it.surname, it.prename, it.gender, it.address, it.sport.toParticipantSport()) }
+        val clazz = clazzProvider.getOne(id)
+
+        val participantForm = ParticipantForm(
+                participationManager.getParticipantListByClazz(clazz)
+                        .map { ParticipantModel(
+                                it.id,
+                                it.surname,
+                                it.prename,
+                                it.gender.value,
+                                it.address,
+                                it.sport.map { ParticipantSportModel(it.id, it.name) }.orElse(ParticipantSportModel(0, "")),
+                                it.absent)
+                        }
         )
         
         model.addAttribute("clazz", clazzProvider.getOne(id))
         model.addAttribute("sports", sports)
         model.addAttribute("participationStatus", participationStatus.isFinished())
-        model.addAttribute("participantForm", competitorForm)
+        model.addAttribute("participantForm", participantForm)
 
         return "participant/clazz/clazz-detail"
     }
 
     @PostMapping("/{id}")
-    fun setSport(@PathVariable id: Int, @Valid @ModelAttribute("participantForm") competitorForm: ParticipantForm, redirectAttributes: RedirectAttributes): String {
+    fun setSport(@PathVariable id: Int, @Valid @ModelAttribute("participantForm") participantForm: ParticipantForm, redirectAttributes: RedirectAttributes): String {
 
-        competitorForm.competitors
+        participantForm.participantModelList
+                .filter { it.sport.id != 0 } // only use participant that has a sport
                 .forEach {
 
-                    if (it.sport.id == 0) {
-                        competitorManager.unsetSport(it.id)
+                    val participant = SingleParticipant(
+                            it.id,
+                            it.surname,
+                            it.prename,
+                            Gender(it.gender),
+                            it.address
+                    )
+
+                    val sport = Sport(it.sport.id, it.sport.name)
+
+                    participationManager.setSport(participant, sport)
+
+                    if (it.absent) {
+                        participationManager.markAsAbsent(participant)
                     } else {
-                        competitorManager.setSport(it.id, it.sport.id)
+                        participationManager.markAsPresent(participant)
                     }
                 }
 
         redirectAttributes.addFlashAttribute("success", true)
 
         return "redirect:/participant/clazz/$id"
-    }
-    
-    private fun SimpleSportModel?.toParticipantSport(): ParticipantSport {
-        if (this == null) {
-            return ParticipantSport()
-        }
-        
-        return ParticipantSport(id, name)
     }
 }

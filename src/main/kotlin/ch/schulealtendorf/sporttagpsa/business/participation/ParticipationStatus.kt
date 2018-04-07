@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 /**
- * Describes the participation status of the competitors.
+ * Describes the participation status of the participantModelList.
  * 
  * @author nmaerchy
  * @version 1.0.0
@@ -51,6 +51,7 @@ interface ParticipationStatus {
 
     /**
      * Finishes the participation.
+     * Invokes the {@link ParticipationMiddleware}.
      */
     fun finishIt()
 }

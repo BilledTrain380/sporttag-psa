@@ -46,7 +46,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 /**
- * Provider for competitors.
+ * Provider for participantModelList.
  * 
  * @author nmaerchy
  * @version 1.1.0
@@ -60,31 +60,31 @@ class DefaultCompetitorManager(
 ): CompetitorManager {
 
     /**
-     * Gets all competitors that belong to the clazz with the passed in argument.
+     * Gets all participantModelList that belong to the clazz with the passed in argument.
      * 
      * @param clazzId the id of the clazz wanted
-     * @return a list of found competitors
+     * @return a list of found participantModelList
      */
     override fun getCompetitorsByClazz(clazzId: Int): List<SimpleCompetitorModel> {
         return competitorRepository.findByClazzId(clazzId).map { it.map() }
     }
 
     /**
-     * Get all competitors that belongs the the class matching the given {@code clazzId}.
+     * Get all participantModelList that belongs the the class matching the given {@code clazzId}.
      *
      * If the {@code clazzId} does not exists, an empty list will be returned.
      *
      * @param clazzId the id of the class
      *
-     * @return a list of competitors
+     * @return a list of participantModelList
      */
-    override fun getCompetitorListByClazz(clazzId: Int): List<Competitor> {
+    override fun getCompetitorListByClazz(clazzId: Int): List<Participant> {
 
         val absentCompetitorList = absentCompetitorRepository.findAll()
 
         return competitorRepository.findByClazzId(clazzId)
                 .map {
-                    Competitor(
+                    Participant(
                             it.id!!,
                             it.surname,
                             it.prename,
@@ -98,18 +98,18 @@ class DefaultCompetitorManager(
     }
 
     /**
-     * Returns a {@link SimpleCompetitor} matching the given {@code id}.
+     * Returns a {@link SingleParticipant} matching the given {@code id}.
      *
      * @param id id of the competitor
      *
      * @return the resulting competitor
      * @throws CompetitorNotFoundException if the given {@code id} does no exists
      */
-    override fun getCompetitor(id: Int): SimpleCompetitor {
+    override fun getCompetitor(id: Int): SingleParticipant {
 
         val competitor: CompetitorEntity = competitorRepository.findOne(id) ?: throw CompetitorNotFoundException("Could not found competitor: id=$id")
 
-        return SimpleCompetitor(
+        return SingleParticipant(
                 competitor.id!!,
                 competitor.surname,
                 competitor.prename,
@@ -123,7 +123,7 @@ class DefaultCompetitorManager(
      *
      * @param competitor competitor data to save
      */
-    override fun saveCompetitor(competitor: SimpleCompetitor) {
+    override fun saveCompetitor(competitor: SingleParticipant) {
 
         val competitorEntity: CompetitorEntity = competitorRepository.findOne(competitor.id)!!
 

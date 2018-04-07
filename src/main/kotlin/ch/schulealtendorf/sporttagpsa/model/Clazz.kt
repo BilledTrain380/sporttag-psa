@@ -36,15 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
-import java.util.*
-
-data class Competitor(
+data class Clazz(
         val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Birthday,
-        val address: String,
-        val absent: Boolean,
-        val sport: Optional<Sport>
+        val name: String,
+        val teacher: String
 )
