@@ -47,7 +47,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 @Controller
 @RequestMapping("/participant/management/general")
 class GeneralController(
-        private val participationManager: ParticipationManager,
         private val participationStatus: ParticipationStatus
 ) {
     
@@ -61,8 +60,8 @@ class GeneralController(
     
     @GetMapping("/finish-participation")
     fun finishParticipation(redirectAttributes: RedirectAttributes): String {
-        
-        participationManager.finishParticipation()
+
+        participationStatus.finishIt()
         
         redirectAttributes.addFlashAttribute("participationInfo", true)
         

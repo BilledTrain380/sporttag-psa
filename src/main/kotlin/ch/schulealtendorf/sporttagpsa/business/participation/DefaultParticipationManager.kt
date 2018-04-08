@@ -50,7 +50,7 @@ import java.util.*
  * {@link DefaultParticipationManager} manages a participation for participantModelList.
  * 
  * @author nmaerchy
- * @version 1.1.0
+ * @version 1.2.0
  */
 @Component
 class DefaultParticipationManager(
@@ -59,14 +59,6 @@ class DefaultParticipationManager(
         private val absentCompetitorRepository: AbsentCompetitorRepository,
         private val sportMiddleware: SportMiddleware
 ): ParticipationManager {
-
-    /**
-     * Finishes a participation by creating results for each
-     * competitor that participates for the sport "Mehrkampf".
-     */
-    override fun finishParticipation() {
-        TODO()
-    }
 
     /**
      * Returns a list of participants which are in the given {@code clazz}.

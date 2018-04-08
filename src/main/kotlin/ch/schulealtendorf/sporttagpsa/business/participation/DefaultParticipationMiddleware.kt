@@ -36,35 +36,28 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
-import java.util.function.BiConsumer
 
 /**
- * Describes a middleware that will be invoked when the participation will be finished.
- * @see ParticipationStatus.finishIt
+ * Finds participant by the sport "Mehrkampf" and
+ * setup the {@link StarterEntity}.
  *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ParticipationMiddleware: Runnable
-
-//@Component
-class EmptyParticipationMiddleware: ParticipationMiddleware {
-    override fun run() {/* TODO: Add warning log */}
-}
-
-/**
- * Describes a middleware that will be called, when a sport for a competitor is set.
- * @see ParticipationManager.setSport
- *
- * @author nmaerchy
- * @version 1.0.0
- */
-interface SportMiddleware: BiConsumer<SingleParticipant, Sport>
-
 @Component
-class EmptySportMiddleware: SportMiddleware {
-    override fun accept(t: SingleParticipant, u: Sport) {/* TODO: Add warning log */}
+class DefaultParticipationMiddleware(
+        private val competitorRepository: CompetitorRepository,
+        private val resultManager: ResultManager
+): ParticipationMiddleware {
+
+    /**
+     * Creates a {@link StarterEntity} for each competitor
+     * by passing them to the {@link ResultManager}.
+     */
+    override fun run() {
+        competitorRepository.findBySportName("Mehrkampf")
+                .forEach { resultManager.createResults(it) }
+    }
 }

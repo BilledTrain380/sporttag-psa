@@ -50,12 +50,6 @@ import ch.schulealtendorf.sporttagpsa.model.Sport
 interface ParticipationManager {
 
     /**
-     * Finishes a participation
-     */
-    @Deprecated("Will be removed")
-    fun finishParticipation()
-
-    /**
      * Returns a list of participants which are in the given {@code clazz}.
      * If the given {@code clazz} does not exists, an empty list will be returned.
      *

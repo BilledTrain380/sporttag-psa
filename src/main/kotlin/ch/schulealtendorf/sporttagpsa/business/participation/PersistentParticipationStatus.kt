@@ -47,7 +47,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class PersistentParticipationStatus(
-        private val participationRepository: ParticipationRepository
+        private val participationRepository: ParticipationRepository,
+        private val participationMiddleware: ParticipationMiddleware
 ): ParticipationStatus {
     
     /**
@@ -59,9 +60,12 @@ class PersistentParticipationStatus(
 
     /**
      * Finishes the participation and persists its status.
+     * Invokes the {@link ParticipationMiddleware}.
      */
     override fun finishIt() {
-        
+
+        participationMiddleware.run()
+
         participationRepository.save(
                 participationRepository.findAll().first().apply { isFinished = true }
         )
