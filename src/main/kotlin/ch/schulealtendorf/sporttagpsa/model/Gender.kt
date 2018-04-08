@@ -40,6 +40,11 @@ data class Gender(
         val value: Boolean = true
 ) {
 
+    companion object {
+        fun male() = Gender(true)
+        fun female() = Gender(false)
+    }
+
     fun isMale() = value
 
     fun isFemale() = !value

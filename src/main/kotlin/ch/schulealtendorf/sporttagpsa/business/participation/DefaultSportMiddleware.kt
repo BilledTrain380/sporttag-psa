@@ -38,33 +38,53 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
 import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
-import java.util.function.BiConsumer
 
 /**
- * Describes a middleware that will be invoked when the participation will be finished.
- * @see ParticipationStatus.finishIt
+ * Sport middleware that only performs, when the {@link ParticipationStatus.isFinished} returns true.
  *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ParticipationMiddleware: Runnable
+@Component
+class DefaultSportMiddleware(
+        private val participationStatus: ParticipationStatus,
+        private val starterManager: StarterManager,
+        private val competitorRepository: CompetitorRepository
+): SportMiddleware {
 
-//@Component
-class EmptyParticipationMiddleware: ParticipationMiddleware {
-    override fun run() {/* TODO: Add warning log */}
-}
+    /**
+     * Creates an according {@link StarterEntity} for te given {@code participant},
+     * if the given {@code Sport} equals "Mehrkampf".
+     *
+     * Otherwise removes the according {@link StarterEntity}.
+     *
+     * If {@link ParticipationStatus.isFinished} returns false, this method will be skipped.
+     *
+     * @param participant the participant that is set the sport
+     * @param sport the sport that is set on the participant
+     */
+    override fun accept(participant: SingleParticipant, sport: Sport) {
 
-/**
- * Describes a middleware that will be called, when a sport for a competitor is set.
- * @see ParticipationManager.setSport
- *
- * @author nmaerchy
- * @version 1.0.0
- */
-interface SportMiddleware: BiConsumer<SingleParticipant, Sport>
+        if (!participationStatus.isFinished()) {
+            return
+        }
 
-//@Component
-class EmptySportMiddleware: SportMiddleware {
-    override fun accept(t: SingleParticipant, u: Sport) {/* TODO: Add warning log */}
+        try {
+
+            if (sport.name == "Mehrkampf") {
+                starterManager.createStarter(
+                        competitorRepository.findOne(participant.id)!!
+                )
+            } else {
+                starterManager.removeStarter(
+                        competitorRepository.findOne(participant.id)!!
+                )
+            }
+
+        } catch (ex: StarterAlreadyExistsException) {
+            // TODO: Add logger
+        }
+    }
 }
