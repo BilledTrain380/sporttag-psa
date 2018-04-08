@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.model.Sport
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
 
@@ -53,9 +54,9 @@ class SimpleSportProvider(
     /**
      * @return all the data from this provider
      */
-    override fun getAll(): Collection<SimpleSport> {
+    override fun getAll(): Collection<Sport> {
         return sportRepository.findAll().map { 
-            SimpleSport(it?.id!!, it.name)
+            Sport(it?.id!!, it.name)
         }
     }
 }

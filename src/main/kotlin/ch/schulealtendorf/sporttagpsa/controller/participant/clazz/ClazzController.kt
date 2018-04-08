@@ -57,7 +57,6 @@ class ClazzController(
 ) {
 
     private val sports = sportProvider.getAll()
-            .map { ParticipantSportModel(it.id, it.name) }
     
     @GetMapping
     fun getClazzList(model: Model): String {
@@ -108,9 +107,7 @@ class ClazzController(
                             it.address
                     )
 
-                    val sport = Sport(it.sport.id, it.sport.name)
-
-                    participationManager.setSport(participant, sport)
+                    participationManager.setSport(participant, sports.single { sport -> it.sport.id == sport.id })
 
                     if (it.absent) {
                         participationManager.markAsAbsent(participant)

@@ -36,10 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.model.Sport
+
 /**
  * Describes a provider for sports.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
  */
-interface SportProvider: Provider<SimpleSport>
+interface SportProvider: Provider<Sport>

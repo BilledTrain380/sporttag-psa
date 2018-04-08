@@ -36,19 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
-@Deprecated("")
-data class SimpleClazz(
-        val id: Int,
-        val name: String
-)
-
-@Deprecated("")
-data class SimpleSport(
-        val id: Int,
-        val name: String
-)
-
-@Deprecated("")
+@Deprecated("Use SingleDiscipline instead")
 data class SimpleDiscipline(
         val id: Int,
         val name: String
