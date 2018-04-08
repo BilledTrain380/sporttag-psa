@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -36,20 +36,18 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import java.io.IOException
 
 /**
- * Describes a manager for the results of a competitor.
- * 
+ * Indicates that a {@link StarterEntity} that should be created exists already.
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ResultManager {
+class StarterAlreadyExistsException: IOException {
 
-    /**
-     * Creates results for the passed in {@code competitor}.
-     * 
-     * @param competitor the competitor to create the results for
-     */
-    fun createResults(competitor: CompetitorEntity)
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
 }

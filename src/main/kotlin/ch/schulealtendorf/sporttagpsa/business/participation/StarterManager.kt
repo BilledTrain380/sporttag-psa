@@ -34,22 +34,32 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
-import org.springframework.data.repository.CrudRepository
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 
 /**
- * Describes a CRUD repository for the {@link StarterEntity}.
+ * Describes a manager for the results of a competitor.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
  */
-interface StarterRepository: CrudRepository<StarterEntity, Int> {
-    
-    fun findByCompetitorGender(gender: Boolean): List<StarterEntity>
+interface StarterManager {
 
-    fun findByCompetitorId(id: Int): StarterEntity?
-    
-    fun findByCompetitorGenderAndCompetitorClazzName(gender: Boolean, clazz: String): List<StarterEntity>
+    /**
+     * Creates results for the passed in {@code competitor}.
+     * 
+     * @param competitor the competitor to create the according starter
+     *
+     * @throws StarterAlreadyExistsException if the starter for the given {@competitor} exists already
+     */
+    fun createStarter(competitor: CompetitorEntity)
+
+    /**
+     * Removes the starter of the given {@code competitor}.
+     * If no starter could be found, the method will be skipped.
+     *
+     * @param competitor the competitor to remove the according starter
+     */
+    fun removeStarter(competitor: CompetitorEntity)
 }

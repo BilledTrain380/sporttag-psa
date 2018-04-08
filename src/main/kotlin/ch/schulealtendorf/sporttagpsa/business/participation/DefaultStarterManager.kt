@@ -48,29 +48,32 @@ import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 
 /**
- * {@link CompetitorResultManager} manages the results of a competitor
+ * {@link DefaultStarterManager} manages the results of a competitor
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
  */
 @Component
-class CompetitorResultManager(
+class DefaultStarterManager(
         private val starterRepository: StarterRepository,
         private val resultRepository: ResultRepository,
         private val ruleBook: CategoryRuleBook,
         disciplineRepository: DisciplineRepository
-): ResultManager {
+): StarterManager {
     
     private val disciplines = disciplineRepository.findAll()
 
     /**
-     * Creates results for each discipline for the passed in {@code competitor}.
-     * The results distance is determined by the {@link CategoryRuleBook}.
+     * Creates results for the passed in {@code competitor}.
      *
-     * @param competitor the competitor to create the results for
+     * @param competitor the competitor to create the according starter
+     *
+     * @throws StarterAlreadyExistsException if the starter for the given {@competitor} exists already
      */
-    override fun createResults(competitor: CompetitorEntity) {
-        
+    override fun createStarter(competitor: CompetitorEntity) {
+
+        competitor.throwIfStarterExists { StarterAlreadyExistsException("Starter exists already: number=${it.number}") }
+
         val starter = starterRepository.save(StarterEntity(null, competitor))
         
         disciplines.forEach {
@@ -78,6 +81,30 @@ class CompetitorResultManager(
             
             val result = ResultEntity(null, distance,0.0, 1, starter, it)
             resultRepository.save(result)
+        }
+    }
+
+    /**
+     * Removes the starter of the given {@code competitor}.
+     * If no starter could be found, the method will be skipped.
+     *
+     * @param competitor the competitor to remove the according starter
+     */
+    override fun removeStarter(competitor: CompetitorEntity) {
+
+        val starter: StarterEntity? = starterRepository.findByCompetitorId(competitor.id ?: 0)
+
+        if (starter != null) {
+            starterRepository.delete(starter)
+        }
+    }
+
+    private fun CompetitorEntity.throwIfStarterExists(supplier: (StarterEntity) -> StarterAlreadyExistsException) {
+
+        val starter: StarterEntity? = starterRepository.findByCompetitorId(id ?: 0)
+
+        if (starter != null) {
+            throw supplier(starter)
         }
     }
 

@@ -49,15 +49,15 @@ import org.springframework.stereotype.Component
 @Component
 class DefaultParticipationMiddleware(
         private val competitorRepository: CompetitorRepository,
-        private val resultManager: ResultManager
+        private val starterManager: StarterManager
 ): ParticipationMiddleware {
 
     /**
      * Creates a {@link StarterEntity} for each competitor
-     * by passing them to the {@link ResultManager}.
+     * by passing them to the {@link StarterManager}.
      */
     override fun run() {
         competitorRepository.findBySportName("Mehrkampf")
-                .forEach { resultManager.createResults(it) }
+                .forEach { starterManager.createStarter(it) }
     }
 }

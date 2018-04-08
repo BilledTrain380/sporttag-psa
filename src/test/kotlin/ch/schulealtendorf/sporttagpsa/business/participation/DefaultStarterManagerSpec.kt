@@ -51,18 +51,13 @@ import org.jetbrains.spek.api.dsl.on
 import org.joda.time.DateTime
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
-/**
- * Spec for {@link CompetitorResultManager}.
- * 
- * @author nmaerchy
- * *
- * @version 1.0.0
- */
 @RunWith(JUnitPlatform::class)
-object CompetitorResultManagerSpec : Spek({
+object DefaultStarterManagerSpec : Spek({
     
-    describe("a result manager") {
+    describe("a starter manager") {
         
         val testDisciplines: Iterable<DisciplineEntity> = arrayListOf(
                 DisciplineEntity(1,"Weitsprung", UnitEntity()),
@@ -74,17 +69,17 @@ object CompetitorResultManagerSpec : Spek({
         val mockDisciplineRepository: DisciplineRepository = mock()
         val mockRuleBook: CategoryRuleBook = mock()
         
-        var manager = CompetitorResultManager(mockStarterRepository, mockResultRepository, mockRuleBook, mockDisciplineRepository)
+        var manager = DefaultStarterManager(mockStarterRepository, mockResultRepository, mockRuleBook, mockDisciplineRepository)
         
         beforeEachTest { 
             reset(mockStarterRepository, mockResultRepository, mockDisciplineRepository, mockRuleBook)
             whenever(mockDisciplineRepository.findAll())
                     .thenReturn(testDisciplines)
             
-            manager = CompetitorResultManager(mockStarterRepository, mockResultRepository, mockRuleBook, mockDisciplineRepository)
+            manager = DefaultStarterManager(mockStarterRepository, mockResultRepository, mockRuleBook, mockDisciplineRepository)
         }
         
-        given("a competitor to create results for") {
+        given("a competitor to create a starter for") {
 
             val weitsprungCategory = CategoryModel(
                     8, "Weitsprung"
@@ -96,11 +91,14 @@ object CompetitorResultManagerSpec : Spek({
             
             val birthday = DateTime.now().minusYears(8).millis
             
-            on("creating the results") {
+            on("non existing starter") {
 
                 // Arrange
                 val competitor = CompetitorEntity(1, "Muster", "max", true, birthday)
-                
+
+                whenever(mockStarterRepository.findByCompetitorId(1))
+                        .thenReturn(null)
+
                 whenever(mockStarterRepository.save(any<StarterEntity>()))
                         .thenReturn(StarterEntity(1, competitor))
                 
@@ -111,7 +109,7 @@ object CompetitorResultManagerSpec : Spek({
                         .thenReturn("5m")
                 
                 // Act
-                manager.createResults(competitor)
+                manager.createStarter(competitor)
                 
                 // Assert
                 it("should create a starter") {
@@ -129,6 +127,21 @@ object CompetitorResultManagerSpec : Spek({
                             .getDistance(weitsprungCategory)
                     verify(mockRuleBook, times(1))
                             .getDistance(weitwurfCategory)
+                }
+            }
+
+            on("already existing starter") {
+
+                val competitor = CompetitorEntity(1, "Muster", "max", true, birthday)
+
+                whenever(mockStarterRepository.findByCompetitorId(1))
+                        .thenReturn(StarterEntity(1, competitor))
+
+                it("should throw a starter already exists exception") {
+                    val exception = assertFailsWith<StarterAlreadyExistsException> {
+                        manager.createStarter(competitor)
+                    }
+                    assertEquals("Starter exists already: number=1", exception.message)
                 }
             }
         }
