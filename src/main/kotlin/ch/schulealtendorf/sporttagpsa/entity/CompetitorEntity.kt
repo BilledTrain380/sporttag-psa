@@ -71,7 +71,7 @@ data class CompetitorEntity @JvmOverloads constructor(
         @Size(min = 1, max = 80)
         var address: String = "",
 
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
         var town: TownEntity = TownEntity(),
 

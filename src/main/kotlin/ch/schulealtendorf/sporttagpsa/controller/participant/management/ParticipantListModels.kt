@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.management
 
+import java.util.*
+
 data class ParticipantListForm(
         var sports: List<ParticipantSport> = ArrayList()
 )
@@ -44,4 +46,16 @@ data class ParticipantSport(
         var id: Int = 0,
         var name: String = "",
         var include: Boolean = false
+)
+
+data class LateRegistrationParticipant(
+        var surname: String = "",
+        var prename: String = "",
+        var gender: Boolean = true,
+        var birthday: String = "",
+        var address: String = "",
+        var zipCode: String = "",
+        var town: String = "",
+        var clazzId: Int = 0,
+        var sportId: Int = 0
 )
