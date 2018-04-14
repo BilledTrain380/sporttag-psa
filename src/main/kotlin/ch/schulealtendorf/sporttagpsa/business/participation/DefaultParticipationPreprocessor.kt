@@ -47,10 +47,10 @@ import org.springframework.stereotype.Component
  * @version 1.0.0
  */
 @Component
-class DefaultParticipationMiddleware(
+class DefaultParticipationPreprocessor(
         private val competitorRepository: CompetitorRepository,
         private val starterManager: StarterManager
-): ParticipationMiddleware {
+): ParticipationPreprocessor {
 
     /**
      * Creates a {@link StarterEntity} for each competitor

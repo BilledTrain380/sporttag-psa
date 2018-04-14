@@ -49,7 +49,6 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.runner.RunWith
 
-import org.junit.Assert.*
 import org.junit.platform.runner.JUnitPlatform
 
 /**
@@ -57,7 +56,7 @@ import org.junit.platform.runner.JUnitPlatform
  * @version 0.0.1
  */
 @RunWith(JUnitPlatform::class)
-object DefaultSportMiddlewareSpec: Spek({
+object DefaultSportPreprocessorSpec: Spek({
 
     describe("a sport middleware") {
 
@@ -65,11 +64,11 @@ object DefaultSportMiddlewareSpec: Spek({
         val mockStarterManager: StarterManager = mock()
         val mockCompetitorRepository: CompetitorRepository = mock()
 
-        var middleware = DefaultSportMiddleware(mockParticipationStatus, mockStarterManager, mockCompetitorRepository)
+        var middleware = DefaultSportPreprocessor(mockParticipationStatus, mockStarterManager, mockCompetitorRepository)
 
         beforeEachTest {
             reset(mockParticipationStatus, mockStarterManager, mockCompetitorRepository)
-            middleware = DefaultSportMiddleware(mockParticipationStatus, mockStarterManager, mockCompetitorRepository)
+            middleware = DefaultSportPreprocessor(mockParticipationStatus, mockStarterManager, mockCompetitorRepository)
         }
 
         given("a competitor and a sport to accept") {

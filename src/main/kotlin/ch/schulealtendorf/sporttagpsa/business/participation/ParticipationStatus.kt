@@ -51,7 +51,7 @@ interface ParticipationStatus {
 
     /**
      * Finishes the participation.
-     * Invokes the {@link ParticipationMiddleware}.
+     * Invokes the {@link ParticipationPreprocessor}.
      */
     fun finishIt()
 }

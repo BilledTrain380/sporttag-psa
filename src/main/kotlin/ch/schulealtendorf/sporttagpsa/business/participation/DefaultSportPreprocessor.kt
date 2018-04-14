@@ -48,11 +48,11 @@ import org.springframework.stereotype.Component
  * @version 1.0.0
  */
 @Component
-class DefaultSportMiddleware(
+class DefaultSportPreprocessor(
         private val participationStatus: ParticipationStatus,
         private val starterManager: StarterManager,
         private val competitorRepository: CompetitorRepository
-): SportMiddleware {
+): SportPreprocessor {
 
     /**
      * Creates an according {@link StarterEntity} for te given {@code participant},

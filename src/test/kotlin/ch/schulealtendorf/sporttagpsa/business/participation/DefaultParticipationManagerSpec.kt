@@ -62,13 +62,13 @@ object DefaultParticipationManagerSpec: Spek({
         val mockCompetitorRepository: CompetitorRepository = mock()
         val mockSportRepository: SportRepository = mock()
         val mockAbsentCompetitorRepository: AbsentCompetitorRepository = mock()
-        val mockSportMiddleware: SportMiddleware = mock()
+        val mockSportPreprocessor: SportPreprocessor = mock()
         
-        var manager = DefaultParticipationManager(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportMiddleware)
+        var manager = DefaultParticipationManager(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportPreprocessor)
         
         beforeEachTest { 
-            reset(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportMiddleware)
-            manager = DefaultParticipationManager(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportMiddleware)
+            reset(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportPreprocessor)
+            manager = DefaultParticipationManager(mockCompetitorRepository, mockSportRepository, mockAbsentCompetitorRepository, mockSportPreprocessor)
         }
 
         given("a clazz to get participants") {

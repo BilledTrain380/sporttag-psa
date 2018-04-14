@@ -38,7 +38,6 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
 import ch.schulealtendorf.sporttagpsa.model.Sport
-import org.springframework.stereotype.Component
 import java.util.function.BiConsumer
 
 /**
@@ -48,10 +47,10 @@ import java.util.function.BiConsumer
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ParticipationMiddleware: Runnable
+interface ParticipationPreprocessor: Runnable
 
 //@Component
-class EmptyParticipationMiddleware: ParticipationMiddleware {
+class EmptyParticipationPreprocessor: ParticipationPreprocessor {
     override fun run() {/* TODO: Add warning log */}
 }
 
@@ -62,9 +61,9 @@ class EmptyParticipationMiddleware: ParticipationMiddleware {
  * @author nmaerchy
  * @version 1.0.0
  */
-interface SportMiddleware: BiConsumer<SingleParticipant, Sport>
+interface SportPreprocessor: BiConsumer<SingleParticipant, Sport>
 
 //@Component
-class EmptySportMiddleware: SportMiddleware {
+class EmptySportPreprocessor: SportPreprocessor {
     override fun accept(t: SingleParticipant, u: Sport) {/* TODO: Add warning log */}
 }

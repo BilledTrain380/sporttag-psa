@@ -57,7 +57,7 @@ class DefaultParticipationManager(
         private val competitorRepository: CompetitorRepository,
         private val sportRepository: SportRepository,
         private val absentCompetitorRepository: AbsentCompetitorRepository,
-        private val sportMiddleware: SportMiddleware
+        private val sportPreprocessor: SportPreprocessor
 ): ParticipationManager {
 
     /**
@@ -128,7 +128,7 @@ class DefaultParticipationManager(
 
     /**
      * Sets the given {@code sport} on the given {@code participant}.
-     * Invokes the {@link SportMiddleware} before the sport will be set.
+     * Invokes the {@link SportPreprocessor} before the sport will be set.
      *
      * @param participant the participant to set the sport on
      * @param sport the sport to set on the participant
@@ -137,7 +137,7 @@ class DefaultParticipationManager(
      */
     override fun setSport(participant: SingleParticipant, sport: Sport) {
 
-        sportMiddleware.accept(participant, sport)
+        sportPreprocessor.accept(participant, sport)
 
         val competitorEntity: CompetitorEntity = competitorRepository.findOne(participant.id)
                 ?: throw IllegalArgumentException("Could not find participant: id=${participant.id}")

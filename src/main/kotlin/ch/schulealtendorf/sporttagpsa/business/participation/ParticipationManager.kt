@@ -76,7 +76,7 @@ interface ParticipationManager {
 
     /**
      * Sets the given {@code sport} on the given {@code participant}.
-     * Invokes the {@link SportMiddleware} before the sport will be set.
+     * Invokes the {@link SportPreprocessor} before the sport will be set.
      *
      * @param participant the participant to set the sport on
      * @param sport the sport to set on the participant
