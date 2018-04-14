@@ -63,11 +63,15 @@
             
             <div class="col-lg-2">
 
-                <div class="list-group">
-                    <a th:each="clazz : ${clazzes}"  th:href="@{/participant/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">
-                        Klasse [[${clazz.name}]]
-                    </a>
-                </div>
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="clazz : ${clazzes}" th:classappend="${clazz.allParticipantSportSet} ? list-group-item-success : ''"><a th:href="@{/participant/clazz/} + ${clazz.id}" th:inline="text">Klasse [[${clazz.name}]]</a></li>
+                </ul>
+
+                <!--<div class="list-group">-->
+                    <!--<a th:each="clazz : ${clazzes}"  th:href="@{/participant/clazz/} + ${clazz.id}" th:inline="text" class="list-group-item">-->
+                        <!--Klasse [[${clazz.name}]]-->
+                    <!--</a>-->
+                <!--</div>-->
                 
             </div>
 

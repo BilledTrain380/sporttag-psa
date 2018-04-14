@@ -36,6 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.participant.clazz
 
+data class ClazzStatus(
+        var id: Int = 0,
+        var name: String = "",
+        var allParticipantSportSet: Boolean = false
+)
+
 data class ParticipantForm(
         var participantModelList: List<ParticipantModel> = ArrayList()
 )
