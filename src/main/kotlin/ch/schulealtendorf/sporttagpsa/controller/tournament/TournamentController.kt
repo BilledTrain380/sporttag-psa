@@ -49,6 +49,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import javax.validation.Valid
 
 /**
@@ -120,10 +122,10 @@ class TournamentController(
             val ruleModel = FormulaModel(
                     tournamentModel.discipline.name,
                     it.distance,
-                    it.result,
+                    it.result(),
                     it.gender
             )
-  
+
             it.points = ruleBook.calc(ruleModel)
             
             tournamentProvider.updateResult(it.toResult())
@@ -158,5 +160,19 @@ class TournamentController(
                 result,
                 points
         )
+    }
+
+    private fun TournamentCompetitorModel.result(): Double {
+
+        val formatter = DecimalFormat("#.##")
+        formatter.roundingMode = RoundingMode.FLOOR
+
+        result = when(unit) {
+            "Meter" -> formatter.format(result).toDouble()
+            "Sekunden" -> formatter.format(result).toDouble()
+            else -> Math.floor(result)
+        }
+
+        return result
     }
 }
