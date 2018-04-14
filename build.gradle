@@ -30,8 +30,6 @@ apply plugin: "com.github.cr0.macappbundle"
 version = "${sporttagPSAVersion}"
 
 allprojects {
-
-	// TODO: Remove kotlin stuff
 	
 	apply plugin: 'idea'
 	apply plugin: 'kotlin'
@@ -54,7 +52,7 @@ allprojects {
 	}
 	
 	dependencies {
-		compile("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
+		compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 	}
 }
 
@@ -121,7 +119,7 @@ junitPlatform {
 }
 
 dependencies {
-	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
 	
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
