@@ -36,10 +36,26 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import java.io.File
+
 /**
  * Describes a reporter for a discipline group ranking.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 1.1.0
  */
-interface DisciplineGroupRankingReporter: Reporter<Iterable<Boolean>>
+interface DisciplineGroupRankingReporter: Reporter<Iterable<Boolean>> {
+
+    /**
+     * Generates csv file of discipline group ranking for all given {@code genders}.
+     *
+     * The generated files are sorted by gender and age.
+     *
+     * @param genders all genders that should be included in the csv
+     *
+     * @return all generated csv files
+     * @throws ReportGenerationException if the csv files could not be generated
+     */
+    fun generateCSV(genders: Set<Gender>): Set<File>
+}

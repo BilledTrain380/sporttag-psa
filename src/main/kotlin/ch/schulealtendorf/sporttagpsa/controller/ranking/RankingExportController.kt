@@ -41,6 +41,7 @@ import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.RankingExport
 import ch.schulealtendorf.sporttagpsa.business.export.SimpleDiscipline
 import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -70,9 +71,7 @@ class RankingExportController(
         val rankingForm = RankingForm(
                 disciplines.map { 
                     DisciplineRankingForm(it.id, it.name)
-                },
-                DisciplineGroupRankingForm(),
-                TotalRankingForm()
+                }
         )
         
         model.addAttribute("rankingForm", rankingForm)
@@ -115,10 +114,16 @@ class RankingExportController(
                 total.male
         ).filter { it }
 
+        val ubsCupExport = listOf(
+                Gender(ubsCup.female),
+                Gender(ubsCup.male)
+        ).filter { it.value }.toSet()
+
         return RankingExport(
                 disciplineExport,
                 disciplineGroupExport,
-                totalExport
+                totalExport,
+                ubsCupExport
         )
     }
 }

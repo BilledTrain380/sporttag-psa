@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import java.io.File
 
 /**
@@ -75,4 +76,14 @@ interface ExportManager {
      * @throws ArchiveGenerationException if the archive could not be generated
      */
     fun generateArchive(data: ParticipantExport): File
+
+    /**
+     * Generates an archive file by the given {@code data}.
+     *
+     * @param data contains the data to generate teh archive
+     *
+     * @return the generated archive
+     * @throws ArchiveGenerationException if the archive could not be generated
+     */
+    fun generateArchive(data: Set<Gender>): File
 }

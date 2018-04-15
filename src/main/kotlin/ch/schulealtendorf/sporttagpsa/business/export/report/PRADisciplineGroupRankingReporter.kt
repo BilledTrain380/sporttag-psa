@@ -42,7 +42,9 @@ import ch.schulealtendorf.pra.pojo.Discipline
 import ch.schulealtendorf.pra.pojo.DisciplineGroupCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
+import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
 import org.joda.time.DateTime
@@ -95,26 +97,26 @@ class PRADisciplineGroupRankingReporter(
                                     prename = it.competitor.prename
                                     surname = it.competitor.surname
                                     clazz = it.competitor.clazz.name
-    
+
                                     ballwurf = Discipline().apply {
                                         val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
-    
+
                                         setDistance(resultEntity.distance)
                                         result = Result(resultEntity.result)
                                         points = resultEntity.points
                                     }
-    
+
                                     weitsprung = Discipline().apply {
                                         val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
-    
+
                                         setDistance(resultEntity.distance)
                                         result = Result(resultEntity.result)
                                         points = resultEntity.points
                                     }
-    
+
                                     schnelllauf = Discipline().apply {
                                         val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
-    
+
                                         setDistance(resultEntity.distance)
                                         result = Result(resultEntity.result)
                                         points = resultEntity.points
@@ -134,6 +136,64 @@ class PRADisciplineGroupRankingReporter(
             throw ReportGenerationException("Could not create discipline group report: cause=${ex.message}", ex)
         } catch (ex: ReportAPIException) {
             throw ReportGenerationException("Could not create discipline group report: cause=${ex.message}", ex)
+        }
+    }
+
+    /**
+     * Generates csv file of discipline group ranking for all given {@code genders}.
+     *
+     * The generated files are sorted by gender and age.
+     *
+     * @param genders all genders that should be included in the csv
+     *
+     * @return all generated csv files
+     * @throws ReportGenerationException if the csv files could not be generated
+     */
+    override fun generateCSV(genders: Set<Gender>): Set<File> {
+
+        try {
+
+            val absentCompetitorList = absentCompetitorRepository.findAll()
+
+            return genders.map { gender ->
+
+                starterRepository.findByCompetitorGender(gender.value)
+                        .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.competitor.id } }
+                        .groupBy { DateTime(it.competitor.birthday).year }
+                        .map {
+
+                            val headers = "Startnummer,Name,Vorname,Adresse,PLZ,Ort,Geburtsdatum,Verein / Schule,Schnelllauf,Weitsprung,Ballwurf"
+
+                            val lines = it.value
+                                    .reversed()
+                                    .map {
+
+                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.result.toInt())
+                                        val schnelllauf = Result(it.results.single { it.discipline.name == "Schnelllauf" }.result)
+                                        val weitsprung = Result(it.results.single { it.discipline.name == "Weitsprung" }.result)
+
+                                        listOf(
+                                                it.number.toString(),
+                                                it.competitor.surname,
+                                                it.competitor.prename,
+                                                it.competitor.address,
+                                                it.competitor.town.zip,
+                                                it.competitor.town.name,
+                                                it.competitor.birthday.toString(),
+                                                "Primarschule Altendorf / KTV",
+                                                schnelllauf.toString(),
+                                                weitsprung.toString(),
+                                                ballwurf.toString()
+                                        ).joinToString(",") { it }
+                                    }.plus(headers).reversed()
+
+                            fileSystem.write("UBS - $gender - ${it.key}.csv", lines)
+                        }.toSet()
+
+            }.flatten().toSet()
+
+        } catch (ex: IOException) {
+            throw ReportGenerationException("Could not create UBS Cup ranking: cause=${ex.message}", ex)
         }
     }
 

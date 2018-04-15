@@ -70,6 +70,26 @@ class PlatformFileSystem(
     override fun getApplicationDir() = applicationDir
 
     /**
+     * Creates the given {@code fileName} in the application directory.
+     * @see FileSystem.getApplicationDir
+     *
+     * If the given {@code fileName} exists already, it will be replaced.
+     *
+     * @param fileName the file to create
+     * @throws java.io.IOException if the file could not be created
+     */
+    override fun createFile(fileName: String): File {
+        val file = applicationDir.resolve(fileName)
+
+        if (file.exists())
+            file.delete()
+
+        file.createNewFile()
+
+        return file
+    }
+
+    /**
      * Writes the given {@code input} to the given {@code fileName}.
      * If the file does not exists, it will be created.
      * If the file does exists already, it will be replaced.
@@ -85,16 +105,37 @@ class PlatformFileSystem(
      */
     override fun write(fileName: String, input: InputStream): File {
         
-        val file = applicationDir.resolve(fileName)
-
-        if (file.exists())
-            file.delete()
-
-        file.createNewFile()
+        val file = createFile(fileName)
 
         input.use { 
             file.outputStream().use { fileOut ->
                 it.copyTo(fileOut)
+            }
+        }
+
+        return file
+    }
+
+    /**
+     * Writes the given {@code lines} to the given {@code fileName}.
+     * If the file does not exists, it will be created.
+     * If the file does exists already, it will be replaced.
+     *
+     * @param fileName the file to write to
+     * @param lines the lines to append
+     *
+     * @return the created file
+     * @throws java.io.IOException If the file could not be created
+     */
+    override fun write(fileName: String, lines: List<String>): File {
+
+        val file = applicationDir.resolve(fileName)
+
+        file.bufferedWriter().use {
+
+            lines.forEach { line ->
+                it.write(line)
+                it.newLine()
             }
         }
 

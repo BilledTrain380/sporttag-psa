@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.sporttagpsa.model.Gender
+
 @Deprecated("")
 data class RankingExportModel(
         var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
@@ -76,7 +78,8 @@ data class SportExportModel(
 data class RankingExport(
         val disciplines: Iterable<DisciplineExport>,
         val disciplineGroup: Iterable<Boolean>,
-        val total: Iterable<Boolean>
+        val total: Iterable<Boolean>,
+        val ubsCup: Set<Gender>
 )
 
 data class EventSheetExport(

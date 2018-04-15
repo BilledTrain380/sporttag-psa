@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.export
 
 import ch.schulealtendorf.sporttagpsa.business.export.report.*
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -92,7 +93,8 @@ class PRAExportManager(
             val reports = setOf(
                     totalRankingReporter.generateReport(data.total),
                     disciplineGroupRankingReporter.generateReport(data.disciplineGroup),
-                    disciplineRankingReporter.generateReport(data.disciplines)
+                    disciplineRankingReporter.generateReport(data.disciplines),
+                    disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
 
             return fileSystem.createArchive("Rangliste", reports)
@@ -116,6 +118,26 @@ class PRAExportManager(
             val reports = participantListReporter.generateReport(data.sports)
 
             return fileSystem.createArchive("Teilnehmerliste", reports)
+
+        } catch (ex: Exception) {
+            throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
+        }
+    }
+
+    /**
+     * Generates an archive file by the given {@code data}.
+     *
+     * @param data contains the data to generate teh archive
+     *
+     * @return the generated archive
+     * @throws ArchiveGenerationException if the archive could not be generated
+     */
+    override fun generateArchive(data: Set<Gender>): File {
+        try {
+
+            val csvFiles = disciplineGroupRankingReporter.generateCSV(data)
+
+            return fileSystem.createArchive("UBS Cup", csvFiles)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)

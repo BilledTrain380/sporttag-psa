@@ -39,7 +39,8 @@ package ch.schulealtendorf.sporttagpsa.controller.ranking
 data class RankingForm(
         var disciplines: List<DisciplineRankingForm> = ArrayList(),
         var disciplineGroup: DisciplineGroupRankingForm = DisciplineGroupRankingForm(),
-        var total: TotalRankingForm = TotalRankingForm()
+        var total: TotalRankingForm = TotalRankingForm(),
+        var ubsCup: DisciplineGroupRankingForm = DisciplineGroupRankingForm()
 )
 
 data class DisciplineRankingForm(

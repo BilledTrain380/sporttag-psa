@@ -53,6 +53,30 @@ interface FileSystem {
     fun getApplicationDir(): File
 
     /**
+     * Creates the given {@code fileName} in the application directory.
+     * @see FileSystem.getApplicationDir
+     *
+     * If the given {@code fileName} exists already, it will be replaced.
+     *
+     * @param fileName the file to create
+     * @throws java.io.IOException if the file could not be created
+     */
+    fun createFile(fileName: String): File
+
+    /**
+     * Writes the given {@code lines} to the given {@code fileName}.
+     * If the file does not exists, it will be created.
+     * If the file does exists already, it will be replaced.
+     *
+     * @param fileName the file to write to
+     * @param lines the lines to append
+     *
+     * @return the created file
+     * @throws java.io.IOException If the file could not be created
+     */
+    fun write(fileName: String, lines: List<String>): File
+
+    /**
      * Writes the given {@code input} to the given {@code fileName}.
      * If the file does not exists, it will be created.
      * If the file does exists already, it will be replaced.
