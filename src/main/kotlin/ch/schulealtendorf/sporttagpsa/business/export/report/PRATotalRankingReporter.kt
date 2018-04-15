@@ -108,7 +108,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Seilspringen" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.result.toInt())
                                             points = resultEntity.points
                                         }
 
@@ -124,7 +124,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Korbeinwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.result.toInt())
                                             points = resultEntity.points
                                         }
 
@@ -132,7 +132,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Ballzielwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.result.toInt())
                                             points = resultEntity.points
                                         }
 
@@ -140,7 +140,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.result.toInt())
                                             points = resultEntity.points
                                         }
                                     }

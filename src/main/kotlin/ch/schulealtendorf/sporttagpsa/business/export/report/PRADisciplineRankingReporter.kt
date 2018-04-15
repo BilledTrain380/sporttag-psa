@@ -42,6 +42,7 @@ import ch.schulealtendorf.pra.pojo.DisciplineCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
+import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
@@ -98,7 +99,7 @@ class PRADisciplineRankingReporter(
                                     prename = it.starter.competitor.prename
                                     surname = it.starter.competitor.surname
                                     clazz = it.starter.competitor.clazz.name
-                                    result = Result(it.result)
+                                    result = it.result()
                                     points = it.points
                                 }
                             }
@@ -118,4 +119,11 @@ class PRADisciplineRankingReporter(
     }
     
     private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
+
+    private fun ResultEntity.result(): Result {
+        if (discipline.unit.unit == "Meter" || discipline.unit.unit == "Sekunden") {
+            return Result(result)
+        }
+        return Result(result.toInt())
+    }
 }

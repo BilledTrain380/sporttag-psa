@@ -102,7 +102,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
+                                        result = Result(resultEntity.result.toInt())
                                         points = resultEntity.points
                                     }
 
