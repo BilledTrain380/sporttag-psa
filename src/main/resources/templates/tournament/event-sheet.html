@@ -55,6 +55,10 @@
             <hr>
         </div>
 
+        <div th:if="${participationStatus}" class="alert alert-info" role="alert">
+            Um Wettkampfblätter exportieren zu können, müssen Sie erst die Teilnahme abschliessen. <a th:href="@{/participant/management/general}">Zur Teilnahme Verwaltung</a>
+        </div>
+
         <form class="row checkbox-small" th:action="@{/tournament/event-sheet/export}" method="post" th:object="${eventSheetForm}" enctype="application/x-www-form-urlencoded">
 
             <ul class="multi">
@@ -108,7 +112,7 @@
             </ul>
 
             <div class="col-lg-12">
-                <button id="export" type="submit" class="btn btn-primary">Export</button>
+                <button id="export" type="submit" class="btn btn-primary" th:disabled="${participationStatus}">Export</button>
             </div>
         </form>
 

@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.tournament
 
 import ch.schulealtendorf.sporttagpsa.business.export.*
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.business.provider.ClazzProvider
 import ch.schulealtendorf.sporttagpsa.business.provider.DisciplineProvider
 import org.springframework.core.io.InputStreamResource
@@ -51,6 +52,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import java.io.FileInputStream
+import java.nio.charset.Charset
 import javax.validation.Valid
 
 @Controller
@@ -58,6 +60,7 @@ import javax.validation.Valid
 class EventSheetController(
         private val exportManager: ExportManager,
         private val clazzProvider: ClazzProvider,
+        private val participationStatus: ParticipationStatus,
         disciplineProvider: DisciplineProvider
 ) {
     
@@ -83,6 +86,7 @@ class EventSheetController(
         )
         
         model.addAttribute("eventSheetForm", eventSheetForm)
+        model.addAttribute("participationStatus", !participationStatus.isFinished())
         
         return "tournament/event-sheet"
     }
@@ -95,6 +99,7 @@ class EventSheetController(
         val respHeaders = HttpHeaders()
         respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
         respHeaders.contentLength = zip.length()
+        respHeaders.acceptCharset = listOf(Charset.forName("UTF-8"))
         respHeaders.setContentDispositionFormData("attachment", zip.name)
 
         val isr = InputStreamResource(FileInputStream(zip))

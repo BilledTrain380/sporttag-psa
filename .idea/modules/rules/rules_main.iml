@@ -28,9 +28,7 @@
     <output url="file://$MODULE_DIR$/../../../rules/out/production/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../rules/src/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../../rules/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rules/src/main/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rules/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -40,6 +38,5 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.30" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.30" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>
 </module>
