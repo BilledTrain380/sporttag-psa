@@ -162,7 +162,9 @@ class PlatformFileSystem(
         if(zipFile.exists())
             zipFile.delete()
 
-        val rankingZip = ZipFile(zipFile)
+        val rankingZip = ZipFile(zipFile).apply {
+            setFileNameCharset("UTF-8")
+        }
         val parameters = ZipParameters().apply {
             compressionMethod = Zip4jConstants.COMP_DEFLATE
             compressionLevel = Zip4jConstants.DEFLATE_LEVEL_NORMAL

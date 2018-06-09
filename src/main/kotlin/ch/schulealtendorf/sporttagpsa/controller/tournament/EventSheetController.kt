@@ -99,7 +99,6 @@ class EventSheetController(
         val respHeaders = HttpHeaders()
         respHeaders.contentType = MediaType.APPLICATION_OCTET_STREAM
         respHeaders.contentLength = zip.length()
-        respHeaders.acceptCharset = listOf(Charset.forName("UTF-8"))
         respHeaders.setContentDispositionFormData("attachment", zip.name)
 
         val isr = InputStreamResource(FileInputStream(zip))
