@@ -56,7 +56,7 @@ class PlatformFileSystem(
         appDirs: AppDirs
 ): FileSystem {
     
-    private val applicationDir = File(appDirs.getUserDataDir("Sporttag PSA", "1.0.0-rc-1", "Schule Altendorf"))
+    private val applicationDir = File(appDirs.getUserDataDir("Sporttag PSA", "1.0.0", "Schule Altendorf"))
     
     init {
         
