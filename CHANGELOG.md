@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2018-06-12
+
 ### Added
 * Prevent event sheet export when participation is not finished
 
@@ -50,5 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * Total ranking
 
 [Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-rc-1...HEAD
+[1.0.0]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-rc-1...1.0.0
 [1.0.0-rc-1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-beta-1...1.0.0-rc-1
 [1.0.0-beta-1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-alpha-1...1.0.0-beta-1
