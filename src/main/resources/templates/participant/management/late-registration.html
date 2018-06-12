@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<html lang="de">
+
+<head th:replace="fragments/main :: head('Verwaltung - Nachmeldung')">
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav th:replace="fragments/main :: navigation(competitor, management)">
+</nav>
+
+<div class="content-wrapper py-3">
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+            <h1>Teilnehmer <small>Verwaltung</small></h1>
+            <hr>
+        </div>
+
+        <div class="row">
+
+            <div th:replace="participant/management/tab-fragment :: tab-menu(late-registration)"> </div>
+
+            <div class="col-lg-12">
+
+                <br/>
+
+                <div th:if="${success}" class="alert alert-success" role="alert">
+                    Teilnehmer erfolgreich hinzugefügt
+                </div>
+
+
+
+                <div class="card">
+                    <h3 class="card-header">Teilnehmer erfassen</h3>
+                    <div class="card-block">
+
+                        <div th:if="${invalidForm} == 'invalid-date'" class="alert alert-danger" role="alert">
+                            Geburtsdatum ist ungültig
+                        </div>
+
+                        <form method="post" th:action="@{/participant/management/late-registration}" th:object="${participant}" enctype="application/x-www-form-urlencoded">
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Nachname</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control" th:field="*{surname}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Vorname</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control" th:field="*{prename}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Geschlecht</label>
+                                <div class="col-sm-10">
+                                    <select required class="form-control" th:field="*{gender}">
+                                        <option selected th:value="true">Männlich</option>
+                                        <option th:value="false">Weiblich</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Geburtstag</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control" th:field="*{birthday}">
+                                    <small class="form-text text-muted">Das Geburtsdatum MUSS im Format DD.MM.YYYY sein. z.B. 05.08.2017</small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Adresse</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control" th:field="*{address}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">PLZ</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control" th:field="*{zipCode}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ort</label>
+                                <div class="col-sm-10">
+                                    <input required type="text" class="form-control" th:field="*{town}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Klasse</label>
+                                <div class="col-sm-10">
+                                    <select required class="form-control" th:field="*{clazzId}">
+                                        <option th:each="clazz : ${clazzes}" th:text="${clazz.name}" th:value="${clazz.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Sportart</label>
+                                <div class="col-sm-10">
+                                    <select required class="form-control" th:field="*{sportId}">
+                                        <option th:each="sport : ${sports}" th:text="${sport.name}" th:value="${sport.id}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" type="submit">Speichern</button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /.content-wrapper -->
+
+
+</body>
+
+</html>

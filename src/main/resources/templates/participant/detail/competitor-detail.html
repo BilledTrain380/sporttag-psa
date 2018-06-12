@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<html lang="de">
+
+<head th:replace="fragments/main :: head(Teilnehmer)">
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav th:replace="fragments/main :: navigation(competitor, competitor)">
+</nav>
+
+<div class="content-wrapper py-3">
+
+    <div class="container-fluid">
+
+        <div class="page-header">
+            <h1>Teilnehmer <small th:text="${participant.surname} + ' ' + ${participant.prename}"></small></h1>
+            <hr>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            Änderungen wurden erfolgreich übernommen.
+        </div>
+        
+        <form th:object="${participant}" th:action="@{/participant/detail/} + *{id}" method="post">
+        
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Vorname</label>
+                <div class="col-10">
+                    <input  required="required"class="form-control" type="text" th:field="*{prename}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Nachname</label>
+                <div class="col-10">
+                    <input required="required" class="form-control" type="text" th:field="*{surname}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Geschlecht</label>
+                <div class="col-10">
+                    <select class="form-control" th:field="*{gender}">
+                        <option value="1">Männlich</option>
+                        <option value="0">Weiblich</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-2 col-form-label">Adresse</label>
+                <div class="col-10">
+                    <input required="required" class="form-control" type="text" th:field="*{address}">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Speichern</button>
+            
+        </form>
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /.content-wrapper -->
+
+
+</body>
+
+</html>

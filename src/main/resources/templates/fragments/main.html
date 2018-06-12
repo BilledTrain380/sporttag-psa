@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2017 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<!DOCTYPE html>
+<html lang="de">
+
+<head th:fragment="head (title)">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:inline="text">Sporttag PSA - [[${title}]]</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/webjars/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/webjars/bootstrap/4.0.0-alpha.6/css/bootstrap-theme.min.css">
+    <link href="/webjars/tether/1.4.0/css/tether.min.css">
+
+    <!-- Custom fonts for this template -->
+    <link href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/sb-admin.min.css" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script src="/webjars/tether/1.4.0/js/tether.min.js"></script>
+    <script src="/webjars/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+    <style>
+
+        ul.multi, .multi ul {
+
+            list-style: none;
+        }
+
+        .checkbox-small {
+            font-size: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav th:fragment="navigation (menu, active)" id="mainNav" class="navbar static-top navbar-toggleable-md navbar-inverse bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-psa" aria-controls="navbar-psa" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" th:href="@{/}"><img height="35px" src="/img/PSA logo.png"> Sporttag PSA</a>
+    <div class="collapse navbar-collapse" id="navbar-psa">
+        <ul class="sidebar-nav navbar-nav">
+            
+            <li class="nav-item" th:classappend="${menu} == dashboard? active : ''">
+                <a class="nav-link" th:href="@{/}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+            </li>
+
+            <li class="nav-item" th:if="${#httpServletRequest.remoteUser} == 'admin'">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != competitor? collapsed : ''" th:classappend="${active} == competitor? active : ''" data-toggle="collapse" href="#competitor-menu"><i class="fa fa-fw fa-book"></i> Teilnehmer</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == competitor? show : ''" id="competitor-menu">
+                    <li th:class="${active} == import? active : ''">
+                        <a th:href="@{/participant/import}">Import</a>
+                    </li>
+                    <li th:class="${active} == clazz-list? active : ''">
+                        <a th:href="@{/participant/clazz}">Klassenliste</a>
+                    </li>
+                    <li th:class="${active} == management? active : ''">
+                        <a th:href="@{/participant/management/general}">Verwaltung</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != tournament? collapsed : ''" th:classappend="${active} == tournament? active : ''" data-toggle="collapse" href="#tournament-menu"><i class="fa fa-fw fa-futbol-o"></i> Mehrkampf</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == tournament? show : ''" id="tournament-menu">
+                    <li th:class="${active} == event-sheet? active : ''">
+                        <a th:href="@{/tournament/event-sheet}">Wettkampfblätter</a>
+                    </li>
+                    <li th:class="${active} == result? active : ''">
+                        <a th:href="@{/tournament/result/index}">Resultate</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item" th:classappend="${menu} == ranking? active : ''">
+                <a class="nav-link" th:href="@{/ranking}"><i class="fa fa-fw fa-archive"></i> Rangliste</a>
+            </li>
+
+            <li class="nav-item" th:if="${#httpServletRequest.remoteUser} == 'admin'">
+                <a class="nav-link nav-link-collapse" th:classappend="${menu} != settings? collapsed : ''" th:classappend="${active} == settings? active : ''" data-toggle="collapse" href="#settings-menu"><i class="fa fa-fw fa-cog"></i> Einstellungen</a>
+                <ul class="sidebar-second-level collapse" th:classappend="${menu} == settings? show : ''" id="settings-menu">
+                    <li th:class="${active} == user? active : ''">
+                        <a th:href="@{/settings/user}">Benutzer</a>
+                    </li>
+                    <li th:class="${active} == database? active : ''">
+                        <a th:href="@{/settings/database}">Datenbank</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <!-- copy when using multilevel -->
+            <!--<li class="nav-item">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti"><i class="fa fa-fw fa-sitemap"></i> Menu Levels</a>
+                <ul class="sidebar-second-level collapse" id="collapseMulti">
+                    <li>
+                        <a href="#">Second Level Item</a>
+                    </li>
+                    <li>
+                        <a href="#">Second Level Item</a>
+                    </li>
+                    <li>
+                        <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2">Third Level</a>
+                        <ul class="sidebar-third-level collapse" id="collapseMulti2">
+                            <li>
+                                <a href="#">Third Level Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Third Level Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>-->
+        </ul>
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a th:inline="text" class="nav-link" href="#">Hallo [[${#httpServletRequest.remoteUser}]]</a>
+            </li>
+            
+<!--            copy for dropdown
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle mr-lg-2" href="#" id="alertsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Logout
+                </a>
+                <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i>Profil</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                </div>
+            </li>-->
+            
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+</body>
+
+</html>
