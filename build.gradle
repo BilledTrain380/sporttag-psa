@@ -135,7 +135,7 @@ dependencies {
     compile project(":filesystem")
     compile project(":macos")
 
-	compile 'com.github.BilledTrain380:Alberta:d48fd5f5eff94b5842fa5f45d599a6d09ecd73b1'
+	compile 'com.github.BilledTrain380:Alberta:1.0.0'
 	
     // database dependencies
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
