@@ -48,13 +48,10 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import java.util.*
 import kotlin.test.assertEquals
 
 
-@RunWith(JUnitPlatform::class)
 object DefaultParticipationManagerSpec: Spek({
     
     describe("a participation manager") {
@@ -116,7 +113,7 @@ object DefaultParticipationManagerSpec: Spek({
 
                 val competitor = CompetitorEntity(1, "Muster", "Max", true, 0, "")
 
-                whenever(mockCompetitorRepository.findOne(1)).thenReturn(competitor)
+                whenever(mockCompetitorRepository.findById(1)).thenReturn(Optional.of(competitor) as Optional<CompetitorEntity?>)
 
                 whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf())
 
@@ -135,7 +132,7 @@ object DefaultParticipationManagerSpec: Spek({
 
                 val competitor = CompetitorEntity(1, "Muster", "Max", true, 0, "")
 
-                whenever(mockCompetitorRepository.findOne(1)).thenReturn(competitor)
+                whenever(mockCompetitorRepository.findById(1)).thenReturn(Optional.of(competitor) as Optional<CompetitorEntity?>)
 
                 whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(
                         listOf(

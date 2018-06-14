@@ -48,8 +48,6 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import javax.persistence.EntityNotFoundException
@@ -60,7 +58,6 @@ import kotlin.test.assertFailsWith
  * @author nmaerchy
  * @version 0.0.1
  */
-@RunWith(JUnitPlatform::class)
 object EntrySafeCompetitorConsumerSpec: Spek({
     
     var mockTownRepo: TownRepository = Mockito.mock(TownRepository::class.java)

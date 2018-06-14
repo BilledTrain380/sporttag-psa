@@ -41,8 +41,6 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 /**
@@ -51,7 +49,6 @@ import kotlin.test.assertEquals
  * @author nmaerchy
  * @version 1.0.0
  */
-@RunWith(JUnitPlatform::class)
 object BasketThrowingRuleSetSpec: Spek({
 
     describe("a basket throwing set") {

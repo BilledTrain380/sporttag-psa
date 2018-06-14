@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
+import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
 import ch.schulealtendorf.sporttagpsa.model.Clazz
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import org.springframework.stereotype.Component
@@ -68,7 +69,8 @@ class SimpleClazzProvider(
      */
     override fun getOne(id: Int): Clazz {
         
-        val clazz = clazzRepository.findOne(id) ?: throw IllegalArgumentException("Class does not exits: id=$id")
+        val clazz: ClazzEntity = clazzRepository.findById(id)
+                .orElseThrow { IllegalArgumentException("Class does not exits: id=$id") }!!
 
         return Clazz(clazz.id!!, clazz.name, clazz.teacher.name)
     }

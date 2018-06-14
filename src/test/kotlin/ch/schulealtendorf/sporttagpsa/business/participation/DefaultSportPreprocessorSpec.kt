@@ -47,15 +47,12 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.runner.RunWith
-
-import org.junit.platform.runner.JUnitPlatform
+import java.util.*
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-@RunWith(JUnitPlatform::class)
 object DefaultSportPreprocessorSpec: Spek({
 
     describe("a sport middleware") {
@@ -96,8 +93,8 @@ object DefaultSportPreprocessorSpec: Spek({
                         .thenReturn(true)
 
                 val competitor = CompetitorEntity(1, "Mister", "Max")
-                whenever(mockCompetitorRepository.findOne(1))
-                        .thenReturn(competitor)
+                whenever(mockCompetitorRepository.findById(1))
+                        .thenReturn(Optional.of(competitor) as Optional<CompetitorEntity?>)
 
 
                 val participant = SingleParticipant(1, "Muster", "Max", Gender.male(), "")
@@ -116,8 +113,8 @@ object DefaultSportPreprocessorSpec: Spek({
                         .thenReturn(true)
 
                 val competitor = CompetitorEntity(1, "Mister", "Max")
-                whenever(mockCompetitorRepository.findOne(1))
-                        .thenReturn(competitor)
+                whenever(mockCompetitorRepository.findById(1))
+                        .thenReturn(Optional.of(competitor) as Optional<CompetitorEntity?>)
 
 
                 val participant = SingleParticipant(1, "Muster", "Max", Gender.male(), "")
@@ -136,8 +133,8 @@ object DefaultSportPreprocessorSpec: Spek({
                         .thenReturn(true)
 
                 val competitor = CompetitorEntity(1, "Mister", "Max")
-                whenever(mockCompetitorRepository.findOne(1))
-                        .thenReturn(competitor)
+                whenever(mockCompetitorRepository.findById(1))
+                        .thenReturn(Optional.of(competitor) as Optional<CompetitorEntity?>)
 
                 whenever(mockStarterManager.createStarter(competitor))
                         .thenThrow(StarterAlreadyExistsException::class.java)
@@ -151,7 +148,7 @@ object DefaultSportPreprocessorSpec: Spek({
                 it("should skip the method") {
                     verify(mockStarterManager, times(1)).createStarter(competitor)
                     verifyNoMoreInteractions(mockStarterManager)
-                    verify(mockCompetitorRepository, times(1)).findOne(1)
+                    verify(mockCompetitorRepository, times(1)).findById(1)
                     verifyNoMoreInteractions(mockCompetitorRepository)
                 }
             }

@@ -41,8 +41,6 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import org.mockito.Mockito
 import java.util.*
 import java.util.stream.Collectors
@@ -52,7 +50,6 @@ import java.util.stream.Stream
  * @author nmaerchy
  * @version 0.0.1
  */
-@RunWith(JUnitPlatform::class)
 object EntrySafeCompetitorListConsumerSpec: Spek({
     
     var mockCompetitorConsumer: EntrySafeCompetitorConsumer = Mockito.mock(EntrySafeCompetitorConsumer::class.java)

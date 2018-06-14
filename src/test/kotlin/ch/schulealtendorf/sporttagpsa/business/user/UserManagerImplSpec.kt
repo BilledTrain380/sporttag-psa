@@ -45,9 +45,8 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -55,7 +54,6 @@ import kotlin.test.assertFailsWith
  * @author nmaerchy
  * @version 0.0.1
  */
-@RunWith(JUnitPlatform::class)
 object UserManagerImplSpec: Spek({
     
     describe("a user manager") {
@@ -110,11 +108,11 @@ object UserManagerImplSpec: Spek({
         given("a password to update") {
             
             on("saving the user") {
-                
-                whenever(mockUserRepository.findOne(1)).thenReturn(
+
+                whenever(mockUserRepository.findById(1)).thenReturn(Optional.of(
                         UserEntity(1, "mmuster", "old password", true, listOf(
                                 AuthorityEntity("USER")
-                        )))
+                        ))))
                 
                 userManager.update(UserPassword(1, "password"))
                 

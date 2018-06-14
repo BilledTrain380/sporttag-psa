@@ -90,7 +90,7 @@ class PersistenceTournamentProvider(
      */
     override fun updateResult(result: TournamentResult) {
         
-        val resultEntity = resultRepository.findOne(result.id)
+        val resultEntity = resultRepository.findById(result.id).get()
         resultEntity.result = result.result
         resultEntity.points = result.points
         

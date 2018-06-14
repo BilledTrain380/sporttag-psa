@@ -44,8 +44,6 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.Assert
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.springframework.web.multipart.MultipartFile
@@ -55,7 +53,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
  * @author nmaerchy
  * @version 0.0.1
  */
-@RunWith(JUnitPlatform::class)
 object ImportControllerSpec: Spek({
 
     var mockFileReader: FileReader = mock(FileReader::class.java)

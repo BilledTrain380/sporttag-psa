@@ -82,7 +82,7 @@ class UserManagerImpl(
      */
     override fun update(user: UserPassword) {
         
-        val userEntity = userRepository.findOne(user.userId)
+        val userEntity = userRepository.findById(user.userId).get()
         
         userEntity.password = user.password.encode()
         
@@ -96,7 +96,7 @@ class UserManagerImpl(
      */
     override fun update(user: User) {
         
-        val userEntity: UserEntity = userRepository.findOne(user.userId)
+        val userEntity: UserEntity = userRepository.findById(user.userId).get()
         
         userEntity.username = user.username
         userEntity.enabled = user.enabled
@@ -124,7 +124,7 @@ class UserManagerImpl(
      */
     override fun getOne(userId: Int): User {
         
-        val userEntity: UserEntity = userRepository.findOne(userId)
+        val userEntity: UserEntity = userRepository.findById(userId).get()
         
         return User(userEntity.id!!, userEntity.username, userEntity.enabled)
     }
@@ -135,7 +135,7 @@ class UserManagerImpl(
      * @param userId id of the user to delete
      */
     override fun delete(userId: Int) {
-        userRepository.delete(userId)
+        userRepository.deleteById(userId)
     }
     
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)

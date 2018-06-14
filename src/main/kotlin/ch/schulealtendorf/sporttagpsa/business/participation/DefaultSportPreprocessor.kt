@@ -75,11 +75,11 @@ class DefaultSportPreprocessor(
 
             if (sport.name == "Mehrkampf") {
                 starterManager.createStarter(
-                        competitorRepository.findOne(participant.id)!!
+                        competitorRepository.findById(participant.id).get()
                 )
             } else {
                 starterManager.removeStarter(
-                        competitorRepository.findOne(participant.id)!!
+                        competitorRepository.findById(participant.id).get()
                 )
             }
 
