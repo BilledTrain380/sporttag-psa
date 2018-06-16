@@ -42,7 +42,6 @@ import ch.schulealtendorf.pra.pojo.Discipline
 import ch.schulealtendorf.pra.pojo.DisciplineGroupCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
-import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
@@ -51,7 +50,9 @@ import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.time.Year
+import java.util.*
 
 /**
  * Discipline group ranking reporter that uses PRA.
@@ -179,7 +180,7 @@ class PRADisciplineGroupRankingReporter(
                                                 it.competitor.address,
                                                 it.competitor.town.zip,
                                                 it.competitor.town.name,
-                                                it.competitor.birthday.toString(),
+                                                it.competitor.birthday.formattedDate(),
                                                 "Primarschule Altendorf / KTV",
                                                 schnelllauf.toString(),
                                                 weitsprung.toString(),
@@ -198,4 +199,11 @@ class PRADisciplineGroupRankingReporter(
     }
 
     private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
+
+    private fun Long.formattedDate(): String {
+        val date = Date(this)
+        val formatter = SimpleDateFormat("dd.MM.yyyy")
+
+        return formatter.format(date)
+    }
 }
