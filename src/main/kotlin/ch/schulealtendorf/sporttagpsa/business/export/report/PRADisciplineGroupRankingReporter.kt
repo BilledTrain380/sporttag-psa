@@ -102,7 +102,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result.toInt())
+                                        result = Result(resultEntity.result)
                                         points = resultEntity.points
                                     }
 
@@ -168,7 +168,7 @@ class PRADisciplineGroupRankingReporter(
                                     .reversed()
                                     .map {
 
-                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.result.toInt())
+                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.result)
                                         val schnelllauf = Result(it.results.single { it.discipline.name == "Schnelllauf" }.result)
                                         val weitsprung = Result(it.results.single { it.discipline.name == "Weitsprung" }.result)
 
