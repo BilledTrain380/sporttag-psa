@@ -61,7 +61,7 @@ class ParticipantListController(
         sportProvider: SportProvider
 ) {
     
-    private val sports = sportProvider.getAll().filter { it.name == "Mehrkampf" }
+    private val sports = sportProvider.getAll().filter { it.name != "Mehrkampf" }
     
     @GetMapping
     fun index(model: Model): String {
