@@ -2,7 +2,7 @@ buildscript {
 	ext {
 		kotlinVersion = '1.2.50'
 		springBootVersion = '2.0.2.RELEASE'
-		sporttagPSAVersion = '1.0.0'
+		sporttagPSAVersion = '1.0.1'
 	}
 	repositories {
 		maven {
@@ -52,6 +52,7 @@ allprojects {
 			jvmTarget = "1.8"
 		}
 	}
+
 	compileTestKotlin {
 		kotlinOptions {
 			freeCompilerArgs = ["-Xjsr305=strict"]
@@ -61,6 +62,7 @@ allprojects {
 
 	repositories {
 		maven { url "http://dl.bintray.com/jetbrains/spek" }
+		maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
 		mavenCentral()
 	}
 	
@@ -96,8 +98,6 @@ repositories {
 	}
     mavenCentral()
 }
-
-
 
 dependencies {
 

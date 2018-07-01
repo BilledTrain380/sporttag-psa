@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2018-07-01
+
+### Fixed
+* Unit of discipline Ballwurf
+* Result type of discipline Ballwurf
+* Export female rankings
+* Remove Mehrkampf from participation list
+
 ## [1.0.0] - 2018-06-12
 
 ### Added
@@ -51,7 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * Discipline group ranking
     * Total ranking
 
-[Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-rc-1...HEAD
+[Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-rc-1...1.0.0
 [1.0.0-rc-1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-beta-1...1.0.0-rc-1
 [1.0.0-beta-1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-alpha-1...1.0.0-beta-1
