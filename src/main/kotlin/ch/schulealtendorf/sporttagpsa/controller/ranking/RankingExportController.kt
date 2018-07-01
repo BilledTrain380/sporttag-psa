@@ -104,20 +104,35 @@ class RankingExportController(
                         .map { DisciplineExport(SimpleDiscipline(it.id, it.name)) }
         ).flatten()
 
-        val disciplineGroupExport = listOf(
-                disciplineGroup.female,
-                disciplineGroup.male
-        ).filter { it }
+        val disciplineGroupExport: MutableList<Boolean> = ArrayList()
 
-        val totalExport = listOf(
-                total.female,
-                total.male
-        ).filter { it }
+        if (disciplineGroup.female) {
+            disciplineGroupExport.add(false)
+        }
 
-        val ubsCupExport = listOf(
-                Gender(ubsCup.female),
-                Gender(ubsCup.male)
-        ).filter { it.value }.toSet()
+        if (disciplineGroup.male) {
+            disciplineGroupExport.add(true)
+        }
+
+        val totalExport: MutableList<Boolean> = ArrayList()
+
+        if (total.female) {
+            totalExport.add(false)
+        }
+
+        if (total.male) {
+            totalExport.add(true)
+        }
+
+        val ubsCupExport: MutableSet<Gender> = HashSet()
+
+        if (ubsCup.female) {
+            ubsCupExport.add(Gender(false))
+        }
+
+        if (ubsCup.male) {
+            ubsCupExport.add(Gender(true))
+        }
 
         return RankingExport(
                 disciplineExport,
