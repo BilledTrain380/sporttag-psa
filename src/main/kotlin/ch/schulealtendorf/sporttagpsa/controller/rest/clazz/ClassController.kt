@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,18 +34,34 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.controller.rest.clazz
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import org.springframework.data.repository.CrudRepository
-import java.util.*
+import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
+import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
+import ch.schulealtendorf.sporttagpsa.model.Clazz
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
 
 /**
- * @author nmaerchy
- * @version 0.0.1
+ * Rest Controller for class or category of a participant.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-interface ClazzRepository: CrudRepository<ClazzEntity?, Int> {
+@RestController
+class ClassController(
+        private val classManager: ClassManager
+) {
 
-    fun findByName(name: String): Optional<ClazzEntity>
-    
+    @GetMapping("/classes", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getClasses() = classManager.getAllClasses()
+
+    @GetMapping("/class/{class_id}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getClass(@PathVariable("class_id") classId: String): Clazz {
+
+        val clazz = classManager.getClass(classId)
+        return clazz.orElseThrow { BadRequestException("Could not find class with id '$classId'") }
+    }
 }

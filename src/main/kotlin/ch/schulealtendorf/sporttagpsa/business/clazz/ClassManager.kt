@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,18 +34,40 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.business.clazz
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import org.springframework.data.repository.CrudRepository
+import ch.schulealtendorf.sporttagpsa.model.Clazz
 import java.util.*
 
 /**
- * @author nmaerchy
- * @version 0.0.1
+ * Manager for a class or category where a participant belongs to.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-interface ClazzRepository: CrudRepository<ClazzEntity?, Int> {
+interface ClassManager {
 
-    fun findByName(name: String): Optional<ClazzEntity>
-    
+    /**
+     * @return all classes which are available
+     */
+    fun getAllClasses(): List<Clazz>
+
+    /**
+     * An {@link Optional} containing the class matching
+     * the {name} or an empty Optional if no class could be found.
+     *
+     * @param name the name of the class
+     *
+     * @return the resulting class in an Optional
+     */
+    fun getClass(name: String): Optional<Clazz>
+
+    /**
+     * Saves the given {@code clazz}.
+     *
+     * If the name of the class exists already, it will be updated, otherwise created.
+     *
+     * @param clazz the class to save
+     */
+    fun saveClass(clazz: Clazz)
 }

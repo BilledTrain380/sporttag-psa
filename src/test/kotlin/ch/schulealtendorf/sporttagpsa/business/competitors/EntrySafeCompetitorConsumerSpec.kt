@@ -50,6 +50,7 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.mockito.Mockito
 import org.mockito.Mockito.*
+import java.util.*
 import javax.persistence.EntityNotFoundException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -83,7 +84,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
         
         on("consuming a FlatCompetitor") {
             
-            `when` (mockClazzRepo.findByName("1a")).thenReturn(clazzEntity)
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.of(clazzEntity))
             `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(townEntity)
             
             consumer.accept(flatCompetitor)
@@ -104,7 +105,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
         
         on("consuming a FlatCompetitor with an unexpected clazz attribute") {
             
-            `when` (mockClazzRepo.findByName("1a")).thenReturn(null)
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.empty())
             
             it("should throw an EntityNotFoundException that the clazz entity does not exist") {
                 val expected: EntityNotFoundException = assertFailsWith(EntityNotFoundException::class) {
@@ -117,7 +118,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
 
         on("consuming a FlatCompetitor with an non existing TownEntity") {
 
-            `when` (mockClazzRepo.findByName("1a")).thenReturn(clazzEntity)
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.of(clazzEntity))
             `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(null)
 
             consumer.accept(flatCompetitor)

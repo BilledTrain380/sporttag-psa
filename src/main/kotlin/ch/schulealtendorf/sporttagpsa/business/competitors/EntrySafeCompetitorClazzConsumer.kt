@@ -66,11 +66,11 @@ class EntrySafeCompetitorClazzConsumer(
      */
     override fun accept(competitor: FlatCompetitor) {
         
-        if (clazzRepository.findByName(competitor.clazz) == null) {
+        if (!clazzRepository.findByName(competitor.clazz).isPresent) {
             val teacherEntity: TeacherEntity = teacherRepository.findByName(competitor.teacher) ?:
                     throw EntityNotFoundException("Clazz ${competitor.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
 
-            val clazzEntity: ClazzEntity = ClazzEntity(null, competitor.clazz, teacherEntity)
+            val clazzEntity = ClazzEntity(null, competitor.clazz, teacherEntity)
 
             clazzRepository.save(clazzEntity)
         }

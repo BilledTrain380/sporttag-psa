@@ -69,9 +69,10 @@ class EntrySafeCompetitorConsumer(
      */
     override fun accept(competitor: FlatCompetitor) {
         
-        val clazzEntity: ClazzEntity = clazzRepository.findByName(competitor.clazz) ?:
-                throw EntityNotFoundException("Competitor $competitor expecting an existing ClazzEntity: ClazzEntity not found")
-        
+        val clazzEntity: ClazzEntity = clazzRepository.findByName(competitor.clazz).orElseThrow {
+            EntityNotFoundException("Competitor $competitor expecting an existing ClazzEntity: ClazzEntity not found")
+        }
+
         val townEntity: TownEntity = townRepository.findByZipAndName(competitor.zipCode, competitor.town) ?:
                 TownEntity(null, competitor.zipCode, competitor.town)
         

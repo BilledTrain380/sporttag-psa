@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,18 +34,23 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.controller.rest
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import org.springframework.data.repository.CrudRepository
-import java.util.*
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.ResponseStatus
 
 /**
- * @author nmaerchy
- * @version 0.0.1
+ * Exception for 400 Bad Request status code.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-interface ClazzRepository: CrudRepository<ClazzEntity?, Int> {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class BadRequestException: RuntimeException {
 
-    fun findByName(name: String): Optional<ClazzEntity>
-    
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+    constructor(message: String?, cause: Throwable?, enableSuppression: Boolean, writableStackTrace: Boolean) : super(message, cause, enableSuppression, writableStackTrace)
 }

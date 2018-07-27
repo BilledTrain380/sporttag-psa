@@ -78,7 +78,7 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
         
         on("consuming a FlatCompetitor") {
 
-            `when` (mockClazzRepo.findByName("1a")).thenReturn(null)
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.empty())
             `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(teacherEntity)
             
             consumer.accept(flatCompetitor)
@@ -95,7 +95,7 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
         
         on("consuming a FlatCompetitor with an unexpected teacher attribute") {
 
-            `when` (mockClazzRepo.findByName("1a")).thenReturn(null)
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.empty())
             `when` (mockTeacherRepo.findByName("Hans Müller")).thenReturn(null)
             
             it("should throw an EntityNotFoundException that the TeacherEntity does not exist") {
@@ -109,7 +109,7 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
         
         on("consuming a FlatCompetitor that clazz attribute already exists") {
             
-            `when` (mockClazzRepo.findByName("1a")).thenReturn(clazzEntity)
+            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.of(clazzEntity))
             
             consumer.accept(flatCompetitor)
             
