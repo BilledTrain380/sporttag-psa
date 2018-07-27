@@ -82,8 +82,8 @@ object DefaultParticipationManagerSpec: Spek({
 
 
                 it("should map the participant as present") {
-                    val expected = Participant(1, "Muster", "Max", Gender(true), Birthday(0), "", false, Optional.empty())
-                    assertEquals(listOf(expected), manager.getParticipantListByClazz(Clazz(1, "2a", "")))
+                    val expected = ParticipantObj(1, "Muster", "Max", Gender(true), Birthday(0), "", false, Optional.empty())
+                    assertEquals(listOf(expected), manager.getParticipantListByClazz(ClazzObj(1, "2a", "")))
                 }
             }
 
@@ -101,8 +101,8 @@ object DefaultParticipationManagerSpec: Spek({
 
 
                 it("should map the participant as absent") {
-                    val expected = Participant(1, "Muster", "Max", Gender(true), Birthday(0), "", true, Optional.empty())
-                    assertEquals(listOf(expected), manager.getParticipantListByClazz(Clazz(1, "2a", "")))
+                    val expected = ParticipantObj(1, "Muster", "Max", Gender(true), Birthday(0), "", true, Optional.empty())
+                    assertEquals(listOf(expected), manager.getParticipantListByClazz(ClazzObj(1, "2a", "")))
                 }
             }
         }

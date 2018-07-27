@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Clazz
-import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.ClazzObj
+import ch.schulealtendorf.sporttagpsa.model.ParticipantObj
 import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
 import ch.schulealtendorf.sporttagpsa.model.Sport
 
@@ -57,7 +57,7 @@ interface ParticipationManager {
      *
      * @return the resulting list
      */
-    fun getParticipantListByClazz(clazz: Clazz): List<Participant>
+    fun getParticipantListByClazz(clazz: ClazzObj): List<ParticipantObj>
 
     /**
      * @return the participant matching the given {@code id}

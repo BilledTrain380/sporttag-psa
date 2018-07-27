@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,44 +34,18 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.provider
+package ch.schulealtendorf.sporttagpsa.model
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.model.ClazzObj
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import org.springframework.stereotype.Component
+import java.util.*
 
 /**
- * Provider for {@link ClazzEntity}.
- * 
- * @author nmaerchy
- * @version 1.1.0
+ * Data class representing a discipline.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-@Component
-class SimpleClazzProvider(
-        private val clazzRepository: ClazzRepository
-): ClazzProvider {
-
-    /**
-     * @return all the data from this provider
-     */
-    override fun getAll(): Collection<ClazzObj> {
-        return clazzRepository.findAll().map { 
-            ClazzObj(it?.id!!, it.name, it.teacher.name)
-        }
-    }
-
-    /**
-     * @param id id of the class
-     *
-     * @return the class matching the given {@code id}
-     * @throws IllegalArgumentException if the class with the given id does not exist
-     */
-    override fun getOne(id: Int): ClazzObj {
-        
-        val clazz: ClazzEntity = clazzRepository.findById(id)
-                .orElseThrow { IllegalArgumentException("Class does not exits: id=$id") }!!
-
-        return ClazzObj(clazz.id!!, clazz.name, clazz.teacher.name)
-    }
-}
+data class Discipline @JvmOverloads constructor(
+        val name: String,
+        val unit: String,
+        val discipline: Optional<String> = Optional.empty()
+)

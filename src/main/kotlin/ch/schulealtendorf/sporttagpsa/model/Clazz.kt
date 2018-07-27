@@ -36,8 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
-data class Clazz(
-        val id: Int,
+/**
+ * Data class representing the class or category of a participant.
+ *
+ * @author nmaerchy
+ * @since 2.0.0
+ */
+data class Clazz @JvmOverloads constructor(
         val name: String,
-        val teacher: String
+        val coach: String,
+        val pendingParticipation: Boolean = false
 )

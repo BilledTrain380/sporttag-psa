@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
+@Deprecated("Will no longer be used. Use Participant instead.")
 data class SingleParticipant(
         val id: Int,
         val surname: String,

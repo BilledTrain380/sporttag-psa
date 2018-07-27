@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.provider
 
-import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.ClazzObj
 
 /**
  * Describes a provider for classes.
@@ -44,7 +44,7 @@ import ch.schulealtendorf.sporttagpsa.model.Clazz
  * @author nmaerchy
  * @version 2.0.0
  */
-interface ClazzProvider: Provider<Clazz> {
+interface ClazzProvider: Provider<ClazzObj> {
 
     /**
      * @param id id of the class
@@ -52,5 +52,5 @@ interface ClazzProvider: Provider<Clazz> {
      * @return the class matching the given {@code id}
      * @throws IllegalArgumentException if the class with the given id does not exist
      */
-    fun getOne(id: Int): Clazz
+    fun getOne(id: Int): ClazzObj
 }

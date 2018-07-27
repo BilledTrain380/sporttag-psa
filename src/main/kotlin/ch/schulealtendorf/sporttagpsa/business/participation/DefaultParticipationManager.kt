@@ -68,13 +68,13 @@ class DefaultParticipationManager(
      *
      * @return the resulting list
      */
-    override fun getParticipantListByClazz(clazz: Clazz): List<Participant> {
+    override fun getParticipantListByClazz(clazz: ClazzObj): List<ParticipantObj> {
 
         val absentCompetitorList = absentCompetitorRepository.findAll()
 
         return competitorRepository.findByClazzId(clazz.id)
                 .map {
-                    Participant(
+                    ParticipantObj(
                             it.id!!,
                             it.surname,
                             it.prename,

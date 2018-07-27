@@ -36,6 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
+/**
+ * Data class representing a gender.
+ *
+ * @author nmaerchy
+ * @since 1.0.0
+ */
 data class Gender(
         val value: Boolean = true
 ) {
