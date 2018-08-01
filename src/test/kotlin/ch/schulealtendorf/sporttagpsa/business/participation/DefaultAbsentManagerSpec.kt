@@ -39,13 +39,9 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.*
 import java.util.*
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -60,7 +56,7 @@ object DefaultAbsentManagerSpec: Spek({
 
         val mockAbsentCompetitorRepository: AbsentCompetitorRepository = mock()
 
-        var absentManager = DefaultAbsentManager(mockAbsentCompetitorRepository)
+        val absentManager = DefaultAbsentManager(mockAbsentCompetitorRepository)
 
         val competitor = CompetitorEntity(
                 1,
@@ -70,12 +66,12 @@ object DefaultAbsentManagerSpec: Spek({
         )
 
         beforeEachTest {
-            absentManager = DefaultAbsentManager(mockAbsentCompetitorRepository)
+            reset(mockAbsentCompetitorRepository)
         }
 
-        describe("absent of a competitor") {
+        context("absent of a competitor") {
 
-            given("a competitor which is not absent") {
+            on("a competitor which is not absent") {
 
                 whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.empty())
 
@@ -88,7 +84,7 @@ object DefaultAbsentManagerSpec: Spek({
                 }
             }
 
-            given("a competitor which is absent") {
+            on("a competitor which is absent") {
 
                 whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentCompetitorEntity()))
 
@@ -101,7 +97,7 @@ object DefaultAbsentManagerSpec: Spek({
                 }
             }
 
-            given("no competitor id") {
+            on("no competitor id") {
 
 
                 val result = absentManager.isAbsent(CompetitorEntity())
@@ -109,6 +105,64 @@ object DefaultAbsentManagerSpec: Spek({
 
                 it("should return false") {
                     assertFalse(result)
+                }
+            }
+        }
+
+        context("mark a competitor as absent") {
+
+            on("present marked competitor") {
+
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.empty())
+
+
+                absentManager.markAsAbsent(competitor)
+
+                it("should mark the competitor as absent") {
+                    val expected = AbsentCompetitorEntity(null, competitor)
+                    verify(mockAbsentCompetitorRepository, times(1)).save(expected)
+                }
+            }
+
+            on("already absent marked competitor") {
+
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentCompetitorEntity(1, competitor)))
+
+
+                absentManager.markAsAbsent(competitor)
+
+                it("should not do any more interactions") {
+                    verify(mockAbsentCompetitorRepository, times(1)).findByCompetitorId(any())
+                    verifyNoMoreInteractions(mockAbsentCompetitorRepository)
+                }
+            }
+        }
+
+        context("mark a competitor as present") {
+
+            on("absent marked competitor") {
+
+                val absentCompetitorEntity = AbsentCompetitorEntity(1, competitor)
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(absentCompetitorEntity))
+
+
+                absentManager.markAsPresent(competitor)
+
+                it("should mark the competitor as present") {
+                    verify(mockAbsentCompetitorRepository, times(1)).delete(absentCompetitorEntity)
+                }
+            }
+
+            on("already present marked competitor") {
+
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.empty())
+
+
+                absentManager.markAsPresent(competitor)
+
+                it("should not do anymore interactions") {
+                    verify(mockAbsentCompetitorRepository, times(1)).findByCompetitorId(any())
+                    verifyNoMoreInteractions(mockAbsentCompetitorRepository)
                 }
             }
         }

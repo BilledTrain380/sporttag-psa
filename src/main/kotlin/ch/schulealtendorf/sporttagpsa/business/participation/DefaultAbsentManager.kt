@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import org.springframework.stereotype.Component
@@ -69,11 +70,18 @@ class DefaultAbsentManager(
      * If the competitor is already marked as absent, this method will do nothing.
      *
      * @param competitor the competitor to mark as absent
-     *
-     * @throws NoSuchElementException if the given {@code competitor} could not be found
      */
     override fun markAsAbsent(competitor: CompetitorEntity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        val absentCompetitorEntity = absentCompetitorRepository.findByCompetitorId(competitor.id!!)
+
+        if (absentCompetitorEntity.isPresent) {
+            return
+        }
+
+        val absentCompetitor = AbsentCompetitorEntity(null, competitor)
+
+        absentCompetitorRepository.save(absentCompetitor)
     }
 
     /**
@@ -86,6 +94,11 @@ class DefaultAbsentManager(
      * @throws NoSuchElementException if the given {@competitor} could not be found
      */
     override fun markAsPresent(competitor: CompetitorEntity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        val absentCompetitorEntity = absentCompetitorRepository.findByCompetitorId(competitor.id!!)
+
+        absentCompetitorEntity.ifPresent {
+            absentCompetitorRepository.delete(absentCompetitorEntity.get())
+        }
     }
 }
