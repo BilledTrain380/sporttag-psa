@@ -38,15 +38,11 @@ package ch.schulealtendorf.sporttagpsa.business.participant
 
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
 import ch.schulealtendorf.sporttagpsa.business.participation.AbsentManager
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.Town
+import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
 import java.util.*
-import kotlin.NoSuchElementException
 
 /**
  * Default implementation of a {@link ParticipantManager} which uses the repository classes.
@@ -66,7 +62,19 @@ class DefaultParticipantManager(
      */
     override fun getAllParticipants(): List<Participant> {
         return competitorRepository.findAll()
-                .mapNotNull { it?.map() }
+                .map { it.map() }
+    }
+
+    /**
+     * Get all participant related to the given {@code clazz}.
+     *
+     * @param clazz the class to filter the participants
+     *
+     * @return all participant related to the given {@code clazz}.
+     */
+    override fun getAllParticipants(clazz: Clazz): List<Participant> {
+        return competitorRepository.findByClazzName(clazz.name)
+                .map { it.map() }
     }
 
     /**
@@ -82,30 +90,43 @@ class DefaultParticipantManager(
 
         val participant = competitorRepository.findById(participantId)
 
-        return participant.map { it?.map() }
+        return participant.map { it.map() }
     }
 
     /**
-     * Updates the given {@code participant}.
+     * Saves the given {@code participant}.
+     * If the participant does not exists already, a new one is created.
+     *
+     * The {@code participant#id} property can not be updated.
+     *
+     * Any given relation is cascaded.
      *
      * @param participant the participant to update
-     *
-     * @throws NoSuchElementException if the given {@code participant} or any of its relations could not be found
      */
-    override fun updateParticipant(participant: Participant) {
+    override fun saveParticipant(participant: Participant) {
 
-        val competitor = competitorRepository.findById(participant.id).get()
+        val competitor = competitorRepository.findById(participant.id).orElseGet { CompetitorEntity() }
 
         competitor.apply {
-            id = participant.id
             surname = participant.surname
             prename = participant.prename
             gender = participant.gender.value
-            address = participant.address
             birthday = participant.birthday.milliseconds
+            address = participant.address
+            town = TownEntity(participant.town.id, participant.town.zip, participant.town.name)
+            clazz = ClazzEntity(participant.clazz.name, CoachEntity(participant.clazz.coach.id, participant.clazz.coach.name))
+            participant.sport.ifPresent {
+                sport = SportEntity(participant.sport.get())
+            }
         }
 
         competitorRepository.save(competitor)
+
+        if (participant.absent) {
+            absentManager.markAsAbsent(competitor)
+        } else {
+            absentManager.markAsPresent(competitor)
+        }
     }
 
     private fun CompetitorEntity.map(): Participant {

@@ -75,7 +75,7 @@ data class CompetitorEntity @JvmOverloads constructor(
         @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
         var town: TownEntity = TownEntity(),
 
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "FK_CLAZZ_id", referencedColumnName = "id")
         var clazz: ClazzEntity = ClazzEntity(),
 

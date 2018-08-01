@@ -50,4 +50,26 @@ interface AbsentManager {
      * @return true if the given {@code competitor} is absent, otherwise false
      */
     fun isAbsent(competitor: CompetitorEntity): Boolean
+
+    /**
+     * Marks the given {@code competitor} as absent.
+     *
+     * If the competitor is already marked as absent, this method will do nothing.
+     *
+     * @param competitor the competitor to mark as absent
+     *
+     * @throws NoSuchElementException if the given {@code competitor} could not be found
+     */
+    fun markAsAbsent(competitor: CompetitorEntity)
+
+    /**
+     * Marks the given {@code competitor} as present.
+     *
+     * If the competitor is already marked as present, this method will do nothing.
+     *
+     * @param competitor the competitor to mark as present
+     *
+     * @throws NoSuchElementException if the given {@competitor} could not be found
+     */
+    fun markAsPresent(competitor: CompetitorEntity)
 }

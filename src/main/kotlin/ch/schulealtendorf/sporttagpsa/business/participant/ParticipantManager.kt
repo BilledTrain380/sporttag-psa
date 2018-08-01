@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participant
 
+import ch.schulealtendorf.sporttagpsa.model.Clazz
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import java.util.*
 
@@ -53,6 +54,15 @@ interface ParticipantManager {
     fun getAllParticipants(): List<Participant>
 
     /**
+     * Get all participant related to the given {@code clazz}.
+     *
+     * @param clazz the class to filter the participants
+     *
+     * @return all participant related to the given {@code clazz}.
+     */
+    fun getAllParticipants(clazz: Clazz): List<Participant>
+
+    /**
      * Returns an Optional containing the participant matching
      * the given {@code participantId} or an empty Optional if
      * no participant could be found.
@@ -64,11 +74,12 @@ interface ParticipantManager {
     fun getParticipant(participantId: Int): Optional<Participant>
 
     /**
-     * Updates the given {@code participant}.
+     * Saves the given {@code participant}.
+     * If the participant does not exists already, a new one is created.
+     *
+     * Any given relation is cascaded.
      *
      * @param participant the participant to update
-     *
-     * @throws NoSuchElementException if the given {@code participant} or any of its relations could not be found
      */
-    fun updateParticipant(participant: Participant)
+    fun saveParticipant(participant: Participant)
 }

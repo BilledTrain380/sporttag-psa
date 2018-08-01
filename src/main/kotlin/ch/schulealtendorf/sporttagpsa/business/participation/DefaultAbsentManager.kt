@@ -62,4 +62,30 @@ class DefaultAbsentManager(
 
         return absentCompetitor.isPresent
     }
+
+    /**
+     * Marks the given {@code competitor} as absent.
+     *
+     * If the competitor is already marked as absent, this method will do nothing.
+     *
+     * @param competitor the competitor to mark as absent
+     *
+     * @throws NoSuchElementException if the given {@code competitor} could not be found
+     */
+    override fun markAsAbsent(competitor: CompetitorEntity) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    /**
+     * Marks the given {@code competitor} as present.
+     *
+     * If the competitor is already marked as present, this method will do nothing.
+     *
+     * @param competitor the competitor to mark as present
+     *
+     * @throws NoSuchElementException if the given {@competitor} could not be found
+     */
+    override fun markAsPresent(competitor: CompetitorEntity) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
