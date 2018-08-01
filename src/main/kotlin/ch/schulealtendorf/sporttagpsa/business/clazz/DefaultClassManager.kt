@@ -90,12 +90,17 @@ class DefaultClassManager(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun ClazzEntity.pendingParticipation() = competitorRepository.findByClazzName(this.name).any { it.sport == null }
+    /**
+     * A pending participation means, if any participant of the given {@code clazz}
+     * as no sport.
+     *
+     * @return true if the class has pending participation, otherwise false
+     */
+    override fun hasPendingParticipation(clazz: Clazz) = competitorRepository.findByClazzName(clazz.name).any { it.sport == null }
 
     private fun ClazzEntity.map(): Clazz {
         return Clazz(
                 name,
-                Coach(coach.id!!, coach.name),
-                pendingParticipation())
+                Coach(coach.id!!, coach.name))
     }
 }

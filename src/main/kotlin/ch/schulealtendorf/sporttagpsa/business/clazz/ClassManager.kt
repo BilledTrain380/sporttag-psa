@@ -70,4 +70,12 @@ interface ClassManager {
      * @param clazz the class to save
      */
     fun saveClass(clazz: Clazz)
+
+    /**
+     * A pending participation means, if any participant of the given {@code clazz}
+     * as no sport.
+     *
+     * @return true if the class has pending participation, otherwise false
+     */
+    fun hasPendingParticipation(clazz: Clazz): Boolean
 }

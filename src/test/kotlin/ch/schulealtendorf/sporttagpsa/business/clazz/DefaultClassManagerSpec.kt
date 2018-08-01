@@ -36,7 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.clazz
 
-import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.model.Clazz
 import ch.schulealtendorf.sporttagpsa.model.Coach
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
@@ -46,8 +47,12 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.*
-import kotlin.test.assertEquals
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -65,17 +70,12 @@ object DefaultClassManagerSpec: Spek({
 
 
         val running = SportEntity("Running")
-        val classes: List<ClazzEntity> = listOf(
-                ClazzEntity("2a", CoachEntity(1, "Max Muster")),
-                ClazzEntity("2b", CoachEntity(2, "Max Master")),
-                ClazzEntity("2c", CoachEntity(3, "Max Mister"))
-        )
 
         beforeEachTest {
             reset(mockClassRepository, mockClassRepository)
         }
 
-        context("get all classes") {
+        context("has pending participation") {
 
             on("no pending participation") {
 
@@ -86,21 +86,15 @@ object DefaultClassManagerSpec: Spek({
                         CompetitorEntity().apply { sport = running }
                 )
 
-                whenever(mockClassRepository.findAll()).thenReturn(classes)
                 whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(competitors)
 
 
-                val result = classManager.getAllClasses()
+                val clazz = Clazz("2a", Coach(1, "Müller"))
+                val result = classManager.hasPendingParticipation(clazz)
 
 
-                it("should return a list of classes with no pending participation") {
-
-                    val expected: List<Clazz> = listOf(
-                            Clazz("2a", Coach(1, "Max Muster")),
-                            Clazz("2b", Coach(2, "Max Master")),
-                            Clazz("2c", Coach(3, "Max Mister"))
-                    )
-                    assertEquals(expected, result)
+                it("should return false") {
+                    assertFalse(result)
                 }
             }
 
@@ -113,21 +107,15 @@ object DefaultClassManagerSpec: Spek({
                         CompetitorEntity() // one competitor has no sport so the class has pending participation
                 )
 
-                whenever(mockClassRepository.findAll()).thenReturn(classes)
                 whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(competitors)
 
 
-                val result = classManager.getAllClasses()
+                val clazz = Clazz("2a", Coach(1, "Müller"))
+                val result = classManager.hasPendingParticipation(clazz)
 
 
                 it("should return a list of classes with pending participation") {
-
-                    val expected: List<Clazz> = listOf(
-                            Clazz("2a", Coach(1, "Max Muster"), true),
-                            Clazz("2b", Coach(2,"Max Master"), true),
-                            Clazz("2c", Coach(3, "Max Mister"), true)
-                    )
-                    assertEquals(expected, result)
+                    assertTrue(result)
                 }
             }
         }

@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.clazz
 
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestClass
 import ch.schulealtendorf.sporttagpsa.model.Clazz
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -56,12 +57,24 @@ class ClassController(
 ) {
 
     @GetMapping("/classes", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getAllClasses() = classManager.getAllClasses()
+    fun getAllClasses(): List<RestClass> {
+        return classManager.getAllClasses()
+                .map { it.map() }
+    }
 
     @GetMapping("/class/{class_id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getClass(@PathVariable("class_id") classId: String): Clazz {
+    fun getClass(@PathVariable("class_id") classId: String): RestClass {
 
-        val clazz = classManager.getClass(classId)
-        return clazz.orElseThrow { BadRequestException("Could not find class with id '$classId'") }
+        val clazz = classManager.getClass(classId).orElseThrow { BadRequestException("Could not find class with id '$classId'") }
+
+        return clazz.map()
+    }
+
+    private fun Clazz.map(): RestClass {
+        return RestClass(
+                name,
+                coach.name,
+                classManager.hasPendingParticipation(this)
+        )
     }
 }
