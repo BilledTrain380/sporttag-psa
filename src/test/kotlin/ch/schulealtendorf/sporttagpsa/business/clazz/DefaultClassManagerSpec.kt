@@ -46,9 +46,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.*
 import kotlin.test.assertEquals
 
 /**
@@ -63,9 +61,10 @@ object DefaultClassManagerSpec: Spek({
         val mockCompetitorRepository: CompetitorRepository = mock()
         val mockClassRepository: ClazzRepository = mock()
 
-        var classManager = DefaultClassManager(mockClassRepository, mockCompetitorRepository)
-        val running = SportEntity("Running")
+        val classManager = DefaultClassManager(mockClassRepository, mockCompetitorRepository)
 
+
+        val running = SportEntity("Running")
         val classes: List<ClazzEntity> = listOf(
                 ClazzEntity("2a", CoachEntity(1, "Max Muster")),
                 ClazzEntity("2b", CoachEntity(2, "Max Master")),
@@ -74,12 +73,11 @@ object DefaultClassManagerSpec: Spek({
 
         beforeEachTest {
             reset(mockClassRepository, mockClassRepository)
-            classManager = DefaultClassManager(mockClassRepository, mockCompetitorRepository)
         }
 
-        describe("get all classes") {
+        context("get all classes") {
 
-            given("no pending participation") {
+            on("no pending participation") {
 
                 val competitors: List<CompetitorEntity> = listOf(
                         CompetitorEntity().apply { sport = running },
@@ -106,7 +104,7 @@ object DefaultClassManagerSpec: Spek({
                 }
             }
 
-            given("pending participation") {
+            on("pending participation") {
 
                 val competitors: List<CompetitorEntity> = listOf(
                         CompetitorEntity().apply { sport = running },
