@@ -37,13 +37,12 @@
 package ch.schulealtendorf.sporttagpsa.model
 
 /**
- * Data class representing the class or category of a participant.
+ * Data class representing a coach of a class.
  *
- * @author nmaerchy
+ * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class Clazz @JvmOverloads constructor(
-        val name: String,
-        val coach: Coach,
-        val pendingParticipation: Boolean = false
+data class Coach(
+        val id: Int,
+        val name: String
 )

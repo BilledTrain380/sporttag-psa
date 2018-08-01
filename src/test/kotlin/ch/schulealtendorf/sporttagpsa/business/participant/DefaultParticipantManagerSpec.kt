@@ -78,7 +78,7 @@ object DefaultParticipantManagerSpec: Spek({
                     clazz = ClazzEntity("2a", CoachEntity(1, "Sepp"))
                 }
 
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor) as Optional<CompetitorEntity?>)
+                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
 
 
                 val participant = Participant(
@@ -90,7 +90,7 @@ object DefaultParticipantManagerSpec: Spek({
                         false,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("2a", "Sepp"))
+                        Clazz("2a", Coach(1,"Sepp")))
 
                 manager.updateParticipant(participant)
 
@@ -122,7 +122,7 @@ object DefaultParticipantManagerSpec: Spek({
                         false,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("3a", "Müller"))
+                        Clazz("3a", Coach(2, "Müller")))
 
                 manager.updateParticipant(participant)
 
@@ -131,6 +131,7 @@ object DefaultParticipantManagerSpec: Spek({
                     val expected = competitor.copy().apply {
                         clazz = ClazzEntity("3a", CoachEntity(1, "Müller"))
                     }
+                    verify(mockCompetitorRepository, times(1)).save(expected)
                 }
             }
         }

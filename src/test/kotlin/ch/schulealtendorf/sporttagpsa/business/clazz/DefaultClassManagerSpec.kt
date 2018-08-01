@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.clazz
 
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Coach
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import com.nhaarman.mockito_kotlin.any
@@ -97,9 +98,9 @@ object DefaultClassManagerSpec: Spek({
                 it("should return a list of classes with no pending participation") {
 
                     val expected: List<Clazz> = listOf(
-                            Clazz("2a", "Max Muster"),
-                            Clazz("2b", "Max Master"),
-                            Clazz("2c", "Max Mister")
+                            Clazz("2a", Coach(1, "Max Muster")),
+                            Clazz("2b", Coach(2, "Max Master")),
+                            Clazz("2c", Coach(3, "Max Mister"))
                     )
                     assertEquals(expected, result)
                 }
@@ -124,9 +125,9 @@ object DefaultClassManagerSpec: Spek({
                 it("should return a list of classes with pending participation") {
 
                     val expected: List<Clazz> = listOf(
-                            Clazz("2a", "Max Muster", true),
-                            Clazz("2b", "Max Master", true),
-                            Clazz("2c", "Max Mister", true)
+                            Clazz("2a", Coach(1, "Max Muster"), true),
+                            Clazz("2b", Coach(2,"Max Master"), true),
+                            Clazz("2c", Coach(3, "Max Mister"), true)
                     )
                     assertEquals(expected, result)
                 }

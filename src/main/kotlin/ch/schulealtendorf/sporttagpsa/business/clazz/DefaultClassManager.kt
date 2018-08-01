@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.clazz
 
 import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
 import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Coach
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
@@ -94,7 +95,7 @@ class DefaultClassManager(
     private fun ClazzEntity.map(): Clazz {
         return Clazz(
                 name,
-                coach.name,
+                Coach(coach.id!!, coach.name),
                 pendingParticipation())
     }
 }
