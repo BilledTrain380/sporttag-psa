@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
@@ -59,20 +57,20 @@ class EntrySafeCompetitorClazzConsumer(
 
     /**
      * Saves a {@link ClazzEntity} based on the passed in argument.
-     * The {@link FlatCompetitor#teacher} attribute has to be exist as a TeacherEntity already.
+     * The {@link FlatCompetitor#teacher} attribute has to be exist as a CoachEntity already.
 
      * @param competitor the input argument
-     * @throws EntityNotFoundException if the {@link FlatCompetitor#teacher} attribute does not exist as a TeacherEntity already
+     * @throws EntityNotFoundException if the {@link FlatCompetitor#teacher} attribute does not exist as a CoachEntity already
      */
     override fun accept(competitor: FlatCompetitor) {
         
-        if (!clazzRepository.findByName(competitor.clazz).isPresent) {
-            val teacherEntity: TeacherEntity = teacherRepository.findByName(competitor.teacher) ?:
-                    throw EntityNotFoundException("Clazz ${competitor.clazz} expecting an existing TeacherEntity: No TeacherEntity found")
-
-            val clazzEntity = ClazzEntity(null, competitor.clazz, teacherEntity)
-
-            clazzRepository.save(clazzEntity)
-        }
+//        if (!clazzRepository.findByName(competitor.clazz).isPresent) {
+//            val teacherEntity: CoachEntity = teacherRepository.findByName(competitor.teacher) ?:
+//                    throw EntityNotFoundException("Clazz ${competitor.clazz} expecting an existing CoachEntity: No CoachEntity found")
+//
+//            val clazzEntity = ClazzEntity(null, competitor.clazz, teacherEntity)
+//
+//            clazzRepository.save(clazzEntity)
+//        }
     }
 }

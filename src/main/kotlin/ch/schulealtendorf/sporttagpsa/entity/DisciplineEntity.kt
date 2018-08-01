@@ -42,23 +42,19 @@ import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 1.0.0
  */
 @Entity
 @Table(name = "DISCIPLINE")
 class DisciplineEntity @JvmOverloads constructor(
-        
+
         @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
-        
         @NotNull
         @Size(min = 1, max = 45)
         var name: String = "",
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_UNIT_id", referencedColumnName = "id")
+        @JoinColumn(name = "fk_UNIT", referencedColumnName = "unit")
         var unit: UnitEntity = UnitEntity()
 )

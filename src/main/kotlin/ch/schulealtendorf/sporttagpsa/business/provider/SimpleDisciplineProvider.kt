@@ -54,8 +54,6 @@ class SimpleDisciplineProvider(
      * @return all the data from this provider
      */
     override fun getAll(): Collection<SimpleDiscipline> {
-        return disciplineRepository.findAll().map { 
-            SimpleDiscipline(it?.id!!, it.name)
-        }
+        TODO()
     }
 }

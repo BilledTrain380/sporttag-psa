@@ -57,8 +57,8 @@ object DefaultStarterManagerSpec : Spek({
     describe("a starter manager") {
         
         val testDisciplines: Iterable<DisciplineEntity> = arrayListOf(
-                DisciplineEntity(1,"Weitsprung", UnitEntity()),
-                DisciplineEntity(2,"Weitwurf", UnitEntity())
+                DisciplineEntity("Weitsprung", UnitEntity()),
+                DisciplineEntity("Weitwurf", UnitEntity())
         )
         
         val mockStarterRepository: StarterRepository = mock()

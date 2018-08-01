@@ -42,17 +42,13 @@ import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 1.0.0
  */
 @Entity
 @Table(name = "UNIT")
 class UnitEntity @JvmOverloads constructor(
 
         @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
-
         @NotNull
         @Size(min = 1, max = 15)
         var unit: String = ""

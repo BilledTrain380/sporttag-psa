@@ -72,5 +72,5 @@ fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
  * @return the mapped model class
  */
 fun SportEntity.map(): SimpleSportModel {
-    return SimpleSportModel(if (this.id == null) 0 else this.id!!, this.name)
+    TODO()
 }

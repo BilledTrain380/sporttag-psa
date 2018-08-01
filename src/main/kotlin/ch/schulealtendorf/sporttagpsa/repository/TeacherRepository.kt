@@ -36,15 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.repository
 
-import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
+import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import org.springframework.data.repository.CrudRepository
+import java.util.*
 
 /**
  * @author nmaerchy
  * @version 0.0.1
  */
-interface TeacherRepository: CrudRepository<TeacherEntity?, Int> {
+interface TeacherRepository: CrudRepository<CoachEntity, Int> {
 
-    fun findByName(name: String): TeacherEntity?
-    
+    fun findByName(name: String): Optional<CoachEntity>
+
 }

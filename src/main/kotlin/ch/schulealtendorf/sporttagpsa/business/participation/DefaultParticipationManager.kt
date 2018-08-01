@@ -70,21 +70,22 @@ class DefaultParticipationManager(
      */
     override fun getParticipantListByClazz(clazz: ClazzObj): List<ParticipantObj> {
 
-        val absentCompetitorList = absentCompetitorRepository.findAll()
-
-        return competitorRepository.findByClazzId(clazz.id)
-                .map {
-                    ParticipantObj(
-                            it.id!!,
-                            it.surname,
-                            it.prename,
-                            Gender(it.gender),
-                            Birthday(it.birthday),
-                            it.address,
-                            absentCompetitorList.any { absent -> absent.competitor.id == it.id },
-                            Optional.ofNullable(it.sport())
-                    )
-                }
+        TODO("Not implemented yet")
+//        val absentCompetitorList = absentCompetitorRepository.findAll()
+//
+//        return competitorRepository.findByClazzId(clazz.id)
+//                .map {
+//                    ParticipantObj(
+//                            it.id!!,
+//                            it.surname,
+//                            it.prename,
+//                            Gender(it.gender),
+//                            Birthday(it.birthday),
+//                            it.address,
+//                            absentCompetitorList.any { absent -> absent.competitor.id == it.id },
+//                            Optional.ofNullable(it.sport())
+//                    )
+//                }
     }
 
     /**
@@ -143,10 +144,10 @@ class DefaultParticipationManager(
         val competitorEntity: CompetitorEntity = competitorRepository.findById(participant.id)
                 .orElseThrow { IllegalArgumentException("Could not find participant: id=${participant.id}") }!!
 
-        val sportEntity: SportEntity = sportRepository.findById(sport.id)
-                .orElseThrow { IllegalArgumentException("Could not find sport: id=${sport.id}") }!!
-
-        competitorEntity.sport = sportEntity
+//        val sportEntity: SportEntity = sportRepository.findById(sport.id)
+//                .orElseThrow { IllegalArgumentException("Could not find sport: id=${sport.id}") }!!
+//
+//        competitorEntity.sport = sportEntity
 
         competitorRepository.save(competitorEntity)
     }
@@ -180,19 +181,20 @@ class DefaultParticipationManager(
      */
     override fun markAsPresent(participant: SingleParticipant) {
 
-        val absentCompetitor: AbsentCompetitorEntity? = absentCompetitorRepository.findByCompetitorId(participant.id)
+        val absentCompetitor = absentCompetitorRepository.findByCompetitorId(participant.id)
 
-        if (absentCompetitor != null) {
-            absentCompetitorRepository.delete(absentCompetitor)
+        absentCompetitor.ifPresent {
+            absentCompetitorRepository.delete(absentCompetitor.get())
         }
     }
 
     private fun CompetitorEntity.sport(): Sport? {
 
-        if (sport == null) {
-            return null
-        }
-
-        return Sport(sport!!.id!!, sport!!.name)
+        TODO("Not implemented yet")
+//        if (sport == null) {
+//            return null
+//        }
+//
+//        return Sport(sport!!.id!!, sport!!.name)
     }
 }

@@ -56,7 +56,7 @@ class ClassController(
 ) {
 
     @GetMapping("/classes", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getClasses() = classManager.getAllClasses()
+    fun getAllClasses() = classManager.getAllClasses()
 
     @GetMapping("/class/{class_id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getClass(@PathVariable("class_id") classId: String): Clazz {

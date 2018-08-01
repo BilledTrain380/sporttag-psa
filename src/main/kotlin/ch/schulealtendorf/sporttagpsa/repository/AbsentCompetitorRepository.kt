@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.repository
 
 import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
 import org.springframework.data.repository.CrudRepository
+import java.util.*
 
 /**
  * Describes a CRUD repository for {@link AbsentCompetitorEntity}.
@@ -47,5 +48,5 @@ import org.springframework.data.repository.CrudRepository
  */
 interface AbsentCompetitorRepository: CrudRepository<AbsentCompetitorEntity, Int> {
 
-    fun findByCompetitorId(competitorId: Int): AbsentCompetitorEntity?
+    fun findByCompetitorId(competitorId: Int): Optional<AbsentCompetitorEntity>
 }

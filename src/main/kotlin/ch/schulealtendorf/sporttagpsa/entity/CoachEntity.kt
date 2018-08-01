@@ -34,39 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.provider
+package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.model.ClazzObj
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import org.springframework.stereotype.Component
+import javax.persistence.*
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 /**
- * Provider for {@link ClazzEntity}.
- * 
  * @author nmaerchy
- * @version 1.1.0
+ * @since 1.0.0
  */
-@Component
-class SimpleClazzProvider(
-        private val clazzRepository: ClazzRepository
-): ClazzProvider {
-
-    /**
-     * @return all the data from this provider
-     */
-    override fun getAll(): Collection<ClazzObj> {
-        TODO()
-    }
-
-    /**
-     * @param id id of the class
-     *
-     * @return the class matching the given {@code id}
-     * @throws IllegalArgumentException if the class with the given id does not exist
-     */
-    override fun getOne(id: Int): ClazzObj {
+@Entity
+@Table(name = "COACH")
+data class CoachEntity @JvmOverloads constructor(
         
-        TODO()
-    }
-}
+        @Id
+        @NotNull
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Int? = null,
+        
+        @NotNull
+        @Size(min = 1, max = 100)
+        var name: String = ""
+)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,39 +34,32 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.provider
+package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.model.ClazzObj
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import org.springframework.stereotype.Component
 
 /**
- * Provider for {@link ClazzEntity}.
- * 
- * @author nmaerchy
- * @version 1.1.0
+ * Default implementation for absent manager which uses the repository classes.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
 @Component
-class SimpleClazzProvider(
-        private val clazzRepository: ClazzRepository
-): ClazzProvider {
+class DefaultAbsentManager(
+        private val absentCompetitorRepository: AbsentCompetitorRepository
+): AbsentManager {
 
     /**
-     * @return all the data from this provider
+     * @return true if the given {@code competitor} is absent, otherwise false
      */
-    override fun getAll(): Collection<ClazzObj> {
-        TODO()
-    }
+    override fun isAbsent(competitor: CompetitorEntity): Boolean {
 
-    /**
-     * @param id id of the class
-     *
-     * @return the class matching the given {@code id}
-     * @throws IllegalArgumentException if the class with the given id does not exist
-     */
-    override fun getOne(id: Int): ClazzObj {
-        
-        TODO()
+        if (competitor.id == null) return false
+
+        val absentCompetitor = absentCompetitorRepository.findByCompetitorId(competitor.id!!)
+
+        return absentCompetitor.isPresent
     }
 }

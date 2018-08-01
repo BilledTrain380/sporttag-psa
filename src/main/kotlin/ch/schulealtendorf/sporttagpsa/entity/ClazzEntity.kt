@@ -42,24 +42,19 @@ import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 1.0.0
  */
 @Entity
 @Table(name = "CLAZZ")
 data class ClazzEntity @JvmOverloads constructor(
-        
+
         @Id
         @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
-        
-        @NotNull
-        @Size(min = 1, max = 6)
+        @Size(min = 1, max = 20)
         var name: String = "",
         
         @NotNull
-        @ManyToOne(cascade = [CascadeType.REMOVE])
-        @JoinColumn(name = "FK_TEACHER_id", referencedColumnName = "id")
-        var teacher: TeacherEntity = TeacherEntity()
-
+        @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
+        @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")
+        var coach: CoachEntity = CoachEntity()
 )

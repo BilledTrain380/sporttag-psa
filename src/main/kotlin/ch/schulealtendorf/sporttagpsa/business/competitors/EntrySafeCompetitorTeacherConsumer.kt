@@ -37,7 +37,6 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.entity.TeacherEntity
 import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
 import org.springframework.stereotype.Component
 
@@ -54,16 +53,16 @@ class EntrySafeCompetitorTeacherConsumer(
 ): CompetitorTeacherConsumer {
 
     /**
-     * Saves a {@link TeacherEntity} based on the passed in argument.
+     * Saves a {@link CoachEntity} based on the passed in argument.
      *
      * @param competitor the input argument
      */
     override fun accept(competitor: FlatCompetitor) {
         
-        if (teacherRepository.findByName(competitor.teacher) == null) {
-            val teacherEntity: TeacherEntity = TeacherEntity(null, competitor.teacher)
-
-            teacherRepository.save(teacherEntity)
-        }
+//        if (teacherRepository.findByName(competitor.teacher) == null) {
+//            val teacherEntity: CoachEntity = CoachEntity(null, competitor.teacher)
+//
+//            teacherRepository.save(teacherEntity)
+//        }
     }
 }

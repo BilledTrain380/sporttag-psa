@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,26 +34,41 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.participant
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import java.util.*
 
 /**
- * @author nmaerchy
- * @version 0.0.1
+ * A manager for the participants of PSA.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-@Entity
-@Table(name = "TEACHER")
-data class TeacherEntity @JvmOverloads constructor(
-        
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
-        
-        @NotNull
-        @Size(min = 1, max = 100)
-        var name: String = ""
-)
+interface ParticipantManager {
+
+    /**
+     * @return all participants
+     */
+    fun getAllParticipants(): List<Participant>
+
+    /**
+     * Returns an Optional containing the participant matching
+     * the given {@code participantId} or an empty Optional if
+     * no participant could be found.
+     *
+     * @param participantId the id of the participant
+     *
+     * @return the resulting participant
+     */
+    fun getParticipant(participantId: Int): Optional<Participant>
+
+    /**
+     * Updates the given {@code participant}.
+     *
+     * @param participant the participant to update
+     *
+     * @throws NoSuchElementException if the given {@code participant} or any of its relations could not be found
+     */
+    fun updateParticipant(participant: Participant)
+}

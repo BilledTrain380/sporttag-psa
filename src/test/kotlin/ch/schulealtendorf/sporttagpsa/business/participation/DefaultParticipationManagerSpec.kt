@@ -74,7 +74,7 @@ object DefaultParticipationManagerSpec: Spek({
 
                 whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf())
 
-                whenever(mockCompetitorRepository.findByClazzId(1)).thenReturn(
+                whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(
                         listOf(
                                 CompetitorEntity(1, "Muster", "Max", true, 0, "")
                         )
@@ -93,7 +93,7 @@ object DefaultParticipationManagerSpec: Spek({
 
                 whenever(mockAbsentCompetitorRepository.findAll()).thenReturn(listOf(AbsentCompetitorEntity(1, competitor)))
 
-                whenever(mockCompetitorRepository.findByClazzId(1)).thenReturn(
+                whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(
                         listOf(
                                 CompetitorEntity(1, "Muster", "Max", true, 0, "")
                         )
@@ -158,7 +158,7 @@ object DefaultParticipationManagerSpec: Spek({
 
                 val absentCompetitor = AbsentCompetitorEntity(1, CompetitorEntity(1, "Muster", "Max", true, 0, ""))
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(1)).thenReturn(absentCompetitor)
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(1)).thenReturn(Optional.of(absentCompetitor))
 
 
                 val singleParticipant = SingleParticipant(1, "Muster", "Max", Gender(true), "")

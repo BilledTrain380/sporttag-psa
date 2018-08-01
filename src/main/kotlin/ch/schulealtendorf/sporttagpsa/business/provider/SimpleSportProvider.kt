@@ -55,8 +55,6 @@ class SimpleSportProvider(
      * @return all the data from this provider
      */
     override fun getAll(): Collection<Sport> {
-        return sportRepository.findAll().map { 
-            Sport(it?.id!!, it.name)
-        }
+        TODO()
     }
 }

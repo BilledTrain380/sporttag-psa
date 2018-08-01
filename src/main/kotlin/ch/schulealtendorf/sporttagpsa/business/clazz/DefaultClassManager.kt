@@ -60,13 +60,7 @@ class DefaultClassManager(
      */
     override fun getAllClasses(): List<Clazz> {
         return classRepository.findAll()
-                .filter { it != null }
-                .map {
-                    Clazz(
-                            it?.name!!,
-                            it.teacher.name,
-                            it.pendingParticipation())
-                }
+                .mapNotNull { it?.map() }
     }
 
     /**
@@ -81,7 +75,7 @@ class DefaultClassManager(
 
         val clazz = classRepository.findByName(name)
 
-        return clazz.map { Clazz(it.name, it.teacher.name, it.pendingParticipation()) }
+        return clazz.map { it.map() }
     }
 
     /**
@@ -95,5 +89,12 @@ class DefaultClassManager(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun ClazzEntity.pendingParticipation() = competitorRepository.findByClazzId(this.id!!).any { it.sport == null }
+    private fun ClazzEntity.pendingParticipation() = competitorRepository.findByClazzName(this.name).any { it.sport == null }
+
+    private fun ClazzEntity.map(): Clazz {
+        return Clazz(
+                name,
+                coach.name,
+                pendingParticipation())
+    }
 }

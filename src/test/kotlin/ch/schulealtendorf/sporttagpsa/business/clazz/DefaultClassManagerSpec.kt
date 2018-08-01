@@ -42,6 +42,7 @@ import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -50,7 +51,7 @@ import org.jetbrains.spek.api.dsl.it
 import kotlin.test.assertEquals
 
 /**
- * @author nmaerchy <billedtrain380></billedtrain380>@gmail.com>
+ * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
 
@@ -62,15 +63,16 @@ object DefaultClassManagerSpec: Spek({
         val mockClassRepository: ClazzRepository = mock()
 
         var classManager = DefaultClassManager(mockClassRepository, mockCompetitorRepository)
-        val running = SportEntity(1, "Running")
+        val running = SportEntity("Running")
 
         val classes: List<ClazzEntity> = listOf(
-                ClazzEntity(1, "2a", TeacherEntity(1, "Max Muster")),
-                ClazzEntity(2, "2b", TeacherEntity(2, "Max Master")),
-                ClazzEntity(3, "2c", TeacherEntity(3, "Max Mister"))
+                ClazzEntity("2a", CoachEntity(1, "Max Muster")),
+                ClazzEntity("2b", CoachEntity(2, "Max Master")),
+                ClazzEntity("2c", CoachEntity(3, "Max Mister"))
         )
 
         beforeEachTest {
+            reset(mockClassRepository, mockClassRepository)
             classManager = DefaultClassManager(mockClassRepository, mockCompetitorRepository)
         }
 
@@ -86,7 +88,7 @@ object DefaultClassManagerSpec: Spek({
                 )
 
                 whenever(mockClassRepository.findAll()).thenReturn(classes)
-                whenever(mockCompetitorRepository.findByClazzId(any())).thenReturn(competitors)
+                whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(competitors)
 
 
                 val result = classManager.getAllClasses()
@@ -113,7 +115,7 @@ object DefaultClassManagerSpec: Spek({
                 )
 
                 whenever(mockClassRepository.findAll()).thenReturn(classes)
-                whenever(mockCompetitorRepository.findByClazzId(any())).thenReturn(competitors)
+                whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(competitors)
 
 
                 val result = classManager.getAllClasses()

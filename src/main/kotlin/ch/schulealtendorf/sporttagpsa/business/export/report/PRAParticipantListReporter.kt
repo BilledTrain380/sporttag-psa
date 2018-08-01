@@ -91,7 +91,7 @@ class PRAParticipantListReporter(
                                             surname = it.surname
                                             isGender = it.gender
                                             clazz = it.clazz.name
-                                            teacher = it.clazz.teacher.name
+                                            teacher = it.clazz.coach.name
                                         }
                                     }
                         }
