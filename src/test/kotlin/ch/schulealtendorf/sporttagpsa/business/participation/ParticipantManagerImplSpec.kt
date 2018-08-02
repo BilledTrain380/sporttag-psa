@@ -42,14 +42,17 @@ import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
 import java.util.*
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-object DefaultParticipantManagerSpec: Spek({
+object ParticipantManagerImplSpec: Spek({
 
     describe("a participant manager") {
 
@@ -61,7 +64,6 @@ object DefaultParticipantManagerSpec: Spek({
 
         beforeEachTest {
             reset(mockCompetitorRepository, mockClassManager, mockAbsentManager)
-//            manager = DefaultParticipantManager(mockCompetitorRepository, mockClassManager, mockAbsentManager)
         }
 
         context("save a participant") {
