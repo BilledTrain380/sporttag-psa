@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
-import ch.schulealtendorf.sporttagpsa.business.participant.ParticipantManager
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestClass
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestPatchParticipant

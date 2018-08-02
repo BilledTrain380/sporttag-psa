@@ -34,10 +34,9 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participant
+package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
-import ch.schulealtendorf.sporttagpsa.business.participation.AbsentManager
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -58,7 +57,7 @@ object DefaultParticipantManagerSpec: Spek({
         val mockClassManager: ClassManager = mock()
         val mockAbsentManager: AbsentManager = mock()
 
-        val manager = DefaultParticipantManager(mockCompetitorRepository, mockClassManager, mockAbsentManager)
+        val manager = ParticipantManagerImpl(mockCompetitorRepository, mockClassManager, mockAbsentManager)
 
         beforeEachTest {
             reset(mockCompetitorRepository, mockClassManager, mockAbsentManager)

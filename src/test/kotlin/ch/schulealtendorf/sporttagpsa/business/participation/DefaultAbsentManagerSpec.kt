@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.business.participation.DefaultAbsentManager
 import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository

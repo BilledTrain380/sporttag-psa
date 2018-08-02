@@ -34,10 +34,9 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participant
+package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
-import ch.schulealtendorf.sporttagpsa.business.participation.AbsentManager
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -51,7 +50,7 @@ import java.util.*
  * @since 2.0.0
  */
 @Component
-class DefaultParticipantManager(
+class ParticipantManagerImpl(
         private val competitorRepository: CompetitorRepository,
         private val classManager: ClassManager,
         private val absentManager: AbsentManager

@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participant
+package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.model.Clazz
 import ch.schulealtendorf.sporttagpsa.model.Participant
