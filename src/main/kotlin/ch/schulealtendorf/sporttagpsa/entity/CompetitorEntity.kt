@@ -38,48 +38,26 @@ package ch.schulealtendorf.sporttagpsa.entity
 
 import javax.persistence.*
 import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 2.0.0
  */
 @Entity
 @Table(name = "COMPETITOR")
-data class CompetitorEntity @JvmOverloads constructor(
+class CompetitorEntity(
 
         @Id
         @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var startnumber: Int? = null,
 
         @NotNull
-        @Size(min = 1, max = 30)
-        var surname: String = "",
-
-        @NotNull
-        @Size(min = 1, max = 30)
-        var prename: String = "",
-
-        @NotNull
-        var gender: Boolean = true,
-
-        @NotNull
-        var birthday: Long = 0,
-
-        @NotNull
-        @Size(min = 1, max = 80)
-        var address: String = "",
-
-        @ManyToOne(cascade = [CascadeType.PERSIST])
-        @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
-        var town: TownEntity = TownEntity(),
-
-        @ManyToOne(cascade = [CascadeType.PERSIST])
-        @JoinColumn(name = "FK_CLAZZ_id", referencedColumnName = "id")
-        var clazz: ClazzEntity = ClazzEntity(),
-
         @ManyToOne
-        @JoinColumn(name = "FK_SPORT_id", referencedColumnName = "id")
-        var sport: SportEntity? = null
+        @JoinColumn(name = "fk_PARTICIPANT_id", referencedColumnName = "id")
+        var participant: ParticipantEntity = ParticipantEntity(),
+
+        @OneToMany(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
+        @JoinColumn(name = "FK_PARTICIPANT_id")
+        var results: Set<ResultEntity> = setOf()
 )

@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "SPORT")
-data class SportEntity @JvmOverloads constructor(
+data class SportEntity(
         
         @Id
         @NotNull

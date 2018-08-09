@@ -47,26 +47,21 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "RESULT")
-data class ResultEntity @JvmOverloads constructor(
+data class ResultEntity(
 
         @Id
         @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
-        
+
         @Size(max = 5)
         var distance: String? = null,
 
         @NotNull
-        var result: Double = 1.0,
+        var value: Long = 1,
 
         @NotNull
         var points: Int = 1,
-
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_STARTER_number", referencedColumnName = "number")
-        var starter: StarterEntity = StarterEntity(),
 
         @NotNull
         @ManyToOne

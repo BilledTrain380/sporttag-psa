@@ -34,22 +34,27 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.entity.StarterEntity
-import org.springframework.data.repository.CrudRepository
+import javax.persistence.*
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 /**
- * Describes a CRUD repository for the {@link StarterEntity}.
- * 
  * @author nmaerchy
- * @version 1.0.0
+ * @since 1.0.0
  */
-interface StarterRepository: CrudRepository<StarterEntity, Int> {
-    
-    fun findByCompetitorGender(gender: Boolean): List<StarterEntity>
+@Entity
+@Table(name = "GROUP")
+data class GroupEntity(
 
-    fun findByCompetitorId(id: Int): StarterEntity?
-    
-    fun findByCompetitorGenderAndCompetitorClazzName(gender: Boolean, clazz: String): List<StarterEntity>
-}
+        @Id
+        @NotNull
+        @Size(min = 1, max = 20)
+        var name: String = "",
+        
+        @NotNull
+        @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
+        @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")
+        var coach: CoachEntity = CoachEntity()
+)

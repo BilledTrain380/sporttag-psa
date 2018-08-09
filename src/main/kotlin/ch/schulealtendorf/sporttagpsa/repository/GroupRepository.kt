@@ -34,27 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.repository
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import org.springframework.data.repository.CrudRepository
+import java.util.*
 
 /**
  * @author nmaerchy
  * @since 1.0.0
  */
-@Entity
-@Table(name = "CLAZZ")
-data class ClazzEntity @JvmOverloads constructor(
+interface GroupRepository: CrudRepository<GroupEntity, String> {
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 20)
-        var name: String = "",
-        
-        @NotNull
-        @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
-        @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")
-        var coach: CoachEntity = CoachEntity()
-)
+    fun findByName(name: String): Optional<GroupEntity>
+}

@@ -46,10 +46,10 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "UNIT")
-class UnitEntity @JvmOverloads constructor(
+class UnitEntity(
 
         @Id
         @NotNull
-        @Size(min = 1, max = 15)
-        var unit: String = ""
+        @Size(min = 1, max = 45)
+        var name: String = ""
 )

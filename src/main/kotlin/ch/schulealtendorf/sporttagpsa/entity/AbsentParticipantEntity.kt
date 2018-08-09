@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,18 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import org.springframework.data.repository.CrudRepository
-import java.util.*
+import javax.persistence.*
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
-interface ClazzRepository: CrudRepository<ClazzEntity, String> {
+@Entity
+@Table(name = "ABSENT_PARTICIPANT")
+data class AbsentParticipantEntity(
 
-    fun findByName(name: String): Optional<ClazzEntity>
-    
-}
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var id: Int? = null,
+
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "FK_PARTICIPANT_id", referencedColumnName = "id")
+        var participant: ParticipantEntity = ParticipantEntity()
+)

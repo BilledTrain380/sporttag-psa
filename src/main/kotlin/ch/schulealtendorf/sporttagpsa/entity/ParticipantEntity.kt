@@ -34,18 +34,53 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.repository
+package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
-import org.springframework.data.repository.CrudRepository
-import java.util.*
+import javax.persistence.*
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 2.0.0
  */
-interface TeacherRepository: CrudRepository<CoachEntity, Int> {
+@Entity
+@Table(name = "PARTICIPANT")
+data class ParticipantEntity(
 
-    fun findByName(name: String): Optional<CoachEntity>
+        @Id
+        @NotNull
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        var id: Int? = null,
 
-}
+        @NotNull
+        @Size(min = 1, max = 30)
+        var surname: String = "",
+
+        @NotNull
+        @Size(min = 1, max = 30)
+        var prename: String = "",
+
+        @NotNull
+        @Size(min = 1, max = 6)
+        var gender: String = "MALE",
+
+        @NotNull
+        var birthday: Long = 0,
+
+        @NotNull
+        @Size(min = 1, max = 80)
+        var address: String = "",
+
+        @ManyToOne(cascade = [CascadeType.PERSIST])
+        @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
+        var town: TownEntity = TownEntity(),
+
+        @ManyToOne(cascade = [CascadeType.PERSIST])
+        @JoinColumn(name = "FK_GROUP_name", referencedColumnName = "name")
+        var group: GroupEntity = GroupEntity(),
+
+        @ManyToOne
+        @JoinColumn(name = "FK_SPORT_name", referencedColumnName = "name")
+        var sport: SportEntity? = null
+)

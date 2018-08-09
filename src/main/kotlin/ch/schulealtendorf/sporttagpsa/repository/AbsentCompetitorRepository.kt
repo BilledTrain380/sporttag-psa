@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.repository
 
-import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
 import org.springframework.data.repository.CrudRepository
 import java.util.*
 
@@ -46,7 +46,7 @@ import java.util.*
  * @author nmaerchy
  * @version 1.0.0
  */
-interface AbsentCompetitorRepository: CrudRepository<AbsentCompetitorEntity, Int> {
+interface AbsentCompetitorRepository: CrudRepository<AbsentParticipantEntity, Int> {
 
-    fun findByCompetitorId(competitorId: Int): Optional<AbsentCompetitorEntity>
+    fun findByCompetitorId(competitorId: Int): Optional<AbsentParticipantEntity>
 }

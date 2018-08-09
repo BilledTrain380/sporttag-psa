@@ -49,8 +49,9 @@ import ch.schulealtendorf.sporttagpsa.business.competitors.SimpleSportModel
  * 
  * @return the mapped model class
  */
-fun CompetitorEntity.map(): SimpleCompetitorModel {
-    return SimpleCompetitorModel((if (this.id == null) 0 else this.id)!!, this.surname, this.prename, this.gender, this.address, if (sport == null) null else this.sport!!.map())
+@Deprecated("will be removed")
+fun ParticipantEntity.map(): SimpleCompetitorModel {
+    TODO()
 }
 
 /**
@@ -59,10 +60,10 @@ fun CompetitorEntity.map(): SimpleCompetitorModel {
  * 
  * @param competitorModel the model to merge into the entity
  */
-fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
+@Deprecated("will be removed")
+fun ParticipantEntity.merge(competitorModel: SimpleCompetitorModel) {
     this.surname = competitorModel.surname
     this.prename = competitorModel.prename
-    this.gender = competitorModel.gender
     this.address = competitorModel.address
 }
 
@@ -71,6 +72,7 @@ fun CompetitorEntity.merge(competitorModel: SimpleCompetitorModel) {
  * 
  * @return the mapped model class
  */
+@Deprecated("will be removed")
 fun SportEntity.map(): SimpleSportModel {
     TODO()
 }

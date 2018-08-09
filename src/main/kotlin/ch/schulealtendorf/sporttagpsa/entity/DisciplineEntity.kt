@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "DISCIPLINE")
-class DisciplineEntity @JvmOverloads constructor(
+class DisciplineEntity(
 
         @Id
         @NotNull
@@ -55,6 +55,6 @@ class DisciplineEntity @JvmOverloads constructor(
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_UNIT", referencedColumnName = "unit")
+        @JoinColumn(name = "fk_UNIT_name", referencedColumnName = "name")
         var unit: UnitEntity = UnitEntity()
 )

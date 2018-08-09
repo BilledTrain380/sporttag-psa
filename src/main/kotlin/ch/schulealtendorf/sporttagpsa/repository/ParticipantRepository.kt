@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 by Nicolas Märchy
+ * Copyright (c) 2017 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,19 +34,18 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.repository
 
-import javax.persistence.*
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import org.springframework.data.repository.CrudRepository
 
-@Entity
-@Table(name = "ABSENT_COMPETITOR")
-data class AbsentCompetitorEntity(
+/**
+ * @author nmaerchy
+ * @since 2.0.0
+ */
+interface ParticipantRepository: CrudRepository<ParticipantEntity, Int> {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Int? = null,
-
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "FK_competitor", referencedColumnName = "id")
-        var competitor: CompetitorEntity = CompetitorEntity()
-)
+    fun findByGroupName(name: String): List<ParticipantEntity>
+    
+    fun findBySportName(name: String): List<ParticipantEntity>
+}

@@ -41,6 +41,6 @@ import org.springframework.data.repository.CrudRepository
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 1.0.0
  */
-interface ParticipationRepository: CrudRepository<ParticipationEntity, Int>
+interface ParticipationRepository: CrudRepository<ParticipationEntity, String>

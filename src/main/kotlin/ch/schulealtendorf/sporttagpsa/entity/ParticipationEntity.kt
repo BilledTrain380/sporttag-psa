@@ -37,10 +37,10 @@
 package ch.schulealtendorf.sporttagpsa.entity
 
 import org.jetbrains.annotations.NotNull
-import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.validation.constraints.Size
 
 /**
  * @author nmaerchy
@@ -52,9 +52,10 @@ data class ParticipationEntity @JvmOverloads constructor(
         
         @Id
         @NotNull
-        var id: Int = 1,
+        @Size(min = 1, max = 10)
+        var name: String = "main",
         
         @NotNull
-        @Column(name = "is_finished")
-        var isFinished: Boolean = false
+        @Size(min = 1, max = 10)
+        var status: String = "OPEN"
 )

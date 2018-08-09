@@ -46,11 +46,11 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "COACH")
-data class CoachEntity @JvmOverloads constructor(
+data class CoachEntity(
         
         @Id
         @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Int? = null,
         
         @NotNull

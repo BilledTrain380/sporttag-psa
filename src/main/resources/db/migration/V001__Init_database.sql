@@ -1,16 +1,4 @@
 -- -----------------------------------------------------
--- Table TOWN
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS TOWN (
-  id INT NOT NULL AUTO_INCREMENT UNIQUE,
-  zip VARCHAR(4) NOT NULL,
-  name VARCHAR(50) NOT NULL,
-  PRIMARY KEY (id)
-);
-
-
-
--- -----------------------------------------------------
 -- Table COACH
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS COACH (
@@ -20,21 +8,19 @@ CREATE TABLE IF NOT EXISTS COACH (
 );
 
 
-
 -- -----------------------------------------------------
--- Table ClazzEntity
+-- Table GROUP
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS CLAZZ (
+CREATE TABLE IF NOT EXISTS "GROUP" (
   name VARCHAR(20) NOT NULL UNIQUE ,
-  FK_coach_id INT NOT NULL,
+  FK_COACH_id INT NOT NULL,
   PRIMARY KEY (name),
-  CONSTRAINT fk_CLAZZ_COACH
-    FOREIGN KEY (FK_coach_id)
+  CONSTRAINT fk_GROUP_COACH
+    FOREIGN KEY (FK_COACH_id)
     REFERENCES COACH (id)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
 );
-
 
 -- -----------------------------------------------------
 -- Table SPORT
@@ -44,33 +30,42 @@ CREATE TABLE IF NOT EXISTS SPORT (
   PRIMARY KEY (name)
 );
 
-  
 -- -----------------------------------------------------
--- Table COMPETITOR
+-- Table TOWN
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS COMPETITOR (
+CREATE TABLE IF NOT EXISTS TOWN (
+  id INT NOT NULL AUTO_INCREMENT UNIQUE,
+  zip VARCHAR(4) NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- -----------------------------------------------------
+-- Table PARTICIPANT
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS PARTICIPANT (
   id INT NOT NULL AUTO_INCREMENT UNIQUE,
   surname VARCHAR(30) NOT NULL,
   prename VARCHAR(30) NOT NULL,
-  gender BOOLEAN NOT NULL,
+  gender VARCHAR(6) NOT NULL,
   birthday BIGINT NOT NULL,
   address VARCHAR(80) NOT NULL,
   FK_TOWN_id INT NOT NULL,
-  FK_CLAZZ VARCHAR(20) NOT NULL,
-  FK_SPORT VARCHAR(45),
+  FK_GROUP_name VARCHAR(20) NOT NULL,
+  FK_SPORT_name VARCHAR(45),
   PRIMARY KEY (id) ,
-  CONSTRAINT fk_COMPETITOR_TOWN
+  CONSTRAINT fk_PARTICIPANT_TOWN
     FOREIGN KEY (FK_TOWN_id)
     REFERENCES TOWN (id)
     ON DELETE RESTRICT 
     ON UPDATE RESTRICT,
-  CONSTRAINT fk_COMPETITOR_CLAZZ
-    FOREIGN KEY (FK_CLAZZ)
-    REFERENCES CLAZZ (name)
+  CONSTRAINT fk_PARTICIPANT_GROUP
+    FOREIGN KEY (FK_GROUP_name)
+    REFERENCES "GROUP" (name)
     ON DELETE RESTRICT 
     ON UPDATE RESTRICT,
-  CONSTRAINT fk_COMPETITOR_SPORT
-    FOREIGN KEY (FK_SPORT)
+  CONSTRAINT fk_PARTICIPANT_SPORT
+    FOREIGN KEY (FK_SPORT_name)
     REFERENCES SPORT (name)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT
@@ -78,26 +73,39 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
 
 
 -- -----------------------------------------------------
--- Table ABSENT_COMPETITOR
+-- Table ABSENT_PARTICIPANT
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS ABSENT_COMPETITOR (
+CREATE TABLE IF NOT EXISTS ABSENT_PARTICIPANT (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
-  FK_competitor INT NOT NULL UNIQUE ,
+  FK_PARICIPANT_id INT NOT NULL UNIQUE ,
   PRIMARY KEY (id),
-  CONSTRAINT fk_ABSENT_COMPETITOR
-    FOREIGN KEY (FK_competitor)
-    REFERENCES COMPETITOR (id)
+  CONSTRAINT fk_ABSENT_PARTICIPANT
+    FOREIGN KEY (FK_PARICIPANT_id)
+    REFERENCES PARTICIPANT (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
+-- -----------------------------------------------------
+-- Table COMPETITOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS COMPETITOR (
+  startnumber INT NOT NULL AUTO_INCREMENT UNIQUE ,
+  FK_PARTICIPANT_id INT NOT NULL UNIQUE ,
+  PRIMARY KEY (startnumber)  ,
+  CONSTRAINT fk_COMPETITOR_PARTICIPANT
+  FOREIGN KEY (FK_PARTICIPANT_id)
+  REFERENCES PARTICIPANT (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
 
 -- -----------------------------------------------------
 -- Table UNIT
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS UNIT (
-  unit VARCHAR(15) NOT NULL UNIQUE ,
-  PRIMARY KEY (unit)
+  name VARCHAR(45) NOT NULL UNIQUE ,
+  PRIMARY KEY (name)
 );
 
 
@@ -106,30 +114,14 @@ CREATE TABLE IF NOT EXISTS UNIT (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS DISCIPLINE (
   name VARCHAR(45) NOT NULL UNIQUE ,
-  FK_UNIT VARCHAR(15) NOT NULL ,
+  FK_UNIT_name VARCHAR(45) NOT NULL ,
   PRIMARY KEY (name)  ,
   CONSTRAINT fk_DISCIPLINE_UNIT
-  FOREIGN KEY (FK_UNIT)
-  REFERENCES UNIT (unit)
+  FOREIGN KEY (FK_UNIT_name)
+  REFERENCES UNIT (name)
   ON DELETE RESTRICT 
   ON UPDATE RESTRICT
 );
-
-
--- -----------------------------------------------------
--- Table STARTER
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS STARTER (
-  number INT NOT NULL AUTO_INCREMENT UNIQUE ,
-  FK_COMPETITOR_id INT NOT NULL UNIQUE ,
-  PRIMARY KEY (number)  ,
-  CONSTRAINT fk_STARTER_COMPETITOR
-  FOREIGN KEY (FK_COMPETITOR_id)
-  REFERENCES COMPETITOR (id)
-  ON DELETE CASCADE 
-  ON UPDATE CASCADE
-);
-
 
 -- -----------------------------------------------------
 -- Table RESULT
@@ -137,14 +129,14 @@ CREATE TABLE IF NOT EXISTS STARTER (
 CREATE TABLE IF NOT EXISTS RESULT (
   id INT NOT NULL AUTO_INCREMENT UNIQUE ,
   distance VARCHAR(5) DEFAULT NULL ,
-  result DOUBLE NOT NULL DEFAULT 0 ,
+  value BIGINT NOT NULL DEFAULT 0 ,
   points INT NOT NULL DEFAULT 0 ,
-  FK_STARTER_number INT NOT NULL ,
+  FK_COMPETITOR_startnumber INT NOT NULL ,
   FK_DISCIPLINE VARCHAR(45) NOT NULL ,
   PRIMARY KEY (id)  ,
-  CONSTRAINT fk_RESULT_STARTER
-  FOREIGN KEY (FK_STARTER_number)
-  REFERENCES STARTER (NUMBER)
+  CONSTRAINT fk_RESULT_COMPETITOR
+  FOREIGN KEY (FK_COMPETITOR_startnumber)
+  REFERENCES COMPETITOR (startnumber)
   ON DELETE CASCADE 
   ON UPDATE CASCADE ,
   CONSTRAINT fk_RESULT_DISCIPLINE
@@ -158,9 +150,9 @@ CREATE TABLE IF NOT EXISTS RESULT (
 -- Table PARTICIPATION
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS PARTICIPATION (
-  id INT NOT NULL DEFAULT 1 UNIQUE ,
-  is_finished BOOLEAN NOT NULL DEFAULT FALSE ,
-  PRIMARY KEY (id)
+  name VARCHAR(10) NOT NULL DEFAULT 'main',
+  status VARCHAR(10) NOT NULL DEFAULT 'OPEN',
+  PRIMARY KEY (name)
 );
 
 -- -----------------------------------------------------

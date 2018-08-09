@@ -34,29 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.repository
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
+import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
+import org.springframework.data.repository.CrudRepository
+import java.util.*
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @since 1.0.0
  */
-@Entity
-@Table(name = "STARTER")
-class StarterEntity @JvmOverloads constructor(
-        
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var number: Int? = null,
-        
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_COMPETITOR_id", referencedColumnName = "id")
-        var competitor: CompetitorEntity = CompetitorEntity(),
-        
-        @OneToMany(mappedBy = "starter", cascade = [CascadeType.REMOVE])
-        var results: Set<ResultEntity> = setOf()
-)
+interface CoachRepository: CrudRepository<CoachEntity, Int> {
+
+    fun findByName(name: String): Optional<CoachEntity>
+}

@@ -45,6 +45,7 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 1.1.0
  */
+@Deprecated("Use competitor repository to access results")
 interface ResultRepository: CrudRepository<ResultEntity, Int> {
     
     fun findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(disciplineId: Int, gender: Boolean, clazzId: Int): List<ResultEntity>
