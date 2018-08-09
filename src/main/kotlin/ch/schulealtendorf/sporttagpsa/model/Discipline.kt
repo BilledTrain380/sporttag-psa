@@ -47,5 +47,5 @@ import java.util.*
 data class Discipline @JvmOverloads constructor(
         val name: String,
         val unit: String,
-        val discipline: Optional<String> = Optional.empty()
+        val distance: Optional<String> = Optional.empty()
 )

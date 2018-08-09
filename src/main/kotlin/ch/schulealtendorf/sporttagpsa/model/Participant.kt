@@ -53,6 +53,6 @@ data class Participant @JvmOverloads constructor(
         val absent: Boolean,
         val address: String,
         val town: Town,
-        val clazz: Clazz,
+        val clazz: Group,
         val sport: Optional<String> = Optional.empty()
 )

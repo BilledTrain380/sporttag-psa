@@ -37,12 +37,11 @@
 package ch.schulealtendorf.sporttagpsa.model
 
 /**
- * Data class representing the class or category of a participant.
- *
- * @author nmaerchy
+ * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class Clazz(
-        val name: String,
-        val coach: Coach
-)
+enum class ParticipationStatus {
+    OPEN,
+    CLOSE,
+    RESET
+}

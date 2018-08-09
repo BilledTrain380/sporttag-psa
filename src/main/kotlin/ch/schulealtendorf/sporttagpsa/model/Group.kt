@@ -37,21 +37,12 @@
 package ch.schulealtendorf.sporttagpsa.model
 
 /**
- * Data class representing a competitor.
+ * Data class representing the group of a participant.
  *
- * @author nmaerchy <billedtrain380@gmail.com>
+ * @author nmaerchy
  * @since 2.0.0
  */
-data class Competitor(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Birthday,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val clazz: Group,
-        val results: List<Result>
+data class Group(
+        val name: String,
+        val coach: Coach
 )

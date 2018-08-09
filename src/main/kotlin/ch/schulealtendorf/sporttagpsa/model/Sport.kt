@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
-@Deprecated("Sport is no longer an object but a string itself which acts as its ID")
 data class Sport(
-        val id: Int,
         val name: String
 )
