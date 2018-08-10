@@ -70,7 +70,8 @@ class PSAUserDetailService(
      */
     override fun loadUserByUsername(username: String?): UserDetails {
         
-        val userEntity = userRepository.findByUsername(username ?: "") ?: throw UsernameNotFoundException("Could not find user: name=$username")
+        val userEntity = userRepository.findByUsername(username ?: "")
+                .orElseThrow { throw UsernameNotFoundException("Could not find user: name=$username") }
 
         return User(
                 userEntity.username, 

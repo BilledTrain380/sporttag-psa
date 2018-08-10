@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.clazz
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestClass
-import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -70,7 +70,7 @@ class ClassController(
         return clazz.map()
     }
 
-    private fun Clazz.map(): RestClass {
+    private fun Group.map(): RestClass {
         return RestClass(
                 name,
                 coach.name,

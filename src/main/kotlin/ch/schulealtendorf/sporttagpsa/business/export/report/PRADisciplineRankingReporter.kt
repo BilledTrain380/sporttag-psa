@@ -76,54 +76,54 @@ class PRADisciplineRankingReporter(
      * @throws ReportGenerationException if the report generation fails
      */
     override fun generateReport(data: Iterable<DisciplineExport>): Set<File> {
-
-        try {
-
-            val absentCompetitorList = absentCompetitorRepository.findAll()
-
-            return data.map { disciplineExport ->
-    
-                val results = resultRepository.findByDisciplineNameAndStarterCompetitorGender(disciplineExport.discipline.name, disciplineExport.gender)
-    
-                results
-                    .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.starter.competitor.id } }
-                    .groupBy { DateTime(it.starter.competitor.birthday).year }
-                    .map {
-    
-                        val ranking = DisciplineRanking().apply {
-                            year = Year.of(it.key)
-                            isGender = disciplineExport.gender
-                            discipline = disciplineExport.discipline.name
-                            competitors = it.value.map {
-                                DisciplineCompetitor().apply {
-                                    prename = it.starter.competitor.prename
-                                    surname = it.starter.competitor.surname
-                                    clazz = it.starter.competitor.clazz.name
-                                    result = it.result()
-                                    points = it.points
-                                }
-                            }
-                        }
-    
-                        val report = disciplineRankingAPI.createReport(ranking)
-    
-                        fileSystem.write("Rangliste ${disciplineExport.gender.text()} ${disciplineExport.discipline.name} ${it.key}.pdf", report)
-                    }.toSet()
-            }.flatten().toSet()
-            
-        } catch (ex: IOException) {
-            throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
-        } catch (ex: ReportAPIException) {
-            throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
-        }
+        TODO()
+//        try {
+//
+//            val absentCompetitorList = absentCompetitorRepository.findAll()
+//
+//            return data.map { disciplineExport ->
+//
+//                val results = resultRepository.findByDisciplineNameAndStarterCompetitorGender(disciplineExport.discipline.name, disciplineExport.gender)
+//
+//                results
+//                    .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.starter.participant.id } }
+//                    .groupBy { DateTime(it.starter.participant.birthday).year }
+//                    .map {
+//
+//                        val ranking = DisciplineRanking().apply {
+//                            year = Year.of(it.key)
+//                            isGender = disciplineExport.gender
+//                            discipline = disciplineExport.discipline.name
+//                            competitors = it.value.map {
+//                                DisciplineCompetitor().apply {
+//                                    prename = it.starter.participant.prename
+//                                    surname = it.starter.participant.surname
+//                                    clazz = it.starter.participant.group.name
+//                                    result = it.result()
+//                                    points = it.points
+//                                }
+//                            }
+//                        }
+//
+//                        val report = disciplineRankingAPI.createReport(ranking)
+//
+//                        fileSystem.write("Rangliste ${disciplineExport.gender.text()} ${disciplineExport.discipline.name} ${it.key}.pdf", report)
+//                    }.toSet()
+//            }.flatten().toSet()
+//
+//        } catch (ex: IOException) {
+//            throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
+//        } catch (ex: ReportAPIException) {
+//            throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
+//        }
     }
     
     private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
 
     private fun ResultEntity.result(): Result {
-        if (discipline.unit.unit == "Meter" || discipline.unit.unit == "Sekunden") {
-            return Result(result)
+        if (discipline.unit.name == "Meter" || discipline.unit.name == "Sekunden") {
+            return Result(value.toDouble())
         }
-        return Result(result.toInt())
+        return Result(value.toInt())
     }
 }

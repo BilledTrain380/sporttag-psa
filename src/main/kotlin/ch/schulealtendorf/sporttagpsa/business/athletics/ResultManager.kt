@@ -34,12 +34,24 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.participant.detail
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-data class SingleParticipantModel(
-        var id: Int = 0,
-        var surname: String = "",
-        var prename: String = "",
-        var gender: Boolean = true,
-        var address: String = ""
-)
+import ch.schulealtendorf.sporttagpsa.model.Result
+
+/**
+ * Manages data related to the {@link Result} class.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+interface ResultManager {
+
+    /**
+     * Updates the given {@code result}.
+     *
+     * @param result the result to save
+     *
+     * @throws NoSuchElementException if the given result could not be found
+     */
+    fun updateResult(result: Result)
+}

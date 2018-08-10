@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.business.participation.DefaultAbsentManager
-import ch.schulealtendorf.sporttagpsa.entity.AbsentCompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
@@ -59,11 +59,11 @@ object DefaultAbsentManagerSpec: Spek({
 
         val absentManager = DefaultAbsentManager(mockAbsentCompetitorRepository)
 
-        val competitor = CompetitorEntity(
+        val competitor = ParticipantEntity(
                 1,
                 "Muster",
                 "Max",
-                true
+                Gender.MALE.toString()
         )
 
         beforeEachTest {
@@ -87,7 +87,7 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("a competitor which is absent") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentCompetitorEntity()))
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentParticipantEntity()))
 
 
                 val result = absentManager.isAbsent(competitor)
@@ -101,7 +101,7 @@ object DefaultAbsentManagerSpec: Spek({
             on("no competitor id") {
 
 
-                val result = absentManager.isAbsent(CompetitorEntity())
+                val result = absentManager.isAbsent(ParticipantEntity())
 
 
                 it("should return false") {
@@ -120,14 +120,14 @@ object DefaultAbsentManagerSpec: Spek({
                 absentManager.markAsAbsent(competitor)
 
                 it("should mark the competitor as absent") {
-                    val expected = AbsentCompetitorEntity(null, competitor)
+                    val expected = AbsentParticipantEntity(null, competitor)
                     verify(mockAbsentCompetitorRepository, times(1)).save(expected)
                 }
             }
 
             on("already absent marked competitor") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentCompetitorEntity(1, competitor)))
+                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentParticipantEntity(1, competitor)))
 
 
                 absentManager.markAsAbsent(competitor)
@@ -143,7 +143,7 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("absent marked competitor") {
 
-                val absentCompetitorEntity = AbsentCompetitorEntity(1, competitor)
+                val absentCompetitorEntity = AbsentParticipantEntity(1, competitor)
                 whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(absentCompetitorEntity))
 
 

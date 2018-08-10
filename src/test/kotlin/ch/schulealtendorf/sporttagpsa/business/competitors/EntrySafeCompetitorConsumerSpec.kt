@@ -38,8 +38,8 @@ package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -59,14 +59,14 @@ import kotlin.test.assertFailsWith
 object EntrySafeCompetitorConsumerSpec: Spek({
     
     var mockTownRepo: TownRepository = Mockito.mock(TownRepository::class.java)
-    var mockClazzRepo: ClazzRepository = Mockito.mock(ClazzRepository::class.java)
-    var mockCompetitorRepo: CompetitorRepository = Mockito.mock(CompetitorRepository::class.java)
+    var mockClazzRepo: GroupRepository = Mockito.mock(GroupRepository::class.java)
+    var mockCompetitorRepo: ParticipantRepository = Mockito.mock(ParticipantRepository::class.java)
     var consumer: EntrySafeCompetitorConsumer = EntrySafeCompetitorConsumer(mockCompetitorRepo, mockTownRepo, mockClazzRepo)
     
     beforeEachTest {
         mockTownRepo = Mockito.mock(TownRepository::class.java)
-        mockClazzRepo = Mockito.mock(ClazzRepository::class.java)
-        mockCompetitorRepo = Mockito.mock(CompetitorRepository::class.java)
+        mockClazzRepo = Mockito.mock(GroupRepository::class.java)
+        mockCompetitorRepo = Mockito.mock(ParticipantRepository::class.java)
         consumer = EntrySafeCompetitorConsumer(mockCompetitorRepo, mockTownRepo, mockClazzRepo)
     }
     
@@ -82,7 +82,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
         on("consuming a FlatCompetitor") {
             
 //            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.of(clazzEntity))
-            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(townEntity)
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(Optional.of(townEntity))
             
             consumer.accept(flatCompetitor)
             
@@ -116,7 +116,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
         on("consuming a FlatCompetitor with an non existing TownEntity") {
 
 //            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.of(clazzEntity))
-            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(null)
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(Optional.empty())
 
             consumer.accept(flatCompetitor)
             

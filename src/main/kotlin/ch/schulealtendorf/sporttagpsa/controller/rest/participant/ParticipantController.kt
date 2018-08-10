@@ -90,7 +90,6 @@ class ParticipantController(
         val updatedParticipant = participant.copy(
                 surname = restParticipant.surname!!,
                 prename = restParticipant.prename!!,
-                gender = Gender(restParticipant.absent!!),
                 birthday = Birthday(restParticipant.birthday!!),
                 address = restParticipant.address!!,
                 absent = restParticipant.absent!!
@@ -140,7 +139,7 @@ class ParticipantController(
         )
     }
 
-    private fun Participant.update(clazz: Clazz) {
+    private fun Participant.update(clazz: Group) {
         participantManager.saveParticipant(
                 this.copy(
                         clazz = clazz
@@ -153,7 +152,7 @@ class ParticipantController(
                 id,
                 surname,
                 prename,
-                gender.value,
+                true,
                 birthday.milliseconds,
                 absent,
                 address,
@@ -163,7 +162,7 @@ class ParticipantController(
         )
     }
 
-    private fun Clazz.map(): RestClass {
+    private fun Group.map(): RestClass {
         return RestClass(
                 name,
                 coach.name,

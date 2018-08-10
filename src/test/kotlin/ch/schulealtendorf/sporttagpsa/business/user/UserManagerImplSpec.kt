@@ -92,7 +92,7 @@ object UserManagerImplSpec: Spek({
             
             on("already existing username") {
                 
-                whenever(mockUserRepository.findByUsername(any())).thenReturn(UserEntity())
+                whenever(mockUserRepository.findByUsername(any())).thenReturn(Optional.of(UserEntity()))
                 
                 it("should throw a user already exists exception") {
                     

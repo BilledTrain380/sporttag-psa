@@ -34,39 +34,62 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.participation
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Competitor
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import java.util.*
 
 /**
- * Manager for the absent status of a competitor.
+ * A manager to handle {@link Competitor} data.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-// TODO use Participant and Competitor classes instead
-interface AbsentManager {
+interface CompetitorManager {
 
     /**
-     * @return true if the given {@code competitor} is absent, otherwise false
+     * @return a list of all competitors
      */
-    fun isAbsent(competitor: ParticipantEntity): Boolean
+    fun getCompetitorList(): List<Competitor>
 
     /**
-     * Marks the given {@code competitor} as absent.
+     * Get all competitors related to the given {@code clazz}.
      *
-     * If the competitor is already marked as absent, this method will do nothing.
+     * @param clazz the class to filter the competitors
      *
-     * @param competitor the competitor to mark as absent
+     * @return a list of competitors related to the given {@code clazz}
      */
-    fun markAsAbsent(competitor: ParticipantEntity)
+    fun getCompetitorList(clazz: Group): List<Competitor>
 
     /**
-     * Marks the given {@code competitor} as present.
+     * Get all competitors matching the given {@code gender}.
      *
-     * If the competitor is already marked as present, this method will do nothing.
+     * @param gender the gender to filter the competitors
      *
-     * @param competitor the competitor to mark as present
+     * @return a list of competitors matching the given {@code gender}
      */
-    fun markAsPresent(competitor: ParticipantEntity)
+    fun getCompetitorList(gender: Gender): List<Competitor>
+
+    /**
+     * Get all competitors related to the given {@code clazz} AND matching the given {@code gender}.
+     *
+     * @param clazz the class to filter the competitors
+     * @param gender the gender to filter the competitors
+     *
+     * @return a list of competitors matching the given arguments
+     */
+    fun getCompetitorList(clazz: Group, gender: Gender): List<Competitor>
+
+    /**
+     * Get a competitor as a {@link Optional} matching the given {@code id}.
+     *
+     * If no competitor can be found an empty Optional will be returned.
+     *
+     * @param id the ID of the competitor
+     *
+     * @return an Optional containing the resulting competitor
+     */
+    fun getCompetitor(id: Int): Optional<Competitor>
 }

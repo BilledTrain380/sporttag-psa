@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.model.*
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
@@ -56,7 +56,7 @@ object ParticipantManagerImplSpec: Spek({
 
     describe("a participant manager") {
 
-        val mockCompetitorRepository: CompetitorRepository = mock()
+        val mockCompetitorRepository: ParticipantRepository = mock()
         val mockClassManager: ClassManager = mock()
         val mockAbsentManager: AbsentManager = mock()
 
@@ -70,9 +70,9 @@ object ParticipantManagerImplSpec: Spek({
 
             on("a participant with no relation or absent changes") {
 
-                val competitor = CompetitorEntity(1, "Muster", "Max").apply {
+                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
                     town = TownEntity(1, "8000", "Zürich")
-                    clazz = ClazzEntity("2a", CoachEntity(1, "Sepp"))
+                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
                 }
 
                 whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
@@ -82,12 +82,12 @@ object ParticipantManagerImplSpec: Spek({
                         1,
                         "Muster",
                         "Willi",
-                        Gender.male(),
+                        Gender.MALE,
                         Birthday(0),
                         false,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("2a", Coach(1,"Sepp")))
+                        Group("2a", Coach(1,"Sepp")))
 
                 manager.saveParticipant(participant)
 
@@ -102,9 +102,9 @@ object ParticipantManagerImplSpec: Spek({
 
             on("a participant with a changed relations") {
 
-                val competitor = CompetitorEntity(1, "Muster", "Max").apply {
+                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
                     town = TownEntity(1, "8000", "Zürich")
-                    clazz = ClazzEntity("2a", CoachEntity(1, "Sepp"))
+                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
                 }
 
                 whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
@@ -114,19 +114,19 @@ object ParticipantManagerImplSpec: Spek({
                         1,
                         "Muster",
                         "Max",
-                        Gender.male(),
+                        Gender.MALE,
                         Birthday(0),
                         false,
                         "",
                         Town(2, "3000", "Bern"),
-                        Clazz("3a", Coach(2, "Müller")))
+                        Group("3a", Coach(2, "Müller")))
 
                 manager.saveParticipant(participant)
 
 
                 it("should update the class relation") {
                     val expected = competitor.copy().apply {
-                        clazz = ClazzEntity("3a", CoachEntity(2, "Müller"))
+                        group = GroupEntity("3a", CoachEntity(2, "Müller"))
                         town = TownEntity(2, "3000", "Bern")
                     }
                     verify(mockCompetitorRepository, times(1)).save(expected)
@@ -135,7 +135,7 @@ object ParticipantManagerImplSpec: Spek({
 
             on("a participant with changed sport relation") {
 
-                val competitor = CompetitorEntity(1, "Muster", "Max")
+                val competitor = ParticipantEntity(1, "Muster", "Max")
 
                 whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
 
@@ -144,12 +144,12 @@ object ParticipantManagerImplSpec: Spek({
                         1,
                         "Muster",
                         "Willi",
-                        Gender.male(),
+                        Gender.MALE,
                         Birthday(0),
                         false,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("2a", Coach(1,"Sepp")),
+                        Group("2a", Coach(1,"Sepp")),
                         Optional.of("Skipping"))
 
                 manager.saveParticipant(participant)
@@ -164,9 +164,9 @@ object ParticipantManagerImplSpec: Spek({
 
             on("a participant which is marked as absent") {
 
-                val competitor = CompetitorEntity(1, "Muster", "Max").apply {
+                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
                     town = TownEntity(1, "8000", "Zürich")
-                    clazz = ClazzEntity("2a", CoachEntity(1, "Sepp"))
+                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
                 }
 
                 whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
@@ -176,12 +176,12 @@ object ParticipantManagerImplSpec: Spek({
                         1,
                         "Muster",
                         "Max",
-                        Gender.male(),
+                        Gender.MALE,
                         Birthday(0),
                         true,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("2a", Coach(1,"Sepp")))
+                        Group("2a", Coach(1,"Sepp")))
 
                 manager.saveParticipant(participant)
 
@@ -199,9 +199,9 @@ object ParticipantManagerImplSpec: Spek({
 
             on("a participant which is marked as present") {
 
-                val competitor = CompetitorEntity(1, "Muster", "Max").apply {
+                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
                     town = TownEntity(1, "8000", "Zürich")
-                    clazz = ClazzEntity("2a", CoachEntity(1, "Sepp"))
+                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
                 }
 
                 whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
@@ -211,12 +211,12 @@ object ParticipantManagerImplSpec: Spek({
                         1,
                         "Muster",
                         "Max",
-                        Gender.male(),
+                        Gender.MALE,
                         Birthday(0),
                         false,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("2a", Coach(1,"Sepp")))
+                        Group("2a", Coach(1,"Sepp")))
 
                 manager.saveParticipant(participant)
 
@@ -241,19 +241,19 @@ object ParticipantManagerImplSpec: Spek({
                         1,
                         "Muster",
                         "Max",
-                        Gender.male(),
+                        Gender.MALE,
                         Birthday(0),
                         false,
                         "",
                         Town(1, "8000", "Zürich"),
-                        Clazz("2a", Coach(1,"Sepp")))
+                        Group("2a", Coach(1,"Sepp")))
 
                 manager.saveParticipant(participant)
 
                 it("should create a new participant") {
-                    val expected = CompetitorEntity(null, "Muster", "Max").apply {
+                    val expected = ParticipantEntity(null, "Muster", "Max").apply {
                         town = TownEntity(1, "8000", "Zürich")
-                        clazz = ClazzEntity("2a", CoachEntity(1, "Sepp"))
+                        group = GroupEntity("2a", CoachEntity(1, "Sepp"))
                     }
                     verify(mockCompetitorRepository, times(1)).save(expected)
                     verify(mockAbsentManager, times(1)).markAsPresent(expected)

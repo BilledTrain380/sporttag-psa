@@ -37,11 +37,11 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.springframework.stereotype.Component
 import javax.persistence.EntityNotFoundException
@@ -55,9 +55,9 @@ import javax.persistence.EntityNotFoundException
  */
 @Component
 class EntrySafeCompetitorConsumer(
-        private val competitorRepository: CompetitorRepository,
+        private val competitorRepository: ParticipantRepository,
         private val townRepository: TownRepository,
-        private val clazzRepository: ClazzRepository
+        private val clazzRepository: GroupRepository
 ): CompetitorConsumer {
 
     /**
@@ -69,15 +69,15 @@ class EntrySafeCompetitorConsumer(
      */
     override fun accept(competitor: FlatCompetitor) {
         
-        val clazzEntity: ClazzEntity = clazzRepository.findByName(competitor.clazz).orElseThrow {
+        val clazzEntity: GroupEntity = clazzRepository.findByName(competitor.clazz).orElseThrow {
             EntityNotFoundException("Competitor $competitor expecting an existing ClazzEntity: ClazzEntity not found")
         }
 
-        val townEntity: TownEntity = townRepository.findByZipAndName(competitor.zipCode, competitor.town) ?:
-                TownEntity(null, competitor.zipCode, competitor.town)
+        val townEntity: TownEntity = townRepository.findByZipAndName(competitor.zipCode, competitor.town)
+                .orElseGet { TownEntity(null, competitor.zipCode, competitor.town) }
         
-        val competitorEntity: CompetitorEntity = CompetitorEntity(
-                null, competitor.surname, competitor.prename, competitor.gender, competitor.birthday.time, competitor.address, townEntity, clazzEntity)
+        val competitorEntity: ParticipantEntity = ParticipantEntity(
+                null, competitor.surname, competitor.prename, "", competitor.birthday.time, competitor.address, townEntity, clazzEntity)
         
         competitorRepository.save(competitorEntity)    
     }

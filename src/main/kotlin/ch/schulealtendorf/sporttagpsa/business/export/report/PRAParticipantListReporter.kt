@@ -43,7 +43,7 @@ import ch.schulealtendorf.pra.pojo.ParticipantList
 import ch.schulealtendorf.sporttagpsa.business.export.SimpleSport
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
@@ -58,7 +58,7 @@ import java.io.IOException
 @Component
 class PRAParticipantListReporter(
         private val fileSystem: FileSystem,
-        private val competitorRepository: CompetitorRepository,
+        private val competitorRepository: ParticipantRepository,
         private val participantListAPI: ParticipantListAPI,
         private val absentCompetitorRepository: AbsentCompetitorRepository
 ): ParticipantListReporter {
@@ -84,14 +84,14 @@ class PRAParticipantListReporter(
                         val participantList = ParticipantList().apply {
                             sport = it.name
                             this.participants = participants
-                                    .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.id } }
+                                    .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.id } }
                                     .map {
                                         Participant().apply {
                                             prename = it.prename
                                             surname = it.surname
-                                            isGender = it.gender
-                                            clazz = it.clazz.name
-                                            teacher = it.clazz.coach.name
+                                            isGender = true
+                                            clazz = it.group.name
+                                            teacher = it.group.coach.name
                                         }
                                     }
                         }

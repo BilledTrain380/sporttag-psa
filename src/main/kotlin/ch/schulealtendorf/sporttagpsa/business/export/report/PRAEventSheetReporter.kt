@@ -71,35 +71,35 @@ class PRAEventSheetReporter(
      * @throws ReportGenerationException if the report generation fails
      */
     override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
-
-        try {
-            return data.map { 
-                
-                val resultList = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(it.discipline.id, it.gender, it.clazz.id)
-    
-                val eventSheet = EventSheet().apply { 
-                    clazz = it.clazz.name
-                    discipline = it.discipline.name
-                    isGender = it.gender
-                    competitors = resultList.map {
-                        Competitor().apply { 
-                            startnumber = it.starter.number!!
-                            prename = it.starter.competitor.prename
-                            surname = it.starter.competitor.surname
-                            setDistance(it.distance)
-                        }
-                    }
-                }
-                
-                val report = eventSheetAPI.createReport(eventSheet)
-                
-                fileSystem.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
-            }.toSet()
-        } catch (ex: IOException) {
-            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
-        } catch (ex: ReportAPIException) {
-            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
-        }
+        TODO()
+//        try {
+//            return data.map {
+//
+//                val resultList = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(it.discipline.id, it.gender, it.clazz.id)
+//
+//                val eventSheet = EventSheet().apply {
+//                    clazz = it.clazz.name
+//                    discipline = it.discipline.name
+//                    isGender = it.gender
+//                    competitors = resultList.map {
+//                        Competitor().apply {
+//                            startnumber = it.starter.startnumber!!
+//                            prename = it.starter.participant.prename
+//                            surname = it.starter.participant.surname
+//                            setDistance(it.distance)
+//                        }
+//                    }
+//                }
+//
+//                val report = eventSheetAPI.createReport(eventSheet)
+//
+//                fileSystem.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
+//            }.toSet()
+//        } catch (ex: IOException) {
+//            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
+//        } catch (ex: ReportAPIException) {
+//            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
+//        }
     }
     
     private fun Boolean.text() = if(this) "Knaben" else "Mädchen"

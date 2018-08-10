@@ -44,7 +44,7 @@ import ch.schulealtendorf.pra.pojo.TotalCompetitor
 import ch.schulealtendorf.pra.pojo.TotalRanking
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
-import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 import java.io.File
@@ -61,7 +61,7 @@ import java.time.Year
 @Component
 class PRATotalRankingReporter(
         private val fileSystem: FileSystem,
-        private val starterRepository: StarterRepository,
+        private val starterRepository: CompetitorRepository,
         private val totalRankingAPI: TotalRankingAPI,
         private val absentCompetitorRepository: AbsentCompetitorRepository
 ): TotalRankingReporter {
@@ -82,9 +82,9 @@ class PRATotalRankingReporter(
 
             return data.map { gender ->
 
-                starterRepository.findByCompetitorGender(gender)
-                        .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.competitor.id } }
-                        .groupBy { DateTime(it.competitor.birthday).year }
+                starterRepository.findByParticipantGender(gender.toString())
+                        .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.participant.id } }
+                        .groupBy { DateTime(it.participant.birthday).year }
                         .map {
 
                             val ranking = TotalRanking().apply {
@@ -92,15 +92,15 @@ class PRATotalRankingReporter(
                                 isGender = gender
                                 this.competitors = it.value.map {
                                     TotalCompetitor().apply {
-                                        prename = it.competitor.prename
-                                        surname = it.competitor.surname
-                                        clazz = it.competitor.clazz.name
+                                        prename = it.participant.prename
+                                        surname = it.participant.surname
+                                        clazz = it.participant.group.name
 
                                         weitsprung = Discipline().apply {
                                             val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.value.toDouble())
                                             points = resultEntity.points
                                         }
 
@@ -108,7 +108,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Seilspringen" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result.toInt())
+                                            result = Result(resultEntity.value.toInt())
                                             points = resultEntity.points
                                         }
 
@@ -116,7 +116,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.value.toDouble())
                                             points = resultEntity.points
                                         }
 
@@ -124,7 +124,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Korbeinwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result.toInt())
+                                            result = Result(resultEntity.value.toInt())
                                             points = resultEntity.points
                                         }
 
@@ -132,7 +132,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Ballzielwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result.toInt())
+                                            result = Result(resultEntity.value.toInt())
                                             points = resultEntity.points
                                         }
 
@@ -140,7 +140,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.result)
+                                            result = Result(resultEntity.value.toDouble())
                                             points = resultEntity.points
                                         }
                                     }

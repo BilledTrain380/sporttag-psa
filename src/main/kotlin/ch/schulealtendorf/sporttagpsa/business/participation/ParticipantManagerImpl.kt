@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
 import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.model.*
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -51,7 +51,7 @@ import java.util.*
  */
 @Component
 class ParticipantManagerImpl(
-        private val competitorRepository: CompetitorRepository,
+        private val competitorRepository: ParticipantRepository,
         private val classManager: ClassManager,
         private val absentManager: AbsentManager
 ): ParticipantManager {
@@ -71,8 +71,8 @@ class ParticipantManagerImpl(
      *
      * @return all participant related to the given {@code clazz}.
      */
-    override fun getAllParticipants(clazz: Clazz): List<Participant> {
-        return competitorRepository.findByClazzName(clazz.name)
+    override fun getAllParticipants(clazz: Group): List<Participant> {
+        return competitorRepository.findByGroupName(clazz.name)
                 .map { it.map() }
     }
 
@@ -104,16 +104,16 @@ class ParticipantManagerImpl(
      */
     override fun saveParticipant(participant: Participant) {
 
-        val competitor = competitorRepository.findById(participant.id).orElseGet { CompetitorEntity() }
+        val competitor = competitorRepository.findById(participant.id).orElseGet { ParticipantEntity() }
 
         competitor.apply {
             surname = participant.surname
             prename = participant.prename
-            gender = participant.gender.value
+            gender = participant.gender.name
             birthday = participant.birthday.milliseconds
             address = participant.address
             town = TownEntity(participant.town.id, participant.town.zip, participant.town.name)
-            clazz = ClazzEntity(participant.clazz.name, CoachEntity(participant.clazz.coach.id, participant.clazz.coach.name))
+            group = GroupEntity(participant.clazz.name, CoachEntity(participant.clazz.coach.id, participant.clazz.coach.name))
             participant.sport.ifPresent {
                 sport = SportEntity(participant.sport.get())
             }
@@ -128,16 +128,16 @@ class ParticipantManagerImpl(
         }
     }
 
-    private fun CompetitorEntity.map(): Participant {
+    private fun ParticipantEntity.map(): Participant {
 
-        val clazz = classManager.getClass(clazz.name)
+        val clazz = classManager.getClass(group.name)
         val sport: String? = if (sport == null) null else sport?.name
 
         return Participant(
                 id!!,
                 surname,
                 prename,
-                Gender(gender),
+                Gender.FEMALE,
                 Birthday(birthday),
                 absentManager.isAbsent(this),
                 address,

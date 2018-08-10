@@ -45,7 +45,7 @@ import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
-import ch.schulealtendorf.sporttagpsa.repository.StarterRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 import java.io.File
@@ -64,7 +64,7 @@ import java.util.*
 @Component
 class PRADisciplineGroupRankingReporter(
         private val fileSystem: FileSystem,
-        private val starterRepository: StarterRepository,
+        private val starterRepository: CompetitorRepository,
         private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI,
         private val absentCompetitorRepository: AbsentCompetitorRepository
 ): DisciplineGroupRankingReporter {
@@ -85,9 +85,9 @@ class PRADisciplineGroupRankingReporter(
 
             return data.map { gender ->
     
-                starterRepository.findByCompetitorGender(gender)
-                    .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.competitor.id } }
-                    .groupBy { DateTime(it.competitor.birthday).year }
+                starterRepository.findByParticipantGender(gender.toString())
+                    .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.participant.id } }
+                    .groupBy { DateTime(it.participant.birthday).year }
                     .map {
     
                         val ranking = DisciplineGroupRanking().apply {
@@ -95,15 +95,15 @@ class PRADisciplineGroupRankingReporter(
                             isGender = gender
                             this.competitors = it.value.map {
                                 DisciplineGroupCompetitor().apply {
-                                    prename = it.competitor.prename
-                                    surname = it.competitor.surname
-                                    clazz = it.competitor.clazz.name
+                                    prename = it.participant.prename
+                                    surname = it.participant.surname
+                                    clazz = it.participant.group.name
 
                                     ballwurf = Discipline().apply {
                                         val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
+                                        result = Result(resultEntity.value.toDouble())
                                         points = resultEntity.points
                                     }
 
@@ -111,7 +111,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
+                                        result = Result(resultEntity.value.toDouble())
                                         points = resultEntity.points
                                     }
 
@@ -119,7 +119,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.result)
+                                        result = Result(resultEntity.value.toDouble())
                                         points = resultEntity.points
                                     }
                                 }
@@ -158,9 +158,9 @@ class PRADisciplineGroupRankingReporter(
 
             return genders.map { gender ->
 
-                starterRepository.findByCompetitorGender(gender.value)
-                        .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.competitor.id } }
-                        .groupBy { DateTime(it.competitor.birthday).year }
+                starterRepository.findByParticipantGender(gender.toString())
+                        .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.participant.id } }
+                        .groupBy { DateTime(it.participant.birthday).year }
                         .map {
 
                             val headers = "Startnummer,Name,Vorname,Adresse,PLZ,Ort,Geburtsdatum,Verein / Schule,Schnelllauf,Weitsprung,Ballwurf"
@@ -169,18 +169,18 @@ class PRADisciplineGroupRankingReporter(
                                     .reversed()
                                     .map {
 
-                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.result)
-                                        val schnelllauf = Result(it.results.single { it.discipline.name == "Schnelllauf" }.result)
-                                        val weitsprung = Result(it.results.single { it.discipline.name == "Weitsprung" }.result)
+                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.value.toDouble())
+                                        val schnelllauf = Result(it.results.single { it.discipline.name == "Schnelllauf" }.value.toDouble())
+                                        val weitsprung = Result(it.results.single { it.discipline.name == "Weitsprung" }.value.toDouble())
 
                                         listOf(
-                                                it.number.toString(),
-                                                it.competitor.surname,
-                                                it.competitor.prename,
-                                                it.competitor.address,
-                                                it.competitor.town.zip,
-                                                it.competitor.town.name,
-                                                it.competitor.birthday.formattedDate(),
+                                                it.startnumber.toString(),
+                                                it.participant.surname,
+                                                it.participant.prename,
+                                                it.participant.address,
+                                                it.participant.town.zip,
+                                                it.participant.town.name,
+                                                it.participant.birthday.formattedDate(),
                                                 "Primarschule Altendorf / KTV",
                                                 schnelllauf.toString(),
                                                 weitsprung.toString(),

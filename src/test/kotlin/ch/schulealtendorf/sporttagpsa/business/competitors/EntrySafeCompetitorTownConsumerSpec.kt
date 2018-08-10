@@ -68,7 +68,7 @@ object EntrySafeCompetitorTownConsumerSpec: Spek({
         
         on("consuming a FlatCompetitor") {
 
-            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(null)
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(Optional.empty())
 
             consumer.accept(flatCompetitor)
             
@@ -82,7 +82,7 @@ object EntrySafeCompetitorTownConsumerSpec: Spek({
 
             val foundEntity: TownEntity = TownEntity(1, "4000", "Musterhausen")
 
-            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(foundEntity)
+            `when` (mockTownRepo.findByZipAndName("4000", "Musterhausen")).thenReturn(Optional.of(foundEntity))
 
             consumer.accept(flatCompetitor)
             

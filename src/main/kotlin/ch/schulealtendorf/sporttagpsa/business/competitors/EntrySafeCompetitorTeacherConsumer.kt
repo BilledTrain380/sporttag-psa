@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import org.springframework.stereotype.Component
 
 /**
@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class EntrySafeCompetitorTeacherConsumer(
-        private val teacherRepository: TeacherRepository
+        private val teacherRepository: CoachRepository
 ): CompetitorTeacherConsumer {
 
     /**

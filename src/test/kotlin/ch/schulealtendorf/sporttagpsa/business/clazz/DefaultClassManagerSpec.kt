@@ -36,12 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.clazz
 
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
-import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
@@ -63,8 +63,8 @@ object DefaultClassManagerSpec: Spek({
 
     describe("a class manager") {
 
-        val mockCompetitorRepository: CompetitorRepository = mock()
-        val mockClassRepository: ClazzRepository = mock()
+        val mockCompetitorRepository: ParticipantRepository = mock()
+        val mockClassRepository: GroupRepository = mock()
 
         val classManager = DefaultClassManager(mockClassRepository, mockCompetitorRepository)
 
@@ -79,17 +79,17 @@ object DefaultClassManagerSpec: Spek({
 
             on("no pending participation") {
 
-                val competitors: List<CompetitorEntity> = listOf(
-                        CompetitorEntity().apply { sport = running },
-                        CompetitorEntity().apply { sport = running },
-                        CompetitorEntity().apply { sport = running },
-                        CompetitorEntity().apply { sport = running }
+                val competitors: List<ParticipantEntity> = listOf(
+                        ParticipantEntity().apply { sport = running },
+                        ParticipantEntity().apply { sport = running },
+                        ParticipantEntity().apply { sport = running },
+                        ParticipantEntity().apply { sport = running }
                 )
 
-                whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(competitors)
+                whenever(mockCompetitorRepository.findByGroupName(any())).thenReturn(competitors)
 
 
-                val clazz = Clazz("2a", Coach(1, "Müller"))
+                val clazz = Group("2a", Coach(1, "Müller"))
                 val result = classManager.hasPendingParticipation(clazz)
 
 
@@ -100,17 +100,17 @@ object DefaultClassManagerSpec: Spek({
 
             on("pending participation") {
 
-                val competitors: List<CompetitorEntity> = listOf(
-                        CompetitorEntity().apply { sport = running },
-                        CompetitorEntity().apply { sport = running },
-                        CompetitorEntity().apply { sport = running },
-                        CompetitorEntity() // one competitor has no sport so the class has pending participation
+                val competitors: List<ParticipantEntity> = listOf(
+                        ParticipantEntity().apply { sport = running },
+                        ParticipantEntity().apply { sport = running },
+                        ParticipantEntity().apply { sport = running },
+                        ParticipantEntity() // one competitor has no sport so the class has pending participation
                 )
 
-                whenever(mockCompetitorRepository.findByClazzName(any())).thenReturn(competitors)
+                whenever(mockCompetitorRepository.findByGroupName(any())).thenReturn(competitors)
 
 
-                val clazz = Clazz("2a", Coach(1, "Müller"))
+                val clazz = Group("2a", Coach(1, "Müller"))
                 val result = classManager.hasPendingParticipation(clazz)
 
 

@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -52,11 +52,11 @@ import java.util.*
  */
 object EntrySafeCompetitorTeacherConsumerSpec: Spek({
     
-    var mockTeacherRepo: TeacherRepository = Mockito.mock(TeacherRepository::class.java)
+    var mockTeacherRepo: CoachRepository = Mockito.mock(CoachRepository::class.java)
     var consumer: EntrySafeCompetitorTeacherConsumer = EntrySafeCompetitorTeacherConsumer(mockTeacherRepo)
     
     beforeEachTest {
-        mockTeacherRepo = Mockito.mock(TeacherRepository::class.java)
+        mockTeacherRepo = Mockito.mock(CoachRepository::class.java)
         consumer = EntrySafeCompetitorTeacherConsumer(mockTeacherRepo)
     }
     

@@ -34,28 +34,38 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.ranking
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-data class RankingForm(
-        var disciplines: List<DisciplineRankingForm> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingForm = DisciplineGroupRankingForm(),
-        var total: TotalRankingForm = TotalRankingForm(),
-        var ubsCup: DisciplineGroupRankingForm = DisciplineGroupRankingForm()
-)
+import ch.schulealtendorf.sporttagpsa.model.Result
+import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 
-data class DisciplineRankingForm(
-        var id: Int = 0,
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+/**
+ * Manager for the result of a competitor.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+class ResultManagerImpl(
+        private val resultRepository: ResultRepository
+): ResultManager {
 
-data class DisciplineGroupRankingForm(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+    /**
+     * Updates the given {@code result}.
+     *
+     * @param result the result to save
+     *
+     * @throws NoSuchElementException if the given result could not be found
+     */
+    override fun updateResult(result: Result) {
 
-data class TotalRankingForm(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
+        val resultEntity = resultRepository.findById(result.id)
+                .orElseThrow { NoSuchElementException("Could not find result with id '${result.id}'") }
+
+        resultEntity.apply {
+            points = result.points
+            this.value = result.value
+        }
+
+        resultRepository.save(resultEntity)
+    }
+}

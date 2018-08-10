@@ -63,7 +63,7 @@ class UserManagerImpl(
      */
     override fun create(user: FreshUser) {
         
-        if(userRepository.findByUsername(user.username) != null) {
+        if(userRepository.findByUsername(user.username).isPresent) {
             throw UserAlreadyExistsException("User exists already: username=${user.username}")
         }
         

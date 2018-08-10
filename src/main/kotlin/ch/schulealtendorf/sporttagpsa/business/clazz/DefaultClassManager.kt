@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.clazz
 
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -52,14 +52,14 @@ import java.util.*
  */
 @Component
 class DefaultClassManager(
-        private val classRepository: ClazzRepository,
-        private val competitorRepository: CompetitorRepository
+        private val classRepository: GroupRepository,
+        private val competitorRepository: ParticipantRepository
 ): ClassManager {
 
     /**
      * @return all classes which are available
      */
-    override fun getAllClasses(): List<Clazz> {
+    override fun getAllClasses(): List<Group> {
         return classRepository.findAll()
                 .mapNotNull { it?.map() }
     }
@@ -72,7 +72,7 @@ class DefaultClassManager(
      *
      * @return the resulting class in an Optional
      */
-    override fun getClass(name: String): Optional<Clazz> {
+    override fun getClass(name: String): Optional<Group> {
 
         val clazz = classRepository.findByName(name)
 
@@ -86,7 +86,7 @@ class DefaultClassManager(
      *
      * @param clazz the class to save
      */
-    override fun saveClass(clazz: Clazz) {
+    override fun saveClass(clazz: Group) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -96,10 +96,10 @@ class DefaultClassManager(
      *
      * @return true if the class has pending participation, otherwise false
      */
-    override fun hasPendingParticipation(clazz: Clazz) = competitorRepository.findByClazzName(clazz.name).any { it.sport == null }
+    override fun hasPendingParticipation(clazz: Group) = competitorRepository.findByGroupName(clazz.name).any { it.sport == null }
 
-    private fun ClazzEntity.map(): Clazz {
-        return Clazz(
+    private fun GroupEntity.map(): Group {
+        return Group(
                 name,
                 Coach(coach.id!!, coach.name))
     }

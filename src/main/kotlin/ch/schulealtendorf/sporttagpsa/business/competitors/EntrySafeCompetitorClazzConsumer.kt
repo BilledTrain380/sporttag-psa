@@ -37,8 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
+import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import org.springframework.stereotype.Component
 import javax.persistence.EntityNotFoundException
 
@@ -51,8 +51,8 @@ import javax.persistence.EntityNotFoundException
  */
 @Component
 class EntrySafeCompetitorClazzConsumer(
-        private val clazzRepository: ClazzRepository,
-        private val teacherRepository: TeacherRepository
+        private val clazzRepository: GroupRepository,
+        private val teacherRepository: CoachRepository
 ): CompetitorClazzConsumer {
 
     /**

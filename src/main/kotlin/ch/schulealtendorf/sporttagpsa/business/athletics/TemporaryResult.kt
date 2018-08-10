@@ -34,33 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.tournament
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-data class TournamentCompetitorFormModel(
-        var discipline: TournamentDisciplineModel = TournamentDisciplineModel(),
-        var clazz: TournamentClazzModel = TournamentClazzModel(),
-        var gender: Boolean = true,
-        var competitors: List<TournamentCompetitorModel> = arrayListOf()
-)
+import ch.schulealtendorf.sporttagpsa.model.Discipline
 
-data class TournamentCompetitorModel(
-        var startNumber: Int = 0,
-        var resultId: Int = 0,
-        var prename: String = "",
-        var surname: String = "",
-        var gender: Boolean = true,
-        var distance: String? = null,
-        var result: Double = 0.0,
-        var unit: String = "",
-        var points: Int = 1
-)
-
-data class TournamentClazzModel(
-        var id: Int = 0,
-        var name: String = ""
-)
-
-data class TournamentDisciplineModel(
-        var id: Int = 0,
-        var name: String = ""
+/**
+ * Data class representing a result which has no
+ * calculated points yet.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+data class TemporaryResult(
+        val id: Int,
+        val value: Long,
+        val discipline: Discipline
 )

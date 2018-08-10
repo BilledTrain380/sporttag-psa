@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.clazz
 
-import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Group
 import java.util.*
 
 /**
@@ -50,7 +50,7 @@ interface ClassManager {
     /**
      * @return all classes which are available
      */
-    fun getAllClasses(): List<Clazz>
+    fun getAllClasses(): List<Group>
 
     /**
      * An {@link Optional} containing the class matching
@@ -60,7 +60,7 @@ interface ClassManager {
      *
      * @return the resulting class in an Optional
      */
-    fun getClass(name: String): Optional<Clazz>
+    fun getClass(name: String): Optional<Group>
 
     /**
      * Saves the given {@code clazz}.
@@ -69,7 +69,7 @@ interface ClassManager {
      *
      * @param clazz the class to save
      */
-    fun saveClass(clazz: Clazz)
+    fun saveClass(clazz: Group)
 
     /**
      * A pending participation means, if any participant of the given {@code clazz}
@@ -77,5 +77,5 @@ interface ClassManager {
      *
      * @return true if the class has pending participation, otherwise false
      */
-    fun hasPendingParticipation(clazz: Clazz): Boolean
+    fun hasPendingParticipation(clazz: Group): Boolean
 }

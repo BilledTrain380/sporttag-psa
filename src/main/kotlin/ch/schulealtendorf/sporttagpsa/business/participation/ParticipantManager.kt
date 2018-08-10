@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Clazz
+import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import java.util.*
 
@@ -60,7 +60,7 @@ interface ParticipantManager {
      *
      * @return all participant related to the given {@code clazz}.
      */
-    fun getAllParticipants(clazz: Clazz): List<Participant>
+    fun getAllParticipants(clazz: Group): List<Participant>
 
     /**
      * Returns an Optional containing the participant matching

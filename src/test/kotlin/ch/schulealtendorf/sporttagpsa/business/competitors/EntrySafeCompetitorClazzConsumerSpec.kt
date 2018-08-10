@@ -37,9 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.business.competitors
 
 import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.entity.ClazzEntity
-import ch.schulealtendorf.sporttagpsa.repository.ClazzRepository
-import ch.schulealtendorf.sporttagpsa.repository.TeacherRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
+import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -57,13 +56,13 @@ import kotlin.test.assertFailsWith
  */
 object EntrySafeCompetitorClazzConsumerSpec: Spek({
     
-    var mockClazzRepo: ClazzRepository = Mockito.mock(ClazzRepository::class.java)
-    var mockTeacherRepo: TeacherRepository = Mockito.mock(TeacherRepository::class.java)
+    var mockClazzRepo: GroupRepository = Mockito.mock(GroupRepository::class.java)
+    var mockTeacherRepo: CoachRepository = Mockito.mock(CoachRepository::class.java)
     var consumer: EntrySafeCompetitorClazzConsumer = EntrySafeCompetitorClazzConsumer(mockClazzRepo, mockTeacherRepo)
     
     beforeEachTest {
-        mockClazzRepo= Mockito.mock(ClazzRepository::class.java)
-        mockTeacherRepo = Mockito.mock(TeacherRepository::class.java)
+        mockClazzRepo= Mockito.mock(GroupRepository::class.java)
+        mockTeacherRepo = Mockito.mock(CoachRepository::class.java)
         consumer = EntrySafeCompetitorClazzConsumer(mockClazzRepo, mockTeacherRepo)
     }
     
