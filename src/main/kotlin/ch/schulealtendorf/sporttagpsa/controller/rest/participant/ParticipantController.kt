@@ -56,133 +56,132 @@ class ParticipantController(
         private val classManager: ClassManager
 ) {
 
-    @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getAllParticipants(@RequestParam("class", required = false) clazzName: String?): List<RestParticipant> {
-
-        if (clazzName == null) {
-            return participantManager.getAllParticipants().map { it.map() }
-        }
-
-        val clazz = classManager.getClass(clazzName).orElseThrow { BadRequestException("Could not find class with name '$clazzName'") }
-
-        return participantManager.getAllParticipants(clazz).map { it.map() }
-    }
-
-    @PostMapping("/participant")
-    fun addParticipant() {
-        TODO("This request is not supported yet")
-    }
-
-    @GetMapping("/participant/{participant_id}")
-    fun getParticipant(@PathVariable("participant_id") participantId: Int): RestParticipant {
-
-        return participantManager.getParticipant(participantId)
-                .map { it.map() }
-                .orElseThrow { BadRequestException("Could not find participant with id '$participantId'") }
-    }
-
-    @PutMapping("/participant/{participant_id}")
-    fun updateParticipant(@PathVariable("participant_id") participantId: Int, @Valid @RequestBody restParticipant: RestPutParticipant) {
-
-        val participant = participantManager.getParticipant(participantId)
-                .orElseThrow { BadRequestException("Could not find participant with id '$participantId'") }
-
-        val updatedParticipant = participant.copy(
-                surname = restParticipant.surname!!,
-                prename = restParticipant.prename!!,
-                birthday = Birthday(restParticipant.birthday!!),
-                address = restParticipant.address!!,
-                absent = restParticipant.absent!!
-        )
-
-        participantManager.saveParticipant(updatedParticipant)
-    }
-
-    @PatchMapping("/participant/{participant_id}")
-    fun updateParticipant(@PathVariable("participant_id") participantId: Int, @Valid @RequestBody restParticipant: RestPatchParticipant) {
-
-        if (restParticipant.clazz == null && restParticipant.town == null && restParticipant.sport == null) {
-            throw BadRequestException("Missing either 'clazz', 'town' or 'sport' in request body.")
-        }
-
-        val participant = participantManager.getParticipant(participantId)
-                .orElseThrow { BadRequestException("Could not find participant with id '$participantId'") }
-
-        if (restParticipant.clazz != null) {
-            val clazz = classManager.getClass(restParticipant.clazz!!.name!!)
-                    .orElseThrow { BadRequestException("Could not find class with name''${restParticipant.clazz!!.name}") }
-            participant.update(clazz)
-        }
-
-        if (restParticipant.sport != null) {
-            participant.update(restParticipant.sport!!)
-        }
-
-        if (restParticipant.town != null) {
-            participant.update(restParticipant.town!!)
-        }
-    }
-
-    private fun Participant.update(sport: String) {
-        participantManager.saveParticipant(
-                this.copy(
-                        sport = java.util.Optional.of(sport)
-                )
-        )
-    }
-
-    private fun Participant.update(town: RestTown) {
-        participantManager.saveParticipant(
-                this.copy(
-                        town = town.map()
-                )
-        )
-    }
-
-    private fun Participant.update(clazz: Group) {
-        participantManager.saveParticipant(
-                this.copy(
-                        clazz = clazz
-                )
-        )
-    }
-
-    private fun Participant.map(): RestParticipant {
-        return RestParticipant(
-                id,
-                surname,
-                prename,
-                true,
-                birthday.milliseconds,
-                absent,
-                address,
-                town.map(),
-                clazz.map(),
-                sport.orElse(null)
-        )
-    }
-
-    private fun Group.map(): RestClass {
-        return RestClass(
-                name,
-                coach.name,
-                classManager.hasPendingParticipation(this)
-        )
-    }
-
-    private fun Town.map(): RestTown {
-        return RestTown(
-                id,
-                zip,
-                name
-        )
-    }
-
-    private fun RestTown.map(): Town {
-        return Town(
-                id!!,
-                zip!!,
-                name!!
-        )
-    }
+//    @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
+//    fun getAllParticipants(@RequestParam("class", required = false) clazzName: String?): List<RestParticipant> {
+//
+//        if (clazzName == null) {
+//            return participantManager.getAllParticipants().map { it.map() }
+//        }
+//
+//        val clazz = classManager.getClass(clazzName).orElseThrow { BadRequestException("Could not find class with name '$clazzName'") }
+//
+//        return participantManager.getAllParticipants(clazz).map { it.map() }
+//    }
+//
+//    @PostMapping("/participant")
+//    fun addParticipant() {
+//        TODO("This request is not supported yet")
+//    }
+//
+//    @GetMapping("/participant/{participant_id}")
+//    fun getParticipant(@PathVariable("participant_id") participantId: Int): RestParticipant {
+//
+//        return participantManager.getParticipant(participantId)
+//                .map { it.map() }
+//                .orElseThrow { BadRequestException("Could not find participant with id '$participantId'") }
+//    }
+//
+//    @PutMapping("/participant/{participant_id}")
+//    fun updateParticipant(@PathVariable("participant_id") participantId: Int, @Valid @RequestBody restParticipant: RestPutParticipant) {
+//
+//        val participant = participantManager.getParticipant(participantId)
+//                .orElseThrow { BadRequestException("Could not find participant with id '$participantId'") }
+//
+//        val updatedParticipant = participant.copy(
+//                surname = restParticipant.surname!!,
+//                prename = restParticipant.prename!!,
+//                birthday = Birthday(restParticipant.birthday!!),
+//                address = restParticipant.address!!,
+//                absent = restParticipant.absent!!
+//        )
+//
+//        participantManager.saveParticipant(updatedParticipant)
+//    }
+//
+//    @PatchMapping("/participant/{participant_id}")
+//    fun updateParticipant(@PathVariable("participant_id") participantId: Int, @Valid @RequestBody restParticipant: RestPatchParticipant) {
+//
+//        if (restParticipant.clazz == null && restParticipant.town == null && restParticipant.sport == null) {
+//            throw BadRequestException("Missing either 'group', 'town' or 'sport' in request body.")
+//        }
+//
+//        val participant = participantManager.getParticipant(participantId)
+//                .orElseThrow { BadRequestException("Could not find participant with id '$participantId'") }
+//
+//        if (restParticipant.clazz != null) {
+//            val clazz = classManager.getClass(restParticipant.clazz!!.name!!)
+//                    .orElseThrow { BadRequestException("Could not find class with name''${restParticipant.clazz!!.name}") }
+//            participant.update(clazz)
+//        }
+//
+//        if (restParticipant.sport != null) {
+//            participant.update(restParticipant.sport!!)
+//        }
+//
+//        if (restParticipant.town != null) {
+//            participant.update(restParticipant.town!!)
+//        }
+//    }
+//
+//    private fun Participant.update(sport: String) {
+//        participantManager.saveParticipant(
+//                this.copy(
+//                        sport = java.util.Optional.ofNullable(null)
+//                )
+//        )
+//    }
+//
+//    private fun Participant.update(town: RestTown) {
+//        participantManager.saveParticipant(
+//                this.copy(
+//                        town = town.map()
+//                )
+//        )
+//    }
+//
+//    private fun Participant.update(clazz: Group) {
+//        participantManager.saveParticipant(
+//                this.copy(
+//                        group = clazz
+//                )
+//        )
+//    }
+//
+//    private fun Participant.map(): RestParticipant {
+//        return RestParticipant(
+//                id,
+//                surname,
+//                prename,
+//                true,
+//                birthday.milliseconds,
+//                absent,
+//                address,
+//                town.map(),
+//                group.map()
+//        )
+//    }
+//
+//    private fun Group.map(): RestClass {
+//        return RestClass(
+//                name,
+//                coach.name,
+//                classManager.hasPendingParticipation(this)
+//        )
+//    }
+//
+//    private fun Town.map(): RestTown {
+//        return RestTown(
+//                id,
+//                zip,
+//                name
+//        )
+//    }
+//
+//    private fun RestTown.map(): Town {
+//        return Town(
+//                id!!,
+//                zip!!,
+//                name!!
+//        )
+//    }
 }

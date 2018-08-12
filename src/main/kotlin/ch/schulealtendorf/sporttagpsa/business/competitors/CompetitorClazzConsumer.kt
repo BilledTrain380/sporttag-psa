@@ -40,7 +40,7 @@ import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
 import java.util.function.Consumer
 
 /**
- * Describes an implementation that consumes the attribute {@link FlatCompetitor#clazz}
+ * Describes an implementation that consumes the attribute {@link FlatCompetitor#group}
  * of a {@link FlatCompetitor} object.
  * 
  * @author nmaerchy

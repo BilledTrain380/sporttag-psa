@@ -86,7 +86,7 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             
             consumer.accept(flatCompetitor)
             
-            it("should find the ClazzEntity for the clazz") {
+            it("should find the ClazzEntity for the group") {
                 Mockito.verify(mockClazzRepo, Mockito.times(1)).findByName("1a")
             }
             
@@ -100,11 +100,11 @@ object EntrySafeCompetitorConsumerSpec: Spek({
             }
         }
         
-        on("consuming a FlatCompetitor with an unexpected clazz attribute") {
+        on("consuming a FlatCompetitor with an unexpected group attribute") {
             
             `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.empty())
             
-            it("should throw an EntityNotFoundException that the clazz entity does not exist") {
+            it("should throw an EntityNotFoundException that the group entity does not exist") {
                 val expected: EntityNotFoundException = assertFailsWith(EntityNotFoundException::class) {
                     consumer.accept(flatCompetitor)
                 }

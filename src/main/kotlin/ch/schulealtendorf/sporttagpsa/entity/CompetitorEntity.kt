@@ -45,7 +45,7 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 @Table(name = "COMPETITOR")
-class CompetitorEntity(
+data class CompetitorEntity(
 
         @Id
         @NotNull

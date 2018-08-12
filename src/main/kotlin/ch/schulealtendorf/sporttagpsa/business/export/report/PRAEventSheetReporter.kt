@@ -75,10 +75,10 @@ class PRAEventSheetReporter(
 //        try {
 //            return data.map {
 //
-//                val resultList = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(it.discipline.id, it.gender, it.clazz.id)
+//                val resultList = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(it.discipline.id, it.gender, it.group.id)
 //
 //                val eventSheet = EventSheet().apply {
-//                    clazz = it.clazz.name
+//                    group = it.group.name
 //                    discipline = it.discipline.name
 //                    isGender = it.gender
 //                    competitors = resultList.map {
@@ -93,7 +93,7 @@ class PRAEventSheetReporter(
 //
 //                val report = eventSheetAPI.createReport(eventSheet)
 //
-//                fileSystem.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
+//                fileSystem.write("Wettkampfblatt ${it.discipline.name} ${it.group.name} ${it.gender.text()}.pdf", report)
 //            }.toSet()
 //        } catch (ex: IOException) {
 //            throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)

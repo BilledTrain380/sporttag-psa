@@ -61,11 +61,11 @@ class CompetitorManagerImpl(
     override fun getCompetitorList() = starterRepository.findAll().map { it.map() }
 
     /**
-     * Get all competitors related to the given {@code clazz}.
+     * Get all competitors related to the given {@code group}.
      *
      * @param clazz the class to filter the competitors
      *
-     * @return a list of competitors related to the given {@code clazz}
+     * @return a list of competitors related to the given {@code group}
      */
     override fun getCompetitorList(clazz: Group) = getCompetitorList().filter { it.clazz == clazz }
 
@@ -79,7 +79,7 @@ class CompetitorManagerImpl(
     override fun getCompetitorList(gender: Gender) = getCompetitorList().filter { it.gender == gender }
 
     /**
-     * Get all competitors related to the given {@code clazz} AND matching the given {@code gender}.
+     * Get all competitors related to the given {@code group} AND matching the given {@code gender}.
      *
      * @param clazz the class to filter the competitors
      * @param gender the gender to filter the competitors

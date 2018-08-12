@@ -62,10 +62,10 @@ class EntrySafeCompetitorConsumer(
 
     /**
      * Saves a {@link CompetitorEntity} based on the passed in argument.
-     * The {@link FlatCompetitor#clazz} attribute has to be exist as a ClazzEntity already.
+     * The {@link FlatCompetitor#group} attribute has to be exist as a ClazzEntity already.
 
      * @param competitor the input argument
-     * @throws EntityNotFoundException if the {@link FlatCompetitor#clazz} attribute does not exist as a ClazzEntity already
+     * @throws EntityNotFoundException if the {@link FlatCompetitor#group} attribute does not exist as a ClazzEntity already
      */
     override fun accept(competitor: FlatCompetitor) {
         

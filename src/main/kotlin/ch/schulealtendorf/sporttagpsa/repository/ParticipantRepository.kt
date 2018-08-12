@@ -48,4 +48,8 @@ interface ParticipantRepository: CrudRepository<ParticipantEntity, Int> {
     fun findByGroupName(name: String): List<ParticipantEntity>
     
     fun findBySportName(name: String): List<ParticipantEntity>
+
+    fun findByGender(gender: String): List<ParticipantEntity>
+
+    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
 }

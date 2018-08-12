@@ -44,7 +44,7 @@ import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
@@ -66,7 +66,7 @@ class PRADisciplineGroupRankingReporter(
         private val fileSystem: FileSystem,
         private val starterRepository: CompetitorRepository,
         private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI,
-        private val absentCompetitorRepository: AbsentCompetitorRepository
+        private val absentCompetitorRepository: AbsentParticipantRepository
 ): DisciplineGroupRankingReporter {
 
     /**

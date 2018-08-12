@@ -42,7 +42,7 @@ import ch.schulealtendorf.pra.pojo.Participant
 import ch.schulealtendorf.pra.pojo.ParticipantList
 import ch.schulealtendorf.sporttagpsa.business.export.SimpleSport
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
 import java.io.File
@@ -60,7 +60,7 @@ class PRAParticipantListReporter(
         private val fileSystem: FileSystem,
         private val competitorRepository: ParticipantRepository,
         private val participantListAPI: ParticipantListAPI,
-        private val absentCompetitorRepository: AbsentCompetitorRepository
+        private val absentCompetitorRepository: AbsentParticipantRepository
 ): ParticipantListReporter {
 
     /**

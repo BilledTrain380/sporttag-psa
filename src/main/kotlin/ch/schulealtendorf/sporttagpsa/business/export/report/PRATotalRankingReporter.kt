@@ -43,7 +43,7 @@ import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.pra.pojo.TotalCompetitor
 import ch.schulealtendorf.pra.pojo.TotalRanking
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
@@ -63,7 +63,7 @@ class PRATotalRankingReporter(
         private val fileSystem: FileSystem,
         private val starterRepository: CompetitorRepository,
         private val totalRankingAPI: TotalRankingAPI,
-        private val absentCompetitorRepository: AbsentCompetitorRepository
+        private val absentCompetitorRepository: AbsentParticipantRepository
 ): TotalRankingReporter {
 
     /**

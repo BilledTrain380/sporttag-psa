@@ -37,20 +37,14 @@
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
 import ch.schulealtendorf.pra.api.DisciplineRankingAPI
-import ch.schulealtendorf.pra.api.ReportAPIException
-import ch.schulealtendorf.pra.pojo.DisciplineCompetitor
-import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
-import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 import java.io.File
-import java.io.IOException
-import java.time.Year
 
 /**
  * Discipline ranking reporter that uses PRA.
@@ -64,7 +58,7 @@ class PRADisciplineRankingReporter(
         private val fileSystem: FileSystem,
         private val resultRepository: ResultRepository,
         private val disciplineRankingAPI: DisciplineRankingAPI,
-        private val absentCompetitorRepository: AbsentCompetitorRepository
+        private val absentCompetitorRepository: AbsentParticipantRepository
 ): DisciplineRankingReporter {
 
     /**
@@ -98,7 +92,7 @@ class PRADisciplineRankingReporter(
 //                                DisciplineCompetitor().apply {
 //                                    prename = it.starter.participant.prename
 //                                    surname = it.starter.participant.surname
-//                                    clazz = it.starter.participant.group.name
+//                                    group = it.starter.participant.group.name
 //                                    result = it.result()
 //                                    points = it.points
 //                                }

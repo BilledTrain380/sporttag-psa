@@ -46,7 +46,7 @@ import java.util.*
  * @author nmaerchy
  * @version 1.0.0
  */
-interface AbsentCompetitorRepository: CrudRepository<AbsentParticipantEntity, Int> {
+interface AbsentParticipantRepository: CrudRepository<AbsentParticipantEntity, Int> {
 
-    fun findByCompetitorId(competitorId: Int): Optional<AbsentParticipantEntity>
+    fun findByParticipantId(competitorId: Int): Optional<AbsentParticipantEntity>
 }

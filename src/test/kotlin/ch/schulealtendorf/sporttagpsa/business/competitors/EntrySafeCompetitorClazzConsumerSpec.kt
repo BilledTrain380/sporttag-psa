@@ -80,7 +80,7 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
             
             consumer.accept(flatCompetitor)
             
-            it("should find the CoachEntity for the clazz") {
+            it("should find the CoachEntity for the group") {
                 Mockito.verify(mockTeacherRepo, Mockito.times(1)).findByName("Hans Müller")
             }
             
@@ -104,7 +104,7 @@ object EntrySafeCompetitorClazzConsumerSpec: Spek({
             }
         }
         
-        on("consuming a FlatCompetitor that clazz attribute already exists") {
+        on("consuming a FlatCompetitor that group attribute already exists") {
             
 //            `when` (mockClazzRepo.findByName("1a")).thenReturn(Optional.of(clazzEntity))
             

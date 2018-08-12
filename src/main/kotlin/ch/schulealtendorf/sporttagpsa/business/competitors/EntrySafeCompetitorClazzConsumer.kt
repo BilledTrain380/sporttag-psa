@@ -64,11 +64,11 @@ class EntrySafeCompetitorClazzConsumer(
      */
     override fun accept(competitor: FlatCompetitor) {
         
-//        if (!clazzRepository.findByName(competitor.clazz).isPresent) {
+//        if (!clazzRepository.findByName(competitor.group).isPresent) {
 //            val teacherEntity: CoachEntity = teacherRepository.findByName(competitor.teacher) ?:
-//                    throw EntityNotFoundException("Clazz ${competitor.clazz} expecting an existing CoachEntity: No CoachEntity found")
+//                    throw EntityNotFoundException("Clazz ${competitor.group} expecting an existing CoachEntity: No CoachEntity found")
 //
-//            val clazzEntity = ClazzEntity(null, competitor.clazz, teacherEntity)
+//            val clazzEntity = ClazzEntity(null, competitor.group, teacherEntity)
 //
 //            clazzRepository.save(clazzEntity)
 //        }

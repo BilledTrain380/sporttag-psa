@@ -63,7 +63,7 @@ interface ClassManager {
     fun getClass(name: String): Optional<Group>
 
     /**
-     * Saves the given {@code clazz}.
+     * Saves the given {@code group}.
      *
      * If the name of the class exists already, it will be updated, otherwise created.
      *
@@ -72,7 +72,7 @@ interface ClassManager {
     fun saveClass(clazz: Group)
 
     /**
-     * A pending participation means, if any participant of the given {@code clazz}
+     * A pending participation means, if any participant of the given {@code group}
      * as no sport.
      *
      * @return true if the class has pending participation, otherwise false
