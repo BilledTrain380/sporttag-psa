@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import java.util.*
@@ -49,37 +50,71 @@ import java.util.*
 interface ParticipantManager {
 
     /**
-     * @return all participants
+     * @return a list of all participants
      */
-    fun getAllParticipants(): List<Participant>
+    fun getParticipants(): List<Participant>
 
     /**
-     * Get all participant related to the given {@code clazz}.
+     * Filters all participant by the given {@code group}.
+     * Participants which are not related to the group
+     * are not included in the returned list.
      *
-     * @param clazz the class to filter the participants
+     * @param group the group where a participants belongs to
      *
-     * @return all participant related to the given {@code clazz}.
+     * @return the filtered participant list
      */
-    fun getAllParticipants(clazz: Group): List<Participant>
+    fun getParticipants(group: Group): List<Participant>
 
     /**
-     * Returns an Optional containing the participant matching
-     * the given {@code participantId} or an empty Optional if
-     * no participant could be found.
+     * Filters all participants by the given {@code gender}.
+     * Participants which are not equal to the gender
+     * are not included in the returned list.
      *
-     * @param participantId the id of the participant
+     * @param gender the gender of the participants
      *
-     * @return the resulting participant
+     * @return the filtered participant list
      */
-    fun getParticipant(participantId: Int): Optional<Participant>
+    fun getParticipants(gender: Gender): List<Participant>
+
+    /**
+     * Filters all participants by the given {@code group}
+     * AND by the given {@code gender}.
+     *
+     * Participants which are not related to the group AND not
+     * equal to the gender are not included in the returned list.
+     *
+     * @param group the group where the participants belongs to
+     * @param gender the gender of the participants
+     *
+     * @return the filtered participant list
+     */
+    fun getParticipants(group: Group, gender: Gender): List<Participant>
+
+    /**
+     * @param id the id of the participant
+     *
+     * @return an Optional containing the participant or empty if the participant could not be found
+     */
+    fun getParticipant(id: Int): Optional<Participant>
 
     /**
      * Saves the given {@code participant}.
-     * If the participant does not exists already, a new one is created.
      *
-     * Any given relation is cascaded.
+     * If the {@link Participant#id} < 1, it will be created.
      *
-     * @param participant the participant to update
+     * If the participant exists already, it will be updated.
+     *
+     * If the {@link Participant#town#id} < 1, it will be created.
+     *
+     * The {@link Participant#group} relation will be created if it does not exist yet.
+     *
+     * The properties {@link Participant#absent} and {@link Participant#sport} will be ignored.
+     * To update those use {@link ParticipationManager#markAsAbsent}, {@link ParticipationManager#markAsPresent}
+     * or {@link ParticipationManager#participate}.
+     *
+     * @param participant the participant to save
+     *
+     * @return the created participant
      */
-    fun saveParticipant(participant: Participant)
+    fun saveParticipant(participant: Participant): Participant
 }

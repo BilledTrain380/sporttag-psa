@@ -34,25 +34,16 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.model
-
-import java.util.*
+package ch.schulealtendorf.sporttagpsa.business.participation
 
 /**
- * Data class representing a participant.
+ * Locked sports are sports which must not be modified by anyone.
+ * They must exists in the entire application.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class Participant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Birthday,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: Group,
-        val sport: Optional<Sport> = Optional.empty()
-)
+object LockedSport {
+
+    const val ATHLETICS = "athletics"
+}

@@ -38,7 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import org.springframework.stereotype.Component
 
 /**
@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class DefaultAbsentManager(
-        private val absentCompetitorRepository: AbsentCompetitorRepository
+        private val absentCompetitorRepository: AbsentParticipantRepository
 ): AbsentManager {
 
     /**
@@ -59,7 +59,7 @@ class DefaultAbsentManager(
 
         if (competitor.id == null) return false
 
-        val absentCompetitor = absentCompetitorRepository.findByCompetitorId(competitor.id!!)
+        val absentCompetitor = absentCompetitorRepository.findByParticipantId(competitor.id!!)
 
         return absentCompetitor.isPresent
     }
@@ -73,7 +73,7 @@ class DefaultAbsentManager(
      */
     override fun markAsAbsent(competitor: ParticipantEntity) {
 
-        val absentCompetitorEntity = absentCompetitorRepository.findByCompetitorId(competitor.id!!)
+        val absentCompetitorEntity = absentCompetitorRepository.findByParticipantId(competitor.id!!)
 
         if (absentCompetitorEntity.isPresent) {
             return
@@ -95,7 +95,7 @@ class DefaultAbsentManager(
      */
     override fun markAsPresent(competitor: ParticipantEntity) {
 
-        val absentCompetitorEntity = absentCompetitorRepository.findByCompetitorId(competitor.id!!)
+        val absentCompetitorEntity = absentCompetitorRepository.findByParticipantId(competitor.id!!)
 
         absentCompetitorEntity.ifPresent {
             absentCompetitorRepository.delete(absentCompetitorEntity.get())

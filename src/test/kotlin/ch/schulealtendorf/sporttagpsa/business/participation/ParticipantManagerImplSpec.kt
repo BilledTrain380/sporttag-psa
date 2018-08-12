@@ -36,9 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
-import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
+import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
@@ -56,207 +59,141 @@ object ParticipantManagerImplSpec: Spek({
 
     describe("a participant manager") {
 
-        val mockCompetitorRepository: ParticipantRepository = mock()
-        val mockClassManager: ClassManager = mock()
-        val mockAbsentManager: AbsentManager = mock()
+        val mockParticipantRepository: ParticipantRepository = mock()
+        val mockAbsentRepository: AbsentParticipantRepository = mock()
 
-        val manager = ParticipantManagerImpl(mockCompetitorRepository, mockClassManager, mockAbsentManager)
+        val manager = ParticipantManagerImpl(
+                mockParticipantRepository,
+                mockAbsentRepository
+        )
 
         beforeEachTest {
-            reset(mockCompetitorRepository, mockClassManager, mockAbsentManager)
+            reset(
+                    mockAbsentRepository,
+                    mockParticipantRepository
+            )
         }
+
+        val townEntity = TownEntity(
+                id = 1,
+                zip = "3000",
+                name = "Bern"
+        )
+
+        val town = Town(
+                id = 1,
+                zip = "3000",
+                name = "Bern"
+        )
+
+        val groupEntity = GroupEntity(
+                name = "2a",
+                coach = CoachEntity(
+                        id = 1,
+                        name = "Willi"
+                )
+        )
+
+        val group = Group(
+                name = "2a",
+                coach = Coach(
+                        id = 1,
+                        name = "Willi"
+                )
+        )
+
+        val participantEntity = ParticipantEntity(
+                id = 1,
+                surname = "Muster",
+                prename = "Max",
+                gender = "MALE",
+                birthday = 0,
+                address = "Musterstrasse 8",
+                town = townEntity,
+                group = groupEntity
+        )
+
+        val participantModel = Participant(
+                1,
+                "Muster",
+                "Max",
+                Gender.MALE,
+                Birthday(0),
+                false,
+                "Musterstrasse 8",
+                town,
+                group
+        )
 
         context("save a participant") {
 
-            on("a participant with no relation or absent changes") {
+            beforeEachTest {
+                // we only set the nullable values to avoid the null pointer
+                whenever(mockParticipantRepository.save(any<ParticipantEntity>()))
+                        .thenReturn(
+                                ParticipantEntity(1, town = TownEntity(1), group = GroupEntity(coach = CoachEntity(1)))
+                        )
+            }
 
-                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
-                    town = TownEntity(1, "8000", "Zürich")
-                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
-                }
+            on("new participant") {
 
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
+                whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.empty())
 
 
-                val participant = Participant(
-                        1,
-                        "Muster",
-                        "Willi",
-                        Gender.MALE,
-                        Birthday(0),
-                        false,
-                        "",
-                        Town(1, "8000", "Zürich"),
-                        Group("2a", Coach(1,"Sepp")))
-
+                val participant = participantModel.copy(id = 0) // id 0 to create the participant
                 manager.saveParticipant(participant)
 
 
-                it("should save the participant") {
-                    val expected = competitor.copy().apply {
-                        prename = "Willi"
-                    }
-                    verify(mockCompetitorRepository, times(1)).save(expected)
+                it("should create the participant") {
+                    val expected = participantEntity.copy(id = null) // entity with id null will be created
+                    verify(mockParticipantRepository, times(1)).save(expected)
                 }
             }
 
-            on("a participant with a changed relations") {
+            on("new town") {
 
-                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
-                    town = TownEntity(1, "8000", "Zürich")
-                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
-                }
-
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
+                whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity))
 
 
-                val participant = Participant(
-                        1,
-                        "Muster",
-                        "Max",
-                        Gender.MALE,
-                        Birthday(0),
-                        false,
-                        "",
-                        Town(2, "3000", "Bern"),
-                        Group("3a", Coach(2, "Müller")))
+                val participant = participantModel.copy(
+                        town = Town(0, "8000", "Zürich") // id 0 to create the town
 
+                )
                 manager.saveParticipant(participant)
 
 
-                it("should update the class relation") {
-                    val expected = competitor.copy().apply {
-                        group = GroupEntity("3a", CoachEntity(2, "Müller"))
-                        town = TownEntity(2, "3000", "Bern")
-                    }
-                    verify(mockCompetitorRepository, times(1)).save(expected)
+                it("should create the town") {
+                    val expected = participantEntity.copy(
+                            town = TownEntity( // entity with id null will be created
+                                    zip = "8000",
+                                    name = "Zürich"
+                            )
+                    )
+                    verify(mockParticipantRepository, times(1)).save(expected)
                 }
             }
 
-            on("a participant with changed sport relation") {
+            on("new coach") {
 
-                val competitor = ParticipantEntity(1, "Muster", "Max")
-
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
+                whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity))
 
 
-                val participant = Participant(
-                        1,
-                        "Muster",
-                        "Willi",
-                        Gender.MALE,
-                        Birthday(0),
-                        false,
-                        "",
-                        Town(1, "8000", "Zürich"),
-                        Group("2a", Coach(1,"Sepp")),
-                        Optional.of("Skipping"))
-
-                manager.saveParticipant(participant)
-
-                it("should update the sport relation") {
-                    val expected = competitor.copy().apply {
-                        sport = SportEntity("Skipping")
-                    }
-                    verify(mockCompetitorRepository, times(1)).save(expected)
-                }
-            }
-
-            on("a participant which is marked as absent") {
-
-                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
-                    town = TownEntity(1, "8000", "Zürich")
-                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
-                }
-
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
-
-
-                val participant = Participant(
-                        1,
-                        "Muster",
-                        "Max",
-                        Gender.MALE,
-                        Birthday(0),
-                        true,
-                        "",
-                        Town(1, "8000", "Zürich"),
-                        Group("2a", Coach(1,"Sepp")))
-
+                val participant = participantModel.copy(
+                        group = Group("3a", Coach(0, "Müller")) // coach id 0 to create the coach
+                )
                 manager.saveParticipant(participant)
 
 
-                val verifyOrder = inOrder(mockCompetitorRepository, mockAbsentManager)
-
-                it("should save the participant before marking it as absent") {
-                    verifyOrder.verify(mockCompetitorRepository, times(1)).save(competitor)
-                }
-
-                it("should mark the given participant as absent") {
-                    verifyOrder.verify(mockAbsentManager, times(1)).markAsAbsent(competitor)
-                }
-            }
-
-            on("a participant which is marked as present") {
-
-                val competitor = ParticipantEntity(1, "Muster", "Max").apply {
-                    town = TownEntity(1, "8000", "Zürich")
-                    group = GroupEntity("2a", CoachEntity(1, "Sepp"))
-                }
-
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.of(competitor))
-
-
-                val participant = Participant(
-                        1,
-                        "Muster",
-                        "Max",
-                        Gender.MALE,
-                        Birthday(0),
-                        false,
-                        "",
-                        Town(1, "8000", "Zürich"),
-                        Group("2a", Coach(1,"Sepp")))
-
-                manager.saveParticipant(participant)
-
-
-                val verifyOrder = inOrder(mockCompetitorRepository, mockAbsentManager)
-
-                it("should save the participant before marking it as present") {
-                    verifyOrder.verify(mockCompetitorRepository, times(1)).save(competitor)
-                }
-
-                it("should mark the given participant as absent") {
-                    verifyOrder.verify(mockAbsentManager, times(1)).markAsPresent(competitor)
-                }
-            }
-
-            on("a participant which does not exist") {
-
-                whenever(mockCompetitorRepository.findById(any())).thenReturn(Optional.empty())
-
-
-                val participant = Participant(
-                        1,
-                        "Muster",
-                        "Max",
-                        Gender.MALE,
-                        Birthday(0),
-                        false,
-                        "",
-                        Town(1, "8000", "Zürich"),
-                        Group("2a", Coach(1,"Sepp")))
-
-                manager.saveParticipant(participant)
-
-                it("should create a new participant") {
-                    val expected = ParticipantEntity(null, "Muster", "Max").apply {
-                        town = TownEntity(1, "8000", "Zürich")
-                        group = GroupEntity("2a", CoachEntity(1, "Sepp"))
-                    }
-                    verify(mockCompetitorRepository, times(1)).save(expected)
-                    verify(mockAbsentManager, times(1)).markAsPresent(expected)
+                it("should create the coach") {
+                    val expected = participantEntity.copy(
+                            group = GroupEntity(
+                                    name = "3a",
+                                    coach = CoachEntity( // entity with id null will be created
+                                            name = "Müller"
+                                    )
+                            )
+                    )
+                    verify(mockParticipantRepository, times(1)).save(expected)
                 }
             }
         }

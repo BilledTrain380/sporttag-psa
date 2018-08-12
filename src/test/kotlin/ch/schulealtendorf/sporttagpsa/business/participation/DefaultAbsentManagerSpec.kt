@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
@@ -55,7 +55,7 @@ object DefaultAbsentManagerSpec: Spek({
 
     describe("an absent manager") {
 
-        val mockAbsentCompetitorRepository: AbsentCompetitorRepository = mock()
+        val mockAbsentCompetitorRepository: AbsentParticipantRepository = mock()
 
         val absentManager = DefaultAbsentManager(mockAbsentCompetitorRepository)
 
@@ -74,7 +74,7 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("a competitor which is not absent") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.empty())
+                whenever(mockAbsentCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
 
 
                 val result = absentManager.isAbsent(competitor)
@@ -87,7 +87,7 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("a competitor which is absent") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentParticipantEntity()))
+                whenever(mockAbsentCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(AbsentParticipantEntity()))
 
 
                 val result = absentManager.isAbsent(competitor)
@@ -114,7 +114,7 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("present marked competitor") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.empty())
+                whenever(mockAbsentCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
 
 
                 absentManager.markAsAbsent(competitor)
@@ -127,13 +127,13 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("already absent marked competitor") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(AbsentParticipantEntity(1, competitor)))
+                whenever(mockAbsentCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(AbsentParticipantEntity(1, competitor)))
 
 
                 absentManager.markAsAbsent(competitor)
 
                 it("should not do any more interactions") {
-                    verify(mockAbsentCompetitorRepository, times(1)).findByCompetitorId(any())
+                    verify(mockAbsentCompetitorRepository, times(1)).findByParticipantId(any())
                     verifyNoMoreInteractions(mockAbsentCompetitorRepository)
                 }
             }
@@ -144,7 +144,7 @@ object DefaultAbsentManagerSpec: Spek({
             on("absent marked competitor") {
 
                 val absentCompetitorEntity = AbsentParticipantEntity(1, competitor)
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.of(absentCompetitorEntity))
+                whenever(mockAbsentCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(absentCompetitorEntity))
 
 
                 absentManager.markAsPresent(competitor)
@@ -156,13 +156,13 @@ object DefaultAbsentManagerSpec: Spek({
 
             on("already present marked competitor") {
 
-                whenever(mockAbsentCompetitorRepository.findByCompetitorId(any())).thenReturn(Optional.empty())
+                whenever(mockAbsentCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
 
 
                 absentManager.markAsPresent(competitor)
 
                 it("should not do anymore interactions") {
-                    verify(mockAbsentCompetitorRepository, times(1)).findByCompetitorId(any())
+                    verify(mockAbsentCompetitorRepository, times(1)).findByParticipantId(any())
                     verifyNoMoreInteractions(mockAbsentCompetitorRepository)
                 }
             }
