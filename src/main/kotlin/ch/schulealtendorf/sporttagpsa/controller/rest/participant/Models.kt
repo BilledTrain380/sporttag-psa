@@ -34,48 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest
+package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestSport
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestTown
 import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
-
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-data class RestTown(
-        val id: Int,
-        val zip: String,
-        val name: String
-)
-
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: RestTown,
-        val group: RestGroup,
+data class PatchParticipant(
+        val surname: String? = null,
+        val prename: String? = null,
+        val gender: Gender? = null,
+        val birthday: Long? = null,
+        val address: String? = null,
+        val absent: Boolean? = null,
+        val town: RestTown? = null,
         val sport: RestSport? = null
-)
-
-data class RestSport(
-        val name: String
-)
-
-data class RestParticipationStatus(
-        val status: ParticipationStatus
 )

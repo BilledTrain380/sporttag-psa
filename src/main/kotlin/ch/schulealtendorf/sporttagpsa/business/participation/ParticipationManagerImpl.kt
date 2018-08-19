@@ -45,11 +45,13 @@ import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.model.Sport
 import ch.schulealtendorf.sporttagpsa.repository.*
 import org.joda.time.DateTime
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 0.0.1
  */
+@Component
 class ParticipationManagerImpl(
         private val participantRepository: ParticipantRepository,
         private val absentRepository: AbsentParticipantRepository,
