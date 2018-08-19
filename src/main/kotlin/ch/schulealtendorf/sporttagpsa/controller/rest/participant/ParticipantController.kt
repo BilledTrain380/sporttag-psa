@@ -36,13 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
+import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.*
 import ch.schulealtendorf.sporttagpsa.model.*
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import kotlin.math.abs
 
 /**
  * Rest controller for the participants.
@@ -53,7 +53,8 @@ import kotlin.math.abs
 @RestController
 class ParticipantController(
         private val participantManager: ParticipantManager,
-        private val participationManager: ParticipationManager
+        private val participationManager: ParticipationManager,
+        private val groupManager: GroupManager
 ) {
 
     companion object {
@@ -158,7 +159,7 @@ class ParticipantController(
         return RestGroup(
                 name,
                 coach.name,
-                true // TODO: use service to get pending status
+                groupManager.hasPendingParticipation(this)
         )
     }
 

@@ -34,73 +34,57 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.clazz
+package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
-import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Coach
+import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
 /**
- * Default class manager implementation which uses the repository classes to get its data.
+ * A {@link GroupManager} which uses repositories to process its data.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
 @Component
-class DefaultClassManager(
-        private val classRepository: GroupRepository,
-        private val competitorRepository: ParticipantRepository
-): ClassManager {
+class GroupManagerImpl(
+        private val groupRepository: GroupRepository,
+        private val participantRepository: ParticipantRepository
+): GroupManager {
 
     /**
-     * @return all classes which are available
+     * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
      */
-    override fun getAllClasses(): List<Group> {
-        return classRepository.findAll()
-                .mapNotNull { it?.map() }
+    override fun hasPendingParticipation(group: Group): Boolean {
+
+        val participants = participantRepository.findByGroupName(group.name)
+
+        return participants.any { it.sport == null }
     }
 
     /**
-     * An {@link Optional} containing the class matching
-     * the {name} or an empty Optional if no class could be found.
-     *
-     * @param name the name of the class
-     *
-     * @return the resulting class in an Optional
+     * @return all groups
      */
-    override fun getClass(name: String): Optional<Group> {
-
-        val clazz = classRepository.findByName(name)
-
-        return clazz.map { it.map() }
+    override fun getGroups(): List<Group> {
+        return groupRepository.findAll()
+                .map { it.toModel() }
     }
 
     /**
-     * Saves the given {@code group}.
+     * Gets the group matching the given {@code name}.
      *
-     * If the name of the class exists already, it will be updated, otherwise created.
+     * @param name tha name of the group
      *
-     * @param clazz the class to save
+     * @return an Optional containing the group, or empty if the group could not be found
      */
-    override fun saveClass(clazz: Group) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getGroup(name: String): Optional<Group> {
+
+        return groupRepository.findById(name).map { it.toModel() }
     }
 
-    /**
-     * A pending participation means, if any participant of the given {@code group}
-     * as no sport.
-     *
-     * @return true if the class has pending participation, otherwise false
-     */
-    override fun hasPendingParticipation(clazz: Group) = competitorRepository.findByGroupName(clazz.name).any { it.sport == null }
-
-    private fun GroupEntity.map(): Group {
-        return Group(
-                name,
-                Coach(coach.id!!, coach.name))
-    }
+    private fun GroupEntity.toModel() = Group(name, Coach(coach.id!!, coach.name))
 }

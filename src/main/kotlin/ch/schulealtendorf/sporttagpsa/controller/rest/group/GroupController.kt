@@ -34,48 +34,45 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.clazz
+package ch.schulealtendorf.sporttagpsa.controller.rest.group
 
+import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
+import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestGroup
 import ch.schulealtendorf.sporttagpsa.model.Group
-import java.util.*
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
 
 /**
- * Manager for a class or category where a participant belongs to.
+ * Rest controller for {@link Group}.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-interface ClassManager {
+@RestController
+class GroupController(
+        private val groupManager: GroupManager
+) {
 
-    /**
-     * @return all classes which are available
-     */
-    fun getAllClasses(): List<Group>
+    @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getGroup(@PathVariable("group_name") name: String): RestGroup {
+        return groupManager.getGroup(name)
+                .map { it.toRest() }
+                .orElseThrow { NotFoundException("Could not find group: name=$name") }
+    }
 
-    /**
-     * An {@link Optional} containing the class matching
-     * the {name} or an empty Optional if no class could be found.
-     *
-     * @param name the name of the class
-     *
-     * @return the resulting class in an Optional
-     */
-    fun getClass(name: String): Optional<Group>
+    @GetMapping("/groups", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getGroups(): List<RestGroup> {
+        return groupManager.getGroups().map { it.toRest() }
+    }
 
-    /**
-     * Saves the given {@code group}.
-     *
-     * If the name of the class exists already, it will be updated, otherwise created.
-     *
-     * @param clazz the class to save
-     */
-    fun saveClass(clazz: Group)
-
-    /**
-     * A pending participation means, if any participant of the given {@code group}
-     * as no sport.
-     *
-     * @return true if the class has pending participation, otherwise false
-     */
-    fun hasPendingParticipation(clazz: Group): Boolean
+    private fun Group.toRest(): RestGroup {
+        return RestGroup(
+                name,
+                coach.name,
+                groupManager.hasPendingParticipation(this)
+        )
+    }
 }

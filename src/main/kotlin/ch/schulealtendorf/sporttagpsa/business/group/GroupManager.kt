@@ -34,47 +34,35 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest.clazz
+package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.sporttagpsa.business.clazz.ClassManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestClass
 import ch.schulealtendorf.sporttagpsa.model.Group
-import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 /**
- * Rest Controller for class or category of a participant.
+ * Describes a manager for domain classes related to a {@link Group}.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-@RestController
-class ClassController(
-        private val classManager: ClassManager
-) {
+interface GroupManager {
 
-    @GetMapping("/classes", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getAllClasses(): List<RestClass> {
-        return classManager.getAllClasses()
-                .map { it.map() }
-    }
+    /**
+     * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
+     */
+    fun hasPendingParticipation(group: Group): Boolean
 
-    @GetMapping("/class/{class_id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getClass(@PathVariable("class_id") classId: String): RestClass {
+    /**
+     * @return all groups
+     */
+    fun getGroups(): List<Group>
 
-        val clazz = classManager.getClass(classId).orElseThrow { BadRequestException("Could not find class with id '$classId'") }
-
-        return clazz.map()
-    }
-
-    private fun Group.map(): RestClass {
-        return RestClass(
-                name,
-                coach.name,
-                classManager.hasPendingParticipation(this)
-        )
-    }
+    /**
+     * Gets the group matching the given {@code name}.
+     *
+     * @param name tha name of the group
+     *
+     * @return an Optional containing the group, or empty if the group could not be found
+     */
+    fun getGroup(name: String): Optional<Group>
 }
