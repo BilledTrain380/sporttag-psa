@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 by Nicolas Märchy
+ * Copyright (c) 2017 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,18 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.competitors
+package ch.schulealtendorf.sporttagpsa.business.parsing
 
-data class SimpleCompetitorModel @JvmOverloads constructor(
-        val id: Int,
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Gender
+
+/**
+ * Data class for competitors in a flat data structure.
+ * 
+ * @author nmaerchy
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+data class FlatParticipant(
         val surname: String,
         val prename: String,
-        val gender: Boolean,
+        val gender: Gender,
+        val birthday: Birthday,
         val address: String,
-        val sport: SimpleSportModel? = null
-)
-
-data class SimpleSportModel(
-        val id: Int,
-        val name: String
+        val zipCode: String,
+        val town: String,
+        val group: String,
+        val coach: String
 )

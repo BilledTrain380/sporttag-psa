@@ -34,35 +34,36 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.competitors
+package ch.schulealtendorf.sporttagpsa.business.parsing
 
-import ch.schulealtendorf.sporttagpsa.business.parsing.FlatCompetitor
-import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
-import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 
 /**
- * An implementation that consumes a {@link FlatCompetitor}
- * and ensures that the {@link FlatCompetitor#teacher} attribute is only consumed once.
+ * Describes a FileReader for a competitor input file.
  * 
  * @author nmaerchy
- * @version 0.0.2
+ * @version 0.0.1
  */
-@Component
-class EntrySafeCompetitorTeacherConsumer(
-        private val teacherRepository: CoachRepository
-): CompetitorTeacherConsumer {
+interface GroupFileParser {
 
     /**
-     * Saves a {@link CoachEntity} based on the passed in argument.
-     *
-     * @param competitor the input argument
+     * Parses the passed in file.
+     * 
+     * @param file the file to parse
+     * 
+     * @return a list of the parsed entries
      */
-    override fun accept(competitor: FlatCompetitor) {
-        
-//        if (teacherRepository.findByName(competitor.teacher) == null) {
-//            val teacherEntity: CoachEntity = CoachEntity(null, competitor.teacher)
-//
-//            teacherRepository.save(teacherEntity)
-//        }
-    }
+    fun parseToCompetitor(file: MultipartFile): List<FlatParticipant>
+
+    /**
+     * Parses the given csv {@code file}.
+     *
+     * The file is being parsed according to the {@link CSVParticipant} class annotations.
+     *
+     * @param file the file to parse
+     *
+     * @return the content of the parsed file in form of a list of {@link FlatParticipant}
+     * @throws CSVParsingException if the given file can not be parsed
+     */
+    fun parseCSV(file: MultipartFile): List<FlatParticipant>
 }
