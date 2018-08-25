@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.parsing
+package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.sporttagpsa.model.Birthday
 import ch.schulealtendorf.sporttagpsa.model.Gender
@@ -49,7 +49,6 @@ import org.mockito.Mockito.reset
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
 import java.text.DateFormat
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.test.assertEquals

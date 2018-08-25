@@ -36,34 +36,27 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import org.springframework.web.multipart.MultipartFile
-
 /**
- * Describes a FileReader for a competitor input file.
- * 
- * @author nmaerchy
- * @version 0.0.1
+ * Indicates an error while a csv file is being parsed.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ *
+ * @property line The line where the error occurred. The line count is zero based
+ * @property column The column of the line where the error occurred. The column is zero based
  */
-interface GroupFileParser {
+class CSVParsingException: Exception {
 
-    /**
-     * Parses the passed in file.
-     * 
-     * @param file the file to parse
-     * 
-     * @return a list of the parsed entries
-     */
-    fun parseToCompetitor(file: MultipartFile): List<FlatParticipant>
+    val line: Int
+    val column: Int
 
-    /**
-     * Parses the given csv {@code file}.
-     *
-     * The file is being parsed according to the {@link CSVParticipant} class annotations.
-     *
-     * @param file the file to parse
-     *
-     * @return the content of the parsed file in form of a list of {@link FlatParticipant}
-     * @throws CSVParsingException if the given file can not be parsed
-     */
-    fun parseCSV(file: MultipartFile): List<FlatParticipant>
+    constructor(message: String, line: Int, column: Int) : super(message) {
+        this.line = line
+        this.column = column
+    }
+
+    constructor(message: String, line: Int, column: Int, cause: Throwable) : super(message, cause) {
+        this.line = line
+        this.column = column
+    }
 }

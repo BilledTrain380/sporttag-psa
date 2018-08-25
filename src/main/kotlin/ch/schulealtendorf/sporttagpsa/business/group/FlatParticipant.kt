@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.parsing
+package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.sporttagpsa.model.Birthday
 import ch.schulealtendorf.sporttagpsa.model.Gender

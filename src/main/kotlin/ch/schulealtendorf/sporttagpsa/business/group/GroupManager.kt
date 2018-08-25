@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
+import ch.schulealtendorf.sporttagpsa.model.Coach
 import ch.schulealtendorf.sporttagpsa.model.Group
 import java.util.*
 
@@ -65,4 +66,13 @@ interface GroupManager {
      * @return an Optional containing the group, or empty if the group could not be found
      */
     fun getGroup(name: String): Optional<Group>
+
+    /**
+     * Gets the coach matching the given {@code name}.
+     *
+     * @param name the name of the coach
+     *
+     * @return an Optional containing the coach, or empty if the coach could not be found
+     */
+    fun getCoach(name: String): Optional<Coach>
 }

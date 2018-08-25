@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.parsing
+package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.sporttagpsa.model.Birthday
 import ch.schulealtendorf.sporttagpsa.model.Gender

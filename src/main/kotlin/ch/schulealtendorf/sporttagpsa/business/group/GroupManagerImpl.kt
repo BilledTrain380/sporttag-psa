@@ -36,9 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
+import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.model.Coach
 import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
@@ -53,7 +55,8 @@ import java.util.*
 @Component
 class GroupManagerImpl(
         private val groupRepository: GroupRepository,
-        private val participantRepository: ParticipantRepository
+        private val participantRepository: ParticipantRepository,
+        private val coachRepository: CoachRepository
 ): GroupManager {
 
     /**
@@ -81,10 +84,18 @@ class GroupManagerImpl(
      *
      * @return an Optional containing the group, or empty if the group could not be found
      */
-    override fun getGroup(name: String): Optional<Group> {
+    override fun getGroup(name: String): Optional<Group> =  groupRepository.findById(name).map { it.toModel() }
 
-        return groupRepository.findById(name).map { it.toModel() }
-    }
+    /**
+     * Gets the coach matching the given {@code name}.
+     *
+     * @param name the name of the coach
+     *
+     * @return an Optional containing the coach, or empty if the coach could not be found
+     */
+    override fun getCoach(name: String): Optional<Coach> = coachRepository.findByName(name).map { it.toModel() }
 
-    private fun GroupEntity.toModel() = Group(name, Coach(coach.id!!, coach.name))
+    private fun GroupEntity.toModel() = Group(name, coach.toModel())
+
+    private fun CoachEntity.toModel() = Coach(id!!, name)
 }
