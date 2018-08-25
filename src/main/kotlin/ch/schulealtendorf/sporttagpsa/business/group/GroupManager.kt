@@ -75,4 +75,15 @@ interface GroupManager {
      * @return an Optional containing the coach, or empty if the coach could not be found
      */
     fun getCoach(name: String): Optional<Coach>
+
+    /**
+     * Imports the given {@code participant} by considering all their relations.
+     * If a relation does not exist yet, it will be created, otherwise the already
+     * created relation will be used.
+     *
+     * The participant will always be created.
+     *
+     * @param participant the participant to import
+     */
+    fun import(participant: FlatParticipant)
 }

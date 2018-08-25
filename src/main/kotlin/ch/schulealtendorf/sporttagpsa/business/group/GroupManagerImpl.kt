@@ -38,11 +38,14 @@ package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.model.Coach
 import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -56,7 +59,8 @@ import java.util.*
 class GroupManagerImpl(
         private val groupRepository: GroupRepository,
         private val participantRepository: ParticipantRepository,
-        private val coachRepository: CoachRepository
+        private val coachRepository: CoachRepository,
+        private val townRepository: TownRepository
 ): GroupManager {
 
     /**
@@ -94,6 +98,39 @@ class GroupManagerImpl(
      * @return an Optional containing the coach, or empty if the coach could not be found
      */
     override fun getCoach(name: String): Optional<Coach> = coachRepository.findByName(name).map { it.toModel() }
+
+    /**
+     * Imports the given {@code participant} by considering all their relations.
+     * If a relation does not exist yet, it will be created, otherwise the already
+     * created relation will be used.
+     *
+     * The participant will always be created.
+     *
+     * @param participant the participant to import
+     */
+    override fun import(participant: FlatParticipant) {
+
+        val town = townRepository.findByZipAndName(participant.zipCode, participant.town)
+                .orElseGet { TownEntity(zip = participant.zipCode, name = participant.town) }
+
+        val coach = coachRepository.findByName(participant.coach)
+                .orElseGet { CoachEntity(name = participant.coach) }
+
+        val group = groupRepository.findByName(participant.group)
+                .orElseGet { GroupEntity(participant.group, coach) }
+
+        val participantEntity = ParticipantEntity(
+                surname = participant.surname,
+                prename = participant.prename,
+                gender = participant.gender.name,
+                birthday = participant.birthday.milliseconds,
+                address = participant.address,
+                town = town,
+                group = group
+        )
+
+        participantRepository.save(participantEntity)
+    }
 
     private fun GroupEntity.toModel() = Group(name, coach.toModel())
 
