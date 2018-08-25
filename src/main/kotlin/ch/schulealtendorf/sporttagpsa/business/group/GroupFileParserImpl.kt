@@ -50,48 +50,11 @@ import kotlin.streams.toList
  * An implementation of a FileReader for a competitor input file.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
  * @since 1.0.0
  */
 @Component
 class GroupFileParserImpl : GroupFileParser {
-
-    /**
-     * Parses the passed in file by the following rules:
-     *  The file MUST be a mime type text/csv.
-     *  The file MUST NOT be empty.
-     *  The file MUST have a header line:
-     *      Klasse,Nachname,Vorname,Geschlecht,Strasse,PLZ,Ort,Geburtsdatum,Klassenlehrer
-     *  The Geburtsdatum field MUST be in format: dd.MM.yyyy
-     *  
-     *  @param file the file to parse
-     *  
-     *  @return a list of the parsed entries
-     */
-    @Deprecated("Use parseCSV instead")
-    override fun parseToCompetitor(file: MultipartFile): List<FlatParticipant> {
-
-        TODO()
-
-//        if (file.contentType != "text/csv") throw IllegalArgumentException("The input file MUST be the mime type \"text/csv\".")
-//        if (file.isEmpty) throw IllegalArgumentException("Competitor input file is empty.")
-//
-//        try {
-//
-//            // setup parser
-//            val strategy: HeaderColumnNameMappingStrategy<CSVParticipant> =  HeaderColumnNameMappingStrategy()
-//            strategy.type = CSVParticipant::class.java
-//            val csvToBean: CsvToBean<CSVParticipant> = CsvToBean()
-//
-//            return csvToBean.parse(strategy, InputStreamReader(file.inputStream))
-//                    .map { (clazz, surname, prename, gender, address, zipCode, town, birthday, teacher) -> FlatParticipant(
-//                            surname, prename, gender == "m", convertDate(birthday), address, zipCode, town, clazz, teacher
-//                    )}
-//
-//        } catch (ex: ParseException) {
-//            throw IllegalArgumentException("Error during CSV parsing.", ex)
-//        }
-    }
 
     /**
      * Parses the given csv {@code file}.

@@ -47,15 +47,6 @@ import org.springframework.web.multipart.MultipartFile
 interface GroupFileParser {
 
     /**
-     * Parses the passed in file.
-     * 
-     * @param file the file to parse
-     * 
-     * @return a list of the parsed entries
-     */
-    fun parseToCompetitor(file: MultipartFile): List<FlatParticipant>
-
-    /**
      * Parses the given csv {@code file}.
      *
      * The file is being parsed according to the {@link CSVParticipant} class annotations.
