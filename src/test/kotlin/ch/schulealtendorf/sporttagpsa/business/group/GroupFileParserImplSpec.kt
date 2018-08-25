@@ -93,7 +93,7 @@ object GroupFileParserImplSpec : Spek ({
                 val result = parser.parseCSV(mockFile)
 
 
-                it("should return  list of csv participants") {
+                it("should return list of csv participants") {
                     val expected = listOf(
                             FlatParticipant("Muster", "Hans", Gender.MALE, Birthday(convertDate("07.09.2017")), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
                             FlatParticipant("Wirbelwind", "Will", Gender.FEMALE, Birthday(convertDate("08.12.2015")), "Wirbelstrasse 16", "4000", "Willhausen", "1a", "Hans Müller")
@@ -125,7 +125,7 @@ object GroupFileParserImplSpec : Spek ({
                 whenever(mockFile.inputStream).thenReturn(testInputStream)
 
 
-                it("should throw an parse exception exception, indicating that the date format is invalid") {
+                it("should throw a csv parse exception exception, indicating that the date format is invalid") {
                     val exception = assertFailsWith<CSVParsingException> {
                         parser.parseCSV(mockFile)
                     }
@@ -144,7 +144,7 @@ object GroupFileParserImplSpec : Spek ({
                 whenever(mockFile.inputStream).thenReturn(testInputStream)
 
 
-                it("should throw an parse exception, indicating that the gender value is invalid") {
+                it("should throw a csv parse exception, indicating that the gender value is invalid") {
                     val exception = assertFailsWith<CSVParsingException> {
                         parser.parseCSV(mockFile)
                     }
@@ -164,6 +164,25 @@ object GroupFileParserImplSpec : Spek ({
                         parser.parseCSV(mockFile)
                     }
                     assertEquals("Invalid file type: type=application/pdf", exception.message)
+                }
+            }
+
+            on("wrong line") {
+
+                val testInputStream: InputStream = "not,enough,values".byteInputStream()
+
+                whenever(mockFile.contentType).thenReturn("text/csv")
+                whenever(mockFile.isEmpty).thenReturn(false)
+                whenever(mockFile.inputStream).thenReturn(testInputStream)
+
+
+                it("should throw a csv parse exception") {
+                    val exception = assertFailsWith<CSVParsingException> {
+                        parser.parseCSV(mockFile)
+                    }
+                    assertEquals("Can not parse line: Missing values.", exception.message)
+                    assertEquals(0, exception.line)
+                    assertEquals(0, exception.column)
                 }
             }
         }

@@ -115,6 +115,10 @@ class GroupFileParserImpl : GroupFileParser {
 
                         val parts = line.split(',')
 
+                        if (parts.size != 9) {
+                            throw CSVParsingException("Can not parse line: Missing values.", index, 0)
+                        }
+
                         val group: String = parts[0].trim()
                         val surname: String = parts[1].trim()
                         val prename: String = parts[2].trim()
