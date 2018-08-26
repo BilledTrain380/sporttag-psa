@@ -45,7 +45,7 @@ import javax.validation.constraints.Size
  * @since 1.0.0
  */
 @Entity
-@Table(name = "GROUP")
+@Table(name = "PARTICIPANT_GROUP")
 data class GroupEntity(
 
         @Id

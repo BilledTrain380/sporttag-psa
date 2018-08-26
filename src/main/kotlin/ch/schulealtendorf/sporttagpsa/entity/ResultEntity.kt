@@ -65,6 +65,6 @@ data class ResultEntity(
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_DISCIPLINE_id", referencedColumnName = "id")
+        @JoinColumn(name = "fk_DISCIPLINE", referencedColumnName = "name")
         var discipline: DisciplineEntity = DisciplineEntity()
 )
