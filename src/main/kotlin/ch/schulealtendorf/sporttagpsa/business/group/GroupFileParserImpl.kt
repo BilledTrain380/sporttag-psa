@@ -64,6 +64,7 @@ class GroupFileParserImpl : GroupFileParser {
      * @param file the file to parse
      *
      * @return the content of the parsed file in form of a list of {@link FlatParticipant}
+     * @throws IllegalArgumentException if the file does not match the format csv or is empty
      * @throws CSVParsingException if the given file can not be parsed
      */
     override fun parseCSV(file: MultipartFile): List<FlatParticipant> {

@@ -34,28 +34,41 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.group
+package ch.schulealtendorf.sporttagpsa.controller.web.groupimport
 
+import ch.schulealtendorf.sporttagpsa.business.group.CSVParsingException
+import ch.schulealtendorf.sporttagpsa.business.group.GroupFileParser
+import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
+import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 
 /**
- * Describes a FileReader for a competitor input file.
- * 
- * @author nmaerchy
- * @version 0.0.1
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-interface GroupFileParser {
+@Controller
+class GroupImportController(
+        private val fileParser: GroupFileParser,
+        private val groupManager: GroupManager
+) {
 
-    /**
-     * Parses the given csv {@code file}.
-     *
-     * The file is being parsed according to the {@link CSVParticipant} class annotations.
-     *
-     * @param file the file to parse
-     *
-     * @return the content of the parsed file in form of a list of {@link FlatParticipant}
-     * @throws IllegalArgumentException if the file does not match the format csv or is empty
-     * @throws CSVParsingException if the given file can not be parsed
-     */
-    fun parseCSV(file: MultipartFile): List<FlatParticipant>
+    @PostMapping("/import-group")
+    fun importGroup(@RequestParam("group-input") file: MultipartFile) {
+
+        try {
+
+            val participants = fileParser.parseCSV(file)
+
+            participants.forEach(groupManager::import)
+
+        } catch (exception: CSVParsingException) {
+            // we increment the line, so its not zero based line number for the user
+            throw BadRequestException("${exception.message} (at line ${exception.line+1}:${exception.column})")
+        } catch (exception: IllegalArgumentException) {
+            throw BadRequestException(exception.message)
+        }
+    }
 }
