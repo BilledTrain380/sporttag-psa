@@ -165,7 +165,7 @@ class ParticipantManagerImpl(
         )
     }
 
-    private fun TownEntity.toTown() = Town(id!!, name, zip)
+    private fun TownEntity.toTown() = Town(id!!, zip, name)
 
     private fun GroupEntity.toGroup() = Group(name, Coach(coach.id!!, coach.name))
 
