@@ -104,7 +104,7 @@ interface ParticipantManager {
      *
      * If the participant exists already, it will be updated.
      *
-     * If the {@link Participant#town#id} < 1, it will be created.
+     * If the {@link Participant#town} does not exist, it will be created
      *
      * The {@link Participant#group} relation will be created if it does not exist yet.
      *
