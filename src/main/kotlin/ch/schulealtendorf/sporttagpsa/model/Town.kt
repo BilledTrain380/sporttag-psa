@@ -43,7 +43,6 @@ package ch.schulealtendorf.sporttagpsa.model
  * @since 2.0.0
  */
 data class Town(
-        val id: Int,
         val zip: String,
         val name: String
 )

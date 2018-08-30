@@ -44,7 +44,7 @@ import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-// TODO use Participant and Competitor classes instead
+@Deprecated("Use ParticipationManager instead")
 interface AbsentManager {
 
     /**

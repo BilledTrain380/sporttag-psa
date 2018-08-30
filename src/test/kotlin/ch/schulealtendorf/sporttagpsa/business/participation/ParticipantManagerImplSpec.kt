@@ -43,6 +43,7 @@ import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
@@ -61,16 +62,19 @@ object ParticipantManagerImplSpec: Spek({
 
         val mockParticipantRepository: ParticipantRepository = mock()
         val mockAbsentRepository: AbsentParticipantRepository = mock()
+        val mockTownRepository: TownRepository = mock()
 
         val manager = ParticipantManagerImpl(
                 mockParticipantRepository,
-                mockAbsentRepository
+                mockAbsentRepository,
+                mockTownRepository
         )
 
         beforeEachTest {
             reset(
                     mockAbsentRepository,
-                    mockParticipantRepository
+                    mockParticipantRepository,
+                    mockTownRepository
             )
         }
 
@@ -81,7 +85,6 @@ object ParticipantManagerImplSpec: Spek({
         )
 
         val town = Town(
-                id = 1,
                 zip = "3000",
                 name = "Bern"
         )
@@ -138,6 +141,7 @@ object ParticipantManagerImplSpec: Spek({
             on("new participant") {
 
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.empty())
+                whenever(mockTownRepository.findByZipAndName(any(), any())).thenReturn(Optional.of(townEntity))
 
 
                 val participant = participantModel.copy(id = 0) // id 0 to create the participant
@@ -153,10 +157,11 @@ object ParticipantManagerImplSpec: Spek({
             on("new town") {
 
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity))
+                whenever(mockTownRepository.findByZipAndName(any(), any())).thenReturn(Optional.empty())
 
 
                 val participant = participantModel.copy(
-                        town = Town(0, "8000", "Zürich") // id 0 to create the town
+                        town = Town("8000", "Zürich")
 
                 )
                 manager.saveParticipant(participant)

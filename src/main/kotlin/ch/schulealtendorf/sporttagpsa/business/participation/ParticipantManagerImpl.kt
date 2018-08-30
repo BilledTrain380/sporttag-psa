@@ -40,6 +40,7 @@ import ch.schulealtendorf.sporttagpsa.entity.*
 import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -52,7 +53,8 @@ import java.util.*
 @Component
 class ParticipantManagerImpl(
         private val participantRepository: ParticipantRepository,
-        private val absentRepository: AbsentParticipantRepository
+        private val absentRepository: AbsentParticipantRepository,
+        private val townRepository: TownRepository
 ): ParticipantManager {
 
     /**
@@ -127,17 +129,16 @@ class ParticipantManagerImpl(
         val participantEntity: ParticipantEntity = participantRepository.findById(participant.id)
                 .orElseGet { ParticipantEntity() }
 
+        val townEntity = townRepository.findByZipAndName(participant.town.zip, participant.town.name)
+                .orElseGet { TownEntity(zip = participant.town.zip, name = participant.town.name) }
+
         participantEntity.apply {
             surname = participant.surname
             prename = participant.prename
             gender = participant.gender.toString()
             birthday = participant.birthday.milliseconds
             address = participant.address
-            town = TownEntity().apply {
-                id = if (participant.town.id < 1) null else participant.town.id
-                zip = participant.town.zip
-                name = participant.town.name
-            }
+            town = townEntity
             group = GroupEntity().apply {
                 name = participant.group.name
                 coach = CoachEntity().apply {
@@ -165,7 +166,7 @@ class ParticipantManagerImpl(
         )
     }
 
-    private fun TownEntity.toTown() = Town(id!!, zip, name)
+    private fun TownEntity.toTown() = Town(zip, name)
 
     private fun GroupEntity.toGroup() = Group(name, Coach(coach.id!!, coach.name))
 

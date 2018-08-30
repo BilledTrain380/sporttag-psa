@@ -109,7 +109,7 @@ class CompetitorManagerImpl(
                 Birthday(participant.birthday),
                 absentManager.isAbsent(participant),
                 participant.address,
-                Town(participant.town.id!!, participant.town.zip, participant.town.name),
+                Town(participant.town.zip, participant.town.name),
                 Group(participant.group.name, Coach(participant.group.coach.id!!, participant.group.coach.name)),
                 results.map {
                     Result(it.id!!, it.value, it.points, Discipline(it.discipline.name, it.discipline.unit.name, Optional.ofNullable(it.distance)))

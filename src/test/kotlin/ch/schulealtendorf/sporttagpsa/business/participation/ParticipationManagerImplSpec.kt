@@ -93,7 +93,6 @@ object ParticipationManagerImplSpec: Spek({
         )
 
         val town = Town(
-                id = 1,
                 zip = "3000",
                 name = "Bern"
         )
