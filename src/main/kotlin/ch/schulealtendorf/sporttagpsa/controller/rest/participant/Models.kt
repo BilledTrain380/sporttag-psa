@@ -36,17 +36,42 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestSport
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestTown
 import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.Town
+import javax.validation.constraints.NotNull
 
-data class PatchParticipant(
+data class UpdateParticipant(
         val surname: String? = null,
         val prename: String? = null,
         val gender: Gender? = null,
         val birthday: Long? = null,
         val address: String? = null,
         val absent: Boolean? = null,
-        val town: RestTown? = null,
-        val sport: RestSport? = null
+        val town: Town? = null,
+        val sport: Sport? = null
+)
+
+data class CreateParticipant(
+
+        @NotNull
+        val surname: String,
+
+        @NotNull
+        val prename: String,
+
+        @NotNull
+        val gender: Gender,
+
+        @NotNull
+        val birthday: Long,
+
+        @NotNull
+        val address: String,
+
+        @NotNull
+        val town: Town,
+
+        @NotNull
+        val sport: Sport
 )

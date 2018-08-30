@@ -34,49 +34,40 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest
+package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 
-import ch.schulealtendorf.sporttagpsa.model.*
-
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
-
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-@Deprecated("Use Town model instead")
-data class RestTown(
-        val id: Int,
-        val zip: String,
-        val name: String
-)
+import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
+import ch.schulealtendorf.sporttagpsa.controller.rest.ForbiddenException
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipationStatus
+import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val sport: Sport? = null
-)
+@RestController
+class ParticipationController(
+        private val participationManager: ParticipationManager
+) {
 
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
-)
+    @GetMapping("/participation", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getParticipation(): RestParticipationStatus {
+        val status = participationManager.getParticipationStatus()
+        return RestParticipationStatus(status)
+    }
 
-data class RestParticipationStatus(
-        val status: ParticipationStatus
-)
+    @PatchMapping("/participation")
+    fun updateParticipation(@RequestBody participation: RestParticipationStatus) {
+
+        when (participation.status) {
+            ParticipationStatus.OPEN -> throw ForbiddenException("Participation can not be set to OPEN. Use RESET to reopen a participation")
+            ParticipationStatus.CLOSE -> participationManager.closeParticipation()
+            ParticipationStatus.RESET -> participationManager.resetParticipation()
+        }
+    }
+}

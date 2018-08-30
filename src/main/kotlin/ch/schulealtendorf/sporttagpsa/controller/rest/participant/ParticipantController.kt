@@ -43,6 +43,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.*
 import ch.schulealtendorf.sporttagpsa.model.*
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 /**
  * Rest controller for the participants.
@@ -54,7 +55,8 @@ import org.springframework.web.bind.annotation.*
 class ParticipantController(
         private val participantManager: ParticipantManager,
         private val participationManager: ParticipationManager,
-        private val groupManager: GroupManager
+        private val groupManager: GroupManager,
+        private val mapper: Mapper
 ) {
 
     companion object {
@@ -65,7 +67,7 @@ class ParticipantController(
     fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
 
         if (groupName == null) {
-            return participantManager.getParticipants().map { it.toRest() }
+            return participantManager.getParticipants().map { mapper.of(it) }
         }
 
         val group = groupManager.getGroup(groupName)
@@ -73,21 +75,50 @@ class ParticipantController(
         if (group.isPresent.not()) return listOf()
 
         return this.participantManager.getParticipants(group.get())
-                .map { it.toRest() }
+                .map { mapper.of(it) }
+    }
+
+    @PostMapping("/participants")
+    fun createParticipant(@RequestParam("group", required = true) groupName: String, @Valid @RequestBody participant: CreateParticipant) {
+
+        val group = groupManager.getGroup(groupName)
+                .orElseThrow { NotFoundException("Could not find group: name=$groupName") }
+
+        var newParticipant = Participant(
+                0,
+                participant.surname,
+                participant.prename,
+                participant.gender,
+                Birthday(participant.birthday),
+                false,
+                participant.address,
+                participant.town,
+                group
+        )
+
+        newParticipant = participantManager.saveParticipant(newParticipant)
+
+        val participationStatus = participationManager.getParticipationStatus()
+
+        if (participationStatus == ParticipationStatus.OPEN) {
+            participationManager.participate(newParticipant, participant.sport)
+        } else if (participationStatus == ParticipationStatus.CLOSE) {
+            participationManager.reParticipate(newParticipant, participant.sport)
+        }
     }
 
     @GetMapping(PARTICIPANT, produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipant(@PathVariable("participant_id") id: Int): RestParticipant {
 
-        val participant = participantManager.getParticipantByid(id)
+        val participant = participantManager.getParticipantById(id)
 
-        return participant.toRest()
+        return mapper.of(participant)
     }
 
     @PatchMapping(PARTICIPANT)
-    fun patchParticipant(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: PatchParticipant) {
+    fun patchParticipant(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: UpdateParticipant) {
 
-        var participant = participantManager.getParticipantByid(id)
+        var participant = participantManager.getParticipantById(id)
 
         participant = participant
                 .copy(surname = patchParticipant.surname ?: participant.surname )
@@ -106,77 +137,32 @@ class ParticipantController(
     }
 
     @PutMapping(PARTICIPANT)
-    fun putParticipantTown(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: PatchParticipant) {
+    fun putParticipantTown(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: UpdateParticipant) {
 
-        var participant = participantManager.getParticipantByid(id)
+        var participant = participantManager.getParticipantById(id)
 
         participant = participant
-                .copy(town = patchParticipant.town.toTown() ?: participant.town)
+                .copy(town = patchParticipant.town ?: participant.town)
 
         participant = participantManager.saveParticipant(participant)
 
-        if (patchParticipant.sport != null) {
-            participationManager.participate(participant, Sport(patchParticipant.sport.name))
+        if (patchParticipant.sport == null) {
+            return
         }
 
-    }
+        val participationStatus = participationManager.getParticipationStatus()
 
-    @GetMapping("/participation", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getParticipation(): RestParticipationStatus {
-        val status = participationManager.getParticipationStatus()
-        return RestParticipationStatus(status)
-    }
-
-    @PatchMapping("/participation")
-    fun updateParticipation(@RequestBody participation: RestParticipationStatus) {
-
-        when (participation.status) {
-            ParticipationStatus.OPEN -> throw ForbiddenException("Participation can not be set to OPEN. Use RESET to reopen a participation")
-            ParticipationStatus.CLOSE -> participationManager.closeParticipation()
-            ParticipationStatus.RESET -> participationManager.resetParticipation()
+        if (participationStatus == ParticipationStatus.OPEN) {
+            participationManager.participate(participant, patchParticipant.sport)
+        } else if (participationStatus == ParticipationStatus.CLOSE) {
+            participationManager.reParticipate(participant, patchParticipant.sport)
         }
     }
 
-    private fun ParticipantManager.getParticipantByid(id: Int): Participant {
+    private fun ParticipantManager.getParticipantById(id: Int): Participant {
         return getParticipant(id)
                 .orElseThrow { NotFoundException("Could not found participant: id=$id") }
     }
 
     private fun Long?.toBirthday() = if(this == null) null else Birthday(this)
-
-    private fun RestTown?.toTown() = if (this == null) null else Town(id, zip, name)
-
-    private fun Participant.toRest(): RestParticipant {
-        return RestParticipant(
-                id,
-                surname,
-                prename,
-                gender,
-                birthday.milliseconds,
-                absent,
-                address,
-                town.toRest(),
-                group.toRest(),
-                sport.map { it.toRest() }.orElseGet { null }
-
-        )
-    }
-
-    private fun Town.toRest(): RestTown {
-        return RestTown(
-                id,
-                zip,
-                name
-        )
-    }
-
-    private fun Group.toRest(): RestGroup {
-        return RestGroup(
-                name,
-                coach.name,
-                groupManager.hasPendingParticipation(this)
-        )
-    }
-
-    private fun Sport.toRest() = RestSport(name)
 }

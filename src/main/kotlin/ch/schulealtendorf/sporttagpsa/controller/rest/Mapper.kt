@@ -36,47 +36,30 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest
 
-import ch.schulealtendorf.sporttagpsa.model.*
-
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 
 /**
+ * Describes a mapper for easy mapping between controller rest models and business models.
+ *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-@Deprecated("Use Town model instead")
-data class RestTown(
-        val id: Int,
-        val zip: String,
-        val name: String
-)
+interface Mapper {
 
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val sport: Sport? = null
-)
+    /**
+     * @return a {@link RestParticipant} based on the given {@code participant}
+     */
+    fun of(participant: Participant): RestParticipant
 
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
-)
+    /**
+     * @return a {@link RestGroup} based on the given {@code group}
+     */
+    fun of(group: Group): RestGroup
 
-data class RestParticipationStatus(
-        val status: ParticipationStatus
-)
+    /**
+     * @return a {@link RestParticipationStatus} based on the given {@code participationStatus}
+     */
+    fun of(participationStatus: ParticipationStatus): RestParticipationStatus
+}

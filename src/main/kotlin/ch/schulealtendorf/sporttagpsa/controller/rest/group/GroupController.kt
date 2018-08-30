@@ -37,9 +37,9 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.group
 
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
+import ch.schulealtendorf.sporttagpsa.controller.rest.Mapper
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestGroup
-import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -53,26 +53,19 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class GroupController(
-        private val groupManager: GroupManager
+        private val groupManager: GroupManager,
+        private val mapper: Mapper
 ) {
 
     @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroup(@PathVariable("group_name") name: String): RestGroup {
         return groupManager.getGroup(name)
-                .map { it.toRest() }
+                .map { mapper.of(it) }
                 .orElseThrow { NotFoundException("Could not find group: name=$name") }
     }
 
     @GetMapping("/groups", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroups(): List<RestGroup> {
-        return groupManager.getGroups().map { it.toRest() }
-    }
-
-    private fun Group.toRest(): RestGroup {
-        return RestGroup(
-                name,
-                coach.name,
-                groupManager.hasPendingParticipation(this)
-        )
+        return groupManager.getGroups().map { mapper.of(it) }
     }
 }
