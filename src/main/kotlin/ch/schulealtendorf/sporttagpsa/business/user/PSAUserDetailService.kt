@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.security
+package ch.schulealtendorf.sporttagpsa.business.user
 
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.core.GrantedAuthority

@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.security
+package ch.schulealtendorf.sporttagpsa.controller.config
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -50,7 +50,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 /**
  * @author nmaerchy
- * @version 0.0.1
+ * @version 1.0.0
+ * @since 1.0.0
  */
 @Configuration
 @EnableWebSecurity
@@ -77,29 +78,10 @@ class SecurityConfig(
      */
     override fun configure(http: HttpSecurity?) {
 
-        http?.authorizeRequests()
-                ?.antMatchers("/css/**")?.permitAll()
-                ?.antMatchers("/js/**")?.permitAll()
-                ?.antMatchers("/favicon.ico")?.permitAll()
-                ?.antMatchers("/webjars/**")?.permitAll()
-                ?.antMatchers("/settings/**")
-                    ?.hasAuthority("ROLE_ADMIN")
-                ?.antMatchers("/participant/**")
-                    ?.hasAuthority("ROLE_ADMIN")
-                ?.anyRequest()?.authenticated()
+        http
+                ?.cors()
                 ?.and()
-                ?.formLogin()
-                    ?.loginPage("/login")
-                    ?.defaultSuccessUrl("/")
-                    ?.failureUrl("/login?error")
-                    ?.permitAll()
-                ?.and()
-                    ?.logout()
-                    ?.logoutSuccessUrl("/login?logout")
-                    ?.permitAll()
-                ?.and()
-                    ?.exceptionHandling()
-                    ?.accessDeniedPage("/403")
+                ?.authorizeRequests()?.anyRequest()?.permitAll()
                 ?.and()
                     ?.csrf()?.disable()
     }
