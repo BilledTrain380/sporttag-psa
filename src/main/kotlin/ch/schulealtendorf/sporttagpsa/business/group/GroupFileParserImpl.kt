@@ -40,6 +40,7 @@ import ch.schulealtendorf.sporttagpsa.model.Birthday
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import java.nio.charset.Charset
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,7 +73,7 @@ class GroupFileParserImpl : GroupFileParser {
         if (file.contentType != "text/csv") throw IllegalArgumentException("Invalid file type: type=${file.contentType}")
         if (file.isEmpty) throw IllegalArgumentException("Can not parse empty file")
 
-        file.inputStream.bufferedReader().use {
+        file.inputStream.bufferedReader(Charset.forName("UTF-8")).use {
 
             return it.lines()
                     .mapIndexed { index, line ->
