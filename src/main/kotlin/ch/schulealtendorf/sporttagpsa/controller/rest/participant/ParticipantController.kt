@@ -61,6 +61,21 @@ class ParticipantController(
         const val PARTICIPANT: String = "/participant/{participant_id}"
     }
 
+    @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
+
+        if (groupName == null) {
+            return participantManager.getParticipants().map { it.toRest() }
+        }
+
+        val group = groupManager.getGroup(groupName)
+
+        if (group.isPresent.not()) return listOf()
+
+        return this.participantManager.getParticipants(group.get())
+                .map { it.toRest() }
+    }
+
     @GetMapping(PARTICIPANT, produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipant(@PathVariable("participant_id") id: Int): RestParticipant {
 
