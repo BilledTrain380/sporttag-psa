@@ -49,7 +49,7 @@ data class CompetitorEntity(
 
         @Id
         @NotNull
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var startnumber: Int? = null,
 
         @NotNull

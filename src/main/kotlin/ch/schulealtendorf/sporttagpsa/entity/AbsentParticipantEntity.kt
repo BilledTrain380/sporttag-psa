@@ -43,7 +43,7 @@ import javax.persistence.*
 data class AbsentParticipantEntity(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int? = null,
 
         @OneToOne(fetch = FetchType.LAZY)

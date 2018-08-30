@@ -50,7 +50,7 @@ data class ParticipantEntity(
 
         @Id
         @NotNull
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int? = null,
 
         @NotNull
