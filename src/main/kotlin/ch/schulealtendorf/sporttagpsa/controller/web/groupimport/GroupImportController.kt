@@ -40,9 +40,9 @@ import ch.schulealtendorf.sporttagpsa.business.group.CSVParsingException
 import ch.schulealtendorf.sporttagpsa.business.group.GroupFileParser
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -55,7 +55,8 @@ class GroupImportController(
         private val groupManager: GroupManager
 ) {
 
-    @PostMapping("/import-group")
+    @PostMapping("/import-group", consumes = ["multipart/form-data"])
+    @ResponseStatus(HttpStatus.OK)
     fun importGroup(@RequestParam("group-input") file: MultipartFile) {
 
         try {
