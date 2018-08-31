@@ -106,8 +106,6 @@ interface ParticipantManager {
      *
      * If the {@link Participant#town} does not exist, it will be created
      *
-     * The {@link Participant#group} relation will be created if it does not exist yet.
-     *
      * The properties {@link Participant#absent} and {@link Participant#sport} will be ignored.
      * To update those use {@link ParticipationManager#markAsAbsent}, {@link ParticipationManager#markAsPresent}
      * or {@link ParticipationManager#participate}.
@@ -115,6 +113,7 @@ interface ParticipantManager {
      * @param participant the participant to save
      *
      * @return the created participant
+     * @throws NoSuchElementException if the group of the given {@code participant} does not exist
      */
     fun saveParticipant(participant: Participant): Participant
 }

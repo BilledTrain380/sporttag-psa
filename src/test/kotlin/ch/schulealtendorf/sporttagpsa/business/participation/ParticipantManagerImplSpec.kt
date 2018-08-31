@@ -42,6 +42,7 @@ import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.model.*
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
 import com.nhaarman.mockito_kotlin.*
@@ -51,6 +52,9 @@ import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import java.util.*
+import kotlin.NoSuchElementException
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -63,18 +67,21 @@ object ParticipantManagerImplSpec: Spek({
         val mockParticipantRepository: ParticipantRepository = mock()
         val mockAbsentRepository: AbsentParticipantRepository = mock()
         val mockTownRepository: TownRepository = mock()
+        val mockGroupRepository: GroupRepository = mock()
 
         val manager = ParticipantManagerImpl(
                 mockParticipantRepository,
                 mockAbsentRepository,
-                mockTownRepository
+                mockTownRepository,
+                mockGroupRepository
         )
 
         beforeEachTest {
             reset(
                     mockAbsentRepository,
                     mockParticipantRepository,
-                    mockTownRepository
+                    mockTownRepository,
+                    mockGroupRepository
             )
         }
 
@@ -142,6 +149,7 @@ object ParticipantManagerImplSpec: Spek({
 
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.empty())
                 whenever(mockTownRepository.findByZipAndName(any(), any())).thenReturn(Optional.of(townEntity))
+                whenever(mockGroupRepository.findById(any())).thenReturn(Optional.of(groupEntity))
 
 
                 val participant = participantModel.copy(id = 0) // id 0 to create the participant
@@ -158,6 +166,7 @@ object ParticipantManagerImplSpec: Spek({
 
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity))
                 whenever(mockTownRepository.findByZipAndName(any(), any())).thenReturn(Optional.empty())
+                whenever(mockGroupRepository.findById(any())).thenReturn(Optional.of(groupEntity))
 
 
                 val participant = participantModel.copy(
@@ -178,27 +187,22 @@ object ParticipantManagerImplSpec: Spek({
                 }
             }
 
-            on("new coach") {
+            on("unkown group") {
 
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity))
+                whenever(mockGroupRepository.findById(any())).thenReturn(Optional.empty())
 
 
                 val participant = participantModel.copy(
                         group = Group("3a", Coach(0, "Müller")) // coach id 0 to create the coach
                 )
-                manager.saveParticipant(participant)
 
 
-                it("should create the coach") {
-                    val expected = participantEntity.copy(
-                            group = GroupEntity(
-                                    name = "3a",
-                                    coach = CoachEntity( // entity with id null will be created
-                                            name = "Müller"
-                                    )
-                            )
-                    )
-                    verify(mockParticipantRepository, times(1)).save(expected)
+                it("should throw a no such element exception, indicating that the group does not exist") {
+                    val exception = assertFailsWith<NoSuchElementException> {
+                        manager.saveParticipant(participant)
+                    }
+                    assertEquals("Participant group does not exist: name=3a", exception.message)
                 }
             }
         }
