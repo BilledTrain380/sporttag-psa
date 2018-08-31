@@ -36,15 +36,23 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.sport
 
+import ch.schulealtendorf.sporttagpsa.business.participation.SportManager
 import ch.schulealtendorf.sporttagpsa.model.Sport
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-class SportController() {
+@RestController
+class SportController(
+        private val sportManager: SportManager
+) {
 
+    @GetMapping("/sports", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getSports(): List<Sport> {
-        return listOf()
+        return sportManager.getSports()
     }
 }

@@ -34,29 +34,20 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.config
+package ch.schulealtendorf.sporttagpsa.business.participation
 
-import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import ch.schulealtendorf.sporttagpsa.model.Sport
 
 /**
+ * Describes a manager for {@link Sport} related data.
+ *
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 0.0.1
+ * @since 2.0.0
  */
-@Configuration
-@EnableWebMvc
-class WebConfig: WebMvcConfigurer {
+interface SportManager {
 
     /**
-     * Configure cross origin requests processing.
-     * @since 4.2
+     * @return all sport types
      */
-    override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
-                .allowedOrigins("*")
-                .allowedHeaders("*");
-    }
+    fun getSports(): List<Sport>
 }
