@@ -76,7 +76,7 @@ data class ParticipantEntity(
         @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
         var town: TownEntity = TownEntity(),
 
-        @ManyToOne
+        @ManyToOne(cascade = [CascadeType.PERSIST])
         @JoinColumn(name = "FK_GROUP_name", referencedColumnName = "name")
         var group: GroupEntity = GroupEntity(),
 
