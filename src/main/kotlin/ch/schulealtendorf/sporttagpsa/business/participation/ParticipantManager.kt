@@ -116,4 +116,11 @@ interface ParticipantManager {
      * @throws NoSuchElementException if the group of the given {@code participant} does not exist
      */
     fun saveParticipant(participant: Participant): Participant
+
+    /**
+     * Deletes the given {@code participant}.
+     *
+     * @param participant the participant to delete
+     */
+    fun deleteParticipant(participant: Participant)
 }

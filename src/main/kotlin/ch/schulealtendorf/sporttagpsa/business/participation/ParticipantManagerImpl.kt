@@ -94,6 +94,15 @@ class ParticipantManagerImpl(
         return participantRepository.save(participantEntity).toParticipant()
     }
 
+    override fun deleteParticipant(participant: Participant) {
+
+        val participantEntity = participantRepository.findById(participant.id)
+
+        participantEntity.ifPresent {
+            participantRepository.delete(it)
+        }
+    }
+
     private fun ParticipantEntity.toParticipant(): Participant {
         return Participant(
                 id!!,

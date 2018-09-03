@@ -82,7 +82,7 @@ class ParticipantController(
     fun createParticipant(@RequestParam("group", required = true) groupName: String, @Valid @RequestBody participant: CreateParticipant) {
 
         val group = groupManager.getGroup(groupName)
-                .orElseThrow { NotFoundException("Could not find group: name=$groupName") }
+                .orElseThrow { BadRequestException("Could not find group: name=$groupName") }
 
         var newParticipant = Participant(
                 0,
@@ -156,6 +156,16 @@ class ParticipantController(
             participationManager.participate(participant, patchParticipant.sport)
         } else if (participationStatus == ParticipationStatus.CLOSE) {
             participationManager.reParticipate(participant, patchParticipant.sport)
+        }
+    }
+
+    @DeleteMapping(PARTICIPANT)
+    fun deleteParticipant(@PathVariable("participant_id") id: Int) {
+
+        val paritcipant = participantManager.getParticipant(id)
+
+        paritcipant.ifPresent {
+            participantManager.deleteParticipant(it)
         }
     }
 

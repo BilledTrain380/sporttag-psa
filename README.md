@@ -53,6 +53,12 @@ java -jar sporttag-psa.jar
 > Sporttag PSA will use the system depending application support directory
 > to store its data.
 
+## Roadmap
+
+Interest where Sporttag PSA is going? Look at the roadmap.
+
+https://trello.com/b/93Bu31qo/sporttag-psa
+
 ## Built With
 
 * [Gradle](https://gradle.org/) - Dependency Management
