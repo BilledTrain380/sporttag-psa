@@ -40,6 +40,7 @@ import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
 import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryModel
 import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.model.Competitor
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.model.Sport
@@ -49,7 +50,7 @@ import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 0.0.1
+ * @since 2.0.0
  */
 @Component
 class ParticipationManagerImpl(

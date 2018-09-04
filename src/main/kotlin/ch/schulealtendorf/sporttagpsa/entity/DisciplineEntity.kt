@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
  */
 @Entity
 @Table(name = "DISCIPLINE")
-class DisciplineEntity(
+data class DisciplineEntity(
 
         @Id
         @NotNull

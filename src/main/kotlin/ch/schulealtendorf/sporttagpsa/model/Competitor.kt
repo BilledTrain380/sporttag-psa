@@ -52,6 +52,6 @@ data class Competitor(
         val absent: Boolean,
         val address: String,
         val town: Town,
-        val clazz: Group,
+        val group: Group,
         val results: List<Result>
 )

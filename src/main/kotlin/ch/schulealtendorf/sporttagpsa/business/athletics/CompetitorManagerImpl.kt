@@ -36,12 +36,15 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.business.participation.AbsentManager
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import org.springframework.stereotype.Component
 import java.util.*
+import kotlin.NoSuchElementException
 
 /**
  * {@link CompetitorManager} implementation which uses the repository classes.
@@ -51,14 +54,15 @@ import java.util.*
  */
 @Component
 class CompetitorManagerImpl(
-        private val starterRepository: CompetitorRepository,
-        private val absentManager: AbsentManager
+        private val competitorRepository: CompetitorRepository,
+        private val absentRepository: AbsentParticipantRepository,
+        private val disciplineRepository: DisciplineRepository
 ): CompetitorManager {
 
     /**
      * @return a list of all competitors
      */
-    override fun getCompetitorList() = starterRepository.findAll().map { it.map() }
+    override fun getCompetitorList() = competitorRepository.findAll().map { it.map() }
 
     /**
      * Get all competitors related to the given {@code group}.
@@ -67,7 +71,7 @@ class CompetitorManagerImpl(
      *
      * @return a list of competitors related to the given {@code group}
      */
-    override fun getCompetitorList(clazz: Group) = getCompetitorList().filter { it.clazz == clazz }
+    override fun getCompetitorList(clazz: Group) = getCompetitorList().filter { it.group == clazz }
 
     /**
      * Get all competitors matching the given {@code gender}.
@@ -86,7 +90,7 @@ class CompetitorManagerImpl(
      *
      * @return a list of competitors matching the given arguments
      */
-    override fun getCompetitorList(clazz: Group, gender: Gender) = getCompetitorList().filter { it.clazz == clazz && it.gender == gender }
+    override fun getCompetitorList(clazz: Group, gender: Gender) = getCompetitorList().filter { it.group == clazz && it.gender == gender }
 
     /**
      * Get a competitor as a {@link Optional} matching the given {@code id}.
@@ -97,7 +101,61 @@ class CompetitorManagerImpl(
      *
      * @return an Optional containing the resulting competitor
      */
-    override fun getCompetitor(id: Int): Optional<Competitor> = starterRepository.findByParticipantId(id).map { it.map() }
+    override fun getCompetitor(id: Int): Optional<Competitor> = competitorRepository.findByParticipantId(id).map { it.map() }
+
+    override fun saveCompetitorResults(competitor: Competitor) {
+
+        val competitorEntity = competitorRepository.findByParticipantId(competitor.id)
+                .orElseThrow { NoSuchElementException("Could not find competitor: id=${competitor.id}") }
+
+        val results = competitor.results
+                .map {
+
+                    competitorEntity.results.findById(it.id).orElseGet {
+
+                        val discipline = disciplineRepository.findById(it.discipline.name)
+                                .orElseThrow { NoSuchElementException("Could not find discipline: name=${it.discipline.name}") }
+
+                        ResultEntity(
+                                distance = it.distance.orElseGet { null },
+                                discipline = discipline
+                        )
+                    }.apply {
+                        value = it.value
+                        points = it.points
+                    }
+                }.toSet()
+
+        competitorEntity.results = results
+        competitorRepository.save(competitorEntity)
+    }
+
+    override fun mergeResults(competitor: Competitor, results: Iterable<Result>): Competitor {
+
+        val mergedResults = competitor.results
+                .map {
+                    if (it.existsIn(results)) results take it else it
+                }.plus(results.notIn(competitor.results))
+
+
+        return competitor.copy(results = mergedResults)
+    }
+
+    private fun Set<ResultEntity>.findById(id: Int): Optional<ResultEntity> {
+        return Optional.ofNullable(find { it.id == id })
+    }
+
+    private fun Result.existsIn(results: Iterable<Result>): Boolean {
+        return results.any { id == it.id }
+    }
+
+    private infix fun Iterable<Result>.take(result: Result): Result {
+        return find { it.id == result.id }!!
+    }
+
+    private fun Iterable<Result>.notIn(results: Iterable<Result>): Iterable<Result> {
+        return filterNot { results.any { result -> result.id == it.id } }
+    }
 
     private fun CompetitorEntity.map(): Competitor {
         return Competitor(
@@ -107,12 +165,12 @@ class CompetitorManagerImpl(
                 participant.prename,
                 Gender.FEMALE,
                 Birthday(participant.birthday),
-                absentManager.isAbsent(participant),
+                absentRepository.findByParticipantId(participant.id!!).isPresent,
                 participant.address,
                 Town(participant.town.zip, participant.town.name),
                 Group(participant.group.name, Coach(participant.group.coach.id!!, participant.group.coach.name)),
                 results.map {
-                    Result(it.id!!, it.value, it.points, Discipline(it.discipline.name, it.discipline.unit.name, Optional.ofNullable(it.distance)))
+                    Result(it.id!!, it.value, it.points, Optional.ofNullable(it.distance), Discipline(it.discipline.name, it.discipline.unit.name))
                 }
         )
     }

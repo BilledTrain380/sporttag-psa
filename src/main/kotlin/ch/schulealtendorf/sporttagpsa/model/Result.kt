@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
+import java.util.*
+
 /**
  * Data class representing a result of a competitor.
  *
@@ -46,5 +48,6 @@ data class Result(
         val id: Int,
         val value: Long,
         val points: Int,
+        val distance: Optional<String> = Optional.empty(),
         val discipline: Discipline
 )

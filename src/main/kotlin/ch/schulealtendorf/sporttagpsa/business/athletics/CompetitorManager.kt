@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Competitor
 import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Result
 import java.util.*
 
 /**
@@ -92,4 +93,28 @@ interface CompetitorManager {
      * @return an Optional containing the resulting competitor
      */
     fun getCompetitor(id: Int): Optional<Competitor>
+
+    /**
+     * Saves the results of the given {@code competitor}.
+     *
+     * If the result id equals 0, it will be created.
+     *
+     * @param competitor the competitor to save its results
+     *
+     * @throws NoSuchElementException if the competitor does not exist
+     */
+    fun saveCompetitorResults(competitor: Competitor)
+
+    /**
+     * Merges the results of the given {@code competitor} with the given {@code results}
+     * based by the result id.
+     *
+     * If a result does not exist in the competitor's result list, it will be added.
+     *
+     * @param competitor the competitor to merge the results in
+     * @param results the results to merge into the competitors results
+     *
+     * @return the competitor containing the merged results
+     */
+    fun mergeResults(competitor: Competitor, results: Iterable<Result>): Competitor
 }
