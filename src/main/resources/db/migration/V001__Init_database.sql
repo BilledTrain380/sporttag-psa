@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS COMPETITOR (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS UNIT (
   name VARCHAR(45) NOT NULL UNIQUE ,
+  factor INT NOT NULL DEFAULT 1,
   PRIMARY KEY (name)
 );
 

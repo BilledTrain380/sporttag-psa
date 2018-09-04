@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
@@ -170,7 +171,12 @@ class CompetitorManagerImpl(
                 Town(participant.town.zip, participant.town.name),
                 Group(participant.group.name, Coach(participant.group.coach.id!!, participant.group.coach.name)),
                 results.map {
-                    Result(it.id!!, it.value, it.points, Optional.ofNullable(it.distance), Discipline(it.discipline.name, it.discipline.unit.name))
+                    Result(
+                            it.id!!,
+                            it.value,
+                            it.points,
+                            Optional.ofNullable(it.distance),
+                            Discipline(it.discipline.name, Unit(it.discipline.unit.name, it.discipline.unit.factor)))
                 }
         )
     }

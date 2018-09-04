@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,25 +34,13 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
-
-import javax.persistence.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+package ch.schulealtendorf.sporttagpsa.model
 
 /**
- * @author nmaerchy
- * @since 1.0.0
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-@Entity
-@Table(name = "UNIT")
-data class UnitEntity(
-
-        @Id
-        @NotNull
-        @Size(min = 1, max = 45)
-        var name: String = "",
-
-        @NotNull
-        var factor: Int = 1
+data class Unit(
+        val name: String,
+        val factor: Int
 )

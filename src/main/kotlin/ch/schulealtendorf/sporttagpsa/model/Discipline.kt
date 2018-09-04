@@ -36,15 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
-import java.util.*
-
 /**
  * Data class representing a discipline.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class Discipline @JvmOverloads constructor(
+data class Discipline(
         val name: String,
-        val unit: String
+        val unit: Unit
 )

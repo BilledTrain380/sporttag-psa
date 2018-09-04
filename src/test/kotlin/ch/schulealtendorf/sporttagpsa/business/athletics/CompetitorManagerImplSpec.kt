@@ -40,6 +40,7 @@ import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
@@ -92,9 +93,9 @@ object CompetitorManagerImplSpec: Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        Result(1, 50, 800, Optional.empty(), Discipline("", "")),
-                        Result(2, 49, 795, Optional.empty(), Discipline("", "")),
-                        Result(3, 45, 846, Optional.empty(), Discipline("", ""))
+                        Result(1, 50, 800, Optional.empty(), Discipline("", Unit("", 1))),
+                        Result(2, 49, 795, Optional.empty(), Discipline("", Unit("", 1))),
+                        Result(3, 45, 846, Optional.empty(), Discipline("", Unit("", 1)))
                 )
 
 
@@ -111,15 +112,15 @@ object CompetitorManagerImplSpec: Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        Result(1, 50, 800, Optional.empty(), Discipline("", "")),
-                        Result(2, 49, 795, Optional.empty(), Discipline("", ""))
+                        Result(1, 50, 800, Optional.empty(), Discipline("", Unit("", 1))),
+                        Result(2, 49, 795, Optional.empty(), Discipline("", Unit("", 1)))
                 )
 
 
                 val existingResults = listOf(
-                        Result(1, 20, 122, Optional.empty(), Discipline("", "")),
-                        Result(2, 21, 158, Optional.empty(), Discipline("", "")),
-                        Result(3, 45, 456, Optional.empty(), Discipline("", ""))
+                        Result(1, 20, 122, Optional.empty(), Discipline("", Unit("", 1))),
+                        Result(2, 21, 158, Optional.empty(), Discipline("", Unit("", 1))),
+                        Result(3, 45, 456, Optional.empty(), Discipline("", Unit("", 1)))
                 )
                 val result = manager.mergeResults(competitor.copy(results = existingResults), results)
 
@@ -142,9 +143,9 @@ object CompetitorManagerImplSpec: Spek({
 
 
                 val results = listOf(
-                        Result(0, 20, 122, Optional.empty(), Discipline("test", "")),
-                        Result(0, 21, 158, Optional.empty(), Discipline("test", "")),
-                        Result(0, 45, 456, Optional.empty(), Discipline("test", ""))
+                        Result(0, 20, 122, Optional.empty(), Discipline("test", Unit("", 1))),
+                        Result(0, 21, 158, Optional.empty(), Discipline("test", Unit("", 1))),
+                        Result(0, 45, 456, Optional.empty(), Discipline("test", Unit("", 1)))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -174,9 +175,9 @@ object CompetitorManagerImplSpec: Spek({
 
 
                 val results = listOf(
-                        Result(1, 25, 133, Optional.empty(), Discipline("test", "")),
-                        Result(2, 12, 102, Optional.empty(), Discipline("test", "")),
-                        Result(0, 45, 456, Optional.empty(), Discipline("test", ""))
+                        Result(1, 25, 133, Optional.empty(), Discipline("test", Unit("", 1))),
+                        Result(2, 12, 102, Optional.empty(), Discipline("test", Unit("", 1))),
+                        Result(0, 45, 456, Optional.empty(), Discipline("test", Unit("", 1)))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -211,8 +212,8 @@ object CompetitorManagerImplSpec: Spek({
 
 
                 val results = listOf(
-                        Result(0, 20, 122, Optional.empty(), Discipline("test", "")),
-                        Result(0, 21, 158, Optional.empty(), Discipline("test", ""))
+                        Result(0, 20, 122, Optional.empty(), Discipline("test", Unit("", 1))),
+                        Result(0, 21, 158, Optional.empty(), Discipline("test", Unit("", 1)))
                 )
 
 

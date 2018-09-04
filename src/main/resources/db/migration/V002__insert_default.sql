@@ -4,10 +4,10 @@ INSERT INTO SPORT (name) VALUES
 ('Brennball'),
 ('Velo- Rollerblades');
 
-INSERT INTO UNIT (name) VALUES
-('Meter'),
-('Sekunden'),
-('Punkte');
+INSERT INTO UNIT (name, factor) VALUES
+('Meter', 100),
+('Sekunden', 100),
+('Punkte', 1);
 
 INSERT INTO DISCIPLINE (name, FK_UNIT_name) VALUES
   ('Schnelllauf', (SELECT name FROM UNIT WHERE name = 'Sekunden')),

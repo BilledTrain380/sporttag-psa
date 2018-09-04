@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,25 +34,24 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.entity
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import javax.persistence.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.sporttagpsa.business.rulebook.ResultRuleBook
+import ch.schulealtendorf.sporttagpsa.model.Result
+import org.springframework.stereotype.Component
 
 /**
- * @author nmaerchy
- * @since 1.0.0
+ * Result calculator based on the {@link ResultRuleBook}.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
-@Entity
-@Table(name = "UNIT")
-data class UnitEntity(
+@Component
+class RuleBookResultCalculator(
+        private val resultRuleBook: ResultRuleBook
+): ResultCalculator {
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 45)
-        var name: String = "",
-
-        @NotNull
-        var factor: Int = 1
-)
+    override fun calculate(result: TemporaryResult): Result {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+}
