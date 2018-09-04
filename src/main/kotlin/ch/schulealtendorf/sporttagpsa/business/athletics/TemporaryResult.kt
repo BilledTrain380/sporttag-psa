@@ -37,6 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.sporttagpsa.model.Discipline
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import java.util.*
 
 /**
  * Data class representing a result which has no
@@ -45,8 +47,10 @@ import ch.schulealtendorf.sporttagpsa.model.Discipline
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class TemporaryResult(
+data class TemporaryResult @JvmOverloads constructor(
         val id: Int,
+        val gender: Gender,
         val value: Long,
-        val discipline: Discipline
+        val discipline: Discipline,
+        val distance: Optional<String> = Optional.empty()
 )
