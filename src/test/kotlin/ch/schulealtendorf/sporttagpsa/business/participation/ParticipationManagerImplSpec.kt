@@ -291,18 +291,20 @@ object ParticipationManagerImplSpec: Spek({
                 whenever(mockDisciplineRepository.findAll()).thenReturn(disciplines)
 
                 whenever(mockCategoryBook.getDistance(any())).thenReturn(null)
-                whenever(mockCompetitorRepository.save(any<CompetitorEntity>())).thenReturn(CompetitorEntity()) // empty entity is enough, value will be ignored anyway
+                val competitor = CompetitorEntity(
+                        participant = participantEntity.copy()
+                )
+                whenever(mockCompetitorRepository.save(any<CompetitorEntity>())).thenReturn(competitor)
 
 
                 manager.reParticipate(participantModel, Sport(LockedSport.ATHLETICS))
 
 
                 it("should save the participant as competitor with default results") {
-                    val expected = CompetitorEntity(
-                            participant = participantEntity.copy(sport = SportEntity(LockedSport.ATHLETICS)),
-                            results = disciplines.map { ResultEntity(discipline = it) }.toSet()
-                    )
-                    verify(mockCompetitorRepository, times(1)).save(expected)
+                    verify(mockCompetitorRepository, times(1)).save(competitor)
+                    verify(mockCompetitorRepository, times(1)).save(competitor.apply {
+                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor } }.toSet()
+                    })
                 }
 
                 it("should consider the category") {
@@ -406,21 +408,35 @@ object ParticipationManagerImplSpec: Spek({
                 )
                 whenever(mockDisciplineRepository.findAll()).thenReturn(disciplines)
 
+                val competitor1 = CompetitorEntity(
+                        participant = participant1.copy()
+                )
+                val competitor2 = CompetitorEntity(
+                        participant = participant2.copy()
+                )
+                whenever(mockCompetitorRepository.save(competitor1)).thenReturn(competitor1.copy())
+                whenever(mockCompetitorRepository.save(competitor2)).thenReturn(competitor2.copy())
+
 
                 manager.closeParticipation()
 
 
                 it("should create competitors with default results for each participant with sport athletics") {
-                    val competitor1 = CompetitorEntity(
-                            participant = participant1.copy(),
-                            results = disciplines.map { ResultEntity(discipline = it) }.toSet()
-                    )
-                    val competitor2 = CompetitorEntity(
-                            participant = participant2.copy(),
-                            results = disciplines.map { ResultEntity(discipline = it) }.toSet()
-                    )
+                    /*
+                      * 1. the competitor without results needs to be saved
+                      * 2. the results with the competitor reference can be se
+                      * 3. the competitor including the results must be saved
+                      */
+
                     verify(mockCompetitorRepository, times(1)).save(competitor1)
+                    verify(mockCompetitorRepository, times(1)).save(competitor1.apply {
+                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor1 } }.toSet()
+                    })
+
                     verify(mockCompetitorRepository, times(1)).save(competitor2)
+                    verify(mockCompetitorRepository, times(1)).save(competitor2.apply {
+                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor2 } }.toSet()
+                    })
                 }
 
                 it("should close the participation") {

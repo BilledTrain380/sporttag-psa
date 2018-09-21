@@ -57,7 +57,6 @@ data class CompetitorEntity(
         @JoinColumn(name = "fk_PARTICIPANT_id", referencedColumnName = "id")
         var participant: ParticipantEntity = ParticipantEntity(),
 
-        @OneToMany(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
-        @JoinColumn(name = "FK_PARTICIPANT_id")
+        @OneToMany(cascade = [CascadeType.ALL], mappedBy = "competitor")
         var results: Set<ResultEntity> = setOf()
 )

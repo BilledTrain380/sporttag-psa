@@ -172,9 +172,7 @@ class ParticipationManagerImpl(
         participantRepository.save(participantEntity)
 
         if (sport.name == LockedSport.ATHLETICS) {
-
-            competitorRepository.save(competitorOf(participantEntity))
-
+            participantEntity.saveAsCompetitor()
         } else {
 
             val competitor = competitorRepository.findByParticipantId(participant.id)
@@ -203,9 +201,7 @@ class ParticipationManagerImpl(
 
         val participants = participantRepository.findBySportName(LockedSport.ATHLETICS)
 
-        participants.forEach {
-            competitorRepository.save(competitorOf(it))
-        }
+        participants.forEach { it.saveAsCompetitor() }
 
         val participation = ParticipationEntity(MAIN_PARTICIPATION, ParticipationStatus.CLOSE.name)
         participationRepository.save(participation)
@@ -236,24 +232,27 @@ class ParticipationManagerImpl(
         return ParticipationStatus.valueOf(participation.status)
     }
 
-    private fun competitorOf(participant: ParticipantEntity): CompetitorEntity {
+    private fun ParticipantEntity.saveAsCompetitor() {
+        val competitor = competitorRepository.save(CompetitorEntity(participant = this))
+        competitor.createDefaultResults()
+        competitorRepository.save(competitor)
+    }
+
+    private fun CompetitorEntity.createDefaultResults() {
 
         val disciplines = disciplineRepository.findAll()
 
-        val defaultResults = disciplines.map {
+        this.results = disciplines.map {
             ResultEntity(
-                    distance = categoryRuleBook.getDistance(CategoryModel(participant.age(), it.name)),
+                    distance = categoryRuleBook.getDistance(CategoryModel(this.age(), it.name)),
                     discipline = it
-            )
+            ).also {
+                it.competitor = this
+            }
         }.toSet()
-
-        return CompetitorEntity(
-                participant = participant,
-                results = defaultResults
-        )
     }
 
-    private fun ParticipantEntity.age(): Int {
-        return DateTime.now().year - DateTime(birthday).year
+    private fun CompetitorEntity.age(): Int {
+        return DateTime.now().year - DateTime(participant.birthday).year
     }
 }

@@ -41,10 +41,6 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
 @Entity
 @Table(name = "RESULT")
 data class ResultEntity(
@@ -67,4 +63,11 @@ data class ResultEntity(
         @ManyToOne
         @JoinColumn(name = "fk_DISCIPLINE", referencedColumnName = "name")
         var discipline: DisciplineEntity = DisciplineEntity()
-)
+) {
+
+    // We have to exclude this property from the toString, hashcode and equals methods, because circular mapping
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_COMPETITOR_startnumber", referencedColumnName = "startnumber")
+    var competitor: CompetitorEntity = CompetitorEntity()
+}
