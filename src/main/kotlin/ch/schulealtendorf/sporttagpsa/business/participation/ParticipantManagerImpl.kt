@@ -62,12 +62,6 @@ class ParticipantManagerImpl(
 
     override fun getParticipants() =  participantRepository.findAll().map { it.toParticipant() }
 
-    override fun getParticipants(group: Group) = participantRepository.findByGroupName(group.name).map { it.toParticipant() }
-
-    override fun getParticipants(gender: Gender) = participantRepository.findByGender(gender.toString()).map { it.toParticipant() }
-
-    override fun getParticipants(group: Group, gender: Gender) = participantRepository.findByGroupAndGender(group.name, gender.toString()).map { it.toParticipant() }
-
     override fun getParticipant(id: Int): Optional<Participant> = participantRepository.findById(id).map { it.toParticipant() }
 
     override fun saveParticipant(participant: Participant): Participant {

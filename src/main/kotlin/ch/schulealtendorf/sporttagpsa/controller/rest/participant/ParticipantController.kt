@@ -65,15 +65,8 @@ class ParticipantController(
     @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
 
-        if (groupName == null) {
-            return participantManager.getParticipants().map { json(it) }
-        }
-
-        val group = groupManager.getGroup(groupName)
-
-        if (group.isPresent.not()) return listOf()
-
-        return this.participantManager.getParticipants(group.get())
+        return participantManager.getParticipants()
+                .filter { (groupName == null) || it.group.name == groupName }
                 .map { json(it) }
     }
 

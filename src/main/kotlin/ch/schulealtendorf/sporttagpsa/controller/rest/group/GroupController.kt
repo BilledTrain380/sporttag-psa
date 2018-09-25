@@ -77,13 +77,14 @@ class GroupController(
 
         return this
                 .filter {
-                    (competitive == null) or
-                            competitive!! && it.isCompetitive() or
-                            !competitive && !it.isCompetitive()
+                    (competitive == null) ||
+                    competitive && it.isCompetitive() ||
+                    !competitive && !it.isCompetitive()
                 }
-                .filter { (pendingParticipation == null) or
-                        pendingParticipation!! && it.hasPendingParticipation() or
-                        !pendingParticipation && !it.hasPendingParticipation()
+                .filter {
+                    (pendingParticipation == null) ||
+                    pendingParticipation && it.hasPendingParticipation() ||
+                    !pendingParticipation && !it.hasPendingParticipation()
                 }
     }
 

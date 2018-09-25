@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import java.util.*
 
@@ -53,42 +51,6 @@ interface ParticipantManager {
      * @return a list of all participants
      */
     fun getParticipants(): List<Participant>
-
-    /**
-     * Filters all participant by the given {@code group}.
-     * Participants which are not related to the group
-     * are not included in the returned list.
-     *
-     * @param group the group where a participants belongs to
-     *
-     * @return the filtered participant list
-     */
-    fun getParticipants(group: Group): List<Participant>
-
-    /**
-     * Filters all participants by the given {@code gender}.
-     * Participants which are not equal to the gender
-     * are not included in the returned list.
-     *
-     * @param gender the gender of the participants
-     *
-     * @return the filtered participant list
-     */
-    fun getParticipants(gender: Gender): List<Participant>
-
-    /**
-     * Filters all participants by the given {@code group}
-     * AND by the given {@code gender}.
-     *
-     * Participants which are not related to the group AND not
-     * equal to the gender are not included in the returned list.
-     *
-     * @param group the group where the participants belongs to
-     * @param gender the gender of the participants
-     *
-     * @return the filtered participant list
-     */
-    fun getParticipants(group: Group, gender: Gender): List<Participant>
 
     /**
      * @param id the id of the participant

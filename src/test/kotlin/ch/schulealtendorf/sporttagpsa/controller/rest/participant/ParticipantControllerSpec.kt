@@ -103,7 +103,7 @@ object ParticipantControllerSpec: Spek({
             on("group request parameter") {
 
                 whenever(mockGroupManager.getGroup("2a")).thenReturn(Optional.of(g2a))
-                whenever(mockParticipantManager.getParticipants(g2a)).thenReturn(listOf(mmuster))
+                whenever(mockParticipantManager.getParticipants()).thenReturn(listOf(mmuster))
 
 
                 val result = controller.getParticipants("2a")
@@ -111,19 +111,6 @@ object ParticipantControllerSpec: Spek({
 
                 it("should return only participants related to the group") {
                     assertEquals(listOf(json(mmuster)), result)
-                }
-            }
-
-            on("group request parameter which does not exist") {
-
-                whenever(mockGroupManager.getGroup("2a")).thenReturn(Optional.empty())
-
-
-                val result = controller.getParticipants("2a")
-
-
-                it("should return an empty list") {
-                    assertEquals(listOf(), result)
                 }
             }
         }

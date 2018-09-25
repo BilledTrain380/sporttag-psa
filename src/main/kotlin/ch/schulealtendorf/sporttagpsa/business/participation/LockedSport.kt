@@ -45,5 +45,5 @@ package ch.schulealtendorf.sporttagpsa.business.participation
  */
 object LockedSport {
 
-    const val ATHLETICS = "athletics"
+    const val ATHLETICS = "Mehrkampf"
 }
