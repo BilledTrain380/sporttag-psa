@@ -34,56 +34,24 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest
+package ch.schulealtendorf.sporttagpsa.controller.rest.discipline
 
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
+import ch.schulealtendorf.sporttagpsa.model.Discipline
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
+/**
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+@RestController
+class DisciplineController(
+        private val disciplineManager: DisciplineManager
+) {
 
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val sport: Sport? = null
-)
-
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
-)
-
-data class RestParticipationStatus(
-        val status: ParticipationStatus
-)
-
-data class RestCompetitor(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val results: List<RestResult>
-)
-
-data class RestResult(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val distance: String?,
-        val discipline: Discipline
-)
+    @GetMapping("/disciplines")
+    fun getDisciplines(): List<Discipline> {
+        return disciplineManager.getDisciplineList()
+    }
+}

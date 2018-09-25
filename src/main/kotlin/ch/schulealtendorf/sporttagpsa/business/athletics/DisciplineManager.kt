@@ -34,56 +34,28 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Discipline
+import java.util.*
 
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
+/**
+ * Manager for a {@link Discipline} domain model.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+interface DisciplineManager {
 
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val sport: Sport? = null
-)
+    /**
+     * @return all available disciplines
+     */
+    fun getDisciplineList(): List<Discipline>
 
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
-)
-
-data class RestParticipationStatus(
-        val status: ParticipationStatus
-)
-
-data class RestCompetitor(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val results: List<RestResult>
-)
-
-data class RestResult(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val distance: String?,
-        val discipline: Discipline
-)
+    /**
+     * @param name the name of the discipline to get
+     *
+     * @return an Optional containing the discipline or empty if the discipline does not exist
+     */
+    fun getDiscipline(name: String): Optional<Discipline>
+}

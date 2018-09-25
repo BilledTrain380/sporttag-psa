@@ -37,9 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
+import ch.schulealtendorf.sporttagpsa.model.*
 import org.springframework.stereotype.Component
 
 /**
@@ -78,5 +76,31 @@ class RestMapper(
 
     override fun of(participationStatus: ParticipationStatus): RestParticipationStatus {
         return RestParticipationStatus(participationStatus)
+    }
+
+    override fun of(competitor: Competitor): RestCompetitor {
+        return RestCompetitor(
+                competitor.id,
+                competitor.startNumber,
+                competitor.surname,
+                competitor.prename,
+                competitor.gender,
+                competitor.birthday.milliseconds,
+                competitor.absent,
+                competitor.address,
+                competitor.town,
+                of(competitor.group),
+                competitor.results.map { of(it) }
+        )
+    }
+
+    override fun of(result: Result): RestResult {
+        return RestResult(
+                result.id,
+                result.value,
+                result.points,
+                result.distance.orElseGet { null },
+                result.discipline
+        )
     }
 }

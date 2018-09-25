@@ -245,7 +245,8 @@ class ParticipationManagerImpl(
         this.results = disciplines.map {
             ResultEntity(
                     distance = categoryRuleBook.getDistance(CategoryModel(this.age(), it.name)),
-                    discipline = it
+                    discipline = it,
+                    value = 1.toLong() * it.unit.factor
             ).also {
                 it.competitor = this
             }

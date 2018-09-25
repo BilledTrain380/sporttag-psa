@@ -34,56 +34,10 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest
+package ch.schulealtendorf.sporttagpsa.controller.rest.competitor
 
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
 
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
-
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val sport: Sport? = null
-)
-
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
-)
-
-data class RestParticipationStatus(
-        val status: ParticipationStatus
-)
-
-data class RestCompetitor(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
+data class ResultWrapper(
         val results: List<RestResult>
-)
-
-data class RestResult(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val distance: String?,
-        val discipline: Discipline
 )

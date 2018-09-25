@@ -58,11 +58,11 @@ interface CompetitorManager {
     /**
      * Get all competitors related to the given {@code group}.
      *
-     * @param clazz the class to filter the competitors
+     * @param group the group to filter the competitors
      *
      * @return a list of competitors related to the given {@code group}
      */
-    fun getCompetitorList(clazz: Group): List<Competitor>
+    fun getCompetitorList(group: Group): List<Competitor>
 
     /**
      * Get all competitors matching the given {@code gender}.
@@ -76,12 +76,12 @@ interface CompetitorManager {
     /**
      * Get all competitors related to the given {@code group} AND matching the given {@code gender}.
      *
-     * @param clazz the class to filter the competitors
+     * @param group the class to filter the competitors
      * @param gender the gender to filter the competitors
      *
      * @return a list of competitors matching the given arguments
      */
-    fun getCompetitorList(clazz: Group, gender: Gender): List<Competitor>
+    fun getCompetitorList(group: Group, gender: Gender): List<Competitor>
 
     /**
      * Get a competitor as a {@link Optional} matching the given {@code id}.

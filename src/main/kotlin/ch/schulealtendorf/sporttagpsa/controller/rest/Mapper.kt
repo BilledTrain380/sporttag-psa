@@ -36,9 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest
 
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
+import ch.schulealtendorf.sporttagpsa.model.*
 
 /**
  * Describes a mapper for easy mapping between controller rest models and business models.
@@ -62,4 +60,14 @@ interface Mapper {
      * @return a {@link RestParticipationStatus} based on the given {@code participationStatus}
      */
     fun of(participationStatus: ParticipationStatus): RestParticipationStatus
+
+    /**
+     * @return a {@link RestCompetitor} based on the given {@code competitor}
+     */
+    fun of(competitor: Competitor): RestCompetitor
+
+    /**
+     * @return a {@link RestResult} based on the given {@code result}
+     */
+    fun of(result: Result): RestResult
 }

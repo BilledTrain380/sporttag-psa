@@ -68,11 +68,11 @@ class CompetitorManagerImpl(
     /**
      * Get all competitors related to the given {@code group}.
      *
-     * @param clazz the class to filter the competitors
+     * @param group the group to filter the competitors
      *
      * @return a list of competitors related to the given {@code group}
      */
-    override fun getCompetitorList(clazz: Group) = getCompetitorList().filter { it.group == clazz }
+    override fun getCompetitorList(group: Group) = getCompetitorList().filter { it.group == group }
 
     /**
      * Get all competitors matching the given {@code gender}.
@@ -86,12 +86,12 @@ class CompetitorManagerImpl(
     /**
      * Get all competitors related to the given {@code group} AND matching the given {@code gender}.
      *
-     * @param clazz the class to filter the competitors
+     * @param group the class to filter the competitors
      * @param gender the gender to filter the competitors
      *
      * @return a list of competitors matching the given arguments
      */
-    override fun getCompetitorList(clazz: Group, gender: Gender) = getCompetitorList().filter { it.group == clazz && it.gender == gender }
+    override fun getCompetitorList(group: Group, gender: Gender) = getCompetitorList().filter { it.group == group && it.gender == gender }
 
     /**
      * Get a competitor as a {@link Optional} matching the given {@code id}.
@@ -164,7 +164,7 @@ class CompetitorManagerImpl(
                 startnumber!!,
                 participant.surname,
                 participant.prename,
-                Gender.FEMALE,
+                Gender.valueOf(participant.gender),
                 Birthday(participant.birthday),
                 absentRepository.findByParticipantId(participant.id!!).isPresent,
                 participant.address,

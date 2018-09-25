@@ -34,56 +34,35 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest
+package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
+import ch.schulealtendorf.sporttagpsa.model.Discipline
+import ch.schulealtendorf.sporttagpsa.model.Unit
+import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import org.springframework.stereotype.Component
+import java.util.*
 
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
+/**
+ * Default implementation for a {@link DisciplineManager} which uses repositories to get its data.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+@Component
+class DisciplineManagerImpl(
+        private val disciplineRepository: DisciplineRepository
+): DisciplineManager {
 
-data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val sport: Sport? = null
-)
+    override fun getDisciplineList(): List<Discipline> {
+        return disciplineRepository.findAll().map {it.toModel()}
+    }
 
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
-)
+    override fun getDiscipline(name: String): Optional<Discipline> {
+        return disciplineRepository.findById(name).map { it.toModel() }
+    }
 
-data class RestParticipationStatus(
-        val status: ParticipationStatus
-)
-
-data class RestCompetitor(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: Gender,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: Town,
-        val group: RestGroup,
-        val results: List<RestResult>
-)
-
-data class RestResult(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val distance: String?,
-        val discipline: Discipline
-)
+    private fun DisciplineEntity.toModel(): Discipline {
+        return Discipline(name, Unit(unit.name, unit.factor))
+    }
+}
