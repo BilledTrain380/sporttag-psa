@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.ForbiddenException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipationStatus
+import ch.schulealtendorf.sporttagpsa.controller.rest.json
 import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
@@ -58,7 +59,7 @@ class ParticipationController(
     @GetMapping("/participation", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipation(): RestParticipationStatus {
         val status = participationManager.getParticipationStatus()
-        return RestParticipationStatus(status)
+        return json(status)
     }
 
     @PatchMapping("/participation")

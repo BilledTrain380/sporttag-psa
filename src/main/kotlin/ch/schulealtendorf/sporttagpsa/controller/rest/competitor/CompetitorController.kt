@@ -40,10 +40,7 @@ import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.athletics.ResultCalculator
 import ch.schulealtendorf.sporttagpsa.business.athletics.TemporaryResult
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.Mapper
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestCompetitor
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
+import ch.schulealtendorf.sporttagpsa.controller.rest.*
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -56,29 +53,28 @@ import java.util.*
 class CompetitorController(
         private val competitorManager: CompetitorManager,
         private val groupManager: GroupManager,
-        private val resultCalculator: ResultCalculator,
-        private val mapper: Mapper
+        private val resultCalculator: ResultCalculator
 ) {
 
     @GetMapping("/competitors")
     fun getCompetitors(@RequestParam("group", required = false) groupName: String?, @RequestParam("gender", required = false) gender: Gender?): List<RestCompetitor> {
 
         if (groupName == null && gender == null) {
-            return competitorManager.getCompetitorList().map { mapper.of(it) }
+            return competitorManager.getCompetitorList().map { json(it) }
         }
 
         if (groupName != null && gender == null) {
             val group = groupManager.getGroup(groupName).get()
-            return competitorManager.getCompetitorList(group).map { mapper.of(it) }
+            return competitorManager.getCompetitorList(group).map { json(it) }
         }
 
         if (gender != null && groupName == null) {
-            return competitorManager.getCompetitorList(gender).map { mapper.of(it) }
+            return competitorManager.getCompetitorList(gender).map { json(it) }
         }
 
         if (groupName != null && gender != null) {
             val group = groupManager.getGroup(groupName).get()
-            return competitorManager.getCompetitorList(group, gender).map { mapper.of(it) }
+            return competitorManager.getCompetitorList(group, gender).map { json(it) }
         }
 
         return listOf()
@@ -86,7 +82,7 @@ class CompetitorController(
 
     @GetMapping("/competitor/{competitor_id}")
     fun getCompetitor(@PathVariable("competitor_id") id: Int): RestCompetitor {
-        return competitorManager.getCompetitor(id).map { mapper.of(it) }
+        return competitorManager.getCompetitor(id).map { json(it) }
                 .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
     }
 
@@ -113,6 +109,6 @@ class CompetitorController(
         competitor = competitorManager.mergeResults(competitor, results)
         competitorManager.saveCompetitorResults(competitor)
 
-        return results.map { mapper.of(it) }
+        return results.map { json(it) }
     }
 }

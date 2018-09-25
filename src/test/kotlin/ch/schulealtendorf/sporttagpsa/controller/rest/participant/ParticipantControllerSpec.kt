@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestMapper
+import ch.schulealtendorf.sporttagpsa.controller.rest.json
 import ch.schulealtendorf.sporttagpsa.model.*
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
@@ -61,9 +61,8 @@ object ParticipantControllerSpec: Spek({
         val mockParticipantManager: ParticipantManager = mock()
         val mockParticipationManager: ParticipationManager = mock()
         val mockGroupManager: GroupManager = mock()
-        val mapper = RestMapper(mockGroupManager)
 
-        val controller = ParticipantController(mockParticipantManager, mockParticipationManager, mockGroupManager, mapper)
+        val controller = ParticipantController(mockParticipantManager, mockParticipationManager, mockGroupManager)
 
         beforeEachTest {
             // we don't reset the mapper, because it only matters when a group is mapped. We just simulate the group mapping
@@ -97,7 +96,7 @@ object ParticipantControllerSpec: Spek({
 
 
                 it("should return all participants") {
-                    assertEquals(listOf(mapper.of(mmuster), mapper.of(wwirbelwind)), result)
+                    assertEquals(listOf(json(mmuster), json(wwirbelwind)), result)
                 }
             }
 
@@ -111,7 +110,7 @@ object ParticipantControllerSpec: Spek({
 
 
                 it("should return only participants related to the group") {
-                    assertEquals(listOf(mapper.of(mmuster)), result)
+                    assertEquals(listOf(json(mmuster)), result)
                 }
             }
 

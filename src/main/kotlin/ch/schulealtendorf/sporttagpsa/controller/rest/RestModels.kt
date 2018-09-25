@@ -38,11 +38,7 @@ package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.sporttagpsa.model.*
 
-data class RestGroup(
-        val name: String,
-        val coach: String,
-        val pendingParticipation: Boolean
-)
+// Data classes representing the JSON object, where the model class itself does not fit.
 
 data class RestParticipant @JvmOverloads constructor(
         val id: Int,
@@ -53,13 +49,8 @@ data class RestParticipant @JvmOverloads constructor(
         val absent: Boolean,
         val address: String,
         val town: Town,
-        val group: RestGroup,
+        val group: Group,
         val sport: Sport? = null
-)
-
-@Deprecated("Use Sport model instead")
-data class RestSport(
-        val name: String
 )
 
 data class RestParticipationStatus(
@@ -76,7 +67,7 @@ data class RestCompetitor(
         val absent: Boolean,
         val address: String,
         val town: Town,
-        val group: RestGroup,
+        val group: Group,
         val results: List<RestResult>
 )
 
@@ -87,3 +78,50 @@ data class RestResult(
         val distance: String?,
         val discipline: Discipline
 )
+
+// Factory functions to create a data class representing the the JSON object of the given parameter.
+
+fun json(participant: Participant): RestParticipant {
+    return RestParticipant(
+            participant.id,
+            participant.surname,
+            participant.prename,
+            participant.gender,
+            participant.birthday.milliseconds,
+            participant.absent,
+            participant.address,
+            participant.town,
+            participant.group,
+            participant.sport.orElseGet { null }
+    )
+}
+
+fun json(participationStatus: ParticipationStatus): RestParticipationStatus {
+    return RestParticipationStatus(participationStatus)
+}
+
+fun json(competitor: Competitor): RestCompetitor {
+    return RestCompetitor(
+            competitor.id,
+            competitor.startNumber,
+            competitor.surname,
+            competitor.prename,
+            competitor.gender,
+            competitor.birthday.milliseconds,
+            competitor.absent,
+            competitor.address,
+            competitor.town,
+            competitor.group,
+            competitor.results.map { json(it) }
+    )
+}
+
+fun json(result: Result): RestResult {
+    return RestResult(
+            result.id,
+            result.value,
+            result.points,
+            result.distance.orElseGet { null },
+            result.discipline
+    )
+}

@@ -55,8 +55,7 @@ import javax.validation.Valid
 class ParticipantController(
         private val participantManager: ParticipantManager,
         private val participationManager: ParticipationManager,
-        private val groupManager: GroupManager,
-        private val mapper: Mapper
+        private val groupManager: GroupManager
 ) {
 
     companion object {
@@ -67,7 +66,7 @@ class ParticipantController(
     fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
 
         if (groupName == null) {
-            return participantManager.getParticipants().map { mapper.of(it) }
+            return participantManager.getParticipants().map { json(it) }
         }
 
         val group = groupManager.getGroup(groupName)
@@ -75,7 +74,7 @@ class ParticipantController(
         if (group.isPresent.not()) return listOf()
 
         return this.participantManager.getParticipants(group.get())
-                .map { mapper.of(it) }
+                .map { json(it) }
     }
 
     @PostMapping("/participants")
@@ -112,7 +111,7 @@ class ParticipantController(
 
         val participant = participantManager.getParticipantById(id)
 
-        return mapper.of(participant)
+        return json(participant)
     }
 
     @PatchMapping(PARTICIPANT)
