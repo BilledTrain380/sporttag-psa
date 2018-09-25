@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
+import ch.schulealtendorf.sporttagpsa.business.participation.LockedSport
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
@@ -79,6 +80,13 @@ class GroupManagerImpl(
     override fun getGroups(): List<Group> {
         return groupRepository.findAll()
                 .map { it.toModel() }
+    }
+
+    override fun isCompetitive(group: Group): Boolean {
+
+        val participants = participantRepository.findByGroupName(group.name)
+
+        return participants.any { it.sport != null && it.sport?.name == LockedSport.ATHLETICS }
     }
 
     /**

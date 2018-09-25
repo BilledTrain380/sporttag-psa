@@ -37,11 +37,13 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.group
 
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
+import ch.schulealtendorf.sporttagpsa.business.participation.LockedSport
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -62,7 +64,30 @@ class GroupController(
     }
 
     @GetMapping("/groups", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getGroups(): List<Group> {
+    fun getGroups(
+            @RequestParam("competitive", required = false) competitive: Boolean?,
+            @RequestParam("pendingParticipation", required = false) pendingParticipation: Boolean?
+    ): List<Group> {
+
         return groupManager.getGroups()
+                .filter(competitive, pendingParticipation)
     }
+
+    private fun Iterable<Group>.filter(competitive: Boolean?, pendingParticipation: Boolean?): List<Group> {
+
+        return this
+                .filter {
+                    (competitive == null) or
+                            competitive!! && it.isCompetitive() or
+                            !competitive && !it.isCompetitive()
+                }
+                .filter { (pendingParticipation == null) or
+                        pendingParticipation!! && it.hasPendingParticipation() or
+                        !pendingParticipation && !it.hasPendingParticipation()
+                }
+    }
+
+    private fun Group.isCompetitive() = groupManager.isCompetitive(this)
+
+    private fun Group.hasPendingParticipation() = groupManager.hasPendingParticipation(this)
 }

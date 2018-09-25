@@ -54,6 +54,11 @@ interface GroupManager {
     fun hasPendingParticipation(group: Group): Boolean
 
     /**
+     * @return true whenever any participant of the given group is a competitor, otherwise false
+     */
+    fun isCompetitive(group: Group): Boolean
+
+    /**
      * @return all groups
      */
     fun getGroups(): List<Group>
