@@ -20,6 +20,9 @@ INSERT INTO DISCIPLINE (name, FK_UNIT_name) VALUES
 INSERT INTO PARTICIPATION (name, status) VALUES
   ('main', 'OPEN');
 
+INSERT INTO SETUP (name, initialized, jwt_secret) VALUES
+  ('default', FALSE, '');
+
 INSERT INTO AUTHORITY (role) VALUES
   ('ADMIN'),
   ('USER');

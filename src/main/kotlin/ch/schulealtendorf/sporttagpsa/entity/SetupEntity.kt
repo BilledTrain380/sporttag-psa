@@ -34,28 +34,31 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.user
+package ch.schulealtendorf.sporttagpsa.entity
 
-const val USER_ADMIN: String = "admin"
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
-data class FreshUser(
-        val username: String,
-        val password: String,
-        val enabled: Boolean
-)
+const val DEFAULT_SETUP: String = "default"
 
-data class UserPassword(
-        val userId: Int,
-        val password: String
-)
+@Entity
+@Table(name = "SETUP")
+data class SetupEntity(
 
-data class User(
-        val userId: Int,
-        val username: String,
-        val enabled: Boolean
-)
+        @Id
+        @NotNull
+        @Size(min = 1, max = 10)
+        var name: String = DEFAULT_SETUP,
 
-data class UserLogin(
-        val username: String,
-        val password: String
+        @NotNull
+        var initialized: Boolean = false,
+
+        @NotNull
+        @Size(min = 8, max = 32)
+        @Column(name = "jwt_secret")
+        var jwtSecret: String = ""
 )

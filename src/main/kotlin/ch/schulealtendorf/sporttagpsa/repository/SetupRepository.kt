@@ -34,28 +34,15 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.user
+package ch.schulealtendorf.sporttagpsa.repository
 
-const val USER_ADMIN: String = "admin"
+import ch.schulealtendorf.sporttagpsa.entity.SetupEntity
+import org.springframework.data.repository.CrudRepository
 
-data class FreshUser(
-        val username: String,
-        val password: String,
-        val enabled: Boolean
-)
-
-data class UserPassword(
-        val userId: Int,
-        val password: String
-)
-
-data class User(
-        val userId: Int,
-        val username: String,
-        val enabled: Boolean
-)
-
-data class UserLogin(
-        val username: String,
-        val password: String
-)
+/**
+ * Describes a repository for {@link SetupEntity}.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+interface SetupRepository: CrudRepository<SetupEntity, String>

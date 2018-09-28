@@ -41,12 +41,13 @@ import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * Default implementation for managing a user.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @since 1.0.0
  */
 @Component
 class UserManagerImpl(
@@ -107,27 +108,11 @@ class UserManagerImpl(
     /**
      * @return all users
      */
-    override fun getAll(): List<User> {
-        
-        return userRepository.findAll()
-                .map { 
-                    User(it.id!!, it.username, it.enabled)
-                }
-    }
+    override fun getAll(): List<User> = userRepository.findAll().map { it.toModel() }
 
-    /**
-     * Gets the user by the given {@code userId}.
-     *
-     * @param userId id of the user
-     *
-     * @return an {@code Optional} of the user
-     */
-    override fun getOne(userId: Int): User {
-        
-        val userEntity: UserEntity = userRepository.findById(userId).get()
-        
-        return User(userEntity.id!!, userEntity.username, userEntity.enabled)
-    }
+    override fun getOne(userId: Int): Optional<User> = userRepository.findById(userId).map { it.toModel() }
+
+    override fun getOne(username: String): Optional<User> = userRepository.findByUsername(username).map { it.toModel() }
 
     /**
      * Deletes the user matching the given {@code userId}.
@@ -139,4 +124,6 @@ class UserManagerImpl(
     }
     
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
+
+    private fun UserEntity.toModel() = User(id!!, username, enabled)
 }

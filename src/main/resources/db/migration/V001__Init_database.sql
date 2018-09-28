@@ -156,6 +156,12 @@ CREATE TABLE IF NOT EXISTS PARTICIPATION (
   PRIMARY KEY (name)
 );
 
+CREATE TABLE IF NOT EXISTS SETUP (
+  name VARCHAR(10) NOT NULL DEFAULT 'default',
+  initialized BOOLEAN NOT NULL DEFAULT false,
+  jwt_secret VARCHAR(32) NOT NULL DEFAULT ''
+);
+
 -- -----------------------------------------------------
 -- Table USER
 -- -----------------------------------------------------

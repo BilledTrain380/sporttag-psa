@@ -34,28 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.user
+package ch.schulealtendorf.sporttagpsa.business.setup
 
-const val USER_ADMIN: String = "admin"
-
-data class FreshUser(
-        val username: String,
-        val password: String,
-        val enabled: Boolean
-)
-
-data class UserPassword(
-        val userId: Int,
-        val password: String
-)
-
-data class User(
-        val userId: Int,
-        val username: String,
-        val enabled: Boolean
-)
-
-data class UserLogin(
-        val username: String,
-        val password: String
+/**
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 0.0.1
+ */
+data class SetupInformation(
+        val adminPassword: String
 )

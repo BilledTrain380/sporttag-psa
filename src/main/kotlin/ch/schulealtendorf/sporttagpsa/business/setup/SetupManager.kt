@@ -34,28 +34,49 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.user
+package ch.schulealtendorf.sporttagpsa.business.setup
 
-const val USER_ADMIN: String = "admin"
+/**
+ * Describes a manager for the setup of PSA.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+interface SetupManager {
 
-data class FreshUser(
-        val username: String,
-        val password: String,
-        val enabled: Boolean
-)
+    /**
+     * True if Sporttag PSA is initialized, otherwise false.
+     */
+    val isInitialized: Boolean
 
-data class UserPassword(
-        val userId: Int,
-        val password: String
-)
+    /**
+     * The JWT secret.
+     */
+    val jwtSecret: String
 
-data class User(
-        val userId: Int,
-        val username: String,
-        val enabled: Boolean
-)
+    /**
+     * Initializes Sporttag PSA by consuming the given {@code setup}.
+     *
+     * This method will generate a random JWT secret and stores it in the setup.
+     *
+     * @param setup the setup information to consume
+     *
+     * @throws IllegalStateException if the setup is already initialized
+     */
+    fun initialize(setup: SetupInformation)
 
-data class UserLogin(
-        val username: String,
-        val password: String
-)
+    /**
+     * @param length the length of the JWT secret, must be at least 8 characters
+     *
+     * @return a random generated JWT secret in for of a hex number
+     * @throws IllegalArgumentException if the length is less then 8
+     */
+    fun generateJWTSecret(length: Int = 8): String
+
+    /**
+     * Replaces the existing JWT secret with the given {@code secret}.
+     *
+     * @param secret the secret to use
+     */
+    fun replaceJWTSecret(secret: String)
+}

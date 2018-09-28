@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import java.util.*
+
 /**
  * Describes a manager to create, update or delete a user.
  * The manager encrypts the password field.
@@ -76,13 +78,24 @@ interface UserManager {
     fun getAll(): List<User>
 
     /**
-     * Gets the user by the given {@code userId}.
+     * Gets the user by the given {@code userId} or an empty Optional,
+     * if the user does not exist.
      * 
      * @param userId id of the user
      * 
-     * @return the resulting user
+     * @return the resulting user or an empty Optional, if the user does not exist
      */
-    fun getOne(userId: Int): User
+    fun getOne(userId: Int): Optional<User>
+
+    /**
+     * Gets the user by the given {@code username} or an empty Optional,
+     * if the username does not exist.
+     *
+     * @param username the username to look up
+     *
+     * @return the user or an empty Optional, if the username does not exist
+     */
+    fun getOne(username: String): Optional<User>
 
     /**
      * Deletes the user matching the given {@code userId}.
