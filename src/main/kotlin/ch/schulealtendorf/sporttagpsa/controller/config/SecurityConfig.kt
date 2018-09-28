@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.config
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -56,6 +57,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
+        @Qualifier("psa-user-service")
         private val userDetailsService: UserDetailsService
 ): WebSecurityConfigurerAdapter() {
 
@@ -79,11 +81,17 @@ class SecurityConfig(
     override fun configure(http: HttpSecurity?) {
 
         http
+                ?.csrf()?.disable()
                 ?.cors()
                 ?.and()
-                ?.authorizeRequests()?.anyRequest()?.permitAll()
+                ?.authorizeRequests()
+                ?.antMatchers("/webjars/**")?.permitAll()
+                ?.antMatchers("/setup")?.permitAll()
+                ?.antMatchers("/login")?.permitAll()
+                    ?.anyRequest()?.authenticated()
                 ?.and()
-                    ?.csrf()?.disable()
+                ?.addFilter(JWTAuthenticationFilter(authenticationManager()))
+                ?.addFilter(JWTAuthorizationFilter(authenticationManager()))
     }
 
     @Bean

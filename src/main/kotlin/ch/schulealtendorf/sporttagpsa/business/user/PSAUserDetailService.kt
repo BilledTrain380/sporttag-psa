@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.user
 
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -50,6 +51,7 @@ import org.springframework.stereotype.Component
  * @version 0.0.1
  */
 @Component
+@Qualifier("psa-user-service")
 class PSAUserDetailService(
         private val userRepository: UserRepository
 ): UserDetailsService {

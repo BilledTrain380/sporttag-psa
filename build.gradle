@@ -106,7 +106,8 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile("org.springframework.boot:spring-boot-devtools")
 
-	compile "joda-time:joda-time:2.9.9"
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    compile "joda-time:joda-time:2.9.9"
 	compile "com.deliveredtechnologies:rulebook-core:0.8"
 	compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
 	
@@ -127,9 +128,7 @@ dependencies {
 	
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'
-	compile 'org.webjars:bootstrap:4.0.0-alpha.6'
-	compile 'org.webjars:font-awesome:4.7.0'
-	compile 'org.webjars:tether:1.4.0'
+	compile 'org.webjars:bootstrap:4.1.3'
 
     // exclude mockito, because we need a different version
     testCompile('org.springframework.boot:spring-boot-starter-test') {

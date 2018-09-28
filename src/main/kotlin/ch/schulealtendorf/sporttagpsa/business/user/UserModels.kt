@@ -52,3 +52,8 @@ data class User(
         val username: String,
         val enabled: Boolean
 )
+
+data class UserLogin(
+        val username: String,
+        val password: String
+)
