@@ -35,27 +35,27 @@
   ~
   -->
 
-<html lang="en">
-<head th:replace="fragments/main :: head(Error)">
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/main :: head('Error - PSA')">
 </head>
 
-<body id="page-top" style="background-color: #292b2c">
+<body>
 
-<div class="container" style="margin-top: 50px">
+<div class="container">
 
-    <div class="card card-inverse card-danger text-center">
-        <div class="card-block">
 
-            <h3 class="card-title">Ein Fehler ist aufgetreten</h3>
-            
-            <blockquote class="card-blockquote">
-                <p>Versuchen Sie es bitte später erneut.</p>
-                <footer>Sollte das Problem weiterhin bestehen, wenden Sie sich bitte an den Administrator.</footer>
-            </blockquote>
-        </div>
+    <div class="py-5 text-center">
+
+        <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.png">
+
+        <h2 class="text-danger">Oops! You run into an error!</h2>
+        <p class="lead">Contact your System Administrator for help.</p>
+
     </div>
 
-</div> <!-- /container -->
+</div>
 
 </body>
 

@@ -1,0 +1,132 @@
+<!--
+  ~ Copyright (c) 2018 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/main :: head('Welcome - PSA')">
+</head>
+
+<body>
+
+    <div class="container">
+
+
+        <div class="py-5 text-center">
+
+            <!--<img class="d-block mx-auto mb-4" src="img/psa-logo.png">-->
+            <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.png">
+
+            <h2>Welcome to Sporttag PSA!</h2>
+            <p class="lead">Your sport event management system</p>
+
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Information needed
+            </div>
+            <div class="card-body">
+
+                <p class="card-text text-black-50">
+                    Please provide the following information.
+                    Don't worry, you can always change these settings later.
+                </p>
+
+                <form th:action="@{/setup}" method="post" th:object="${setupForm}" enctype="application/x-www-form-urlencoded">
+
+                    <div class="form-group row">
+                        <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="inputUsername" value="admin">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control" th:field="*{password}" th:classappend="${pwValidationErrors} ? 'is-invalid' : ''">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="revealPassword">Reveal</button>
+                                </div>
+                            </div>
+
+                            <div th:if="${pwValidationErrors}" class="alert alert-danger" role="alert">
+                                <div th:each="error : ${pwValidationErrors}" th:text="${error}">...</div>
+                            </div>
+
+                            <small id="emailHelp" class="form-text text-muted"><strong>Important!</strong> You will need this password to log in.</small>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Setup</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+<script>
+
+    var inputPassword = document.getElementById("password");
+    var isRevealed = false;
+
+    $("#revealPassword").click(function () {
+
+        if (isRevealed) {
+            this.innerHTML = "Reveal";
+            inputPassword.type = 'password';
+            isRevealed = false;
+        } else {
+            this.innerHTML = "Hide";
+            inputPassword.type = 'text';
+            isRevealed = true;
+        }
+    });
+
+</script>
+
+</body>
+</html>

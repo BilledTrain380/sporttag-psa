@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.controller.config
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -85,6 +86,7 @@ class SecurityConfig(
                 ?.cors()
                 ?.and()
                 ?.authorizeRequests()
+                ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
                 ?.antMatchers("/webjars/**")?.permitAll()
                 ?.antMatchers("/setup")?.permitAll()
                 ?.antMatchers("/login")?.permitAll()
