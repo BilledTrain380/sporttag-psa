@@ -48,15 +48,14 @@
 
         <div class="py-5 text-center">
 
-            <!--<img class="d-block mx-auto mb-4" src="img/psa-logo.png">-->
-            <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.png">
+            <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.svg">
 
             <h2>Welcome to Sporttag PSA!</h2>
             <p class="lead">Your sport event management system</p>
 
         </div>
 
-        <div class="card">
+        <div class="card mb-5">
             <div class="card-header">
                 Information needed
             </div>
@@ -91,7 +90,23 @@
                                 <div th:each="error : ${pwValidationErrors}" th:text="${error}">...</div>
                             </div>
 
-                            <small id="emailHelp" class="form-text text-muted"><strong>Important!</strong> You will need this password to log in.</small>
+                            <small id="emailHelp" class="form-text text-muted mb-3"><strong>Important!</strong> You will need this password to log in.</small>
+
+                            <div class="card border-info mb-3">
+                                <div class="card-body text-info">
+                                    <h5 class="card-title">Password Policy</h5>
+                                    <p class="card-text"></p>
+                                    <ul>
+                                        <li>Must be between 8 and 64 characters long</li>
+                                        <li>Must contain at least 1 digit</li>
+                                        <li>Must contain at least 1 lowercase character</li>
+                                        <li>Must contain at least 1 uppercase character</li>
+                                        <li>Must contain at least 1 alphabetical character</li>
+                                        <li>Must contain at least 1 special character</li>
+                                        <li>Must not contain any whitespaces</li>
+                                    </ul>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
