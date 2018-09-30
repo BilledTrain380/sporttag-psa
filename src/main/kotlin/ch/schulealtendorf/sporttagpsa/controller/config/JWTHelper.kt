@@ -36,36 +36,38 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.config
 
-import org.springframework.context.annotation.Configuration
-import org.springframework.core.Ordered
-import org.springframework.web.servlet.config.annotation.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jws
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import org.joda.time.DateTime
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import javax.servlet.http.HttpServletRequest
 
-/**
- * Configures CORS and view controllers.
- *
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 1.0.0
- */
-@Configuration
-class WebConfig: WebMvcConfigurer {
+const val TOKEN_PREFIX: String = "Bearer "
 
-    /**
-     * Configure cross origin requests processing.
-     * @since 2.0.0
-     */
-    override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
-                .allowedOrigins("*")
-                .allowedHeaders("*")
-    }
+fun createJWT(request: HttpServletRequest, authentication: UsernamePasswordAuthenticationToken, secret: String): String {
 
-    override fun addViewControllers(registry: ViewControllerRegistry) {
-        registry.addViewController("/login").setViewName("login")
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE)
-    }
+    // help for the different claims: https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-25#section-4
+    return Jwts.builder()
+            .setIssuer(request.host())
+            .setSubject(authentication.name)
+            .setAudience(request.getHeader("User-Agent"))
+            .claim("roles", authentication.authorities.map { it.authority })
+            .setExpiration(DateTime.now().plusSeconds(JWTAuthenticationFilter.EXPIRATION_TIME).toDate())
+            .signWith(SignatureAlgorithm.HS512, secret)
+            .compact()
+}
 
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+fun decodeJWT(request: HttpServletRequest, token: String, secret: String): Jws<Claims> {
 
-    }
+    return Jwts.parser()
+            ?.setSigningKey(secret)
+            ?.requireIssuer(request.host())
+            ?.requireAudience(request.getHeader("User-Agent"))
+            ?.parseClaimsJws(token)!!
+}
+
+private fun HttpServletRequest.host(): String {
+    return "$scheme://$serverName:$serverPort"
 }

@@ -35,37 +35,62 @@
   ~
   -->
 
-<html lang="en">
-<head th:replace="fragments/main :: head(Login)">
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/main :: head('Login - PSA')">
 </head>
 
-<body id="page-top" style="background-color: #292b2c">
+<body>
 
-<div class="container" style="width: 300px; margin-top: 50px">
-    
-    <form method="post" th:action="@{/login}">
-        
-        <h2 style="color: #fff;">Bitte einloggen</h2>
+<div class="container">
 
-        <div th:if="${logout}" class="alert alert-success" role="alert">
-            Erfolgreich abgemeldet
+
+    <div class="py-5 text-center">
+
+        <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.svg">
+
+        <h2>Welcome to Sporttag PSA!</h2>
+        <p class="lead">Your sport event management system.</p>
+
+    </div>
+
+
+    <div class="card mb-5 login-card">
+        <div class="card-header">
+            Login
         </div>
+        <div class="card-body">
 
-        <div th:if="${loginFailed}" class="alert alert-danger" role="alert">
-            Login fehlgeschlagen
+            <p class="card-text text-black-50">
+                Please log in.
+            </p>
+
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                You have been logged out.
+            </div>
+
+            <form th:action="@{/login}" method="post" enctype="application/x-www-form-urlencoded">
+
+                <div class="form-group">
+                    <label for="username">Email address</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            </form>
+
         </div>
-        
-        <label for="username" class="sr-only">Benutzername</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="Benutzername" required autofocus>
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Passwort" required>
-        
-        <br>
-        
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+    </div>
 
-</div> <!-- /container -->
+</div>
 
 </body>
 

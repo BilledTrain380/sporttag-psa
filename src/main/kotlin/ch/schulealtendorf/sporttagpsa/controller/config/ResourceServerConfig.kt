@@ -36,11 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.config
 
+import ch.schulealtendorf.sporttagpsa.business.setup.SetupManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -48,52 +50,51 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 
 /**
+ * Security Configuration for the resource server resources and the authorization server resources.
+ *
  * @author nmaerchy
- * @version 1.0.0
  * @since 1.0.0
  */
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(
+class ResourceServerConfig(
         @Qualifier("psa-user-service")
-        private val userDetailsService: UserDetailsService
+        private val userDetailsService: UserDetailsService,
+        private val setupManager: SetupManager
 ): WebSecurityConfigurerAdapter() {
 
     @Autowired
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
     }
-    
-    /**
-     * Override this method to configure the [HttpSecurity]. Typically subclasses
-     * should not invoke this method by calling super as it may override their
-     * configuration. The default configuration is:
-     *
-     * <pre>
-     * http.authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
-    </pre> *
-     *
-     * @param http the [HttpSecurity] to modify
-     * @throws Exception if an error occurs
-     */
+
     override fun configure(http: HttpSecurity?) {
 
         http
                 ?.csrf()?.disable()
                 ?.cors()
+
                 ?.and()
                 ?.authorizeRequests()
-                ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
-                ?.antMatchers("/webjars/**")?.permitAll()
-                ?.antMatchers("/setup")?.permitAll()
-                ?.antMatchers("/login")?.permitAll()
+                    ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
+                    ?.antMatchers("/login", "/webjars/**", "/setup")?.permitAll()
                     ?.anyRequest()?.authenticated()
+
                 ?.and()
-                ?.addFilter(JWTAuthenticationFilter(authenticationManager()))
-                ?.addFilter(JWTAuthorizationFilter(authenticationManager()))
+                ?.formLogin()?.loginPage("/login")?.permitAll()
+
+                ?.and()
+                ?.addFilterBefore(SetupAuthorizationFilter(setupManager), BasicAuthenticationFilter::class.java)
+    }
+
+    @Bean
+    @Qualifier("authenticationManagerBean")
+    override fun authenticationManager(): AuthenticationManager {
+        return super.authenticationManager()
     }
 
     @Bean
