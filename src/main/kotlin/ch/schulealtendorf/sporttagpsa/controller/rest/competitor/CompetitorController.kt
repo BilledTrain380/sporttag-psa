@@ -45,6 +45,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
 import ch.schulealtendorf.sporttagpsa.model.Competitor
 import ch.schulealtendorf.sporttagpsa.model.Gender
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -58,6 +59,7 @@ class CompetitorController(
         private val resultCalculator: ResultCalculator
 ) {
 
+    @PreAuthorize("#oauth2.hasScope('competitor_read')")
     @GetMapping("/competitors")
     fun getCompetitors(
             @RequestParam("group", required = false) groupName: String?,
@@ -70,12 +72,14 @@ class CompetitorController(
                 .map { json(it) }
     }
 
+    @PreAuthorize("#oauth2.hasScope('competitor_read')")
     @GetMapping("/competitor/{competitor_id}")
     fun getCompetitor(@PathVariable("competitor_id") id: Int): RestCompetitor {
         return competitorManager.getCompetitor(id).map { json(it) }
                 .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
     }
 
+    @PreAuthorize("#oauth2.hasScope('competitor_write')")
     @PutMapping("/competitor/{competitor_id}")
     fun updateResults(@PathVariable("competitor_id") id: Int, @RequestBody resultsWrapper: ResultWrapper): List<RestResult> {
 

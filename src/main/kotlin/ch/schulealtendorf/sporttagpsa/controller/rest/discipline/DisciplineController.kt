@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.discipline
 
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.model.Discipline
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -50,6 +51,7 @@ class DisciplineController(
         private val disciplineManager: DisciplineManager
 ) {
 
+    @PreAuthorize("#oauth2.hasScope('discipline_read')")
     @GetMapping("/disciplines")
     fun getDisciplines(): List<Discipline> {
         return disciplineManager.getDisciplineList()

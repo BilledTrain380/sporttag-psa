@@ -34,44 +34,23 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.groupimport
-
-import ch.schulealtendorf.sporttagpsa.business.group.CSVParsingException
-import ch.schulealtendorf.sporttagpsa.business.group.GroupFileParser
-import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import org.springframework.http.HttpStatus
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
+package ch.schulealtendorf.sporttagpsa.controller.config
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
+ * @since 0.0.1
  */
-@Controller
-class GroupImportController(
-        private val fileParser: GroupFileParser,
-        private val groupManager: GroupManager
+enum class PSAScope(
+        val value: String
 ) {
-
-    @PreAuthorize("#oauth2.hasScope('group_write')")
-    @PostMapping("/import-group", consumes = ["multipart/form-data"])
-    @ResponseStatus(HttpStatus.OK)
-    fun importGroup(@RequestParam("group-input") file: MultipartFile) {
-
-        try {
-
-            val participants = fileParser.parseCSV(file)
-
-            participants.forEach(groupManager::import)
-
-        } catch (exception: CSVParsingException) {
-            // we increment the line, so its not zero based line number for the user
-            throw BadRequestException("${exception.message} (at line ${exception.line+1}:${exception.column})")
-        } catch (exception: IllegalArgumentException) {
-            throw BadRequestException(exception.message)
-        }
-    }
+    USERS("users"),
+    GROUP_READ("group_read"),
+    GROUP_WRITE("group_write"),
+    SPORT_READ("sport_read"),
+    DISCIPLINE_READ("discipline_read"),
+    COMPETITOR_READ("competitor_read"),
+    COMPETITOR_WRITE("competitor_write"),
+    PARTICIPANT_READ("participant_read"),
+    PARTICIPANT_WRITE("participant_write"),
+    PARTICIPATION("participation")
 }

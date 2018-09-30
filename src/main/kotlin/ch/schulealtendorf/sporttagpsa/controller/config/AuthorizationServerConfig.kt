@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller.config
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
@@ -71,12 +72,24 @@ class AuthorizationServerConfig(
 
         clients
                 ?.inMemory()
+
                     ?.withClient("psa-kitten")
                         ?.autoApprove(true)
                         ?.authorities("ADMIN", "USER")
                         ?.authorizedGrantTypes("implicit")
                         ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
-                        ?.scopes("read", "write")
+                        ?.scopes(
+                                PSAScope.USERS,
+                                PSAScope.GROUP_READ,
+                                PSAScope.GROUP_WRITE,
+                                PSAScope.SPORT_READ,
+                                PSAScope.DISCIPLINE_READ,
+                                PSAScope.COMPETITOR_READ,
+                                PSAScope.COMPETITOR_WRITE,
+                                PSAScope.PARTICIPANT_READ,
+                                PSAScope.PARTICIPANT_WRITE,
+                                PSAScope.PARTICIPATION
+                        )
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {
@@ -87,4 +100,8 @@ class AuthorizationServerConfig(
     }
 
     fun tokenStore(): TokenStore = InMemoryTokenStore()
+
+    private fun <B: ClientDetailsServiceBuilder<B>> ClientDetailsServiceBuilder<B>.ClientBuilder.scopes(vararg values: PSAScope): ClientDetailsServiceBuilder<B>.ClientBuilder {
+        return scopes(*values.map { it.value }.toTypedArray())
+    }
 }

@@ -41,6 +41,7 @@ import ch.schulealtendorf.sporttagpsa.business.participation.LockedSport
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
@@ -57,12 +58,14 @@ class GroupController(
         private val groupManager: GroupManager
 ) {
 
+    @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroup(@PathVariable("group_name") name: String): Group {
         return groupManager.getGroup(name)
                 .orElseThrow { NotFoundException("Could not find group: name=$name") }
     }
 
+    @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/groups", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroups(
             @RequestParam("competitive", required = false) competitive: Boolean?,

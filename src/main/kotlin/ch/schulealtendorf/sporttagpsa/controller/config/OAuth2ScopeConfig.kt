@@ -34,44 +34,25 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.groupimport
+package ch.schulealtendorf.sporttagpsa.controller.config
 
-import ch.schulealtendorf.sporttagpsa.business.group.CSVParsingException
-import ch.schulealtendorf.sporttagpsa.business.group.GroupFileParser
-import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import org.springframework.http.HttpStatus
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration
+import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler
 
 /**
+ * Configures method scope annotations.
+ *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-@Controller
-class GroupImportController(
-        private val fileParser: GroupFileParser,
-        private val groupManager: GroupManager
-) {
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+class OAuth2ScopeConfig: GlobalMethodSecurityConfiguration() {
 
-    @PreAuthorize("#oauth2.hasScope('group_write')")
-    @PostMapping("/import-group", consumes = ["multipart/form-data"])
-    @ResponseStatus(HttpStatus.OK)
-    fun importGroup(@RequestParam("group-input") file: MultipartFile) {
-
-        try {
-
-            val participants = fileParser.parseCSV(file)
-
-            participants.forEach(groupManager::import)
-
-        } catch (exception: CSVParsingException) {
-            // we increment the line, so its not zero based line number for the user
-            throw BadRequestException("${exception.message} (at line ${exception.line+1}:${exception.column})")
-        } catch (exception: IllegalArgumentException) {
-            throw BadRequestException(exception.message)
-        }
+    override fun createExpressionHandler(): MethodSecurityExpressionHandler {
+        return OAuth2MethodSecurityExpressionHandler()
     }
 }

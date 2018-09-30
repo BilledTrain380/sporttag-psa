@@ -42,6 +42,7 @@ import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManage
 import ch.schulealtendorf.sporttagpsa.controller.rest.*
 import ch.schulealtendorf.sporttagpsa.model.*
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -62,6 +63,7 @@ class ParticipantController(
         const val PARTICIPANT: String = "/participant/{participant_id}"
     }
 
+    @PreAuthorize("#oauth2.hasScope('participant_read')")
     @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
 
@@ -70,6 +72,7 @@ class ParticipantController(
                 .map { json(it) }
     }
 
+    @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PostMapping("/participants")
     fun createParticipant(@RequestParam("group", required = true) groupName: String, @Valid @RequestBody participant: CreateParticipant) {
 
@@ -99,6 +102,7 @@ class ParticipantController(
         }
     }
 
+    @PreAuthorize("#oauth2.hasScope('participant_read')")
     @GetMapping(PARTICIPANT, produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipant(@PathVariable("participant_id") id: Int): RestParticipant {
 
@@ -107,6 +111,7 @@ class ParticipantController(
         return json(participant)
     }
 
+    @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PatchMapping(PARTICIPANT)
     fun patchParticipant(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: UpdateParticipant) {
 
@@ -128,6 +133,7 @@ class ParticipantController(
         }
     }
 
+    @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PutMapping(PARTICIPANT)
     fun putParticipantTown(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: UpdateParticipant) {
 
@@ -151,6 +157,7 @@ class ParticipantController(
         }
     }
 
+    @PreAuthorize("#oauth2.hasScope('participant_write')")
     @DeleteMapping(PARTICIPANT)
     fun deleteParticipant(@PathVariable("participant_id") id: Int) {
 

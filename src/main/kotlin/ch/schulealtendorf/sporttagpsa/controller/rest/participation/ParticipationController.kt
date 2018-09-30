@@ -42,6 +42,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipationStatus
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
 import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -56,12 +57,14 @@ class ParticipationController(
         private val participationManager: ParticipationManager
 ) {
 
+    @PreAuthorize("#oauth2.hasScope('participation')")
     @GetMapping("/participation", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipation(): RestParticipationStatus {
         val status = participationManager.getParticipationStatus()
         return json(status)
     }
 
+    @PreAuthorize("#oauth2.hasScope('participation')")
     @PatchMapping("/participation")
     fun updateParticipation(@RequestBody participation: RestParticipationStatus) {
 
