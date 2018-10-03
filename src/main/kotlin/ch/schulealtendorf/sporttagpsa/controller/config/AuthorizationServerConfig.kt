@@ -79,7 +79,7 @@ class AuthorizationServerConfig(
                         ?.authorizedGrantTypes("implicit")
                         ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
                         ?.scopes(
-                                PSAScope.USERS,
+                                PSAScope.USER,
                                 PSAScope.GROUP_READ,
                                 PSAScope.GROUP_WRITE,
                                 PSAScope.SPORT_READ,
