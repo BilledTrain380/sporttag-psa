@@ -54,6 +54,7 @@ import java.util.*
  * @since 0.0.1
  */
 @RestController
+@RequestMapping("/api")
 class CompetitorController(
         private val competitorManager: CompetitorManager,
         private val resultCalculator: ResultCalculator

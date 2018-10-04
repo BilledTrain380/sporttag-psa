@@ -53,6 +53,7 @@ import javax.validation.Valid
  * @since 2.0.0
  */
 @RestController
+@RequestMapping("/api")
 class ParticipantController(
         private val participantManager: ParticipantManager,
         private val participationManager: ParticipationManager,

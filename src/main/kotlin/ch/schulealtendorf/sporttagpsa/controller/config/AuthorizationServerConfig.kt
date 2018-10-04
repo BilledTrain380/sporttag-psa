@@ -36,8 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.config
 
+import ch.schulealtendorf.sporttagpsa.business.setup.SetupManager
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
@@ -45,8 +48,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
 
 /**
  * Configures OAuth 2 authorization server.
@@ -58,7 +63,8 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableAuthorizationServer
 class AuthorizationServerConfig(
         @Qualifier("authenticationManagerBean")
-        private val authenticationManager: AuthenticationManager
+        private val authenticationManager: AuthenticationManager,
+        private val setupManager: SetupManager
 ): AuthorizationServerConfigurerAdapter() {
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
@@ -96,10 +102,24 @@ class AuthorizationServerConfig(
 
         endpoints
                 ?.tokenStore(tokenStore())
+                ?.accessTokenConverter(tokenConverter())
                 ?.authenticationManager(authenticationManager)
     }
 
+    @Bean
     fun tokenStore(): TokenStore = InMemoryTokenStore()
+
+    @Bean
+    fun tokenConverter() = JwtAccessTokenConverter().apply { setSigningKey(setupManager.jwtSecret) }
+
+    @Bean
+    @Primary
+    fun tokenService(): DefaultTokenServices {
+        return DefaultTokenServices().apply {
+            setTokenStore(tokenStore())
+            setSupportRefreshToken(true)
+        }
+    }
 
     private fun <B: ClientDetailsServiceBuilder<B>> ClientDetailsServiceBuilder<B>.ClientBuilder.scopes(vararg values: PSAScope): ClientDetailsServiceBuilder<B>.ClientBuilder {
         return scopes(*values.map { it.value }.toTypedArray())

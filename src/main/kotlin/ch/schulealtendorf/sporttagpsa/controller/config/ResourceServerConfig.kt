@@ -36,67 +36,56 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.config
 
-import ch.schulealtendorf.sporttagpsa.business.setup.SetupManager
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 
 /**
- * Security Configuration for the resource server resources and the authorization server resources.
+ * Configures the resource server.
  *
- * @author nmaerchy
- * @since 1.0.0
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
  */
 @Configuration
-@EnableWebSecurity
+@EnableResourceServer
 class ResourceServerConfig(
-        @Qualifier("psa-user-service")
-        private val userDetailsService: UserDetailsService,
-        private val setupManager: SetupManager
-): WebSecurityConfigurerAdapter() {
-
-    @Autowired
-    fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
-    }
+        private val tokenServices: DefaultTokenServices
+): ResourceServerConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
 
         http
-                ?.csrf()?.disable()
-                ?.cors()
-
-                ?.and()
+                ?.antMatcher("/api/**")
                 ?.authorizeRequests()
-                    ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
-                    ?.antMatchers("/login", "/webjars/**", "/setup")?.permitAll()
+
+                    ?.antMatchers(
+                            "/api/groups",
+                            "/api/participation",
+                            "/api/competitors",
+                            "/api/competitor/**",
+                            "/api/sports",
+                            "/api/disciplines"
+                    )?.hasRole("USER")
+
+                    ?.antMatchers(
+                            "/api/group/**",
+                            "/api/participant/**",
+                            "/api/participants",
+                            "/api/users",
+                            "/api/user/**"
+                    )?.hasRole("ADMIN")
+
                     ?.anyRequest()?.authenticated()
 
                 ?.and()
-                ?.formLogin()?.loginPage("/login")?.permitAll()
-
-                ?.and()
-                ?.addFilterBefore(SetupAuthorizationFilter(setupManager), BasicAuthenticationFilter::class.java)
+                ?.csrf()?.disable()
+                ?.cors()
     }
 
-    @Bean
-    @Qualifier("authenticationManagerBean")
-    override fun authenticationManager(): AuthenticationManager {
-        return super.authenticationManager()
+    override fun configure(resources: ResourceServerSecurityConfigurer?) {
+        resources?.tokenServices(tokenServices)
     }
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder(4)
 }

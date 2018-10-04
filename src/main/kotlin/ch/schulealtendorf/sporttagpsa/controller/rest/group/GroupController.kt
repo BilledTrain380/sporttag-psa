@@ -42,10 +42,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Rest controller for {@link Group}.
@@ -54,6 +51,7 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
+@RequestMapping("/api")
 class GroupController(
         private val groupManager: GroupManager
 ) {

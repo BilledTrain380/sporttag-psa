@@ -43,14 +43,14 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler
 
 /**
- * Configures method scope annotations.
+ * Configuration which enables method expression for oauth 2 scopes.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class OAuth2ScopeConfig: GlobalMethodSecurityConfiguration() {
+class OauthScopeConfig: GlobalMethodSecurityConfiguration() {
 
     override fun createExpressionHandler(): MethodSecurityExpressionHandler {
         return OAuth2MethodSecurityExpressionHandler()

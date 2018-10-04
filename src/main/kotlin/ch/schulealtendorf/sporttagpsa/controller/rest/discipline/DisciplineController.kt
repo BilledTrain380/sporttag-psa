@@ -40,6 +40,7 @@ import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.model.Discipline
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -47,6 +48,7 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
+@RequestMapping("/api")
 class DisciplineController(
         private val disciplineManager: DisciplineManager
 ) {
