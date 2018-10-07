@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.sporttagpsa.model.User
+import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import java.util.*
 
 /**
@@ -48,29 +50,31 @@ import java.util.*
 interface UserManager {
 
     /**
-     * Creates the given {@code user}.
-     * The {@code FreshUser#password} field will be encrypted.
-     * 
-     * @param user the user to create
-     * 
-     * @throws UserAlreadyExistsException if the user exists already
+     * Saves the given {@code user}. If the user does not exist yet, it will be created.
+     *
+     * The {@code password} property will
+     * not be considered at all.
+     *
+     * To update the password use the
+     * {@link UserManager#update} method.
+     *
+     * @param user the user to save
+     *
+     * @return the saved user
+     * @throws InvalidPasswordException if the password does not match the validation requirements
      */
-    fun create(user: FreshUser)
+    fun save(user: User): User
 
     /**
-     * Updates the password for the given {@code user}.
-     * The {@code UserPassword#password} field will be encrypted.
-     * 
-     * @param user the user password to update
+     * Changes the password for the given {@code user}.
+     * The password will be encrypted before its being saved.
+     *
+     * @param user the user to change its password
+     * @param password the password to use
+     *
+     * @throws UserNotFoundException if the given {@code user} does not exist
      */
-    fun update(user: UserPassword)
-
-    /**
-     * Updates the given {@code user}.
-     * 
-     * @param user the user to update
-     */
-    fun update(user: User)
+    fun changePassword(user: User, password: String)
 
     /**
      * @return all users

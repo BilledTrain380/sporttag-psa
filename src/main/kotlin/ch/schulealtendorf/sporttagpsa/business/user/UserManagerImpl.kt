@@ -36,8 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
+import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
+import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
@@ -51,79 +54,53 @@ import java.util.*
  */
 @Component
 class UserManagerImpl(
-        private val userRepository: UserRepository
+        private val userRepository: UserRepository,
+        private val passwordValidator: PasswordValidator
 ): UserManager {
 
-    /**
-     * Creates the given {@code user}.
-     * The {@code FreshUser#password} field will be encrypted with {@link BCryptPasswordEncoder}.
-     *
-     * @param user the user to create
-     * 
-     * @throws UserAlreadyExistsException if the user exists already
-     */
-    override fun create(user: FreshUser) {
-        
-        if(userRepository.findByUsername(user.username).isPresent) {
-            throw UserAlreadyExistsException("User exists already: username=${user.username}")
+    override fun save(user: User): User {
+
+        val userEntity = userRepository.findById(user.id)
+                .orElseGet {
+                    user.password.validate()
+                    UserEntity(password = user.password.encode())
+                }
+
+        userEntity.apply {
+            username = user.username
+            enabled = user.enabled
+            authorities = user.authorities.map { AuthorityEntity(it) }
         }
-        
-        val userEntity = UserEntity(null, user.username, user.password.encode(), user.enabled, listOf(
-                AuthorityEntity("USER")
-        ))
-        
+
+        return userRepository.save(userEntity).toModel()
+    }
+
+    override fun changePassword(user: User, password: String) {
+
+        val userEntity = userRepository.findById(user.id)
+                .orElseThrow { UserNotFoundException("The user could not be found: user=$user") }
+
+        password.validate()
+        userEntity.password = password.encode()
+
         userRepository.save(userEntity)
     }
 
-    /**
-     * Updates the password for the given {@code user}.
-     * The {@code UserPassword#password} field will be encrypted.
-     *
-     * @param user the user password to update
-     */
-    override fun update(user: UserPassword) {
-        
-        val userEntity = userRepository.findById(user.userId).get()
-        
-        userEntity.password = user.password.encode()
-        
-        userRepository.save(userEntity)
-    }
-
-    /**
-     * Updates the given {@code user}.
-     *
-     * @param user the user to update
-     */
-    override fun update(user: User) {
-        
-        val userEntity: UserEntity = userRepository.findById(user.userId).get()
-        
-        userEntity.username = user.username
-        userEntity.enabled = user.enabled
-        
-        userRepository.save(userEntity)
-    }
-
-    /**
-     * @return all users
-     */
     override fun getAll(): List<User> = userRepository.findAll().map { it.toModel() }
 
     override fun getOne(userId: Int): Optional<User> = userRepository.findById(userId).map { it.toModel() }
 
     override fun getOne(username: String): Optional<User> = userRepository.findByUsername(username).map { it.toModel() }
 
-    /**
-     * Deletes the user matching the given {@code userId}.
-     *
-     * @param userId id of the user to delete
-     */
-    override fun delete(userId: Int) {
-        userRepository.deleteById(userId)
-    }
+    override fun delete(userId: Int) = userRepository.deleteById(userId)
     
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 
-    private fun UserEntity.toModel() = User(id!!, username, enabled)
+    private fun UserEntity.toModel() = User(id!!, username, authorities.map { it.role }, enabled)
+
+    private fun String.validate() {
+        val validationResult = passwordValidator.validate(this)
+        if (validationResult.isValid.not())
+            throw InvalidPasswordException(validationResult.messages.joinToString(", "))
+    }
 }

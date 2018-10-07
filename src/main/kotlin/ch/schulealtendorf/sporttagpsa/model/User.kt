@@ -38,6 +38,8 @@ package ch.schulealtendorf.sporttagpsa.model
 
 /**
  * Data class representing a user.
+ * The {@code password} property should only be set
+ * to create a new user.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
@@ -45,5 +47,7 @@ package ch.schulealtendorf.sporttagpsa.model
 data class User @JvmOverloads constructor(
         val id: Int,
         val username: String,
-        val roles: List<String> = listOf()
+        val authorities: List<String>,
+        val enabled: Boolean = true,
+        val password: String = "protected"
 )

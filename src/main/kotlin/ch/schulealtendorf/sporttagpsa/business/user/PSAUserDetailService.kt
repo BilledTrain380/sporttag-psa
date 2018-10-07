@@ -83,7 +83,7 @@ class PSAUserDetailService(
                 true, 
                 true, 
                 userEntity.authorities.map { 
-                    SimpleGrantedAuthority("ROLE_${it.role}") as GrantedAuthority
+                    SimpleGrantedAuthority("ROLE_${it.role}") as GrantedAuthority // TODO: remove role prefix
                 }
         )
     }

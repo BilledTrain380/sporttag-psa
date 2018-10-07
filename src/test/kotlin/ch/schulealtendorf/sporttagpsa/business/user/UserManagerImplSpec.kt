@@ -36,99 +36,140 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
+import ch.schulealtendorf.sporttagpsa.business.user.validation.ValidationResult
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
+import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.jetbrains.spek.api.dsl.*
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
 object UserManagerImplSpec: Spek({
     
     describe("a user manager") {
         
-        val mockUserRepository: UserRepository = mock {  }
+        val mockUserRepository: UserRepository = mock()
+        val mockPasswordValidator: PasswordValidator = mock()
         
-        var userManager = UserManagerImpl(mockUserRepository)
+        val userManager = UserManagerImpl(mockUserRepository, mockPasswordValidator)
         
         beforeEachTest { 
-            reset(mockUserRepository)
-            userManager = UserManagerImpl(mockUserRepository)
+            reset(mockUserRepository, mockPasswordValidator)
         }
-        
-        given("a fresh user to create") {
-            
-            on("saving the user") {
-                
-                val user = FreshUser("mmuster", "password", true)
-                
-                
-                userManager.create(user)
-                
-                it("should encode the password") {
-                    val expected = UserEntity(null, "mmuster", "password", true, listOf(
-                            AuthorityEntity("USER")
-                    ))
-                    verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {  
-                        expected.id == it.id &&
-                                expected.username == it.username &&
-                                BCryptPasswordEncoder(4).matches(expected.password, it.password) &&
-                                expected.enabled == it.enabled &&
-                                expected.authorities == it.authorities
-                    })
-                }
-            }
-            
-            on("already existing username") {
-                
-                whenever(mockUserRepository.findByUsername(any())).thenReturn(Optional.of(UserEntity()))
-                
-                it("should throw a user already exists exception") {
-                    
-                    val exception = assertFailsWith<UserAlreadyExistsException> { 
-                        userManager.create(FreshUser("mmuster", "", true))
-                    }
-                    
-                    assertEquals("User exists already: username=mmuster", exception.message)
-                }
-            }
-        }
-        
-        given("a password to update") {
-            
-            on("saving the user") {
 
-                whenever(mockUserRepository.findById(1)).thenReturn(Optional.of(
-                        UserEntity(1, "mmuster", "old password", true, listOf(
-                                AuthorityEntity("USER")
-                        ))))
-                
-                userManager.update(UserPassword(1, "password"))
-                
-                it("should encode the password") {
-                    val expected = UserEntity(1, "mmuster", "password", true, listOf(
-                            AuthorityEntity("USER")
-                    ))
+        val userEntity = UserEntity(username = "user", password = "secret".encode(), enabled = true, authorities = listOf(AuthorityEntity("ROLE_USER")))
+
+        context("a user to save") {
+
+            on("a new user") {
+
+                whenever(mockUserRepository.findById(any())).thenReturn(Optional.empty())
+                whenever(mockUserRepository.save(any<UserEntity>())).thenReturn(userEntity.copy(id = 1)) // the saved user has a id now
+                whenever(mockPasswordValidator.validate(any())).thenReturn(ValidationResult(true))
+
+
+                val user = User(0, "user", listOf("ROLE_USER"), password = "secret")
+                val result = userManager.save(user)
+
+                it("should validate the password") {
+                    verify(mockPasswordValidator, times(1)).validate("secret")
+                }
+
+                it("should create the user") {
+                    val expected = userEntity.copy()
                     verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
                         expected.id == it.id &&
                                 expected.username == it.username &&
-                                BCryptPasswordEncoder(4).matches(expected.password, it.password) &&
+                                BCryptPasswordEncoder(4).matches("secret", it.password) &&
                                 expected.enabled == it.enabled &&
                                 expected.authorities == it.authorities
                     })
+                }
+
+                it("should return the created user") {
+                    val expected = User(1, "user", listOf("ROLE_USER"))
+                    assertEquals(expected, result)
+                }
+            }
+
+            on("existing user") {
+
+                whenever(mockUserRepository.findById(any())).thenReturn(Optional.of(userEntity.copy(id = 1)))
+
+                val updatedEntity = userEntity.copy(id = 1, username = "user1", authorities = listOf(AuthorityEntity("ROLE_USER"), AuthorityEntity("ROLE_ADMIN")), enabled = false)
+                whenever(mockUserRepository.save(any<UserEntity>())).thenReturn(updatedEntity.copy())
+
+
+                val user = User(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), password = "should not be considered", enabled = false)
+                val result = userManager.save(user)
+
+
+                it("should not update the password property") {
+                    val expected = updatedEntity.copy()
+                    verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
+                        expected.id == it.id &&
+                                expected.username == it.username &&
+                                BCryptPasswordEncoder(4).matches("secret", it.password) && // password is not changed
+                                expected.enabled == it.enabled &&
+                                expected.authorities == it.authorities
+                    })
+                }
+
+                it("should return the created user") {
+                    val expected = User(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), false)
+                    assertEquals(expected, result)
+                }
+            }
+        }
+
+        context("change password of a user") {
+
+            on("existing user") {
+
+                whenever(mockUserRepository.findById(any())).thenReturn(Optional.of(userEntity.copy(id = 1)))
+                whenever(mockPasswordValidator.validate(any())).thenReturn(ValidationResult(true))
+
+
+                val user = User(1, "username", listOf())
+                userManager.changePassword(user, "newPassword")
+
+
+                it("should validate the password") {
+                    verify(mockPasswordValidator, times(1)).validate("newPassword")
+                }
+
+                it("should save the password encoded") {
+                    verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
+                        BCryptPasswordEncoder(4).matches("newPassword", it.password)
+                    })
+                }
+            }
+
+            on("user does not exist") {
+
+                whenever(mockUserRepository.findById(any())).thenReturn(Optional.empty())
+
+
+                val user = User(1, "username", listOf())
+
+
+                it("should throw a user not found exception, indicating that the user could not be found") {
+                    val exception = assertFailsWith<UserNotFoundException> {
+                        userManager.changePassword(user, "newPassword")
+                    }
+                    assertEquals("The user could not be found: user=$user", exception.message)
                 }
             }
         }
     }
 })
+
+private fun String.encode(): String {
+    return BCryptPasswordEncoder(4).encode(this)
+}

@@ -47,7 +47,7 @@ data class UserEntity(
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = 0,
+        var id: Int? = null,
         
         @NotNull
         @Size(min = 1, max = 50)

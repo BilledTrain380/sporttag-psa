@@ -34,6 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.user
+package ch.schulealtendorf.sporttagpsa.business.user.validation
 
-const val USER_ADMIN: String = "admin"
+/**
+ * Exception indicating that a password does not match
+ * the required validation rules.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+class InvalidPasswordException: Exception {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+    constructor(message: String?, cause: Throwable?, enableSuppression: Boolean, writableStackTrace: Boolean) : super(message, cause, enableSuppression, writableStackTrace)
+}

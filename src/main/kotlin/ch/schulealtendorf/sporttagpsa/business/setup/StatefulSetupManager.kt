@@ -38,12 +38,10 @@ package ch.schulealtendorf.sporttagpsa.business.setup
 
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
-import ch.schulealtendorf.sporttagpsa.business.user.UserPassword
 import ch.schulealtendorf.sporttagpsa.entity.DEFAULT_SETUP
 import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
 import org.springframework.stereotype.Component
-import java.util.Random
-
+import java.util.*
 
 
 /**
@@ -77,7 +75,7 @@ class StatefulSetupManager(
 
         // set admin password
         val user = userManager.getOne(USER_ADMIN).get()
-        userManager.update(UserPassword(user.userId, setup.adminPassword))
+        userManager.changePassword(user, setup.adminPassword)
 
         // mark setup as initialized and set new JWT secret
         val setupEntity = setupRepository.findById(DEFAULT_SETUP).get()

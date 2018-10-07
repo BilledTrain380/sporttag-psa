@@ -36,4 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
-const val USER_ADMIN: String = "admin"
+/**
+ * Exception indicating that a specific user could not be found.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+class UserNotFoundException: Exception {
+    constructor() : super()
+    constructor(message: String?) : super(message)
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+    constructor(message: String?, cause: Throwable?, enableSuppression: Boolean, writableStackTrace: Boolean) : super(message, cause, enableSuppression, writableStackTrace)
+}
