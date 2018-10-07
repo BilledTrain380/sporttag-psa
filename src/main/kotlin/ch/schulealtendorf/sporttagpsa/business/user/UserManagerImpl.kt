@@ -92,7 +92,15 @@ class UserManagerImpl(
 
     override fun getOne(username: String): Optional<User> = userRepository.findByUsername(username).map { it.toModel() }
 
-    override fun delete(userId: Int) = userRepository.deleteById(userId)
+    override fun delete(userId: Int) {
+
+        val user = userRepository.findById(userId)
+
+        if (user.isPresent && user.get().username == USER_ADMIN)
+            throw IllegalArgumentException("Not allowed to delete administrator")
+
+        userRepository.deleteById(userId)
+    }
     
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 

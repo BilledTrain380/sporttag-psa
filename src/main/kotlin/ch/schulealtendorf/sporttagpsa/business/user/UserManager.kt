@@ -103,8 +103,12 @@ interface UserManager {
 
     /**
      * Deletes the user matching the given {@code userId}.
+     *
+     * The user representing the administrator can not be deleted.
      * 
      * @param userId id of the user to delete
+     *
+     * @throws IllegalArgumentException if the given id belongs to the administrator user
      */
     fun delete(userId: Int)
 }

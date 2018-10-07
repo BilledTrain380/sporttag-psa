@@ -79,6 +79,12 @@ data class RestResult(
         val discipline: Discipline
 )
 
+data class RestUser(
+        val id: Int,
+        val username: String,
+        val enabled: Boolean
+)
+
 // Factory functions to create a data class representing the the JSON object of the given parameter.
 
 fun json(participant: Participant): RestParticipant {
@@ -123,5 +129,13 @@ fun json(result: Result): RestResult {
             result.points,
             result.distance.orElseGet { null },
             result.discipline
+    )
+}
+
+fun json(user: User): RestUser {
+    return RestUser(
+            user.id,
+            user.username,
+            user.enabled
     )
 }
