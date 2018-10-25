@@ -63,7 +63,7 @@ class UserController(
     }
 
     @PostMapping("/users")
-    fun createUser(newUser: NewUser) {
+    fun createUser(@RequestBody newUser: NewUser) {
 
         val user = User(0, newUser.username, listOf("ROLE_USER"), newUser.enabled, newUser.password)
         userManager.save(user)
@@ -74,7 +74,7 @@ class UserController(
         return json(userManager.findOne(id))
     }
 
-    @PatchMapping("/user/{user_id")
+    @PatchMapping("/user/{user_id}")
     fun updateUser(@PathVariable("user_id") id: Int, @RequestBody updateUser: UpdateUser) {
 
         val user = userManager.findOne(id)
