@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.entity
 
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.ManyToMany
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -49,5 +50,8 @@ data class AuthorityEntity(
         @Id
         @NotNull
         @Size(min = 1, max = 20)
-        var role: String = "USER"
+        var role: String = "ROLE_USER",
+
+        @ManyToMany(mappedBy = "authorities")
+        var users: Set<UserEntity> = setOf()
 )
