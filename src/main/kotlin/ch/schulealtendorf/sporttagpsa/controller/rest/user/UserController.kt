@@ -36,14 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.user
 
+import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
-import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestUser
-import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import ch.schulealtendorf.sporttagpsa.controller.rest.*
 import ch.schulealtendorf.sporttagpsa.model.User
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 /**
  * Rest controller for user domain.
@@ -75,9 +74,12 @@ class UserController(
     }
 
     @PatchMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody updateUser: UpdateUser) {
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody updateUser: UpdateUser, principal: Principal) {
 
         val user = userManager.findOne(id)
+
+        if (principal.isAuthorized(user).not())
+            throw ForbiddenException("The current user is not authorized to perform this operation.")
 
         userManager.save(
                 user.copy(username = updateUser.username, enabled = updateUser.enabled)
@@ -85,11 +87,15 @@ class UserController(
     }
 
     @PutMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody wrapper: PasswordWrapper) {
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody wrapper: PasswordWrapper, principal: Principal) {
 
         try {
 
             val user = userManager.findOne(id)
+
+            if (principal.isAuthorized(user).not())
+                throw ForbiddenException("The current user is not authorized to perform this operation.")
+
             userManager.changePassword(user, wrapper.password)
 
         } catch (ex: InvalidPasswordException) {
@@ -106,4 +112,6 @@ class UserController(
         return getOne(id)
                 .orElseThrow { NotFoundException("Could not find user: user_id=$id") }
     }
+
+    private fun Principal.isAuthorized(user: User) = (name == USER_ADMIN || name == user.username)
 }
