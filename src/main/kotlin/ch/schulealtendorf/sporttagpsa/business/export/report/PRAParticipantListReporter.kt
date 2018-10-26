@@ -40,8 +40,9 @@ import ch.schulealtendorf.pra.api.ParticipantListAPI
 import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.Participant
 import ch.schulealtendorf.pra.pojo.ParticipantList
-import ch.schulealtendorf.sporttagpsa.business.export.SimpleSport
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Sport
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
@@ -58,7 +59,7 @@ import java.io.IOException
 @Component
 class PRAParticipantListReporter(
         private val fileSystem: FileSystem,
-        private val competitorRepository: ParticipantRepository,
+        private val participantRepository: ParticipantRepository,
         private val participantListAPI: ParticipantListAPI,
         private val absentCompetitorRepository: AbsentParticipantRepository
 ): ParticipantListReporter {
@@ -71,7 +72,7 @@ class PRAParticipantListReporter(
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: Iterable<SimpleSport>): Set<File> {
+    override fun generateReport(data: Iterable<Sport>): Set<File> {
 
         try {
             val absentCompetitorList = absentCompetitorRepository.findAll()
@@ -79,7 +80,7 @@ class PRAParticipantListReporter(
             return data
                     .map {
 
-                        val participants = competitorRepository.findBySportName(it.name)
+                        val participants = participantRepository.findBySportName(it.name)
 
                         val participantList = ParticipantList().apply {
                             sport = it.name
@@ -89,7 +90,7 @@ class PRAParticipantListReporter(
                                         Participant().apply {
                                             prename = it.prename
                                             surname = it.surname
-                                            isGender = true
+                                            isGender = it.gender.asBoolean()
                                             clazz = it.group.name
                                             teacher = it.group.coach.name
                                         }
@@ -108,4 +109,6 @@ class PRAParticipantListReporter(
             throw ReportGenerationException("Could not generate participant list: cause=${ex.message}", ex)
         }
     }
+
+    private fun Gender.asBoolean() = this == Gender.MALE
 }

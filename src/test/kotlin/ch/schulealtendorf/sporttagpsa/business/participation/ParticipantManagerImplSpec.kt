@@ -116,7 +116,7 @@ object ParticipantManagerImplSpec: Spek({
                 id = 1,
                 surname = "Muster",
                 prename = "Max",
-                gender = "MALE",
+                gender = Gender.MALE,
                 birthday = 0,
                 address = "Musterstrasse 8",
                 town = townEntity,

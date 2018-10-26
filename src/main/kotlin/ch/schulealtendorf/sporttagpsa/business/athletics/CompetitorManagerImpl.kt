@@ -136,7 +136,7 @@ class CompetitorManagerImpl(
                 startnumber!!,
                 participant.surname,
                 participant.prename,
-                Gender.valueOf(participant.gender),
+                participant.gender,
                 Birthday(participant.birthday),
                 absentRepository.findByParticipantId(participant.id!!).isPresent,
                 participant.address,

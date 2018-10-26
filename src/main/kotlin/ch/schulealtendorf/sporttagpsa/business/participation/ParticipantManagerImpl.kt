@@ -78,7 +78,7 @@ class ParticipantManagerImpl(
         participantEntity.apply {
             surname = participant.surname
             prename = participant.prename
-            gender = participant.gender.toString()
+            gender = participant.gender
             birthday = participant.birthday.milliseconds
             address = participant.address
             town = townEntity
@@ -102,7 +102,7 @@ class ParticipantManagerImpl(
                 id!!,
                 surname,
                 prename,
-                Gender.valueOf(gender),
+                gender,
                 Birthday(birthday),
                 absentRepository.findByParticipantId(id!!).isPresent,
                 address,

@@ -130,7 +130,7 @@ class GroupManagerImpl(
         val participantEntity = ParticipantEntity(
                 surname = participant.surname,
                 prename = participant.prename,
-                gender = participant.gender.name,
+                gender = participant.gender,
                 birthday = participant.birthday.milliseconds,
                 address = participant.address,
                 town = town,

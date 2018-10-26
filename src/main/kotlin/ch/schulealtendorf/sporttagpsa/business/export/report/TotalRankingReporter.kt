@@ -36,10 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
+import ch.schulealtendorf.sporttagpsa.model.Gender
+
 /**
  * Describes a reporter for a total ranking.
  * 
  * @author nmaerchy
  * @version 1.0.0
  */
-interface TotalRankingReporter: Reporter<Iterable<Boolean>>
+interface TotalRankingReporter: Reporter<Iterable<Gender>>

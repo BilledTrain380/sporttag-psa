@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.repository
 
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.data.repository.CrudRepository
 import java.util.*
 
@@ -48,7 +49,9 @@ import java.util.*
  */
 interface CompetitorRepository: CrudRepository<CompetitorEntity, Int> {
     
-    fun findByParticipantGender(gender: String): List<CompetitorEntity>
+    fun findByParticipantGender(gender: Gender): List<CompetitorEntity>
 
     fun findByParticipantId(id: Int): Optional<CompetitorEntity>
+
+    fun findByParticipantGenderAndParticipantGroupName(gender: Gender, group: String): List<CompetitorEntity>
 }

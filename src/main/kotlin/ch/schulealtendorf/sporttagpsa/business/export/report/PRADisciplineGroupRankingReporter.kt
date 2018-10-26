@@ -64,9 +64,9 @@ import java.util.*
 @Component
 class PRADisciplineGroupRankingReporter(
         private val fileSystem: FileSystem,
-        private val starterRepository: CompetitorRepository,
+        private val competitorRepository: CompetitorRepository,
         private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI,
-        private val absentCompetitorRepository: AbsentParticipantRepository
+        private val absentParticipantRepository: AbsentParticipantRepository
 ): DisciplineGroupRankingReporter {
 
     /**
@@ -77,23 +77,23 @@ class PRADisciplineGroupRankingReporter(
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: Iterable<Boolean>): Set<File> {
+    override fun generateReport(data: Iterable<Gender>): Set<File> {
 
         try {
 
-            val absentCompetitorList = absentCompetitorRepository.findAll()
+            val absentParticipantList = absentParticipantRepository.findAll()
 
             return data.map { gender ->
     
-                starterRepository.findByParticipantGender(gender.toString())
-                    .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.participant.id } }
+                competitorRepository.findByParticipantGender(gender)
+                    .filterNot { absentParticipantList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
                     .groupBy { DateTime(it.participant.birthday).year }
                     .map {
     
                         val ranking = DisciplineGroupRanking().apply {
                             year = Year.of(it.key)
-                            isGender = gender
-                            this.competitors = it.value.map {
+                            isGender = gender.asBoolean()
+                            competitors = it.value.map {
                                 DisciplineGroupCompetitor().apply {
                                     prename = it.participant.prename
                                     surname = it.participant.surname
@@ -103,7 +103,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.value.toDouble())
+                                        result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
                                         points = resultEntity.points
                                     }
 
@@ -111,7 +111,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.value.toDouble())
+                                        result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
                                         points = resultEntity.points
                                     }
 
@@ -119,7 +119,7 @@ class PRADisciplineGroupRankingReporter(
                                         val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
 
                                         setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.value.toDouble())
+                                        result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
                                         points = resultEntity.points
                                     }
                                 }
@@ -154,12 +154,12 @@ class PRADisciplineGroupRankingReporter(
 
         try {
 
-            val absentCompetitorList = absentCompetitorRepository.findAll()
+            val absentCompetitorList = absentParticipantRepository.findAll()
 
             return genders.map { gender ->
 
-                starterRepository.findByParticipantGender(gender.toString())
-                        .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.participant.id } }
+                competitorRepository.findByParticipantGender(gender)
+                        .filterNot { absentCompetitorList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
                         .groupBy { DateTime(it.participant.birthday).year }
                         .map {
 
@@ -169,9 +169,9 @@ class PRADisciplineGroupRankingReporter(
                                     .reversed()
                                     .map {
 
-                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.value.toDouble())
-                                        val schnelllauf = Result(it.results.single { it.discipline.name == "Schnelllauf" }.value.toDouble())
-                                        val weitsprung = Result(it.results.single { it.discipline.name == "Weitsprung" }.value.toDouble())
+                                        val ballwurf = Result(it.results.single { it.discipline.name == "Ballwurf" }.let { it.value.toDouble() / it.discipline.unit.factor })
+                                        val schnelllauf = Result(it.results.single { it.discipline.name == "Schnelllauf" }.let { it.value.toDouble() / it.discipline.unit.factor })
+                                        val weitsprung = Result(it.results.single { it.discipline.name == "Weitsprung" }.let { it.value.toDouble() / it.discipline.unit.factor })
 
                                         listOf(
                                                 it.startnumber.toString(),
@@ -198,7 +198,9 @@ class PRADisciplineGroupRankingReporter(
         }
     }
 
-    private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
+    private fun Gender.asBoolean() = this == Gender.MALE
+
+    private fun Gender.text() = if(this.asBoolean()) "Knaben" else "Mädchen"
 
     private fun Long.formattedDate(): String {
         val date = Date(this)

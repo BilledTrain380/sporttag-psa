@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -61,9 +62,10 @@ data class ParticipantEntity(
         @Size(min = 1, max = 30)
         var prename: String = "",
 
+        @Enumerated(EnumType.STRING)
         @NotNull
         @Size(min = 1, max = 6)
-        var gender: String = "MALE",
+        var gender: Gender = Gender.MALE,
 
         @NotNull
         var birthday: Long = 0,

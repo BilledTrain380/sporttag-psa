@@ -36,49 +36,15 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.sporttagpsa.model.Discipline
 import ch.schulealtendorf.sporttagpsa.model.Gender
-
-@Deprecated("")
-data class RankingExportModel(
-        var disciplines: List<DisciplineRankingExportModel> = ArrayList(),
-        var disciplineGroup: DisciplineGroupRankingExportModel = DisciplineGroupRankingExportModel(),
-        var total: TotalRankingExportModel = TotalRankingExportModel()
-)
-
-@Deprecated("")
-data class DisciplineRankingExportModel(
-        var name: String = "",
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-@Deprecated("")
-data class DisciplineGroupRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-@Deprecated("")
-data class TotalRankingExportModel(
-        var male: Boolean = false,
-        var female: Boolean = false
-)
-
-@Deprecated("")
-data class ParticipantExportModel(
-        var sports: List<SportExportModel> = ArrayList()
-)
-
-@Deprecated("")
-data class SportExportModel(
-        var name: String = "",
-        var include: Boolean = false
-)
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Sport
 
 data class RankingExport(
         val disciplines: Iterable<DisciplineExport>,
-        val disciplineGroup: Iterable<Boolean>,
-        val total: Iterable<Boolean>,
+        val disciplineGroup: Iterable<Gender>,
+        val total: Iterable<Gender>,
         val ubsCup: Set<Gender>
 )
 
@@ -87,31 +53,16 @@ data class EventSheetExport(
 )
 
 data class ParticipantExport(
-        val sports: Iterable<SimpleSport>
+        val sports: Iterable<Sport>
 )
 
-data class DisciplineExport @JvmOverloads constructor(
-        val discipline: SimpleDiscipline,
-        val gender: Boolean = false
+data class DisciplineExport(
+        val discipline: Discipline,
+        val gender: Gender
 )
 
-data class EventSheetDisciplineExport @JvmOverloads constructor(
-        val discipline: SimpleDiscipline,
-        val clazz: SimpleClazz,
-        val gender: Boolean = false
-)
-
-data class SimpleClazz(
-        val id: Int,
-        val name: String
-)
-
-data class SimpleDiscipline(
-        val id: Int,
-        val name: String
-)
-
-data class SimpleSport(
-        val id: Int,
-        val name: String
+data class EventSheetDisciplineExport(
+        val discipline: Discipline,
+        val group: Group,
+        val gender: Gender
 )

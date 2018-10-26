@@ -42,7 +42,9 @@ import ch.schulealtendorf.pra.pojo.Discipline
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.pra.pojo.TotalCompetitor
 import ch.schulealtendorf.pra.pojo.TotalRanking
+import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
@@ -61,9 +63,9 @@ import java.time.Year
 @Component
 class PRATotalRankingReporter(
         private val fileSystem: FileSystem,
-        private val starterRepository: CompetitorRepository,
+        private val competitorRepository: CompetitorRepository,
         private val totalRankingAPI: TotalRankingAPI,
-        private val absentCompetitorRepository: AbsentParticipantRepository
+        private val absentParticipantRepository: AbsentParticipantRepository
 ): TotalRankingReporter {
 
     /**
@@ -74,22 +76,22 @@ class PRATotalRankingReporter(
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: Iterable<Boolean>): Set<File> {
+    override fun generateReport(data: Iterable<Gender>): Set<File> {
 
         try {
 
-            val absentCompetitorList = absentCompetitorRepository.findAll()
+            val absentParticipantList = absentParticipantRepository.findAll()
 
             return data.map { gender ->
 
-                starterRepository.findByParticipantGender(gender.toString())
-                        .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.participant.id } }
+                competitorRepository.findByParticipantGender(gender)
+                        .filterNot { absentParticipantList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
                         .groupBy { DateTime(it.participant.birthday).year }
                         .map {
 
                             val ranking = TotalRanking().apply {
                                 year = Year.of(it.key)
-                                isGender = gender
+                                isGender = gender.asBoolean()
                                 this.competitors = it.value.map {
                                     TotalCompetitor().apply {
                                         prename = it.participant.prename
@@ -100,7 +102,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.value.toDouble())
+                                            result = resultEntity.result()
                                             points = resultEntity.points
                                         }
 
@@ -108,7 +110,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Seilspringen" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.value.toInt())
+                                            result = resultEntity.result()
                                             points = resultEntity.points
                                         }
 
@@ -116,7 +118,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.value.toDouble())
+                                            result = resultEntity.result()
                                             points = resultEntity.points
                                         }
 
@@ -124,7 +126,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Korbeinwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.value.toInt())
+                                            result = resultEntity.result()
                                             points = resultEntity.points
                                         }
 
@@ -132,7 +134,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Ballzielwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.value.toInt())
+                                            result = resultEntity.result()
                                             points = resultEntity.points
                                         }
 
@@ -140,7 +142,7 @@ class PRATotalRankingReporter(
                                             val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
                                             setDistance(resultEntity.distance)
-                                            result = Result(resultEntity.value.toDouble())
+                                            result = resultEntity.result()
                                             points = resultEntity.points
                                         }
                                     }
@@ -161,5 +163,18 @@ class PRATotalRankingReporter(
         }
     }
 
-    private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
+    private fun ResultEntity.result(): Result {
+
+        val value: Double = value.toDouble() / discipline.unit.factor
+
+        if (value % 1 == 0.0) {
+            return Result(value.toInt())
+        }
+
+        return Result(value)
+    }
+
+    private fun Gender.text() = if(this == Gender.MALE) "Knaben" else "Mädchen"
+
+    private fun Gender.asBoolean() = this == Gender.MALE
 }
