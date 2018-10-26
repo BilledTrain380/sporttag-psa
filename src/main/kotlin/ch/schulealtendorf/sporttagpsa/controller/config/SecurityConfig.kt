@@ -82,13 +82,15 @@ class SecurityConfig(
 
                 ?.and()
                 ?.formLogin()?.loginPage("/login")?.permitAll()
+                ?.and()
+                ?.logout()?.permitAll()
 
                 ?.and()
                 ?.addFilterBefore(SetupAuthorizationFilter(setupManager), BasicAuthenticationFilter::class.java)
     }
 
     @Bean
-    @Qualifier("authenticationManagerBean")
+    @Qualifier("security-config")
     override fun authenticationManager(): AuthenticationManager {
         return super.authenticationManager()
     }

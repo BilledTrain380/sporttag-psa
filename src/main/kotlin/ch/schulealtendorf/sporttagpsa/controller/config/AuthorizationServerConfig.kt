@@ -49,6 +49,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices
+import org.springframework.security.oauth2.provider.token.TokenEnhancer
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
@@ -62,9 +64,11 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Configuration
 @EnableAuthorizationServer
 class AuthorizationServerConfig(
-        @Qualifier("authenticationManagerBean")
+        @Qualifier("security-config")
         private val authenticationManager: AuthenticationManager,
-        private val setupManager: SetupManager
+        private val setupManager: SetupManager,
+        @Qualifier("psa")
+        private val tokenEnhancer: TokenEnhancer
 ): AuthorizationServerConfigurerAdapter() {
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
@@ -100,9 +104,13 @@ class AuthorizationServerConfig(
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {
 
+        val tokenEnhancerChain = TokenEnhancerChain().apply {
+            setTokenEnhancers(listOf(tokenEnhancer, tokenConverter()))
+        }
+
         endpoints
                 ?.tokenStore(tokenStore())
-                ?.accessTokenConverter(tokenConverter())
+                ?.tokenEnhancer(tokenEnhancerChain)
                 ?.authenticationManager(authenticationManager)
     }
 
