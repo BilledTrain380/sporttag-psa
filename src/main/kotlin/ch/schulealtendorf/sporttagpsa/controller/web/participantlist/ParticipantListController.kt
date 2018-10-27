@@ -34,35 +34,37 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.export
+package ch.schulealtendorf.sporttagpsa.controller.web.participantlist
 
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
+import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
+import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
+import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Sport
+import org.springframework.http.MediaType
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
 
-data class RankingExport(
-        val disciplines: Iterable<DisciplineExport>,
-        val disciplineGroup: Iterable<Gender>,
-        val total: Iterable<Gender>,
-        val ubsCup: Iterable<Gender>
-)
+@Controller
+@RequestMapping("/api/web")
+class ParticipantListController(
+        private val exportManager: ExportManager,
+        private val fileSystem: FileSystem
+) {
 
-data class EventSheetExport(
-        val disciplines: Iterable<EventSheetDisciplineExport>
-)
+    @PostMapping("/participant-list", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseBody
+    fun createParticipantList(@RequestBody data: List<Sport>): FileQualifier {
 
-data class ParticipantExport(
-        val sports: Iterable<Sport>
-)
+        val exportData = ParticipantExport(data)
 
-data class DisciplineExport(
-        val discipline: Discipline,
-        val gender: Gender
-)
+        val zip = exportManager.generateArchive(exportData)
 
-data class EventSheetDisciplineExport(
-        val discipline: Discipline,
-        val group: Group,
-        val gender: Gender
-)
+        return FileQualifier(
+                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath)
+        )
+    }
+}

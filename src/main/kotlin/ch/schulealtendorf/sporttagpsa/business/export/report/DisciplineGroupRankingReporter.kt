@@ -57,5 +57,5 @@ interface DisciplineGroupRankingReporter: Reporter<Iterable<Gender>> {
      * @return all generated csv files
      * @throws ReportGenerationException if the csv files could not be generated
      */
-    fun generateCSV(genders: Set<Gender>): Set<File>
+    fun generateCSV(genders: Iterable<Gender>): Set<File>
 }

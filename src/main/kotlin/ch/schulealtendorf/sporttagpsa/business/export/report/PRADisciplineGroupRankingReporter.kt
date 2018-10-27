@@ -150,7 +150,7 @@ class PRADisciplineGroupRankingReporter(
      * @return all generated csv files
      * @throws ReportGenerationException if the csv files could not be generated
      */
-    override fun generateCSV(genders: Set<Gender>): Set<File> {
+    override fun generateCSV(genders: Iterable<Gender>): Set<File> {
 
         try {
 

@@ -85,5 +85,6 @@ interface ExportManager {
      * @return the generated archive
      * @throws ArchiveGenerationException if the archive could not be generated
      */
+    @Deprecated("Use generateArchive(RankingExport) ubsCup")
     fun generateArchive(data: Set<Gender>): File
 }
