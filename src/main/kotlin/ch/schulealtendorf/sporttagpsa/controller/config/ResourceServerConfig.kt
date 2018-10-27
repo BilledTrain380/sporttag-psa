@@ -62,20 +62,21 @@ class ResourceServerConfig(
                 ?.authorizeRequests()
 
                     ?.antMatchers(
-                            "/api/groups",
-                            "/api/participation",
-                            "/api/competitors",
-                            "/api/competitor/**",
-                            "/api/sports",
-                            "/api/disciplines"
+                            "/api/rest/groups",
+                            "/api/rest/participation",
+                            "/api/rest/competitors",
+                            "/api/rest/competitor/**",
+                            "/api/rest/sports",
+                            "/api/rest/disciplines"
                     )?.hasRole("USER")
 
                     ?.antMatchers(
-                            "/api/group/**",
-                            "/api/participant/**",
-                            "/api/participants",
-                            "/api/users",
-                            "/api/user/**"
+                            "/api/rest/group/**",
+                            "/api/rest/participant/**",
+                            "/api/rest/participants",
+                            "/api/rest/users",
+                            "/api/rest/user/**",
+                            "/api/web/group-import"
                     )?.hasRole("ADMIN")
 
                     ?.anyRequest()?.authenticated()

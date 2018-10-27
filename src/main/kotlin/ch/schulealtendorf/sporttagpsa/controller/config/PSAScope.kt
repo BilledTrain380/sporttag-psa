@@ -56,5 +56,5 @@ enum class PSAScope(
     FILES("files"),
     RANKING("ranking"),
     EVENT_SHEETS("event_sheets"),
-    PARTICIPANT_LIST("paritcipant_list")
+    PARTICIPANT_LIST("participant_list")
 }
