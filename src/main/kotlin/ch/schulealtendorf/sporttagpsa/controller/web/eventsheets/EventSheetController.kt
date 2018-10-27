@@ -45,6 +45,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -60,6 +61,7 @@ class EventSheetController(
         private val fileSystem: FileSystem
 ) {
 
+    @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @PostMapping("/event-sheets", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
     fun createEventSheets(@RequestBody data: List<EventSheetData>): FileQualifier {

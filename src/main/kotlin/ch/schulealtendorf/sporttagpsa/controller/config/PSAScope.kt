@@ -52,5 +52,9 @@ enum class PSAScope(
     COMPETITOR_WRITE("competitor_write"),
     PARTICIPANT_READ("participant_read"),
     PARTICIPANT_WRITE("participant_write"),
-    PARTICIPATION("participation")
+    PARTICIPATION("participation"),
+    FILES("files"),
+    RANKING("ranking"),
+    EVENT_SHEETS("event_sheets"),
+    PARTICIPANT_LIST("paritcipant_list")
 }

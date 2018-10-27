@@ -98,7 +98,11 @@ class AuthorizationServerConfig(
                                 PSAScope.COMPETITOR_WRITE,
                                 PSAScope.PARTICIPANT_READ,
                                 PSAScope.PARTICIPANT_WRITE,
-                                PSAScope.PARTICIPATION
+                                PSAScope.PARTICIPATION,
+                                PSAScope.FILES,
+                                PSAScope.RANKING,
+                                PSAScope.EVENT_SHEETS,
+                                PSAScope.PARTICIPANT_LIST
                         )
     }
 
