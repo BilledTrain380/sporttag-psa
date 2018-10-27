@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.*
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/rest")
 class GroupController(
         private val groupManager: GroupManager
 ) {

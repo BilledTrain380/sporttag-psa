@@ -51,7 +51,7 @@ import java.security.Principal
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/rest")
 class UserController(
         private val userManager: UserManager
 ) {

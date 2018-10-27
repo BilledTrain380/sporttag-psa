@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/rest")
 class DisciplineController(
         private val disciplineManager: DisciplineManager
 ) {
