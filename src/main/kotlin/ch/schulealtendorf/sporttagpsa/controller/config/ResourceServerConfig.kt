@@ -76,7 +76,11 @@ class ResourceServerConfig(
                             "/api/rest/participants",
                             "/api/rest/users",
                             "/api/rest/user/**",
-                            "/api/web/group-import"
+                            "/api/web/group-import",
+                            "/api/web/ranking",
+                            "/api/web/event-sheets",
+                            "/api/web/file/**",
+                            "/api/web/participant-list"
                     )?.hasRole("ADMIN")
 
                     ?.anyRequest()?.authenticated()
