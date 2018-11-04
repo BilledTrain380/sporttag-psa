@@ -70,11 +70,11 @@ class RankingController(
             val discipline = disciplineManager.getDiscipline(it.discipline)
                     .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }
 
-            it.genders.map { DisciplineExport(discipline, it) }
-        }.flatten()
+            DisciplineExport(discipline, it.gender)
+        }
 
         val rankingExport = RankingExport(
-            disciplineExports,
+                disciplineExports,
                 data.disciplineGroup,
                 data.total,
                 data.ubsCup
@@ -83,7 +83,8 @@ class RankingController(
         val zip = exportManager.generateArchive(rankingExport)
 
         return FileQualifier(
-                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath)
+                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath),
+                zip.name
         )
     }
 }
