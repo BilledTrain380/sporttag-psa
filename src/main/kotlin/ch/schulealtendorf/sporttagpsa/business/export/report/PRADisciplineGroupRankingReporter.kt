@@ -188,7 +188,7 @@ class PRADisciplineGroupRankingReporter(
                                         ).joinToString(",") { it }
                                     }.plus(headers).reversed()
 
-                            fileSystem.write("UBS - $gender - ${it.key}.csv", lines)
+                            fileSystem.write("UBS - ${gender.text()} - ${it.key}.csv", lines)
                         }.toSet()
 
             }.flatten().toSet()
