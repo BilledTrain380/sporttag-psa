@@ -171,7 +171,7 @@ class ParticipationManagerImpl(
         participantEntity.sport = SportEntity(sport.name)
         participantRepository.save(participantEntity)
 
-        if (sport.name == LockedSport.ATHLETICS) {
+        if (sport.name == ATHLETICS) {
             participantEntity.saveAsCompetitor()
         } else {
 
@@ -199,7 +199,7 @@ class ParticipationManagerImpl(
             return
         }
 
-        val participants = participantRepository.findBySportName(LockedSport.ATHLETICS)
+        val participants = participantRepository.findBySportName(ATHLETICS)
 
         participants.forEach { it.saveAsCompetitor() }
 

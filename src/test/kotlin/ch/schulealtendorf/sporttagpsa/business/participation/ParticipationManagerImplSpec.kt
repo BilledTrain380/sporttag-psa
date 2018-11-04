@@ -297,7 +297,7 @@ object ParticipationManagerImplSpec: Spek({
                 whenever(mockCompetitorRepository.save(any<CompetitorEntity>())).thenReturn(competitor)
 
 
-                manager.reParticipate(participantModel, Sport(LockedSport.ATHLETICS))
+                manager.reParticipate(participantModel, Sport(ATHLETICS))
 
 
                 it("should save the participant as competitor with default results") {
@@ -312,7 +312,7 @@ object ParticipationManagerImplSpec: Spek({
                 }
 
                 it("should change the sport to athletics") {
-                    val expected = participantEntity.copy(sport = SportEntity(LockedSport.ATHLETICS))
+                    val expected = participantEntity.copy(sport = SportEntity(ATHLETICS))
                     verify(mockParticipantRepository, times(1)).save(expected)
                 }
             }
@@ -396,10 +396,10 @@ object ParticipationManagerImplSpec: Spek({
 
                 whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "OPEN")))
 
-                val participant1 = participantEntity.copy(sport = SportEntity(LockedSport.ATHLETICS))
-                val participant2 = participantEntity.copy(id = 2, sport = SportEntity(LockedSport.ATHLETICS)) // we just change the id, that is enough
+                val participant1 = participantEntity.copy(sport = SportEntity(ATHLETICS))
+                val participant2 = participantEntity.copy(id = 2, sport = SportEntity(ATHLETICS)) // we just change the id, that is enough
 
-                whenever(mockParticipantRepository.findBySportName(LockedSport.ATHLETICS)).thenReturn(listOf(participant1, participant2))
+                whenever(mockParticipantRepository.findBySportName(ATHLETICS)).thenReturn(listOf(participant1, participant2))
 
                 val disciplines = listOf(
                         DisciplineEntity("soccer", UnitEntity("m")),

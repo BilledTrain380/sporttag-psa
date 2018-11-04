@@ -37,13 +37,10 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 /**
- * Locked sports are sports which must not be modified by anyone.
- * They must exists in the entire application.
+ * A special sport which must exists. To refer this sport
+ * use this variable.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-object LockedSport {
-
-    const val ATHLETICS = "Mehrkampf"
-}
+const val ATHLETICS = "Athletics"

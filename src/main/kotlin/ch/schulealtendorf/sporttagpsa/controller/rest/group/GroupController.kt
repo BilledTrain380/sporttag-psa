@@ -37,7 +37,6 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.group
 
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
-import ch.schulealtendorf.sporttagpsa.business.participation.LockedSport
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
