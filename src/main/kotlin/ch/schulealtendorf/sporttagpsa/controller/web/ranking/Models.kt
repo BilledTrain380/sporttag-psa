@@ -40,7 +40,7 @@ import ch.schulealtendorf.sporttagpsa.model.Gender
 
 data class DisciplineRanking(
         val discipline: String,
-        val genders: List<Gender>
+        val gender: Gender
 )
 
 data class RankingData(

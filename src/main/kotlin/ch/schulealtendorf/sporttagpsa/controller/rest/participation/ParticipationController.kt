@@ -62,7 +62,7 @@ class ParticipationController(
         return json(status)
     }
 
-    @PreAuthorize("#oauth2.hasScope('participation') and hasAuthority('ADMIN')")
+    @PreAuthorize("#oauth2.hasScope('participation') and hasRole('ADMIN')")
     @PatchMapping("/participation")
     fun updateParticipation(@RequestBody participation: RestParticipationStatus) {
 

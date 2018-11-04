@@ -37,5 +37,6 @@
 package ch.schulealtendorf.sporttagpsa.controller.web.files
 
 data class FileQualifier(
-        val value: String
+        val value: String,
+        val name: String
 )

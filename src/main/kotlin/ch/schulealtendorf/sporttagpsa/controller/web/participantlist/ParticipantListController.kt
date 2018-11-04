@@ -66,7 +66,8 @@ class ParticipantListController(
         val zip = exportManager.generateArchive(exportData)
 
         return FileQualifier(
-                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath)
+                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath),
+                zip.name
         )
     }
 }
