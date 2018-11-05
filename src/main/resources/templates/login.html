@@ -43,52 +43,37 @@
 
 <body>
 
-<div class="container">
+<div class="container login-container">
 
 
     <div class="py-5 text-center">
 
         <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.svg">
 
-        <h2>Welcome to Sporttag PSA!</h2>
+        <h2>Welcome to PSA!</h2>
         <p class="lead">Your sport event management system.</p>
 
     </div>
 
-
-    <div class="card mb-5 login-card">
-        <div class="card-header">
-            Login
-        </div>
-        <div class="card-body">
-
-            <p class="card-text text-black-50">
-                Please log in.
-            </p>
-
-            <div th:if="${param.error}" class="alert alert-danger" role="alert">
-                Invalid username and password.
-            </div>
-            <div th:if="${param.logout}" class="alert alert-success" role="alert">
-                You have been logged out.
-            </div>
-
-            <form th:action="@{/login}" method="post" enctype="application/x-www-form-urlencoded">
-
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" name="username">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block">Log in</button>
-            </form>
-
-        </div>
+    <div th:if="${param.error}" class="alert alert-danger" role="alert">
+        Invalid username and password.
     </div>
+
+    <form th:action="@{/login}" method="post" enctype="application/x-www-form-urlencoded">
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-block">Log in</button>
+    </form>
+
+    <a class="btn btn-outline-secondary btn-block mt-3" th:href="@{/}">Take me back</a>
 
 </div>
 

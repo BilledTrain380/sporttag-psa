@@ -138,6 +138,7 @@ dependencies {
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'
 	compile 'org.webjars:bootstrap:4.1.3'
+	compile 'org.webjars:font-awesome:5.4.1'
 
     // exclude mockito, because we need a different version
     testCompile('org.springframework.boot:spring-boot-starter-test') {

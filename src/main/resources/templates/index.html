@@ -1,0 +1,324 @@
+<!--
+  ~ Copyright (c) 2018 by Nicolas Märchy
+  ~
+  ~ This file is part of Sporttag PSA.
+  ~
+  ~ Sporttag PSA is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Sporttag PSA is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Diese Datei ist Teil von Sporttag PSA.
+  ~
+  ~ Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
+  ~ der GNU General Public License, wie von der Free Software Foundation,
+  ~ Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+  ~ veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+  ~
+  ~ Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
+  ~ OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+  ~ Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+  ~ Siehe die GNU General Public License für weitere Details.
+  ~
+  ~ Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+  ~ Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  -->
+
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/main :: head('Welcome - PSA')">
+</head>
+<body>
+
+<nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
+
+    <div class="container pl-3 pr-3">
+
+        <a class="navbar-brand" href="#">
+            <img width="30" height="30" src="images/psa-logo.svg">
+            PSA
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Tour</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Themes</a>
+                </li>
+            </ul>
+
+
+            <ul class="navbar-nav ml-auto">
+
+                <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}" th:text="'Hello ' + ${username}"></span>
+
+                <li th:if="${isAuthenticated}" class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Sign Out</a>
+                </li>
+
+                <li th:if="${isAuthenticated}" class="nav-item ml-2">
+                    <a class="nav-link btn btn-outline-warning" th:href="@{/app}">Launch</a>
+                </li>
+
+                <li th:if="!${isAuthenticated}" class="nav-item ml-2">
+                    <a class="nav-link btn btn-outline-warning" th:href="@{/login}">Sign In</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<section id="product" class="bg-dark">
+
+    <div class="container pt-5 pb-5">
+        <div class="row">
+            <div class="col-lg-12 text-center text-light pt-5 pb-5">
+
+                <h1>Organize your sport event.</h1>
+
+                <p>
+                    Your sport event organized and managed by one app. Fun or competition, both can be accomplished by PSA.
+                </p>
+
+            </div>
+
+            <div class="col-lg-12">
+
+                <div class="card-deck">
+
+                    <div class="card text-white border-warning bg-dark">
+
+                        <div class="card-body">
+                            <i class="fa fa-2x fa-sitemap mb-3 text-warning"></i>
+                            <h5 class="card-title">Organize participants</h5>
+                            <p class="card-text">Organize your participants in different groups.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="card-link text-warning">Learn more</a>
+                        </div>
+                    </div>
+
+                    <div class="card text-white border-warning bg-dark">
+
+                        <div class="card-body">
+                            <i class="fa fa-2x fa-hand-rock mb-3 text-warning"></i>
+                            <h5 class="card-title">Competition</h5>
+                            <p class="card-text">Manage a competition and record the competitor results</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="card-link text-warning">Learn more</a>
+                        </div>
+                    </div>
+
+                    <div class="card text-white border-warning bg-dark">
+
+                        <div class="card-body">
+                            <i class="fa fa-2x fa-trophy mb-3 text-warning"></i>
+                            <h5 class="card-title">Ranking</h5>
+                            <p class="card-text">Export rankings of the competition as PDF.</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="card-link text-warning">Learn more</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<section id="features">
+
+    <div class="container p-4">
+
+        <div class="row">
+            <div class="col-lg-12 text-center feature-item">
+
+                <h1>More than just an app</h1>
+
+            </div>
+
+            <div class="col-lg-3 text-center feature-item">
+
+                <i class="fas fa-7x fa-gift m-4 text-danger"></i>
+
+                <h3>Free to Use</h3>
+
+                <p class="text-muted">
+                    This app is free to download and use!
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 text-center feature-item">
+
+                <i class="fas fa-7x fa-unlock m-4 text-danger"></i>
+
+                <h3>Open Source</h3>
+
+                <p class="text-muted">
+                    GNU GPL v3.0 licensed!
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 text-center feature-item">
+
+                <i class="fas fa-7x fa-desktop m-4 text-danger"></i>
+
+                <h3>Responsive</h3>
+
+                <p class="text-muted">
+                    Ready to use on different sizes!
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 text-center feature-item">
+
+                <i class="fas fa-7x fa-language m-4 text-danger"></i>
+
+                <h3>Multi-Language</h3>
+
+                <p class="text-muted">
+                    Available in english and german.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="bg-dark text-light pt-5">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                <img width="30" height="30" src="images/psa-logo.svg">
+                <p>
+                    <small class="text-muted">2018 - 2019</small>
+                </p>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <h5>Features</h5>
+
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">CSV Import</a></li>
+                    <li><a class="text-muted" href="#">Participant Managing</a></li>
+                    <li><a class="text-muted" href="#">Event Sheet Export</a></li>
+                    <li><a class="text-muted" href="#">Result Recording</a></li>
+                    <li><a class="text-muted" href="#">Ranking Export</a></li>
+                    <li><a class="text-muted" href="#">User Managing</a></li>
+                    <li><a class="text-muted" href="#">LTR and RTL Support</a></li>
+                    <li><a class="text-muted" href="#">Multiple Themes</a></li>
+                </ul>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <h5>Downloads</h5>
+
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">UI Mode</a></li>
+                    <li><a class="text-muted" href="#">Headless Mode</a></li>
+                </ul>
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <h5>Support</h5>
+
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Installation</a></li>
+                    <li><a class="text-muted" href="#">Roadmap</a></li>
+                    <li><a class="text-muted" href="#">Archive</a></li>
+                </ul>
+
+            </div>
+
+            <div class="col-lg-1">
+
+                <h5 class="float-right"><a class="text-light" href="#">About</a></h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr class="hr-light">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-8">
+
+                <p class="text-muted">
+                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                    <br/>
+                    Currently 1.0.0+psa.2.0.0.1.0.0 Code licensed GPLv3, docs CC BY 3.0
+                </p>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="float-right">
+                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                        <i class="fab fa-2x fa-github"></i>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
