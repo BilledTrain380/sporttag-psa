@@ -53,57 +53,51 @@ interface FileSystem {
     fun getApplicationDir(): File
 
     /**
-     * Creates the given {@code fileName} in the application directory.
-     * @see FileSystem.getApplicationDir
-     *
-     * If the given {@code fileName} exists already, it will be replaced.
-     *
-     * @param fileName the file to create
-     * @throws java.io.IOException if the file could not be created
-     */
-    fun createFile(fileName: String): File
-
-    /**
-     * Writes the given {@code lines} to the given {@code fileName}.
+     * Writes the given {@code lines} to the given {@code file}.
      * If the file does not exists, it will be created.
      * If the file does exists already, it will be replaced.
      *
-     * @param fileName the file to write to
+     * If the directory where the file belongs does not exist, it will be created first.
+     *
+     * @param file the file to write to
      * @param lines the lines to append
      *
      * @return the created file
      * @throws java.io.IOException If the file could not be created
      */
-    fun write(fileName: String, lines: List<String>): File
+    fun write(file: ApplicationFile, lines: List<String>): File
 
     /**
-     * Writes the given {@code input} to the given {@code fileName}.
+     * Writes the given {@code input} to the given {@code file}.
      * If the file does not exists, it will be created.
      * If the file does exists already, it will be replaced.
-     * 
+     *
+     * If the directory where the file belongs does not exist, it will be created first.
+     *
      * The file will be created relative to the application dir
      * @see FileSystem#getApplicationDir
-     * 
-     * @param fileName the name of the file that is created
+     *
+     * @param file the file to write
      * @param input content of the file
-     * 
+     *
      * @return the created file
      * @throws java.io.IOException if the file could not be created
      */
-    fun write(fileName: String, input: InputStream): File
+    fun write(file: ApplicationFile, input: InputStream): File
 
     /**
      * Creates an archive with the given {@code files}.
-     * The given {@code fileName} may not include any file extension.
+     * The given {@code file} should not include any file extension.
      * The file extension will be set by this method.
-     * 
-     * If the {@code fileName} exists already, it will be replaced.
-     * 
-     * @param fileName the file name of the archive without extension
+     *
+     * If the directory where the file belongs does not exist, it will be created first.
+     * If the {@code file} exists already, it will be replaced.
+     *
+     * @param file the file to to create the archive
      * @param files files that should be added to the archive
-     * 
+     *
      * @return the created archive
      * @throws java.io.IOException if the archive could not be created
      */
-    fun createArchive(fileName: String, files: Iterable<File>): File
+    fun createArchive(file: ApplicationFile, files: Iterable<File>): File
 }

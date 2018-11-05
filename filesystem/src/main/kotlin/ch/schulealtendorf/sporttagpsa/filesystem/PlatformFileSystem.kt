@@ -56,7 +56,7 @@ class PlatformFileSystem(
         appDirs: AppDirs
 ): FileSystem {
     
-    private val applicationDir = File(appDirs.getUserDataDir("Sporttag PSA", "1.0.0", "Schule Altendorf"))
+    private val applicationDir = File(appDirs.getUserDataDir("PSA Compose", "", ""))
     
     init {
         
@@ -69,69 +69,11 @@ class PlatformFileSystem(
      */
     override fun getApplicationDir() = applicationDir
 
-    /**
-     * Creates the given {@code fileName} in the application directory.
-     * @see FileSystem.getApplicationDir
-     *
-     * If the given {@code fileName} exists already, it will be replaced.
-     *
-     * @param fileName the file to create
-     * @throws java.io.IOException if the file could not be created
-     */
-    override fun createFile(fileName: String): File {
-        val file = applicationDir.resolve(fileName)
+    override fun write(file: ApplicationFile, lines: List<String>): File {
 
-        if (file.exists())
-            file.delete()
+        val newFile = createFile(file)
 
-        file.createNewFile()
-
-        return file
-    }
-
-    /**
-     * Writes the given {@code input} to the given {@code fileName}.
-     * If the file does not exists, it will be created.
-     * If the file does exists already, it will be replaced.
-     *
-     * The file will be created relative to the application dir
-     * @see FileSystem#getApplicationDir
-     *
-     * @param fileName the name of the file that is created
-     * @param input content of the file
-     *
-     * @return the created file
-     * @throws java.io.IOException if the file could not be created
-     */
-    override fun write(fileName: String, input: InputStream): File {
-        
-        val file = createFile(fileName)
-
-        input.use { 
-            file.outputStream().use { fileOut ->
-                it.copyTo(fileOut)
-            }
-        }
-
-        return file
-    }
-
-    /**
-     * Writes the given {@code lines} to the given {@code fileName}.
-     * If the file does not exists, it will be created.
-     * If the file does exists already, it will be replaced.
-     *
-     * @param fileName the file to write to
-     * @param lines the lines to append
-     *
-     * @return the created file
-     * @throws java.io.IOException If the file could not be created
-     */
-    override fun write(fileName: String, lines: List<String>): File {
-
-        val file = applicationDir.resolve(fileName)
-
-        file.bufferedWriter().use {
+        newFile.bufferedWriter().use {
 
             lines.forEach { line ->
                 it.write(line)
@@ -139,26 +81,26 @@ class PlatformFileSystem(
             }
         }
 
-        return file
+        return newFile
     }
 
-    /**
-     * Creates an archive with the given {@code files}.
-     * The given {@code fileName} may not include any file extension.
-     * The file extension will be set by this method.
-     *
-     * If the {@code fileName} exists already, it will be replaced.
-     *
-     * @param fileName the file name of the archive without extension
-     * @param files files that should be added to the archive
-     *
-     * @return the created archive
-     * @throws java.io.IOException if the archive could not be created
-     */
-    override fun createArchive(fileName: String, files: Iterable<File>): File {
+    override fun write(file: ApplicationFile, input: InputStream): File {
 
-        val zipFile = applicationDir.resolve("$fileName.zip")
-        
+        val newFile = createFile(file)
+
+        input.use {
+            newFile.outputStream().use { fileOut ->
+                it.copyTo(fileOut)
+            }
+        }
+
+        return newFile
+    }
+
+    override fun createArchive(file: ApplicationFile, files: Iterable<File>): File {
+
+        val zipFile = createFile(file, ".zip")
+
         if(zipFile.exists())
             zipFile.delete()
 
@@ -173,5 +115,18 @@ class PlatformFileSystem(
         files.forEach { rankingZip.addFile(it, parameters) }
 
         return zipFile
+    }
+
+    private fun createFile(appFile: ApplicationFile, extension: String = ""): File {
+
+        val file = applicationDir.resolve("${appFile.path}$extension")
+
+        if (file.exists())
+            file.delete()
+
+        file.parentFile.mkdirs()
+        file.createNewFile()
+
+        return file
     }
 }

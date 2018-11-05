@@ -41,6 +41,7 @@ import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.Competitor
 import ch.schulealtendorf.pra.pojo.EventSheet
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
+import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -97,8 +98,8 @@ class PRAEventSheetReporter(
                 }
 
                 val report = eventSheetAPI.createReport(eventSheet)
-
-                fileSystem.write("Wettkampfblatt ${eventSheetData.discipline.name} ${eventSheetData.group.name} ${eventSheetData.gender.text()}.pdf", report)
+                val file = ApplicationFile("export", "event-sheets", "Wettkampfblatt ${eventSheetData.discipline.name} ${eventSheetData.group.name} ${eventSheetData.gender.text()}.pdf")
+                fileSystem.write(file, report)
             }.toSet()
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)

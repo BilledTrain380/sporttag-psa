@@ -34,11 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.model
+package ch.schulealtendorf.sporttagpsa.filesystem
 
-@Deprecated("ClazzObj will no longer be used. Use Clazz instead")
-data class ClazzObj(
-        val id: Int,
-        val name: String,
-        val teacher: String
-)
+/**
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 0.0.1
+ */
+class ApplicationFile(
+        first: String,
+        vararg more: String
+) {
+    val path: String = first + "/" + more.joinToString("/")
+    val pathSegments: List<String> = listOf(first, *more)
+    val fileName: String = pathSegments.last()
+}

@@ -43,6 +43,7 @@ import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.pra.pojo.TotalCompetitor
 import ch.schulealtendorf.pra.pojo.TotalRanking
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
+import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
@@ -150,8 +151,8 @@ class PRATotalRankingReporter(
                             }
 
                             val report = totalRankingAPI.createReport(ranking)
-
-                            fileSystem.write("Rangliste ${gender.text()} Gesamt ${it.key}.pdf", report)
+                            val file = ApplicationFile("export", "ranking", "Rangliste ${gender.text()} Gesamt ${it.key}.pdf")
+                            fileSystem.write(file, report)
                         }.toSet()
 
             }.flatten().toSet()

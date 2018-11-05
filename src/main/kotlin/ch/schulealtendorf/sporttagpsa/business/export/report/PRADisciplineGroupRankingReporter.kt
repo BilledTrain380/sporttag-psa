@@ -42,6 +42,7 @@ import ch.schulealtendorf.pra.pojo.Discipline
 import ch.schulealtendorf.pra.pojo.DisciplineGroupCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
+import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
@@ -127,8 +128,9 @@ class PRADisciplineGroupRankingReporter(
                         }
     
                         val report = disciplineGroupRankingAPI.createReport(ranking)
-    
-                        fileSystem.write("Rangliste ${gender.text()} 3-Kampf ${it.key}.pdf", report)
+
+                        val file = ApplicationFile("export", "ranking", "Rangliste ${gender.text()} 3-Kampf ${it.key}.pdf")
+                        fileSystem.write(file, report)
                     }.toSet()
                 
             }.flatten().toSet()
@@ -188,7 +190,8 @@ class PRADisciplineGroupRankingReporter(
                                         ).joinToString(",") { it }
                                     }.plus(headers).reversed()
 
-                            fileSystem.write("UBS - ${gender.text()} - ${it.key}.csv", lines)
+                            val file = ApplicationFile("export", "ranking", "UBS - ${gender.text()} - ${it.key}.csv")
+                            fileSystem.write(file, lines)
                         }.toSet()
 
             }.flatten().toSet()
