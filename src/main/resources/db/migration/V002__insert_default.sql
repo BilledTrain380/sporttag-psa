@@ -1,6 +1,6 @@
 INSERT INTO SPORT (name) VALUES 
 ('Schatzsuche'),
-('Mehrkampf'),
+('Athletics'),
 ('Brennball'),
 ('Velo- Rollerblades');
 
