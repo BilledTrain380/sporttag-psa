@@ -40,3 +40,10 @@ data class FileQualifier(
         val value: String,
         val name: String
 )
+
+fun fileQualifierOf(path: String): FileQualifier {
+    val value = path.removePrefix("/").replace("/", "-")
+    val name = path.split("/").last()
+
+    return FileQualifier(value, name)
+}

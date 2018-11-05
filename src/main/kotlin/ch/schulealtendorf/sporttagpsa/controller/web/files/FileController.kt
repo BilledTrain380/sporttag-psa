@@ -67,7 +67,7 @@ class FileController(
     @GetMapping("/{file_qualifier}")
     fun getFile(@PathVariable("file_qualifier") fileQualifier: String): ResponseEntity<InputStreamResource> {
 
-        val file: File = fileSystem.getApplicationDir().resolve(fileQualifier)
+        val file: File = fileSystem.getApplicationDir().resolve(fileQualifier.replace("-", "/"))
 
         if (file.exists().not())
             throw NotFoundException("The file could not be found: qualifier=$fileQualifier")

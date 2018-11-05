@@ -43,6 +43,7 @@ import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
+import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -79,9 +80,6 @@ class EventSheetController(
 
         val zip = exportManager.generateArchive(exportData)
 
-        return FileQualifier(
-                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath),
-                zip.name
-        )
+        return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

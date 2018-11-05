@@ -42,6 +42,7 @@ import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.RankingExport
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
+import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -82,9 +83,6 @@ class RankingController(
 
         val zip = exportManager.generateArchive(rankingExport)
 
-        return FileQualifier(
-                zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath),
-                zip.name
-        )
+        return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }
