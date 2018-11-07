@@ -110,3 +110,6 @@ gradle-app.setting
 
 # h2 database file
 /db
+
+# PSA ngx-admin application
+/src/main/resources/public/app
