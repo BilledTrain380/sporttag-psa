@@ -39,26 +39,18 @@ package ch.schulealtendorf.sporttagpsa
 import ch.schulealtendorf.sporttagpsa.controlpanel.FXMLControlPanelController
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Insets
 import javafx.scene.Parent
 import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.layout.GridPane
 import javafx.stage.Stage
-import java.net.InetAddress
-import org.springframework.boot.builder.SpringApplicationBuilder
-import org.springframework.context.ConfigurableApplicationContext
-
-
-
 
 
 /**
+ * JavaFX Application to enable the control panel.
+ *
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 0.0.1
+ * @since 2.0.0
  */
-class GUIApplication: Application() {
+class FXApplication: Application() {
 
     override fun start(primaryStage: Stage?) {
 
@@ -80,5 +72,5 @@ class GUIApplication: Application() {
 }
 
 fun main(args: Array<String>) {
-    Application.launch(GUIApplication::class.java, *args)
+    Application.launch(FXApplication::class.java, *args)
 }

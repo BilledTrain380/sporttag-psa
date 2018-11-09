@@ -39,22 +39,15 @@ package ch.schulealtendorf.sporttagpsa.controlpanel
 import ch.schulealtendorf.sporttagpsa.SporttagPsaApplication
 import javafx.application.HostServices
 import javafx.application.Platform
-import javafx.collections.ObservableList
-import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
-import java.net.URI
 import java.net.URL
 import java.util.*
 
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 0.0.1
- */
 class FXMLControlPanelController: Initializable {
 
     private var hostServices: Optional<HostServices> = Optional.empty()
@@ -128,10 +121,6 @@ class FXMLControlPanelController: Initializable {
     fun quit() {
         stop()
         System.exit(0)
-    }
-
-    private fun <T> Optional<T>.ifNotPresent(block: () -> Unit) {
-        if (isPresent.not()) block()
     }
 
     private fun starting() {

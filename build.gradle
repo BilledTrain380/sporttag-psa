@@ -2,14 +2,22 @@ buildscript {
 	ext {
 		kotlinVersion = '1.2.50'
 		springBootVersion = '2.0.2.RELEASE'
-		sporttagPSAVersion = '1.0.1'
+		sporttagPSAVersion = '2.0.0'
 
+        /*
+         * Returns the main class depending on the mode command line parameter.
+         *
+         * -Pmode=gui uses the JavaFX Application
+         * -Pmode=tui uses the Spring Application
+         *
+         * If the mode is not defined at all, 'tui' mode will be used.
+         */
         getMainClass = {
 
             def mode = project.hasProperty('mode') ? project.property('mode') : 'tui'
 
             if (mode == 'gui') {
-                return 'ch.schulealtendorf.sporttagpsa.GUIApplicationKt'
+                return 'ch.schulealtendorf.sporttagpsa.FXApplicationKt'
             } else if (mode == 'tui') {
                 return 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
             }
