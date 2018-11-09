@@ -3,6 +3,19 @@ buildscript {
 		kotlinVersion = '1.2.50'
 		springBootVersion = '2.0.2.RELEASE'
 		sporttagPSAVersion = '1.0.1'
+
+        getMainClass = {
+
+            def mode = project.hasProperty('mode') ? project.property('mode') : 'tui'
+
+            if (mode == 'gui') {
+                return 'ch.schulealtendorf.sporttagpsa.GUIApplicationKt'
+            } else if (mode == 'tui') {
+                return 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
+            }
+            
+            throw new IllegalArgumentException('Parameter \'mode\' is invalid: value=' + mode)
+        }
 	}
 	repositories {
 		maven {
@@ -27,6 +40,9 @@ apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
+
+apply plugin: 'application'
+mainClassName = getMainClass()
 
 junitPlatform {
     filters {
@@ -149,5 +165,5 @@ dependencies {
 // copy resources to see resource changes
 task copyResources(type: Copy) {
 	from 'src/main/resources/'
-	into 'build/resources/main/'
+	into 'build/resources/main/' // TODO: out dir of gradle changed
 }
