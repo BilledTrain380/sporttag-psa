@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa
 
-import ch.schulealtendorf.sporttagpsa.controlpanel.FXMLControlPanelController
+import ch.schulealtendorf.sporttagpsa.controller.fx.controlpanel.FXMLControlPanelController
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent

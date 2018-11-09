@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
 
-<BorderPane fx:controller="ch.schulealtendorf.sporttagpsa.controlpanel.FXMLControlPanelController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="ch.schulealtendorf.sporttagpsa.controller.fx.controlpanel.FXMLControlPanelController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
     <stylesheets>
         <URL value="@control-panel.css"/>

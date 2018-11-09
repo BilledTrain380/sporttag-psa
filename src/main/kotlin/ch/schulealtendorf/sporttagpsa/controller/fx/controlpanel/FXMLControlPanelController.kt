@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controlpanel
+package ch.schulealtendorf.sporttagpsa.controller.fx.controlpanel
 
 import ch.schulealtendorf.sporttagpsa.SporttagPsaApplication
 import javafx.application.HostServices
