@@ -77,7 +77,7 @@ class SecurityConfig(
         http
                 ?.authorizeRequests()
                     ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
-                    ?.antMatchers("/login", "/webjars/**", "/setup", "/", "/index")?.permitAll()
+                    ?.antMatchers("/login", "/webjars/**", "/setup", "/", "/index", "/app/**")?.permitAll()
                     ?.anyRequest()?.authenticated()
 
                 ?.and()

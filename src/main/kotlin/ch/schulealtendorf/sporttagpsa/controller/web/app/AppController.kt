@@ -49,6 +49,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 class AppController {
 
-    @RequestMapping("/app", "/app/", "/auth/**", "/pages/**")
+    @RequestMapping("/app", "/app/auth/**", "/app/pages/**")
     fun forward() = "forward:/app/index.html"
 }
