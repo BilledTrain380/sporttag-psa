@@ -38,7 +38,7 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments/main :: head('Welcome - PSA')">
+<head th:replace="fragments/main :: head(#{page.home.title} + ' - PSA')">
 </head>
 <body>
 
@@ -59,32 +59,32 @@
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Tour</a>
+                    <a class="nav-link" href="#" th:text="#{menu.tour}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#" th:text="#{menu.features}"></a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Themes</a>
+                    <a class="nav-link" href="#" th:text="#{menu.themes}"></a>
                 </li>
             </ul>
 
 
             <ul class="navbar-nav ml-auto">
 
-                <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}" th:text="'Hello ' + ${username}"></span>
+                <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}" th:text="#{label.hello} + ' ' + ${username}"></span>
 
                 <li th:if="${isAuthenticated}" class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Sign Out</a>
+                    <a class="nav-link" th:href="@{/logout}" th:text="#{label.logout}"></a>
                 </li>
 
                 <li th:if="${isAuthenticated}" class="nav-item ml-2">
-                    <a class="nav-link btn btn-outline-warning" th:href="@{/app}">Launch</a>
+                    <a class="nav-link btn btn-outline-warning" th:href="@{/app}" th:text="#{label.launch}"></a>
                 </li>
 
                 <li th:if="!${isAuthenticated}" class="nav-item ml-2">
-                    <a class="nav-link btn btn-outline-warning" th:href="@{/login}">Sign In</a>
+                    <a class="nav-link btn btn-outline-warning" th:href="@{/login}" th:text="#{label.login}"></a>
                 </li>
 
             </ul>
@@ -101,10 +101,9 @@
         <div class="row">
             <div class="col-lg-12 text-center text-light pt-5 pb-5">
 
-                <h1>Organize your sport event.</h1>
+                <h1 th:text="#{page.home.product.lead.title}"></h1>
 
-                <p>
-                    Your sport event organized and managed by one app. Fun or competition, both can be accomplished by PSA.
+                <p th:text="#{page.home.product.lead.text}">
                 </p>
 
             </div>
@@ -117,11 +116,11 @@
 
                         <div class="card-body">
                             <i class="fa fa-2x fa-sitemap mb-3 text-warning"></i>
-                            <h5 class="card-title">Organize participants</h5>
-                            <p class="card-text">Organize your participants in different groups.</p>
+                            <h5 class="card-title" th:text="#{page.home.product.organize.title}"></h5>
+                            <p class="card-text" th:text="#{page.home.product.organize.text}"></p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="card-link text-warning">Learn more</a>
+                            <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
 
@@ -129,11 +128,11 @@
 
                         <div class="card-body">
                             <i class="fa fa-2x fa-hand-rock mb-3 text-warning"></i>
-                            <h5 class="card-title">Competition</h5>
-                            <p class="card-text">Manage a competition and record the competitor results</p>
+                            <h5 class="card-title" th:text="#{page.home.product.competition.title}"></h5>
+                            <p class="card-text" th:text="#{page.home.product.competition.text}"></p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="card-link text-warning">Learn more</a>
+                            <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
 
@@ -141,11 +140,11 @@
 
                         <div class="card-body">
                             <i class="fa fa-2x fa-trophy mb-3 text-warning"></i>
-                            <h5 class="card-title">Ranking</h5>
-                            <p class="card-text">Export rankings of the competition as PDF.</p>
+                            <h5 class="card-title" th:text="#{page.home.product.ranking.title}"></h5>
+                            <p class="card-text" th:text="#{page.home.product.ranking.text}"></p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="card-link text-warning">Learn more</a>
+                            <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
 
@@ -165,7 +164,7 @@
         <div class="row">
             <div class="col-lg-12 text-center feature-item">
 
-                <h1>More than just an app</h1>
+                <h1 th:text="#{page.home.feature.title}"></h1>
 
             </div>
 
@@ -173,10 +172,9 @@
 
                 <i class="fas fa-7x fa-gift m-4 text-danger"></i>
 
-                <h3>Free to Use</h3>
+                <h3 th:text="#{page.home.feature.freeToUse.title}"></h3>
 
-                <p class="text-muted">
-                    This app is free to download and use!
+                <p class="text-muted" th:text="#{page.home.feature.freeToUse.text}">
                 </p>
 
             </div>
@@ -185,10 +183,9 @@
 
                 <i class="fas fa-7x fa-unlock m-4 text-danger"></i>
 
-                <h3>Open Source</h3>
+                <h3 th:text="#{page.home.feature.openSource.title}"></h3>
 
-                <p class="text-muted">
-                    GNU GPL v3.0 licensed!
+                <p class="text-muted" th:text="#{page.home.feature.openSource.text}">
                 </p>
 
             </div>
@@ -197,10 +194,9 @@
 
                 <i class="fas fa-7x fa-desktop m-4 text-danger"></i>
 
-                <h3>Responsive</h3>
+                <h3 th:text="#{page.home.feature.responsive.title}"></h3>
 
-                <p class="text-muted">
-                    Ready to use on different sizes!
+                <p class="text-muted" th:text="#{page.home.feature.responsive.text}">
                 </p>
 
             </div>
@@ -209,10 +205,9 @@
 
                 <i class="fas fa-7x fa-language m-4 text-danger"></i>
 
-                <h3>Multi-Language</h3>
+                <h3 th:text="#{page.home.feature.lang.title}"></h3>
 
-                <p class="text-muted">
-                    Available in english and german.
+                <p class="text-muted" th:text="#{page.home.feature.lang.text}">
                 </p>
 
             </div>
@@ -240,47 +235,47 @@
 
             <div class="col-lg-3">
 
-                <h5>Features</h5>
+                <h5 th:text="#{menu.features}"></h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">CSV Import</a></li>
-                    <li><a class="text-muted" href="#">Participant Managing</a></li>
-                    <li><a class="text-muted" href="#">Event Sheet Export</a></li>
-                    <li><a class="text-muted" href="#">Result Recording</a></li>
-                    <li><a class="text-muted" href="#">Ranking Export</a></li>
-                    <li><a class="text-muted" href="#">User Managing</a></li>
-                    <li><a class="text-muted" href="#">LTR and RTL Support</a></li>
-                    <li><a class="text-muted" href="#">Multiple Themes</a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.import}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.participantManaging}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.eventSheetsExport}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.recording}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.rankingExport}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.userManaging}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.ltrrtlSupport}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.feature.themes}"></a></li>
                 </ul>
 
             </div>
 
             <div class="col-lg-3">
 
-                <h5>Downloads</h5>
+                <h5 th:text="#{footer.download.title}"></h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">UI Mode</a></li>
-                    <li><a class="text-muted" href="#">Headless Mode</a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.download.uimode}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.download.headlessmode}"></a></li>
                 </ul>
 
             </div>
 
             <div class="col-lg-2">
 
-                <h5>Support</h5>
+                <h5 th:text="#{footer.support.title}"></h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Installation</a></li>
-                    <li><a class="text-muted" href="#">Roadmap</a></li>
-                    <li><a class="text-muted" href="#">Archive</a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.support.installation}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.support.roadmap}"></a></li>
+                    <li><a class="text-muted" href="#" th:text="#{footer.support.archive}"></a></li>
                 </ul>
 
             </div>
 
             <div class="col-lg-1">
 
-                <h5 class="float-right"><a class="text-light" href="#">About</a></h5>
+                <h5 class="float-right"><a class="text-light" href="#" th:text="#{footer.about}"></a></h5>
 
             </div>
 

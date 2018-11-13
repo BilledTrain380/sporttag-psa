@@ -38,7 +38,7 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragments/main :: head('Login - PSA')">
+<head th:replace="fragments/main :: head(#{page.login.title} + ' - PSA')">
 </head>
 
 <body>
@@ -50,30 +50,29 @@
 
         <img class="d-block mx-auto mb-4" width="72px" height="72px" src="images/psa-logo.svg">
 
-        <h2>Welcome to PSA!</h2>
-        <p class="lead">Your sport event management system.</p>
+        <h2 th:text="#{label.welcome}"></h2>
+        <p class="lead" th:text="#{label.lead}"></p>
 
     </div>
 
-    <div th:if="${param.error}" class="alert alert-danger" role="alert">
-        Invalid username and password.
+    <div th:if="${param.error}" class="alert alert-danger" role="alert" th:text="#{page.login.invalidLogin}">
     </div>
 
     <form th:action="@{/login}" method="post" enctype="application/x-www-form-urlencoded">
 
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username" th:text="#{label.username}"></label>
             <input type="text" class="form-control" id="username" name="username">
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password" th:text="#{label.password}"></label>
             <input type="password" class="form-control" id="password" name="password">
         </div>
 
-        <button type="submit" class="btn btn-warning btn-block">Log in</button>
+        <button type="submit" class="btn btn-warning btn-block" th:text="#{label.login}"></button>
     </form>
 
-    <a class="btn btn-outline-secondary btn-block mt-3" th:href="@{/}">Take me back</a>
+    <a class="btn btn-outline-secondary btn-block mt-3" th:href="@{/}" th:text="#{label.takeMeBack}"></a>
 
 </div>
 
