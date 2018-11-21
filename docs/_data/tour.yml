@@ -1,0 +1,8 @@
+items:
+  - img: ""
+    title: "Import groups"
+    description: "Simple import groups via a csv file."
+
+  - img: ""
+    title: "Select sport"
+    description: "Simple select the sport where bla bla bla"

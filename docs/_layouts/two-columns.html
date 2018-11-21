@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+
+{% include nav.html %}
+
+<div class="container mt-3 mb-5">
+
+    <div class="row">
+
+        <div class="col-lg-2">
+
+            <h3>Content</h3>
+
+            <ul class="nav flex-column">
+
+                {% for item in page.menu %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#{{ item | slugify }}">{{ item }}</a>
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        <div class="col-lg-10">
+
+            {{ content }}
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+{% include footer.html %}
+
+</body>
+</html>
