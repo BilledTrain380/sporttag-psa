@@ -44,12 +44,14 @@ buildscript {
 	}
 }
 
+apply plugin: 'idea'
+apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
-
 apply plugin: 'application'
+
 mainClassName = getMainClass()
 
 junitPlatform {
@@ -60,57 +62,77 @@ junitPlatform {
     }
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
 version = "${sporttagPSAVersion}"
 
-allprojects {
+project(":rules") {
 
     apply plugin: 'idea'
     apply plugin: 'kotlin'
 
-	sourceCompatibility = 1.8
+    sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-	compileKotlin {
-		kotlinOptions {
-			freeCompilerArgs = ["-Xjsr305=strict"]
-			jvmTarget = "1.8"
-		}
-	}
-
-	compileTestKotlin {
-		kotlinOptions {
-			freeCompilerArgs = ["-Xjsr305=strict"]
-			jvmTarget = "1.8"
-		}
-	}
-
-	repositories {
-		maven { url "http://dl.bintray.com/jetbrains/spek" }
-		maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
-		mavenCentral()
-	}
-	
-	dependencies {
-		compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
-        // common testing libraries
-        testCompile 'org.mockito:mockito-core:2.9.0'
-        // exclude mockito, because we need a different version
-        testCompile ('com.nhaarman:mockito-kotlin:1.5.0') {
-            exclude group: 'org.mockito'
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
         }
-        testCompile 'org.jetbrains.spek:spek-api:1.1.5'
-        testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
-        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
+    }
 
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     }
 }
 
 project(":filesystem") {
-    
+
+    apply plugin: 'idea'
+    apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
     
 	dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 		compile group: 'org.springframework.boot', name: 'spring-boot', version: "$springBootVersion"
 	}
 }
@@ -120,10 +142,14 @@ repositories {
 	maven {
 		url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
 	}
+    maven { url "http://dl.bintray.com/jetbrains/spek" }
+    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
     mavenCentral()
 }
 
 dependencies {
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
@@ -168,10 +194,23 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.mockito'
     }
+
+    // common testing libraries
+    testCompile 'org.mockito:mockito-core:2.9.0'
+    // exclude mockito, because we need a different version
+    testCompile ('com.nhaarman:mockito-kotlin:1.5.0') {
+        exclude group: 'org.mockito'
+    }
+    testCompile 'org.jetbrains.spek:spek-api:1.1.5'
+    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
 }
 
-// copy resources to see resource changes
-task copyResources(type: Copy) {
-	from 'src/main/resources/'
-	into 'build/resources/main/' // TODO: out dir of gradle changed
+task processWebapp(type: Copy) {
+    dependsOn ':psa-kitten:build'
+    mustRunAfter "processResources"
+    from 'psa-kitten/dist'
+    into 'build/resources/main/public/app'
 }
+
+bootJar.dependsOn("processWebapp")
