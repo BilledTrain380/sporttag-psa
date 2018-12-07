@@ -41,10 +41,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.Ordered
-import org.springframework.web.servlet.LocaleResolver
-import org.springframework.web.servlet.config.annotation.*
-import org.springframework.web.servlet.i18n.CookieLocaleResolver
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
  * Configures CORS and view controllers.
@@ -69,28 +68,6 @@ class WebConfig: WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController("/login").setViewName("login")
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE)
-    }
-
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-
-    }
-
-    override fun addInterceptors(registry: InterceptorRegistry) {
-
-        val localeInterceptor = LocaleChangeInterceptor().apply {
-            paramName = "lang"
-        }
-
-        registry.addInterceptor(localeInterceptor).addPathPatterns("/")
-    }
-
-    @Bean("localeResolver")
-    fun getLocaleResolver(): LocaleResolver {
-
-        return CookieLocaleResolver().apply {
-            cookieDomain = "PSA"
-            cookieMaxAge = 3600
-        }
     }
 
     @Bean("messageSource")
