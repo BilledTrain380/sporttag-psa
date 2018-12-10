@@ -1,3 +1,4 @@
 [submodule "psa-kitten"]
 	path = psa-kitten
 	url = https://github.com/BilledTrain380/ngx-admin.git
+	branch = psa-kitten

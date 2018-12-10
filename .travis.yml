@@ -3,6 +3,12 @@ sudo: false
 
 language: java
 
+git:
+  submodules: false
+
+before_install:
+  - git submodule update --init --remote -- recursive
+
 branches:
   only:
     - master
