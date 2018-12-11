@@ -39,8 +39,8 @@ stages:
 jobs:
   include:
     - stage: test
-      script: gradle junitPlatformTest
+      script: ./gradlew junitPlatformTest
     - stage: dev_build
-      script: gradle jfxNative
+      script: ./gradlew jfxNative
     - stage: build
-      script: gradle jfxNative
+      script: ./gradlew jfxNative
