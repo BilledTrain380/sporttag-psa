@@ -16,7 +16,7 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - task: Gradle@1
+  - task: Gradle@2
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
@@ -34,11 +34,11 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - task: NodeTool@1
+  - task: NodeTool@0
     inputs:
       versionSpec: '10.x'
   
-  - task: Gradle@1
+  - task: Gradle@2
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
