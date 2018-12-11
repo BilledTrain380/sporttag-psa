@@ -41,6 +41,9 @@ buildscript {
 
         // JUnit Platform TestEngine for Spek
         classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
+
+        // JavaFX Plugin to build native bundles
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
 	}
 }
 
@@ -51,6 +54,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'application'
+apply plugin: 'javafx-gradle-plugin'
 
 mainClassName = getMainClass()
 
@@ -214,3 +218,40 @@ task processWebapp(type: Copy) {
 }
 
 bootJar.dependsOn("processWebapp")
+
+jfx {
+    mainClass = "org.springframework.boot.loader.JarLauncher"
+    skipCopyingDependencies = true
+
+    // jfxNative
+    identifier = "BilledTrain380"
+    nativeReleaseVersion = "$sporttagPSAVersion"
+    vendor = "BilledTrain380"
+    bundleArguments
+    appName = "PSA"
+    skipMainClassScanning = true
+
+    // TODO: add jvm arguments to optimize runtime
+}
+
+/*
+ * This task must never be executed. In order to build the application,
+ * the bootJar task is used.
+ */
+jfxJar {
+    onlyIf {
+        false
+    }
+    doLast {
+        println("Skip jfxJar. bootJar is used to build this application.")
+    }
+}
+
+// Copies the jar file generated from bootJar task to the jfx app output directory.
+task jfxPrepare(type: Copy) {
+    dependsOn("bootJar")
+    from "build/libs"
+    into "build/jfx/app"
+}
+
+jfxNative.dependsOn("jfxPrepare")
