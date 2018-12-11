@@ -3,17 +3,20 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-jobs:
-- job: test
+trigger:
+- master
+- develop
+- release/*
 
-  trigger:
-  - *
+jobs:
+
+- job: test
 
   pool:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - task: Gradle@1
+  - task: Gradle@2
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
@@ -25,20 +28,17 @@ jobs:
       tasks: 'junitPlatformTest'
 
 - job: Java
-
-  trigger:
-  - master
-  - release/*
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/head/master'))
 
   pool:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - task: NodeTool@1
+  - task: NodeTool@0
     inputs:
       versionSpec: '10.x'
 
-  - task: Gradle@1
+  - task: Gradle@2
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
