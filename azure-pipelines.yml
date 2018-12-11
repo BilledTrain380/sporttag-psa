@@ -5,9 +5,6 @@
 
 jobs:
 - job: test
-
-  trigger:
-  - *
   
   pool:
     vmImage: 'Ubuntu-16.04'
