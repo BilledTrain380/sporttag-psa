@@ -85,7 +85,7 @@ jobs:
       publishJUnitResults: false
       tasks: 'bootJar'
 
-  - task: PublishPiplineArtifact@0
+  - task: PublishPipelineArtifact@0
     inputs:
       artifactName: 'PSA'
       targetPath: 'build/libs'
