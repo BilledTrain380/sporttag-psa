@@ -20,7 +20,7 @@ jobs:
   - task: Bash@3
     inputs:
       targetType: 'filePath'
-      script: azure-jdk-install.sh
+      filePath: azure-jdk-install.sh
 
   - script: ls $AGENT_TOOLSDIRECTORY
 
