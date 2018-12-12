@@ -16,6 +16,9 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
+
+  - script: echo $JAVA_HOME
+
   - task: Gradle@2
     inputs:
       workingDirectory: ''
