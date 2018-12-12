@@ -19,7 +19,7 @@ jobs:
   steps:
 
   - task: Bash@3
-    displayName: OpendJDK Install
+    displayName: OpenJDK Install
     inputs:
       targetType: 'filePath'
       filePath: azure-jdk-install.sh
@@ -57,7 +57,7 @@ jobs:
       versionSpec: '10.x'
 
   - task: Bash@3
-    displayName: OpendJDK Install
+    displayName: OpenJDK Install
     inputs:
       targetType: 'filePath'
       filePath: azure-jdk-install.sh
@@ -69,6 +69,8 @@ jobs:
       jdkSourceOption: localDirectory
       jdkFile: $(Agent.ToolsDirectory)/jdk-8u191-linux-x64.tar.gz
       jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
+
+  - script: git submodule update --init --remote --recursive
 
   - task: Gradle@2
     inputs:
