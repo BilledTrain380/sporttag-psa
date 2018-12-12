@@ -17,7 +17,7 @@ jobs:
 
   steps:
 
-  - script: java -version
+  - script: ls -al /usr/lib/jvm/
 
   - task: Gradle@2
     inputs:
