@@ -18,7 +18,7 @@ jobs:
   steps:
 
   - script: ls -al /usr/lib/jvm/zulu-8-azure-amd64
-  -script: java -version
+  - script: java -version
 
   - task: Gradle@2
     inputs:
