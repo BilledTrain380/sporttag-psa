@@ -11,7 +11,7 @@ trigger:
 
 jobs:
 
-- job: Unit_Test
+- job: Test
 
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -33,6 +33,7 @@ jobs:
       jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
 
   - task: Gradle@2
+    displayName: Gradle Test
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
@@ -73,6 +74,7 @@ jobs:
   - script: git submodule update --init --remote --recursive
 
   - task: Gradle@2
+    displayName: Gradle Build
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
@@ -82,3 +84,8 @@ jobs:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       tasks: 'bootJar'
+
+  - task: PublishPiplineArtifact@0
+    inputs:
+      artifactName: 'PSA'
+      targetPath: 'build/libs'
