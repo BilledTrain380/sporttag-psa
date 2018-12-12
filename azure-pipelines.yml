@@ -17,7 +17,8 @@ jobs:
 
   steps:
 
-  - script: ls -al /usr/lib/jvm/
+  - script: ls -al /usr/lib/jvm/zulu-8-azure-amd64
+  -script: java -version
 
   - task: Gradle@2
     inputs:
@@ -25,7 +26,7 @@ jobs:
       gradleWrapperFile: 'gradlew'
       gradleOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
+      jdkVersionOption: 'default'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       tasks: 'junitPlatformTest'
