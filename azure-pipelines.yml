@@ -17,8 +17,18 @@ jobs:
 
   steps:
 
-  - script: sudo apt-get install openjfx
-  - script: ls -al /usr/lib/jvm/
+  - task: Bash@3
+    inputs:
+      targetType: 'filePath'
+      script: azure-jdk-install.sh
+
+  - script: ls $AGENT_TOOLSDIRECTORY
+
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '1.8'
+      jdkFile: $(Agent.ToolsDirectory)/jdk-8u191-linux-x64.tar.gz
+      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
 
   - task: Gradle@2
     inputs:
