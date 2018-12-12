@@ -57,7 +57,7 @@ jobs:
       versionSpec: '10.x'
 
   - task: Bash@3
-      displayName: OpendJDK Install
+      displayName: OpendJDK_Install
       inputs:
         targetType: 'filePath'
         filePath: azure-jdk-install.sh
