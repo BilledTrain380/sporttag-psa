@@ -11,7 +11,7 @@ trigger:
 
 jobs:
 
-- job: Unit Test
+- job: Unit_Test
 
   pool:
     vmImage: 'Ubuntu-16.04'
