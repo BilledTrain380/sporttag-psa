@@ -17,8 +17,8 @@ jobs:
 
   steps:
 
-  - script: ls -al /usr/lib/jvm/java-1.8.0-openjdk-amd64/lib
-  - script: java -version
+  - script: sudo apt-get install openjfx
+  - script: ls -al /usr/lib/jvm/
 
   - task: Gradle@2
     inputs:
