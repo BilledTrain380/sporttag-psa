@@ -7,10 +7,11 @@ trigger:
 - master
 - develop
 - release/*
+- refs/tags/*
 
 jobs:
 
-- job: test
+- job: Unit Test
 
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -18,11 +19,10 @@ jobs:
   steps:
 
   - task: Bash@3
+    displayName: OpendJDK Install
     inputs:
       targetType: 'filePath'
       filePath: azure-jdk-install.sh
-
-  - script: ls $AGENT_TOOLSDIRECTORY
 
   - task: JavaToolInstaller@0
     inputs:
@@ -43,24 +43,40 @@ jobs:
       publishJUnitResults: false
       tasks: 'junitPlatformTest'
 
+
 - job: Java
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/head/master'))
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
 
   pool:
     vmImage: 'Ubuntu-16.04'
 
   steps:
+
   - task: NodeTool@0
     inputs:
       versionSpec: '10.x'
 
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      tasks: 'bootJar'
+  - task: Bash@3
+      displayName: OpendJDK Install
+      inputs:
+        targetType: 'filePath'
+        filePath: azure-jdk-install.sh
+
+        - task: JavaToolInstaller@0
+          inputs:
+            versionSpec: '1.8'
+            jdkArchitectureOption: x64
+            jdkSourceOption: localDirectory
+            jdkFile: $(Agent.ToolsDirectory)/jdk-8u191-linux-x64.tar.gz
+            jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
+
+        - task: Gradle@2
+          inputs:
+            workingDirectory: ''
+            gradleWrapperFile: 'gradlew'
+            gradleOptions: '-Xmx3072m'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: 'default'
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            tasks: 'bootJar'
