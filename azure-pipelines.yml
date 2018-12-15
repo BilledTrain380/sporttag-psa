@@ -111,7 +111,7 @@ jobs:
       inputs:
         workingDirectory: ''
         gradleWrapperFile: 'gradlew'
-        gradleOptions: 'TXmx3072m'
+        gradleOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
