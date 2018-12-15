@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* REST interfaces
+* New index page for better look and feel
+
+### Changed
+* Refactor the entire GUI
+* Remove version from application support directory
+* Webapp is a SPA which is included as a git submodule. During build it will
+be copied to the appropriate resource directory in order to be served by Spring.
+
+### Removed
+* Old Thymeleaf Webapp (which is replaced by the SPA).
+
 ## [1.0.1] - 2018-07-01
 
 ### Fixed
