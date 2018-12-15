@@ -73,6 +73,7 @@ jobs:
       jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
 
   - script: git submodule update --init --remote --recursive
+    displayName: Get submodules
 
   - task: Gradle@2
     displayName: Gradle Build
@@ -105,6 +106,7 @@ jobs:
         versionSpec: '10.x'
 
     - script: git submodule update --init --remote --recursive
+      displayName: Get submodules
 
     - task: Gradle@2
       displayName: Gradle Build
@@ -117,8 +119,43 @@ jobs:
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         tasks: 'jfxNative'
+        options: '-Pmode=gui'
 
     - task: PublishPipelineArtifact@0
       inputs:
-        articactName: 'PSA UI'
+        artifactName: 'PSA macOS'
+        targetPath: 'build/jfx/native'
+
+- job: Windows
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+
+    - task: NodeTool@0
+      displayName: NodeJS Install
+      inputs:
+        versionSpec: '10.x'
+
+    - script: git submodule update --init --remote --recursive
+      displayName: Get submodules
+
+    - task: Gradle@2
+      displayName: Gradle Build
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        tasks: 'jfxNative'
+        options: '-Pmode=gui'
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: 'PSA windows'
         targetPath: 'build/jfx/native'
