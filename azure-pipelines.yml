@@ -54,6 +54,7 @@ jobs:
   steps:
 
   - task: NodeTool@0
+    displayName: NodeJS Install
     inputs:
       versionSpec: '10.x'
 
@@ -87,5 +88,37 @@ jobs:
 
   - task: PublishPipelineArtifact@0
     inputs:
-      artifactName: 'PSA Source-Code'
-      targetPath: './'
+      artifactName: 'PSA'
+      targetPath: 'build/libs'
+
+- job: macOS
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+
+  pool:
+    vmImage: 'macOS-10.13'
+
+  steps:
+
+    - task: NodeTool@0
+      displayName: NodeJS Install
+      inputs:
+        versionSpec: '10.x'
+
+    - script: git submodule update --init --remote --recursive
+
+    - tansk: Gradle@2
+      displayName: Gradle Build
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: 'TXmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        tasks: 'jfxNative'
+
+    - task: PublishPipelineArtifact@0
+      inputs:
+        articactName: 'PSA UI'
+        targetPath: 'build/jfx/native'
