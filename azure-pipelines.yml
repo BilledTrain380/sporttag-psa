@@ -106,7 +106,7 @@ jobs:
 
     - script: git submodule update --init --remote --recursive
 
-    - tansk: Gradle@2
+    - task: Gradle@2
       displayName: Gradle Build
       inputs:
         workingDirectory: ''
