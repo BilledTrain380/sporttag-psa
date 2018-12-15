@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="sporttag-psa:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="2.0.0" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="PSA:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="2.0.0" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration />
+    </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <webroots />
+        <sourceRoots />
+      </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
@@ -13,7 +19,7 @@
           <option name="destination" value="$MODULE_DIR$/../../build/classes/kotlin/test" />
           <option name="noStdlib" value="true" />
           <option name="noReflect" value="true" />
-          <option name="moduleName" value="sporttag-psa" />
+          <option name="moduleName" value="PSA" />
           <option name="jvmTarget" value="1.8" />
           <option name="addCompilerBuiltIns" value="true" />
           <option name="loadBuiltInsFromDependencies" value="true" />
@@ -37,12 +43,6 @@
         </compilerArguments>
       </configuration>
     </facet>
-    <facet type="web" name="Web">
-      <configuration>
-        <webroots />
-        <sourceRoots />
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output-test url="file://$MODULE_DIR$/../../out/test/classes" />
@@ -53,7 +53,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="sporttag-psa_main" />
+    <orderEntry type="module" module-name="PSA_main" />
     <orderEntry type="module" module-name="rules_main" />
     <orderEntry type="module" module-name="filesystem_main" />
     <orderEntry type="library" name="Gradle: com.github.BilledTrain380:Alberta:1.0.0" level="project" />
@@ -271,5 +271,5 @@
     <orderEntry type="library" name="Gradle: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: jakarta-regexp:jakarta-regexp:1.4" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="sporttag-psa_main" />
+  <component name="TestModuleProperties" production-module="PSA_main" />
 </module>
