@@ -92,6 +92,12 @@ jobs:
       artifactName: 'PSA'
       targetPath: 'build/libs'
 
+  - task: PublishPipelineArtifact@0
+    displayName: Publish Release Notes
+    inputs:
+      artifactName: 'PSA Release Notes'
+      targetPath: 'RelNotes'
+
 - job: macOS
   condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
 
