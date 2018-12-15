@@ -87,5 +87,5 @@ jobs:
 
   - task: PublishPipelineArtifact@0
     inputs:
-      artifactName: 'PSA'
-      targetPath: 'build/libs'
+      artifactName: 'PSA Source-Code'
+      targetPath: './'
