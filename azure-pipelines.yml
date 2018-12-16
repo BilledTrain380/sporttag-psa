@@ -87,16 +87,24 @@ jobs:
       publishJUnitResults: false
       tasks: 'bootJar'
 
-  - task: PublishPipelineArtifact@0
+  - task: CopyFiles@2
+    displayName: 'Copy jar File'
     inputs:
-      artifactName: 'PSA'
-      targetPath: 'build/libs'
+      sourceFolder: 'build/libs'
+      contents: '*.jar'
+      tagretFolder: $(Build.ArtifactStagingDirectory)
 
-  - task: PublishPipelineArtifact@0
-    displayName: Publish Release Notes
+  - task: CopyFiles@2
+    displayName: 'Copy release notes'
     inputs:
-      artifactName: 'PSA Release Notes'
-      targetPath: 'RelNotes'
+      sourceFolder: 'RelNotes'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Java artifact'
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: 'PSA Java'
 
 - job: macOS
   condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
@@ -127,10 +135,18 @@ jobs:
         tasks: 'jfxNative'
         options: '-Pmode=gui'
 
-    - task: PublishPipelineArtifact@0
+    - task: CopyFiles@2
+      displayName: 'Copy macOS native'
       inputs:
+        sourceFolder: 'build/jfx/native'
+        tagretFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish macOS artifact'
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)
         artifactName: 'PSA macOS'
-        targetPath: 'build/jfx/native'
+
 
 - job: Windows
   condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
@@ -161,7 +177,14 @@ jobs:
         tasks: 'jfxNative'
         options: '-Pmode=gui'
 
-    - task: PublishPipelineArtifact@0
+    - task: CopyFiles@2
+      displayName: 'Copy Windows native'
       inputs:
-        artifactName: 'PSA windows'
-        targetPath: 'build/jfx/native'
+        sourceFolder: 'build/jfx/native'
+        tagretFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Windows artifact'
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: 'PSA Windows'
