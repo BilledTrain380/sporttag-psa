@@ -92,7 +92,7 @@ jobs:
     inputs:
       sourceFolder: 'build/libs'
       contents: '*.jar'
-      tagretFolder: $(Build.ArtifactStagingDirectory)
+      targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: CopyFiles@2
     displayName: 'Copy release notes'
@@ -139,7 +139,7 @@ jobs:
       displayName: 'Copy macOS native'
       inputs:
         sourceFolder: 'build/jfx/native'
-        tagretFolder: $(Build.ArtifactStagingDirectory)
+        targetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish macOS artifact'
@@ -181,7 +181,7 @@ jobs:
       displayName: 'Copy Windows native'
       inputs:
         sourceFolder: 'build/jfx/native'
-        tagretFolder: $(Build.ArtifactStagingDirectory)
+        targetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Windows artifact'
