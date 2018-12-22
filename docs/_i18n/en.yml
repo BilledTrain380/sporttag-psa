@@ -1,0 +1,105 @@
+nav:
+  tour: Tour
+  features: Features
+  themes: Themes
+  language:
+    title: 'Language:'
+    en: English
+    de: Deutsch
+  download: Download
+
+footer:
+  features: Features
+  downloads: Downloads
+  support:
+    title: Support
+    installation: Installation & Update
+    roadmap: Roadmap
+  about: About
+
+feature:
+  import: CSV Import
+  participantManaging: Participant Managing
+  eventSheetExport: Event Sheet Export
+  resultRecording: Result Recording
+  rankingExport: Ranking Export
+  userManaging: User Managing
+  ltrrtl: LTR and RTL Support
+
+page:
+  home:
+
+    product:
+      title: Organize your sport event.
+      lead: Your sport event organized and managed by one app. Fun or competition, both can be accomplished by PSA.
+      quickStart: Quick start with our Tour
+
+      feature:
+        organize:
+          title: Organize participants
+          lead: Organize your participants in different groups.
+
+        competition:
+          title: Manage competition
+          lead: Manage a competition and record the competitors results.
+
+        ranking:
+          title: Generate ranking
+          lead: Export different rankings of the competition as PDF.
+
+      more: Learn more
+
+    why:
+      title: Why PSA
+      lead1: PSA is a management system to organize your sport event. It is a standalone application which requires only Java to run. If you don't want to use Java, it even is available as a native app for macOS and Windows.
+      lead2: The setup is simple. It uses the appropriate application support directory of your system. No need to configure any server settings. Just execute the program and your good to go.
+      get: Get PSA for free
+
+    gui:
+      title: Not a command line fan?
+      lead: PSA can be used with a minimal administration GUI. No need to use any command line commands.
+      feature:
+        status: Server status
+        start: Start Server
+        stop: Stop Server
+
+      info: The administration GUI is only available for the macOS or Windows native app.
+
+      takeMe: Take me to the downloads
+
+    feature:
+      title: More than just an app
+
+      freeToUse:
+        title: Free to use
+        lead: This app is free to download and use!
+
+      openSource:
+        title: Open Source
+        lead: GNU GPL v3.0 licensed!
+
+      responsive:
+        title: Responsive
+        lead: Ready to use on different sizes!
+
+      language:
+        title: Multi-Language
+        lead: Available in english and german!
+
+  tour:
+    title: Tour
+    exit: Exit Tour
+    skip: Skip
+
+  themes:
+    title: Themes
+    lead: Because PSA uses <a href="https://github.com/akveo/ngx-admin" target="_blank">ngx-admin</a>, multiple themes are available.
+    style:
+      corporate: Corporate
+      light: Light
+      cosmic: Cosmic
+
+  notFound:
+    title: '404'
+    lead: Page not found :(
+    text: The requested page coud not be found.

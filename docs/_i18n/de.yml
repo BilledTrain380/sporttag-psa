@@ -1,0 +1,105 @@
+nav:
+  tour: Tour
+  features: Features
+  themes: Themes
+  language:
+    title: 'Sprache:'
+    en: English
+    de: Deutsch
+  download: Download
+
+footer:
+  features: Features
+  downloads: Downloads
+  support:
+    title: Support
+    installation: Installation & Update
+    roadmap: Roadmap
+  about: Über uns
+
+feature:
+  import: CSV Import
+  participantManaging: Teilnehmer Verwaltung
+  eventSheetExport: Wettkampfblätter Export
+  resultRecording: Resultat Erfassung
+  rankingExport: Ranglisten Export
+  userManaging: Benutzer Verwaltung
+  ltrrtl: LTR und RTL Support
+
+page:
+  home:
+
+    product:
+      title: Organisieren Sie ihr Sport Event.
+      lead: Ihr Sport Event organisiert und gemanagt von einem App. Plausch Sportarten oder Wettkampf, beides kann mit PSA erreichen.
+      quickStart: Quick Start mit unserer Tour
+
+      feature:
+        organize:
+          title: Organisieren Sie Teilnehmer
+          lead: Organisieren Sie ihre Teilnehmer in verschiedenen Gruppen.
+
+        competition:
+          title: Verwalte den Wettkampf
+          lead: Verwalte einen Wettkapmf und erfasse die Resultate der Wettkämpfer.
+
+        ranking:
+          title: Generiere Ranglisten
+          lead: Exportiere diverse Ranglisten als PDF.
+
+      more: Lerne mehr
+
+    why:
+      title: Wieso PSA
+      lead1: PSA ist ein Management System um Ihren Sport Event zu organisieren. Es ist eine standalone Program, welches nur Java benötigt. Falls Sie Java nicht benutzen möchten, können Sie auch das native App für macOS oder Windows verwenden.
+      lead2: Das Setup ist einfach. PSA benutzt automatisch den Application Support Ordner Ihres Systems. Keine Konfigurierung von Server Einstellungen nötig. Führen Sie einfach das Program aus und Sie können durchstarten.
+      get: Nutze PSA gratis
+
+    gui:
+      title: Kein Command Line Fan?
+      lead: PSA kann mit einem minimalen Administrations GUI verwendet werden. Sie müssen dafür keinerlei Command Line Befehle benutzen.
+      feature:
+        status: Server status
+        start: Start Server
+        stop: Stop Server
+
+      info: Das Administrations GUI ist ausschliesslich für macOS oder Windows native App verfügbar.
+
+      takeMe: Zu den Downloads
+
+    feature:
+      title: Mehr als nur eine App
+
+      freeToUse:
+        title: Gratis zu benutzen
+        lead: Dieses App ist gratis zum benutzen und donwloaden!
+
+      openSource:
+        title: Open Source
+        lead: GNU GPL v3.0 lizenziert!
+
+      responsive:
+        title: Responsive
+        lead: Bereit zur Benutzung auf verschiedenen Grössen!
+
+      language:
+        title: Meherer Sprachen
+        lead: Verfügbar in Englisch und Deutsch!
+
+  tour:
+    title: Tour
+    exit: Schliesse Tour
+    skip: Überspringen
+
+  themes:
+    title: Themes
+    lead: Weil PSA <a href="https://github.com/akveo/ngx-admin" target="_blank">ngx-admin</a> benutzt, sind meherer Themes verfügbar.
+    style:
+      corporate: Corporate
+      light: Light
+      cosmic: Cosmic
+
+  notFound:
+    title: '404'
+    lead: Seite nicht gefunden :(
+    text: Die angeforderte Seite wurde nicht gefunden.

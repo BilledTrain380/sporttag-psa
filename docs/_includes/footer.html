@@ -15,46 +15,68 @@
 
             <div class="col-lg-3">
 
-                <h5>Features</h5>
+                <h5>{% translate footer.features %}</h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">CSV Import</a></li>
-                    <li><a class="text-muted" href="#">Participant Managing</a></li>
-                    <li><a class="text-muted" href="#">Event Sheet Export</a></li>
-                    <li><a class="text-muted" href="#">Result Recording</a></li>
-                    <li><a class="text-muted" href="#">Ranking Export</a></li>
-                    <li><a class="text-muted" href="#">User Managing</a></li>
-                    <li><a class="text-muted" href="#">LTR and RTL Support</a></li>
-                </ul>
 
-            </div>
+                    {% capture f_import %}
+                    {% translate feature.import %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_import | slugify }}">{{ f_import }}</a></li>
 
-            <div class="col-lg-3">
+                    {% capture f_participantManaging %}
+                    {% translate feature.participantManaging %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_participantManaging | slugify }}">{{ f_participantManaging }}</a></li>
 
-                <h5>Downloads</h5>
+                    {% capture f_eventSheetExport %}
+                    {% translate feature.eventSheetExport %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_eventSheetExport | slugify }}">{{ f_eventSheetExport }}</a></li>
 
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">UI Mode</a></li>
-                    <li><a class="text-muted" href="#">Headless Mode</a></li>
+                    {% capture f_resultRecording %}
+                    {% translate feature.resultRecording %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_resultRecording | slugify }}">{{ f_resultRecording }}</a></li>
+
+                    {% capture f_rankingExport %}
+                    {% translate feature.rankingExport %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_rankingExport | slugify }}">{{ f_rankingExport }}</a></li>
+
+                    {% capture f_userManaging %}
+                    {% translate feature.userManaging %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_userManaging | slugify }}">{{ f_userManaging }}</a></li>
+
+                    {% capture f_ltrrtl %}
+                    {% translate feature.ltrrtl %}
+                    {% endcapture %}
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_ltrrtl | slugify }}">{{ f_ltrrtl }}</a></li>
                 </ul>
 
             </div>
 
             <div class="col-lg-2">
 
-                <h5>Support</h5>
+                <h5><a class="text-light" href="https://github.com/BilledTrain380/sporttag-psa/releases">{% translate footer.downloads %}</a></h5>
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <h5>{% translate footer.support.title %}</h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Installation</a></li>
-                    <li><a class="text-muted" href="#">Roadmap</a></li>
-                    <li><a class="text-muted" href="#">Archive</a></li>
+                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/installation">{% translate footer.support.installation %}</a></li>
+                    <li><a class="text-muted" href="#">{% translate footer.support.roadmap %}</a></li>
                 </ul>
 
             </div>
 
-            <div class="col-lg-1">
+            <div class="col-lg-2">
 
-                <h5 class="float-right"><a class="text-light" href="#">About</a></h5>
+                <h5 class="float-right"><a class="text-light" href="{{ site.baseurl }}/pages/about">{% translate footer.about %}</a></h5>
 
             </div>
 
@@ -73,7 +95,7 @@
                 <p class="text-muted">
                     Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
                     <br/>
-                    Currently 1.0.0+psa.2.0.0.1.0.0 Code licensed GPLv3, docs CC BY 3.0
+                    Currently 2.0.0 Code licensed GPLv3, docs CC BY 3.0
                 </p>
 
             </div>

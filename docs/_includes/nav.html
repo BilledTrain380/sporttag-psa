@@ -2,7 +2,7 @@
 
     <div class="container pl-3 pr-3">
 
-        <a class="navbar-brand" href="{{ site.url }}">
+        <a class="navbar-brand" href="{{ site.baseurl }}/">
             <img width="30" height="30" src="{{ site.url }}/img/psa-logo.svg">
             PSA
         </a>
@@ -15,22 +15,30 @@
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ site.url }}/pages/tour">Tour</a>
+                    <a class="nav-link" href="{{ site.baseurl }}/pages/tour">{% translate nav.tour %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ site.url }}/pages/features">Features</a>
+                    <a class="nav-link" href="{{ site.baseurl }}/pages/features">{% translate nav.features %}</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ site.url }}/pages/themes">Themes</a>
+                    <a class="nav-link" href="{{ site.baseurl }}/pages/themes">{% translate nav.themes %}</a>
                 </li>
             </ul>
 
 
             <ul class="navbar-nav ml-auto">
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{% translate nav.language.title %} {% translate nav.language.{{ site.lang }} %}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ site.url }}">{% translate nav.language.en %}</a>
+                        <a class="dropdown-item" href="{{ site.url }}/de">{% translate nav.language.de %}</a>
+                    </div>
+                </li>
+
                 <li class="nav-item ml-2">
-                    <a class="nav-link btn btn-outline-warning" href="#">Download</a>
+                    <a class="nav-link btn btn-outline-warning" href="https://github.com/BilledTrain380/sporttag-psa/releases">{% translate nav.download %}</a>
                 </li>
 
             </ul>
