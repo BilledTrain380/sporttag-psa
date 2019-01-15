@@ -3,7 +3,7 @@
     <div class="container pl-3 pr-3">
 
         <a class="navbar-brand" href="{{ site.baseurl }}/">
-            <img width="30" height="30" src="{{ site.url }}/img/psa-logo.svg">
+            <img width="30" height="30" src="{{ site.baseurl_root }}/img/psa-logo.svg">
             PSA
         </a>
 
@@ -32,8 +32,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{% translate nav.language.title %} {% translate nav.language.{{ site.lang }} %}</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ site.url }}">{% translate nav.language.en %}</a>
-                        <a class="dropdown-item" href="{{ site.url }}/de">{% translate nav.language.de %}</a>
+                        <a class="dropdown-item" href="{{ site.baseurl_root }}/">{% translate nav.language.en %}</a>
+                        <a class="dropdown-item" href="{{ site.baseurl_root }}/de">{% translate nav.language.de %}</a>
                     </div>
                 </li>
 
