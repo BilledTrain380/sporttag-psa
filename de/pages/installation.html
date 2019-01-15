@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Installation and Update - PSA</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+          crossorigin="anonymous">
+
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+
+    <style>
+
+        .feature-item {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bg-dark {
+            background-color: #111218!important;
+        }
+
+        hr.hr-light {
+            border: 0;
+            height: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .tour-skip-button {
+            position: absolute;
+            top: 20px;
+            right: 20px
+        }
+
+        .tour-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .tour-exit {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .tour-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .tour-container .tour-item {
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 60px;
+            overflow: hidden;
+        }
+
+        .tour-container .tour-item:last-child {
+            margin-bottom: 60px;
+        }
+
+        .tour-container .tour-item.f-1 {
+            flex: 1
+        }
+
+        .tour-container .tour-item.f-2 {
+            flex: 2
+        }
+
+        .tour-container .tour-item.f-3 {
+            flex: 3
+        }
+
+        .tour-container .tour-item.f-4 {
+            flex: 4
+        }
+
+        .carousel-indicators.round li {
+            height: 30px;
+            width: 30px;
+            border-radius: 30px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
+
+    <div class="container pl-3 pr-3">
+
+        <a class="navbar-brand" href="/de/">
+            <img width="30" height="30" src="/img/psa-logo.svg">
+            PSA
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/de/pages/tour">Tour</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/de/pages/features">Features</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/de/pages/themes">Themes</a>
+                </li>
+            </ul>
+
+
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sprache: Deutsch</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="">English</a>
+                        <a class="dropdown-item" href="/de">Deutsch</a>
+                    </div>
+                </li>
+
+                <li class="nav-item ml-2">
+                    <a class="nav-link btn btn-outline-warning" href="https://github.com/BilledTrain380/sporttag-psa/releases">Download</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<div class="container mt-3 mb-5">
+
+    <h1 id="installation-und-update">Installation und Update</h1>
+
+<blockquote>
+  <p>Die Anweisungen zur Installation und Update von PSA richtet sich an Laien. Es kann sein, dass Sie bestimmte Schritte bereits vorgenommen haben oder gar nicht auf eine Anweisung angewiessen sind.</p>
+</blockquote>
+
+<h2 id="wie-installiere-ich-psa">Wie installiere ich PSA</h2>
+
+<h3 id="auf-einem-macos">auf einem macOS</h3>
+
+<p><strong>Schritte</strong></p>
+
+<ol>
+  <li>
+    <p>Laden Sie sich die neuste Version von <a href="https://github.com/BilledTrain380/sporttag-psa/releases">PSA</a> herunter.
+Das Asset welches Sie benötigen folgt dem Namensschema <code class="highlighter-rouge">PSA-&lt;version&gt;.dmg</code>, wobei <code class="highlighter-rouge">&lt;version&gt;</code> die jeweilige PSA Version ist.
+z.B. <code class="highlighter-rouge">PSA-2.0.0.dmg</code></p>
+  </li>
+  <li>
+    <p>Doppelklicken Sie das heruntergeladene dmg und folgen Sie den Anweisungen.</p>
+  </li>
+</ol>
+
+<p>Das App befindet sich danach in Ihrem Program Ordner. Starten Sie einfach das Program und
+die Administrations Oberfläche von PSA öffnet sich.</p>
+
+<h3 id="auf-einem-windows">auf einem Windows</h3>
+
+<p>TODO: Add steps for Windows installation</p>
+
+<h3 id="als-java-app">als Java App</h3>
+
+<p><strong>Voraussetzungen</strong></p>
+<ul>
+  <li>Sie sind mit CLI vertraut</li>
+  <li>Sie haben Java 1.8 oder höher auf Ihrem System installiert</li>
+</ul>
+
+<p><strong>Schritte</strong></p>
+
+<ol>
+  <li>
+    <p>Laden Sie sich die neuste Version von <a href="https://github.com/BilledTrain380/sporttag-psa/releases">PSA</a> herunter.
+Das Asset welches Sie benötigen folgt dem Namensschema <code class="highlighter-rouge">PSA-&lt;version&gt;_Java.zip</code>, wobei <code class="highlighter-rouge">&lt;version&gt;</code> die jeweilige PSA Version ist.
+z.B. <code class="highlighter-rouge">PSA-2.0.0_Java.zip</code></p>
+  </li>
+  <li>
+    <p>Enpacken Sie das Archiv</p>
+  </li>
+  <li>
+    <p>Kopieren Sie die Java Datei in ein Verzeichnis Ihrer Wahl.</p>
+  </li>
+  <li>
+    <p>Starten Sie das Program per Command Line Befehl: <code class="highlighter-rouge">java -jar PSA-&lt;version&gt;.jar</code></p>
+  </li>
+</ol>
+
+<h2 id="wie-update-ich-psa">Wie update ich PSA</h2>
+
+<h3 id="auf-einem-macos-1">auf einem macOS</h3>
+
+<p><strong>Voraussetzungen</strong></p>
+<ul>
+  <li>Schliessen Sie PSA</li>
+</ul>
+
+<p><strong>Schritte</strong></p>
+
+<ol>
+  <li>
+    <p>Laden Sie sich die neue Version von <a href="https://github.com/BilledTrain380/sporttag-psa/releases">PSA</a> herunter.
+Das Asset welches Sie benötigen folgt dem Namensschema <code class="highlighter-rouge">PSA-&lt;version&gt;.dmg</code>, wobei <code class="highlighter-rouge">&lt;version&gt;</code> die jeweilige PSA Version ist.
+z.B. <code class="highlighter-rouge">PSA-2.0.0.dmg</code></p>
+  </li>
+  <li>
+    <p>Doppelklicken Sie das heruntergeladene dmg.</p>
+  </li>
+  <li>
+    <p>Überschreiben Sie das bestehende <code class="highlighter-rouge">PSA.app</code> Program mit dem neuen.</p>
+  </li>
+</ol>
+
+<p>Beim nächsten Start wird PSA automatisch eine Migration Ihrer bestehenden Daten vornehmen. Sie brauchen sich
+um nichts weiter zu kümmern.</p>
+
+<h3 id="auf-einem-windows-1">auf einem Windows</h3>
+
+<p>TODO: Add steps for Windows Update</p>
+
+<h3 id="als-java-app-1">als Java App</h3>
+
+<ol>
+  <li>
+    <p>Laden Sie sich die neue Version von <a href="https://github.com/BilledTrain380/sporttag-psa/releases">PSA</a> herunter.
+Das Asset welches Sie benötigen folgt dem Namensschema <code class="highlighter-rouge">PSA-&lt;version&gt;_Java.zip</code>, wobei <code class="highlighter-rouge">&lt;version&gt;</code> die jeweilige PSA Version ist.
+z.B. <code class="highlighter-rouge">PSA-2.0.0_Java.zip</code></p>
+  </li>
+  <li>
+    <p>Enpacken Sie das Archiv</p>
+  </li>
+  <li>
+    <p>Überschreiben Sie Ihre alte Java Datei mit der neuen.</p>
+  </li>
+</ol>
+
+<p>Beim nächsten Start wird PSA automatisch eine Migration Ihrer bestehenden Daten vornehmen. Sie brauchen sich
+um nichts weiter zu kümmern.</p>
+
+
+</div>
+
+<footer class="bg-dark text-light pt-5">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                <img width="30" height="30" src="/img/psa-logo.svg">
+                <p>
+                    <small class="text-muted">2018 - 2019</small>
+                </p>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <h5>Features</h5>
+
+                <ul class="list-unstyled text-small">
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#csv-import">
+                    CSV Import
+                    </a></li>
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#teilnehmer-verwaltung">
+                    Teilnehmer Verwaltung
+                    </a></li>
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#wettkampfblätter-export">
+                    Wettkampfblätter Export
+                    </a></li>
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#resultat-erfassung">
+                    Resultat Erfassung
+                    </a></li>
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#ranglisten-export">
+                    Ranglisten Export
+                    </a></li>
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#benutzer-verwaltung">
+                    Benutzer Verwaltung
+                    </a></li>
+
+                    
+                    <li><a class="text-muted" href="/de/pages/features#ltr-und-rtl-support">
+                    LTR und RTL Support
+                    </a></li>
+                </ul>
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <h5><a class="text-light" href="https://github.com/BilledTrain380/sporttag-psa/releases">Downloads</a></h5>
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <h5>Support</h5>
+
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="/de/pages/installation">Installation & Update</a></li>
+                    <li><a class="text-muted" href="#">Roadmap</a></li>
+                </ul>
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <h5 class="float-right"><a class="text-light" href="/de/pages/about">Über uns</a></h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr class="hr-light">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-8">
+
+                <p class="text-muted">
+                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                    <br/>
+                    Currently 2.0.0 Code licensed GPLv3, docs CC BY 3.0
+                </p>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="float-right">
+                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                        <i class="fab fa-2x fa-github"></i>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
