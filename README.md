@@ -1,6 +1,11 @@
-# Sporttag PSA
+# PSA
 
-Sporttag PSA is a tournament management system highly customized for [Primarschule Altendorf](https://www.schule-altendorf.ch/).
+[![Build Status](https://dev.azure.com/billedtrain380/PSA/_apis/build/status/BilledTrain380.sporttag-psa?branchName=master)](https://dev.azure.com/billedtrain380/PSA/_build/latest?definitionId=1?branchName=master)
+
+PSA is a sport event management system.
+
+More info will be available on TODO: Add webpage here
+
 
 ## Getting Started
 
@@ -9,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * [Gradle](https://gradle.org/) 4.6+
-* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8+
+* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8+ (including JavaFX)
 
 ### Installing
 
@@ -34,35 +39,46 @@ gradle junitPlatformTest
 
 ## Deployment
 
-Get the latest version of Sporttag PSA (currently not available as download).
+Get the latest version of [PSA](https://github.com/BilledTrain380/sporttag-psa/releases).
 
-### Run the macOS app
-
-Sporttag PSA can be delivered as an macOS app. Just double click the .app file
-on a macOS system. The jre is bundled inside the .app.
+PSA is a standalone application. It uses the operating system depending application support directory
+to store its data.
 
 ### Run as jar
 
-To run Sporttag PSA as jar, you'll need Java 1.8 or higher installed.
+To run PSA as jar, you'll need Java 1.8 or higher installed.
 Then simply execute the jar file.
 
 ```
 java -jar sporttag-psa.jar
 ```
 
-> Sporttag PSA will use the system depending application support directory
-> to store its data.
+> The java version does not have a server managing GUI. Therefore it is
+> recommended to run it in a terminal or simply setup a service to run the java file.
+
+### macOS
+
+PSA is available as a macOS app. Just double click the .app file
+on a macOS system. The JRE is bundled, therefore no need to install Java.
+
+> The macOS version is only available with a server managing GUI. If you want to run
+> the application in a terminal, consider using the java version.
+
+### Windows
+
+PSA is available as a Windows app. Double click the .exe file on a windows system.
+The JRE is bundled, therefore no need to install Java.
 
 ## Roadmap
 
-Interest where Sporttag PSA is going? Look at the roadmap.
+Interest where PSA is going? Look at the roadmap.
 
 https://trello.com/b/93Bu31qo/sporttag-psa
 
 ## Built With
 
 * [Gradle](https://gradle.org/) - Dependency Management
-* [Spring](https://spring.io/) - Web Framework used
+* [Spring](https://spring.io/) - Server Framework used
 * [H2](http://www.h2database.com/html/main.html) - Database Engine used
 
 ## Versioning
