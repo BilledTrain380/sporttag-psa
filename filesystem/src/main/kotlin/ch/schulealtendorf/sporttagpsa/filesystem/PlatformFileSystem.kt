@@ -56,7 +56,7 @@ class PlatformFileSystem(
         appDirs: AppDirs
 ): FileSystem {
     
-    private val applicationDir = File(appDirs.getUserDataDir("PSA Compose", "", ""))
+    private val applicationDir = File(appDirs.getUserDataDir("PSA", "", ""))
     
     init {
         

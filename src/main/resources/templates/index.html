@@ -42,278 +42,145 @@
 </head>
 <body>
 
-<nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
+<div class="container mt-3">
 
-    <div class="container pl-3 pr-3">
+    <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
 
-        <a class="navbar-brand" href="#">
-            <img width="30" height="30" src="images/psa-logo.svg">
-            PSA
-        </a>
+        <div class="container pl-3 pr-3">
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="mainNavbar">
-
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:text="#{menu.tour}"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:text="#{menu.features}"></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:text="#{menu.themes}"></a>
-                </li>
-            </ul>
-
-
-            <ul class="navbar-nav ml-auto">
-
-                <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}" th:text="#{label.hello} + ' ' + ${username}"></span>
-
-                <li th:if="${isAuthenticated}" class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}" th:text="#{label.logout}"></a>
-                </li>
-
-                <li th:if="${isAuthenticated}" class="nav-item ml-2">
-                    <a class="nav-link btn btn-outline-warning" th:href="@{/app}" th:text="#{label.launch}"></a>
-                </li>
-
-                <li th:if="!${isAuthenticated}" class="nav-item ml-2">
-                    <a class="nav-link btn btn-outline-warning" th:href="@{/login}" th:text="#{label.login}"></a>
-                </li>
-
-            </ul>
-
-        </div>
-
-    </div>
-
-</nav>
-
-<section id="product" class="bg-dark">
-
-    <div class="container pt-5 pb-5">
-        <div class="row">
-            <div class="col-lg-12 text-center text-light pt-5 pb-5">
-
-                <h1 th:text="#{page.home.product.lead.title}"></h1>
-
-                <p th:text="#{page.home.product.lead.text}">
-                </p>
-
-            </div>
-
-            <div class="col-lg-12">
-
-                <div class="card-deck">
-
-                    <div class="card text-white border-warning bg-dark">
-
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-sitemap mb-3 text-warning"></i>
-                            <h5 class="card-title" th:text="#{page.home.product.organize.title}"></h5>
-                            <p class="card-text" th:text="#{page.home.product.organize.text}"></p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
-                        </div>
-                    </div>
-
-                    <div class="card text-white border-warning bg-dark">
-
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-hand-rock mb-3 text-warning"></i>
-                            <h5 class="card-title" th:text="#{page.home.product.competition.title}"></h5>
-                            <p class="card-text" th:text="#{page.home.product.competition.text}"></p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
-                        </div>
-                    </div>
-
-                    <div class="card text-white border-warning bg-dark">
-
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-trophy mb-3 text-warning"></i>
-                            <h5 class="card-title" th:text="#{page.home.product.ranking.title}"></h5>
-                            <p class="card-text" th:text="#{page.home.product.ranking.text}"></p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
-</section>
-
-<section id="features">
-
-    <div class="container p-4">
-
-        <div class="row">
-            <div class="col-lg-12 text-center feature-item">
-
-                <h1 th:text="#{page.home.feature.title}"></h1>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-gift m-4 text-danger"></i>
-
-                <h3 th:text="#{page.home.feature.freeToUse.title}"></h3>
-
-                <p class="text-muted" th:text="#{page.home.feature.freeToUse.text}">
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-unlock m-4 text-danger"></i>
-
-                <h3 th:text="#{page.home.feature.openSource.title}"></h3>
-
-                <p class="text-muted" th:text="#{page.home.feature.openSource.text}">
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-desktop m-4 text-danger"></i>
-
-                <h3 th:text="#{page.home.feature.responsive.title}"></h3>
-
-                <p class="text-muted" th:text="#{page.home.feature.responsive.text}">
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-language m-4 text-danger"></i>
-
-                <h3 th:text="#{page.home.feature.lang.title}"></h3>
-
-                <p class="text-muted" th:text="#{page.home.feature.lang.text}">
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<footer class="bg-dark text-light pt-5">
-
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-lg-3">
-
+            <a class="navbar-brand" href="#">
                 <img width="30" height="30" src="images/psa-logo.svg">
-                <p>
-                    <small class="text-muted">2018 - 2019</small>
-                </p>
+                PSA
+            </a>
 
-            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <div class="col-lg-3">
+            <div class="collapse navbar-collapse" id="mainNavbar">
 
-                <h5 th:text="#{menu.features}"></h5>
 
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.import}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.participantManaging}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.eventSheetsExport}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.recording}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.rankingExport}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.userManaging}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.ltrrtlSupport}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.feature.themes}"></a></li>
+                <ul class="navbar-nav ml-auto">
+
+                    <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}" th:text="#{label.hello} + ' ' + ${username}"></span>
+
+                    <li th:if="${isAuthenticated}" class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}" th:text="#{label.logout}"></a>
+                    </li>
+
+                    <li th:if="${isAuthenticated}" class="nav-item ml-2">
+                        <a class="nav-link btn btn-outline-warning" th:href="@{/app}" th:text="#{label.launch}"></a>
+                    </li>
+
+                    <li th:if="!${isAuthenticated}" class="nav-item ml-2">
+                        <a class="nav-link btn btn-outline-warning" th:href="@{/login}" th:text="#{label.login}"></a>
+                    </li>
+
                 </ul>
-
-            </div>
-
-            <div class="col-lg-3">
-
-                <h5 th:text="#{footer.download.title}"></h5>
-
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#" th:text="#{footer.download.uimode}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.download.headlessmode}"></a></li>
-                </ul>
-
-            </div>
-
-            <div class="col-lg-2">
-
-                <h5 th:text="#{footer.support.title}"></h5>
-
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#" th:text="#{footer.support.installation}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.support.roadmap}"></a></li>
-                    <li><a class="text-muted" href="#" th:text="#{footer.support.archive}"></a></li>
-                </ul>
-
-            </div>
-
-            <div class="col-lg-1">
-
-                <h5 class="float-right"><a class="text-light" href="#" th:text="#{footer.about}"></a></h5>
 
             </div>
 
         </div>
 
-    </div>
+    </nav>
 
-    <hr class="hr-light">
+    <section id="product">
 
-    <div class="container">
+        <div class="container pt-5 pb-5">
+            <div class="row">
+                <div class="col-lg-12 text-center pt-5 pb-5">
 
-        <div class="row">
+                    <h1 th:text="#{page.home.product.lead.title}"></h1>
 
-            <div class="col-lg-8">
+                    <p th:text="#{page.home.product.lead.text}">
+                    </p>
 
-                <p class="text-muted">
-                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
-                    <br/>
-                    Currently 1.0.0+psa.2.0.0.1.0.0 Code licensed GPLv3, docs CC BY 3.0
-                </p>
+                </div>
+
+                <div class="col-lg-12">
+
+                    <div class="card-deck">
+
+                        <div class="card border-warning">
+
+                            <div class="card-body">
+                                <i class="fa fa-2x fa-play mb-3 text-warning"></i>
+                                <h5 class="card-title" th:text="#{page.home.product.tour.title}"></h5>
+                                <p class="card-text" th:text="#{page.home.product.tour.text}"></p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
+                            </div>
+                        </div>
+
+                        <div class="card border-warning">
+
+                            <div class="card-body">
+                                <i class="fa fa-2x fa-book mb-3 text-warning"></i>
+                                <h5 class="card-title" th:text="#{page.home.product.features.title}"></h5>
+                                <p class="card-text" th:text="#{page.home.product.features.text}"></p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
+                            </div>
+                        </div>
+
+                        <div class="card border-warning">
+
+                            <div class="card-body">
+                                <i class="fa fa-2x fa-palette mb-3 text-warning"></i>
+                                <h5 class="card-title" th:text="#{page.home.product.themes.title}"></h5>
+                                <p class="card-text" th:text="#{page.home.product.themes.text}"></p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="card-link text-warning" th:text="#{label.learnMore}"></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
+        </div>
 
-            <div class="col-lg-4">
+    </section>
 
-                <div class="float-right">
-                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
-                        <i class="fab fa-2x fa-github"></i>
-                    </a>
+
+
+    <footer class="bg-dark text-light">
+
+        <div class="container pt-3">
+
+            <div class="row">
+
+                <div class="col-lg-8">
+
+                    <p class="text-muted">
+                        Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                        <br/>
+                        Currently 2.0.0 Code licensed GPLv3, docs CC BY 3.0
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="float-right">
+                        <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                            <i class="fab fa-2x fa-github"></i>
+                        </a>
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+    </footer>
 
-</footer>
+</div>
 
 </body>
 </html>
