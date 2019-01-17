@@ -1,8 +1,28 @@
 items:
-  - img: ""
+  - img: "1_import-groups.gif"
     title: "Import groups"
-    description: "Simple import groups via a csv file."
+    description: "Simple import groups with a csv file."
 
-  - img: ""
+  - img: "2_select-sport.gif"
     title: "Select sport"
-    description: "Simple select the sport where bla bla bla"
+    description: "Simple select the sport for each participant."
+
+  - img: "3_close-participation.gif"
+    title: "Close participation"
+    description: "Close the participation to generate start numbers."
+
+  - img: "4_export-participant-list.gif"
+    title: "Export participant list"
+    description: "Get an overview of which sport has whom participant."
+
+  - img: "5_export-event-sheets.gif"
+    title: "Export event sheets"
+    description: "Get event sheets to fill in the results of the competitors."
+
+  - img: "6_record-results.gif"
+    title: "Record the results"
+    description: "Fill in the results of the competitors and get automatically calculated points."
+
+  - img: "7_export-ranking.gif"
+    title: "Export the ranking"
+    description: "Get the ranking of different types as PDF."
