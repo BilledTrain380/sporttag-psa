@@ -99,6 +99,25 @@ page:
       light: Light
       cosmic: Cosmic
 
+  downloads:
+    title: Downloads
+    stableVersionTitle: Aktuelle Stable Version
+    stableVersionText: Die aktuelle Stable Version von PSA ist
+    yourOS: Wir denken Ihr OS ist
+    showDownloads: Zeige Downloads für
+    psaFor: PSA für
+    javaLead: "PSA als Java App ist immer die headless App, welches Sie über die cli starten.<br>Sie brauchen mindestens"
+
+    recommended: Empfohlen für die meisten Benutzer
+    latest: Neuste Features
+
+    relNotes: Release Notes
+    changelog: Changelog
+
+    olderDownloads:
+      title: Ältere Downloads
+      info: Frühere Downloads von PSA können hier gefunden werden
+
   notFound:
     title: '404'
     lead: Seite nicht gefunden :(

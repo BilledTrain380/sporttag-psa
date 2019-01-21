@@ -1,0 +1,168 @@
+---
+title: Downloads
+layout: default
+---
+
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <h1>{% translate page.downloads.title %}</h1>
+
+        <h2>{% translate page.downloads.stableVersionTitle %}</h2>
+
+        <p>{% translate page.downloads.stableVersionText %} {{ site.data.downloads.currentStableVersion }}.</p>
+
+    </div>
+
+    <div class="col-lg-12">
+
+        <p>{% translate page.downloads.yourOS %} <em id="current-os">...</em>.</p>
+
+        <p>{% translate page.downloads.showDownloads %} <a href="#" onclick="setOS('macOS')">macOS</a> | <a href="#" onclick="setOS('Windows')">Windows</a> | <a href="#" onclick="setOS('Java')">Java</a></p>
+
+        <h3>{% translate page.downloads.psaFor %} <span id="psa-for">...</span></h3>
+
+        <p id="java-lead" class="lead d-none">
+            {% translate page.downloads.javaLead %} {{ site.data.downloads.minJavaVersion }}
+        </p>
+
+    </div>
+
+
+    <div class="col-lg-4 mb-2">
+
+        {% for download in site.data.downloads.stable.downloads %}
+
+            <a id="stable-{{ download.name }}" href="{{ download.link }}" class="btn btn-primary btn-block text-white d-none">
+
+                <h3>{{ site.data.downloads.stable.version }}</h3>
+
+                {% translate page.downloads.recommended %}
+
+            </a>
+
+        {% endfor %}
+
+        <a target="_blank" href="{{ site.data.downloads.stable.links.relNotes }}">{% translate page.downloads.relNotes %}</a>
+        |
+        <a target="_blank" href="{{ site.data.downloads.stable.links.changelog }}">{% translate page.downloads.changelog %}</a>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        {% for download in site.data.downloads.current.downloads %}
+
+            <a id="current-{{ download.name }}" href="{{ download.link }}" class="btn btn-success btn-block text-white d-none">
+
+                <h3>{{ site.data.downloads.current.version }}</h3>
+
+                {% translate page.downloads.latest %}
+
+            </a>
+
+        {% endfor %}
+
+        <a target="_blank" href="{{ site.data.downloads.current.links.relNotes }}">{% translate page.downloads.relNotes %}</a>
+        |
+        <a target="_blank" href="{{ site.data.downloads.current.links.changelog }}">{% translate page.downloads.changelog %}</a>
+
+    </div>
+
+    <div class="col-lg-12 mt-5">
+
+        <h2>{% translate page.downloads.olderDownloads.title %}</h2>
+
+        {% translate page.downloads.olderDownloads.info %}: <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/releases">Github</a>
+
+    </div>
+
+</div>
+
+<script>
+
+    // get elements which are OS depended
+    var psaFor;
+    var javaLead;
+
+    // download boxes
+    var stableJava;
+    var stableMacOS;
+    var stableWindows;
+
+    var currentJava;
+    var currentMacOS;
+    var currentWindows;
+
+    function resetOS() {
+
+        javaLead.addClass("d-none");
+
+        stableJava.addClass("d-none");
+        stableMacOS.addClass("d-none");
+        stableWindows.addClass("d-none");
+
+        currentJava.addClass("d-none");
+        currentMacOS.addClass("d-none");
+        currentWindows.addClass("d-none");
+    }
+
+    function setOS(os) {
+
+        resetOS();
+
+        psaFor.text(os);
+
+        switch (os) {
+
+            case "Windows":
+
+                stableWindows.removeClass("d-none");
+                currentWindows.removeClass("d-none");
+
+                break;
+
+            case "macOS":
+
+                stableMacOS.removeClass("d-none");
+                currentMacOS.removeClass("d-none");
+
+                break;
+
+            default:
+
+                stableJava.removeClass("d-none");
+                currentJava.removeClass("d-none");
+                javaLead.removeClass("d-none");
+
+                break;
+        }
+    }
+
+
+    $(document).ready(function () {
+
+        psaFor = $("#psa-for");
+        javaLead = $("#java-lead");
+
+        stableJava = $("#stable-java");
+        stableMacOS = $("#stable-macOS");
+        stableWindows = $("#stable-windows");
+
+        currentJava = $("#current-java");
+        currentMacOS = $("#current-macOS");
+        currentWindows = $("#current-windows");
+
+        var OSName="Unknown OS";
+        if (navigator.appVersion.indexOf("Win")!== -1) OSName="Windows";
+        if (navigator.appVersion.indexOf("Mac")!== -1) OSName="macOS";
+        if (navigator.appVersion.indexOf("X11")!== -1) OSName="UNIX";
+        if (navigator.appVersion.indexOf("Linux")!== -1) OSName="Linux";
+
+        $("#current-os").text(OSName);
+
+        setOS(OSName);
+    });
+
+</script>
