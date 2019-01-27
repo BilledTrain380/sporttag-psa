@@ -15,44 +15,16 @@
 
             <div class="col-lg-3">
 
-                <h5>{% translate footer.features %}</h5>
+                <h5>{% translate footer.userGuide %}</h5>
 
                 <ul class="list-unstyled text-small">
 
-                    {% capture f_import %}
-                    {% translate feature.import %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_import | slugify }}">{{ f_import }}</a></li>
+                    {% for item in site.data.user-guide.tableOfContents %}
 
-                    {% capture f_participantManaging %}
-                    {% translate feature.participantManaging %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_participantManaging | slugify }}">{{ f_participantManaging }}</a></li>
+                    <li><a class="text-muted" href="{{ site.baseurl }}{{ item.link }}">{% translate item.translateKey %}</a></li>
 
-                    {% capture f_eventSheetExport %}
-                    {% translate feature.eventSheetExport %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_eventSheetExport | slugify }}">{{ f_eventSheetExport }}</a></li>
+                    {% endfor %}
 
-                    {% capture f_resultRecording %}
-                    {% translate feature.resultRecording %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_resultRecording | slugify }}">{{ f_resultRecording }}</a></li>
-
-                    {% capture f_rankingExport %}
-                    {% translate feature.rankingExport %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_rankingExport | slugify }}">{{ f_rankingExport }}</a></li>
-
-                    {% capture f_userManaging %}
-                    {% translate feature.userManaging %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_userManaging | slugify }}">{{ f_userManaging }}</a></li>
-
-                    {% capture f_ltrrtl %}
-                    {% translate feature.ltrrtl %}
-                    {% endcapture %}
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/features#{{ f_ltrrtl | slugify }}">{{ f_ltrrtl }}</a></li>
                 </ul>
 
             </div>

@@ -1,6 +1,6 @@
 nav:
   tour: Tour
-  features: Features
+  userGuide: Benutzerhandbuch
   themes: Themes
   language:
     title: 'Sprache:'
@@ -9,7 +9,7 @@ nav:
   download: Download
 
 footer:
-  features: Features
+  userGuide: Benutzerhandbuch
   downloads: Downloads
   support:
     title: Support
@@ -90,6 +90,14 @@ page:
     title: Tour
     exit: Schliesse Tour
     skip: Überspringen
+
+  userGuide:
+    note: Extra Informationen oder Tipps und Tricks.
+    arrow: Zeigt auf eine Art Button im PSA UI und zeigt Ihnen wo eine bestimmte Aktion zu finden ist.
+    warning: Warnt von Sonderfällen.
+    participants: Manage Teilnehmer
+    participation: Manage Teilnahme
+    athletics: Manage Leichtathletik
 
   themes:
     title: Themes

@@ -1,6 +1,6 @@
 nav:
   tour: Tour
-  features: Features
+  userGuide: User Guide
   themes: Themes
   language:
     title: 'Language:'
@@ -9,7 +9,7 @@ nav:
   download: Download
 
 footer:
-  features: Features
+  userGuide: User Guide
   downloads: Downloads
   support:
     title: Support
@@ -51,7 +51,7 @@ page:
 
     why:
       title: Why PSA
-      lead1: PSA is a management system to organize your sport event. It is a standalone application which requires only Java to run. If you don't want to use Java, it even is available as a native app for macOS and Windows.
+      lead1: PSA is a management system to organize your sport event. It is a standalone application which requires only Java to run. If you don't want to use Java, it is even available as a native app for macOS and Windows.
       lead2: The setup is simple. It uses the appropriate application support directory of your system. No need to configure any server settings. Just execute the program and your good to go.
       get: Get PSA for free
 
@@ -90,6 +90,14 @@ page:
     title: Tour
     exit: Exit Tour
     skip: Skip
+
+  userGuide:
+    note: Some sort of extra information or tips and tricks.
+    arrow: Points to some kind of a button in the PSA UI to show you where a specific action can be found.
+    warning: Warns for some sort of special case.
+    participants: Manage Participants
+    participation: Manage Participation
+    athletics: Manage Athletics
 
   themes:
     title: Themes
