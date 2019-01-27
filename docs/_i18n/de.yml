@@ -41,7 +41,7 @@ page:
 
         competition:
           title: Verwalte den Wettkampf
-          lead: Verwalte einen Wettkapmf und erfasse die Resultate der Wettkämpfer.
+          lead: Verwalte einen Wettkampf und erfasse die Resultate der Wettkämpfer.
 
         ranking:
           title: Generiere Ranglisten
@@ -92,12 +92,18 @@ page:
     skip: Überspringen
 
   userGuide:
+    title: Benutzerhandbuch
+    welcome: 'Willkommen zum PSA Benutzerhandbuch. Sie finden hier ziemlich alles, was mit PSA gemacht werden kann.'
+    tableOfContents: Inhaltsverzeichnis
     note: Extra Informationen oder Tipps und Tricks.
     arrow: Zeigt auf eine Art Button im PSA UI und zeigt Ihnen wo eine bestimmte Aktion zu finden ist.
     warning: Warnt von Sonderfällen.
     participants: Manage Teilnehmer
     participation: Manage Teilnahme
     athletics: Manage Leichtathletik
+    ranking: Ranglisten
+    event: Wettkampfblätter
+    users: Manage Benutzer
 
   themes:
     title: Themes

@@ -1,0 +1,36 @@
+---
+title: User Guide
+layout: default
+---
+
+<h1>{% translate page.userGuide.title %}</h1>
+
+<p>{% translate page.userGuide.welcome %}</p>
+
+<ul>
+
+    <li>
+        <img src="{{ site.baseurl }}/img/user-guide/note-graphic.jpg"> {% translate page.userGuide.note %}
+    </li>
+
+    <li>
+        <img src="{{ site.baseurl }}/img/user-guide/arrow-graphic.jpg"> {% translate page.userGuide.arrow %}
+    </li>
+
+    <li>
+        <img src="{{ site.baseurl }}/img/user-guide/warning-graphic.jpg"> {% translate page.userGuide.warning %}
+    </li>
+
+</ul>
+
+<h2>{% translate page.userGuide.tableOfContents %}</h2>
+
+<ol>
+
+    {% for item in site.data.user-guide.tableOfContents %}
+
+    <li><a href="{{ site.baseurl }}{{ item.link }}">{% translate item.translateKey %}</a></li>
+
+    {% endfor %}
+
+</ol>

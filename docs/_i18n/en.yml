@@ -92,12 +92,18 @@ page:
     skip: Skip
 
   userGuide:
+    title: User Guide
+    welcome: "Welcome to PSA User Guide. You'll find here pretty much everything that can be done with PSA."
+    tableOfContents: Table of Contents
     note: Some sort of extra information or tips and tricks.
     arrow: Points to some kind of a button in the PSA UI to show you where a specific action can be found.
     warning: Warns for some sort of special case.
     participants: Manage Participants
     participation: Manage Participation
     athletics: Manage Athletics
+    ranking: Ranking
+    event: Event Sheets
+    users: Manage Users
 
   themes:
     title: Themes
