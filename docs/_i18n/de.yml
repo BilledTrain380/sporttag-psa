@@ -17,15 +17,6 @@ footer:
     roadmap: Roadmap
   about: Über uns
 
-feature:
-  import: CSV Import
-  participantManaging: Teilnehmer Verwaltung
-  eventSheetExport: Wettkampfblätter Export
-  resultRecording: Resultat Erfassung
-  rankingExport: Ranglisten Export
-  userManaging: Benutzer Verwaltung
-  ltrrtl: LTR und RTL Support
-
 page:
   home:
 
