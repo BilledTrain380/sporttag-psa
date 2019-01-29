@@ -113,8 +113,8 @@ page:
     psaFor: PSA für
     javaLead: "PSA als Java App ist immer die headless App, welches Sie über die cli starten.<br>Sie brauchen mindestens"
 
-    recommended: Empfohlen für die meisten Benutzer
-    latest: Neuste Features
+    download: Download
+    from: von Github
 
     relNotes: Release Notes
     changelog: Changelog

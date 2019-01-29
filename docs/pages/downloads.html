@@ -36,9 +36,9 @@ layout: default
 
             <a id="stable-{{ download.name }}" href="{{ download.link }}" class="btn btn-primary btn-block text-white d-none">
 
-                <h3>{{ site.data.downloads.stable.version }}</h3>
+                <h3>{% translate page.downloads.download %} {{ site.data.downloads.stable.version }}</h3>
 
-                {% translate page.downloads.recommended %}
+                {% translate page.downloads.from %}
 
             </a>
 
@@ -47,26 +47,6 @@ layout: default
         <a target="_blank" href="{{ site.data.downloads.stable.links.relNotes }}">{% translate page.downloads.relNotes %}</a>
         |
         <a target="_blank" href="{{ site.data.downloads.stable.links.changelog }}">{% translate page.downloads.changelog %}</a>
-
-    </div>
-
-    <div class="col-lg-4">
-
-        {% for download in site.data.downloads.current.downloads %}
-
-            <a id="current-{{ download.name }}" href="{{ download.link }}" class="btn btn-success btn-block text-white d-none">
-
-                <h3>{{ site.data.downloads.current.version }}</h3>
-
-                {% translate page.downloads.latest %}
-
-            </a>
-
-        {% endfor %}
-
-        <a target="_blank" href="{{ site.data.downloads.current.links.relNotes }}">{% translate page.downloads.relNotes %}</a>
-        |
-        <a target="_blank" href="{{ site.data.downloads.current.links.changelog }}">{% translate page.downloads.changelog %}</a>
 
     </div>
 
@@ -91,10 +71,6 @@ layout: default
     var stableMacOS;
     var stableWindows;
 
-    var currentJava;
-    var currentMacOS;
-    var currentWindows;
-
     function resetOS() {
 
         javaLead.addClass("d-none");
@@ -102,10 +78,6 @@ layout: default
         stableJava.addClass("d-none");
         stableMacOS.addClass("d-none");
         stableWindows.addClass("d-none");
-
-        currentJava.addClass("d-none");
-        currentMacOS.addClass("d-none");
-        currentWindows.addClass("d-none");
     }
 
     function setOS(os) {
@@ -119,21 +91,16 @@ layout: default
             case "Windows":
 
                 stableWindows.removeClass("d-none");
-                currentWindows.removeClass("d-none");
-
                 break;
 
             case "macOS":
 
                 stableMacOS.removeClass("d-none");
-                currentMacOS.removeClass("d-none");
-
                 break;
 
             default:
 
                 stableJava.removeClass("d-none");
-                currentJava.removeClass("d-none");
                 javaLead.removeClass("d-none");
 
                 break;
@@ -149,10 +116,6 @@ layout: default
         stableJava = $("#stable-java");
         stableMacOS = $("#stable-macOS");
         stableWindows = $("#stable-windows");
-
-        currentJava = $("#current-java");
-        currentMacOS = $("#current-macOS");
-        currentWindows = $("#current-windows");
 
         var OSName="Unknown OS";
         if (navigator.appVersion.indexOf("Win")!== -1) OSName="Windows";
