@@ -23,7 +23,34 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
 
+    <script>
+
+        // Calculates the min height of the content container based on nav and footer height
+        $(document).ready(function () {
+
+            var container = $(".container-full");
+            var nav = $("nav");
+            var footer = $("footer");
+
+            var navFooterHeight = nav.outerHeight() + footer.outerHeight();
+
+            container.css("min-height", "calc(100vh - " + navFooterHeight + "px)");
+        });
+
+    </script>
+
     <style>
+
+        /* CSS for expand to full screen size */
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+
 
         .feature-item {
             margin-top: 30px;
