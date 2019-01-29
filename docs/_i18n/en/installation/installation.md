@@ -8,9 +8,7 @@
 
 **Steps**
 
-1. Download the latest version of [PSA](https://github.com/BilledTrain380/sporttag-psa/releases).
-The Asset you need follows the naming `PSA-<version>.dmg`, where `<version>` is the appropriate version of PSA.
-eg. `PSA-2.0.0.dmg`
+1. Download the latest stable version of [PSA]({{ site.baseurl }}/pages/downloads).
 
 2. Double click the downloaded dmg and follow the instructions.
 
@@ -28,9 +26,7 @@ TODO: Add steps for Windows installation
 
 **Steps**
 
-1. Download the latest version of [PSA](https://github.com/BilledTrain380/sporttag-psa/releases).
-The Asset you need follows the naming `PSA-<version>_Java.zip`, where `<version>` is the appropriate version of PSA.
-eg. `PSA-2.0.0_Java.zip`
+1. Download the latest version of [PSA]({{ site.baseurl }}/pages/downloads) (remember to choose Java, if it isn't already).
 
 2. Unpack the archive.
 
@@ -47,9 +43,7 @@ eg. `PSA-2.0.0_Java.zip`
 
 **Steps**
 
-1. Download the newer version of [PSA](https://github.com/BilledTrain380/sporttag-psa/releases).
-The Asset you need follows the naming `PSA-<version>.dmg`, where `<version>` is the appropriate version of PSA.
-eg. `PSA-2.0.0.dmg`
+1. Download the latest stable version of [PSA]({{ site.baseurl }}/pages/downloads).
 
 2. Double click the downloaded dmg.
 
@@ -63,9 +57,7 @@ TODO: Add steps for Windows Update
 
 ### as Java App
 
-1. Download the newer version of [PSA](https://github.com/BilledTrain380/sporttag-psa/releases).
-The Asset you need follows the naming `PSA-<version>_Java.zip`, where `<version>` is the appropriate version of PSA.
-eg. `PSA-2.0.0_Java.zip`
+1. Download the latest version of [PSA]({{ site.baseurl }}/pages/downloads) (remember to choose Java, if it isn't already).
 
 2. Unpack the archive.
 
