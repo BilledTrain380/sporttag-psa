@@ -3,7 +3,7 @@
 Once you selected a kind of sport for each participant, you're ready to
 start the competition.
 
-![note]({{ site.baseurl_root }}/img/user-guide/note-graphic.png) Every participant which participates in the sport 'Athletics' will become a competitor for the competition
+![note]({{ site.baseurl_root }}/img/user-guide/note-graphic.png) Every participant which participates in the sport 'Athletics' will become a competitor for the competition.
 
 First of all you need to close the participation.
 

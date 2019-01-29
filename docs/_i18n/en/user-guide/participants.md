@@ -10,7 +10,7 @@ A participant consists of three different parts:
 
 Each group must be unique and each group coach belongs to exactly one group.
 
-## Create a group
+## Create groups
 
 In order to create a group with a group coach and its participants, you have
 to import a CSV file with a specific format.

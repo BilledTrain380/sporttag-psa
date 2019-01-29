@@ -9,7 +9,7 @@ is to record the results of the competitors.
 
 ![add user]({{ site.baseurl_root }}/img/user-guide/users/add-user.png){: .img-fluid}
 
-This action will open a form to add a new user.
+This action will open a dialog to add a new user.
 
 ## Delete User
 
@@ -21,7 +21,7 @@ This action will delete the user.
 
 ![change pw]({{ site.baseurl_root }}/img/user-guide/users/change-user-pw.png){: .img-fluid}
 
-This action will open a form to change the password from the specific user.
+This action will open a dialog to change the password from the specific user.
 
 ## Disable User
 

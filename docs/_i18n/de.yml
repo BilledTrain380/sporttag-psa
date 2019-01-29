@@ -89,12 +89,12 @@ page:
     note: Extra Informationen oder Tipps und Tricks.
     arrow: Zeigt auf eine Art Button im PSA UI und zeigt Ihnen wo eine bestimmte Aktion zu finden ist.
     warning: Warnt von Sonderfällen.
-    participants: Manage Teilnehmer
-    participation: Manage Teilnahme
-    athletics: Manage Leichtathletik
+    participants: Verwalte Teilnehmer
+    participation: Verwalte die Teilnahme
+    athletics: Verwalte die Leichtathletik
     ranking: Ranglisten
     event: Wettkampfblätter
-    users: Manage Benutzer
+    users: Verwalte Benutzer
 
   themes:
     title: Themes

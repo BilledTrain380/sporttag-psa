@@ -4,7 +4,7 @@ You can get different kind of rankings.
 
 * Total Ranking - Across all the disciplines
 * Discipline Ranking - One single discipline
-* Discipline Group Ranking - Three disciplines
+* Discipline Group Ranking - Three specific disciplines together
 
 Simply check what ranking you want and it will be included in the export.
 
