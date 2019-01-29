@@ -25,15 +25,14 @@ layout: blank
             <div class="tour-container">
 
                 <div class="tour-item f-4">
-                    <!-- TODO: use site url and img attribute of item loop -->
                     <img class="h-100" src="{{ site.baseurl_root }}/img/tour/{{ item.img }}">
                 </div>
 
                 <div class="tour-item f-1">
 
-                    <h3>{{ item.title }}</h3>
+                    <h3>{% translate item.title %}</h3>
 
-                    <p>{{ item.description }}</p>
+                    <p>{% translate item.description %}</p>
 
                 </div>
 

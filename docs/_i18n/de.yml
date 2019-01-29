@@ -81,6 +81,27 @@ page:
     title: Tour
     exit: Schliesse Tour
     skip: Überspringen
+    importGroups:
+      title: "Importiere Gruppen"
+      description: "Ganz einfach Gruppen mittels einer CSV Datei importieren."
+    selectSport:
+      title: "Wähle Sportart"
+      description: "Einfach die Sportart zu einen Teilnehmer wählen."
+    closeParticipation:
+      title: "Teilnahme abschliessen"
+      description: "Schliessen Sie die Teilnahme ab um Startnummern zu generieren."
+    exportParticipantList:
+      title: "Exportiere Teilnehmerlisten"
+      description: "Erhalte eine Übersicht davon, welche Sportart welche Teilnehmer hat."
+    exportEventSheet:
+      title: "Exportiere die Wettkampfblätter"
+      description: "Erhalte Wettkampfblätter um die Resultate auf Papier zu erfassen."
+    recordResults:
+      title: "Erfasse die Resultate"
+      description: "Erfasse die Resultate und erhalte eine automatisch berechnete Punktzahl."
+    exportRanking:
+      title: "Exportiere die Ranglisten"
+      description: "Erhalte verschiedene Ranglisten Typen als PDF."
 
   userGuide:
     title: Benutzerhandbuch

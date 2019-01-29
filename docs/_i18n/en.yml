@@ -81,6 +81,27 @@ page:
     title: Tour
     exit: Exit Tour
     skip: Skip
+    importGroups:
+      title: "Import Groups"
+      description: "Simple import groups with a csv file."
+    selectSport:
+      title: "Select Sport"
+      description: "Simple select the kind of sport for each participant."
+    closeParticipation:
+      title: "Close Participation"
+      description: "Close the participation to generate start numbers."
+    exportParticipantList:
+      title: "Export Participant List"
+      description: "Get an overview of which kind of sport has which participant."
+    exportEventSheet:
+      title: "Export Event Sheets"
+      description: "Get event sheets to fill in the results of the competitors."
+    recordResults:
+      title: "Record the results"
+      description: "Fill in the results of the competitors and get automatically calculated points."
+    exportRanking:
+      title: "Export the ranking"
+      description: "Get the ranking of different types as a PDF."
 
   userGuide:
     title: User Guide
