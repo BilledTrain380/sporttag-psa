@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Welcome - PSA</title>
+    <title>Downloads - PSA</title>
 
     <link rel="icon" type="image/png" href="/sporttag-psa/favicon.png">
     <link rel="icon" type="image/x-icon" href="/sporttag-psa/favicon.ico">
@@ -186,194 +187,156 @@
 </nav>
 
 
-<section id="product" class="bg-dark">
+<div class="container container-full pt-3 pb-5">
 
-    <div class="container pt-5 pb-5">
-        <div class="row">
-            <div class="col-lg-12 text-center text-light pt-5 pb-5">
+    <div class="row">
 
-                <h1>Organize your sport event.</h1>
+    <div class="col-lg-12">
 
-                <p>Your sport event organized and managed by one app. Fun or competition, both can be accomplished by PSA.</p>
+        <h1>Downloads</h1>
 
-                <a class="btn btn-warning" href="/sporttag-psa/pages/tour">Quick start with our Tour</a>
+        <h2>Current Stable Version</h2>
 
-            </div>
-
-            <div class="col-lg-12">
-
-                <div class="card-deck">
-
-                    <div class="card text-white border-warning bg-dark">
-
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-sitemap mb-3 text-warning"></i>
-                            <h5 class="card-title">Organize participants</h5>
-                            <p class="card-text">Organize your participants in different groups.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/sporttag-psa/pages/user-guide/participants" class="card-link text-warning">Learn more</a>
-                        </div>
-                    </div>
-
-                    <div class="card text-white border-warning bg-dark">
-
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-hand-rock mb-3 text-warning"></i>
-                            <h5 class="card-title">Manage athletics</h5>
-                            <p class="card-text">Manage a competition and record the competitors results.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/sporttag-psa/pages/user-guide/athletics" class="card-link text-warning">Learn more</a>
-                        </div>
-                    </div>
-
-                    <div class="card text-white border-warning bg-dark">
-
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-trophy mb-3 text-warning"></i>
-                            <h5 class="card-title">Generate ranking</h5>
-                            <p class="card-text">Export different rankings of the competition as PDF.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/sporttag-psa/pages/user-guide/ranking" class="card-link text-warning">Learn more</a>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
-</section>
-
-<section id="why" class="bg-light">
-
-    <div class="container pt-5 pb-5">
-        <div class="row">
-            <div class="col-lg-6 pt-5 pb-5">
-
-                <h1>Why PSA</h1>
-
-                <p>PSA is a management system to organize your sport event. It is a standalone application which requires only Java to run. If you don't want to use Java, it is even available as a native app for macOS and Windows.</p>
-
-                <p>The setup is simple. It uses the appropriate application support directory of your system. No need to configure any server settings. Just execute the program and your good to go.</p>
-
-                <a class="btn btn-warning" href="/sporttag-psa/pages/downloads">Get PSA for free</a>
-
-            </div>
-            <div class="col-lg-6">
-                <img class="img-fluid" src="/sporttag-psa/img/psa-dashboard.png" alt="PSA Dashboard">
-            </div>
-        </div>
-    </div>
-
-</section>
-
-
-<section id="gui" class="bg-warning">
-
-    <div class="container p-4">
-
-        <div class="row">
-
-            <div class="col-lg-6">
-                <img class="img-fluid" src="/sporttag-psa/img/admin-gui.png" alt="Admin GUI">
-            </div>
-
-            <div class="col-lg-6">
-
-                <h1>Not a command line fan?</h1>
-
-                <p>PSA can be used with a minimal administration GUI. No need to use any command line commands.</p>
-
-                <ul>
-                    <li>Server status</li>
-                    <li>Start Server</li>
-                    <li>Stop Server</li>
-                </ul>
-
-                <p class="text-muted">
-                    The administration GUI is only available for the macOS or Windows native app.
-                </p>
-
-                <a class="btn btn-dark btn-block" href="/sporttag-psa/pages/downloads">Take me to the downloads</a>
-
-            </div>
-
-        </div>
+        <p>The current stable release of PSA is 2.0.0-rc-01 (2018-12-20).</p>
 
     </div>
 
-</section>
+    <div class="col-lg-12">
 
-<section id="features">
+        <p>We think your OS is <em id="current-os">...</em>.</p>
 
-    <div class="container p-4">
+        <p>Show downloads for <a href="#" onclick="setOS('macOS')">macOS</a> | <a href="#" onclick="setOS('Windows')">Windows</a> | <a href="#" onclick="setOS('Java')">Java</a></p>
 
-        <div class="row">
-            <div class="col-lg-12 text-center feature-item">
+        <h3>PSA for <span id="psa-for">...</span></h3>
 
-                <h1>More than just an app</h1>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-gift m-4 text-danger"></i>
-
-                <h3>Free to use</h3>
-
-                <p class="text-muted">
-                    This app is free to download and use!
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-unlock m-4 text-danger"></i>
-
-                <h3>Open Source</h3>
-
-                <p class="text-muted">
-                    GNU GPL v3.0 licensed!
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-desktop m-4 text-danger"></i>
-
-                <h3>Responsive</h3>
-
-                <p class="text-muted">
-                    Ready to use on different sizes!
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-language m-4 text-danger"></i>
-
-                <h3>Multi-Language</h3>
-
-                <p class="text-muted">
-                    Available in english and german!
-                </p>
-
-            </div>
-
-        </div>
+        <p id="java-lead" class="lead d-none">
+            PSA as Java app is always the headless app which you start per cli.<br>You need at least Java 1.8
+        </p>
 
     </div>
 
-</section>
 
+    <div class="col-lg-4 mb-2">
+
+        
+
+            <a id="stable-java" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.0.0-rc-01/PSA-2.0.0_Java.zip" class="btn btn-primary btn-block text-white d-none">
+
+                <h3>Download 2.0.0-rc-01</h3>
+
+                from Github
+
+            </a>
+
+        
+
+            <a id="stable-macOS" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.0.0-rc-01/PSA-2.0.0.dmg" class="btn btn-primary btn-block text-white d-none">
+
+                <h3>Download 2.0.0-rc-01</h3>
+
+                from Github
+
+            </a>
+
+        
+
+            <a id="stable-windows" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.0.0-rc-01/PSA-2.0.0_Windows.zip" class="btn btn-primary btn-block text-white d-none">
+
+                <h3>Download 2.0.0-rc-01</h3>
+
+                from Github
+
+            </a>
+
+        
+
+        <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/blob/2.0.0-rc-01/RelNotes/2.0.0.md">Release Notes</a>
+        |
+        <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/blob/2.0.0-rc-01/CHANGELOG.md">Changelog</a>
+
+    </div>
+
+    <div class="col-lg-12 mt-5">
+
+        <h2>Older Downloads</h2>
+
+        Previous downloads of PSA can be found here: <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/releases">Github</a>
+
+    </div>
+
+</div>
+
+<script>
+
+    // get elements which are OS depended
+    var psaFor;
+    var javaLead;
+
+    // download boxes
+    var stableJava;
+    var stableMacOS;
+    var stableWindows;
+
+    function resetOS() {
+
+        javaLead.addClass("d-none");
+
+        stableJava.addClass("d-none");
+        stableMacOS.addClass("d-none");
+        stableWindows.addClass("d-none");
+    }
+
+    function setOS(os) {
+
+        resetOS();
+
+        psaFor.text(os);
+
+        switch (os) {
+
+            case "Windows":
+
+                stableWindows.removeClass("d-none");
+                break;
+
+            case "macOS":
+
+                stableMacOS.removeClass("d-none");
+                break;
+
+            default:
+
+                stableJava.removeClass("d-none");
+                javaLead.removeClass("d-none");
+
+                break;
+        }
+    }
+
+
+    $(document).ready(function () {
+
+        psaFor = $("#psa-for");
+        javaLead = $("#java-lead");
+
+        stableJava = $("#stable-java");
+        stableMacOS = $("#stable-macOS");
+        stableWindows = $("#stable-windows");
+
+        var OSName="Unknown OS";
+        if (navigator.appVersion.indexOf("Win")!== -1) OSName="Windows";
+        if (navigator.appVersion.indexOf("Mac")!== -1) OSName="macOS";
+        if (navigator.appVersion.indexOf("X11")!== -1) OSName="UNIX";
+        if (navigator.appVersion.indexOf("Linux")!== -1) OSName="Linux";
+
+        $("#current-os").text(OSName);
+
+        setOS(OSName);
+    });
+
+</script>
+
+</div>
 
 <footer class="bg-dark text-light pt-5">
 

@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>Tour - PSA</title>
 
+    <link rel="icon" type="image/png" href="/sporttag-psa/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/sporttag-psa/favicon.ico">
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -24,7 +27,34 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
 
+    <script>
+
+        // Calculates the min height of the content container based on nav and footer height
+        $(document).ready(function () {
+
+            var container = $(".container-full");
+            var nav = $("nav");
+            var footer = $("footer");
+
+            var navFooterHeight = nav.outerHeight() + footer.outerHeight();
+
+            container.css("min-height", "calc(100vh - " + navFooterHeight + "px)");
+        });
+
+    </script>
+
     <style>
+
+        /* CSS for expand to full screen size */
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+
 
         .feature-item {
             margin-top: 30px;
@@ -119,6 +149,26 @@
 
         
 
+        <li data-target="#tourCarousel" data-slide-to="2" class=""></li>
+
+        
+
+        <li data-target="#tourCarousel" data-slide-to="3" class=""></li>
+
+        
+
+        <li data-target="#tourCarousel" data-slide-to="4" class=""></li>
+
+        
+
+        <li data-target="#tourCarousel" data-slide-to="5" class=""></li>
+
+        
+
+        <li data-target="#tourCarousel" data-slide-to="6" class=""></li>
+
+        
+
     </ol>
 
     <div class="carousel-inner h-100 bg-warning">
@@ -130,15 +180,14 @@
             <div class="tour-container">
 
                 <div class="tour-item f-4">
-                    <!-- TODO: use site url and img attribute of item loop -->
-                    <img class="h-100" src="http://via.placeholder.com/1200x720" alt="Second slide">
+                    <img class="h-100" src="/sporttag-psa/img/tour/1_import-groups.gif">
                 </div>
 
                 <div class="tour-item f-1">
 
-                    <h3>Import groups</h3>
+                    <h3>Import Groups</h3>
 
-                    <p>Simple import groups via a csv file.</p>
+                    <p>Simple import groups with a csv file.</p>
 
                 </div>
 
@@ -153,15 +202,124 @@
             <div class="tour-container">
 
                 <div class="tour-item f-4">
-                    <!-- TODO: use site url and img attribute of item loop -->
-                    <img class="h-100" src="http://via.placeholder.com/1200x720" alt="Second slide">
+                    <img class="h-100" src="/sporttag-psa/img/tour/2_select-sport.gif">
                 </div>
 
                 <div class="tour-item f-1">
 
-                    <h3>Select sport</h3>
+                    <h3>Select Sport</h3>
 
-                    <p>Simple select the sport where bla bla bla</p>
+                    <p>Simple select the kind of sport for each participant.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="carousel-item h-100 text-center ">
+
+            <div class="tour-container">
+
+                <div class="tour-item f-4">
+                    <img class="h-100" src="/sporttag-psa/img/tour/3_close-participation.gif">
+                </div>
+
+                <div class="tour-item f-1">
+
+                    <h3>Close Participation</h3>
+
+                    <p>Close the participation to generate start numbers.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="carousel-item h-100 text-center ">
+
+            <div class="tour-container">
+
+                <div class="tour-item f-4">
+                    <img class="h-100" src="/sporttag-psa/img/tour/4_export-participant-list.gif">
+                </div>
+
+                <div class="tour-item f-1">
+
+                    <h3>Export Participant List</h3>
+
+                    <p>Get an overview of which kind of sport has which participant.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="carousel-item h-100 text-center ">
+
+            <div class="tour-container">
+
+                <div class="tour-item f-4">
+                    <img class="h-100" src="/sporttag-psa/img/tour/5_export-event-sheets.gif">
+                </div>
+
+                <div class="tour-item f-1">
+
+                    <h3>Export Event Sheets</h3>
+
+                    <p>Get event sheets to fill in the results of the competitors.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="carousel-item h-100 text-center ">
+
+            <div class="tour-container">
+
+                <div class="tour-item f-4">
+                    <img class="h-100" src="/sporttag-psa/img/tour/6_record-results.gif">
+                </div>
+
+                <div class="tour-item f-1">
+
+                    <h3>Record the results</h3>
+
+                    <p>Fill in the results of the competitors and get automatically calculated points.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="carousel-item h-100 text-center ">
+
+            <div class="tour-container">
+
+                <div class="tour-item f-4">
+                    <img class="h-100" src="/sporttag-psa/img/tour/7_export-ranking.gif">
+                </div>
+
+                <div class="tour-item f-1">
+
+                    <h3>Export the ranking</h3>
+
+                    <p>Get the ranking of different types as a PDF.</p>
 
                 </div>
 

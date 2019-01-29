@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>Themes - PSA</title>
 
+    <link rel="icon" type="image/png" href="/sporttag-psa/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/sporttag-psa/favicon.ico">
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -24,7 +27,34 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
 
+    <script>
+
+        // Calculates the min height of the content container based on nav and footer height
+        $(document).ready(function () {
+
+            var container = $(".container-full");
+            var nav = $("nav");
+            var footer = $("footer");
+
+            var navFooterHeight = nav.outerHeight() + footer.outerHeight();
+
+            container.css("min-height", "calc(100vh - " + navFooterHeight + "px)");
+        });
+
+    </script>
+
     <style>
+
+        /* CSS for expand to full screen size */
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+
 
         .feature-item {
             margin-top: 30px;
@@ -125,7 +155,7 @@
                     <a class="nav-link" href="/sporttag-psa/de/pages/tour">Tour</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/sporttag-psa/de/pages/features">Features</a>
+                    <a class="nav-link" href="/sporttag-psa/de/pages/user-guide">Benutzerhandbuch</a>
                 </li>
 
                 <li class="nav-item">
@@ -145,7 +175,7 @@
                 </li>
 
                 <li class="nav-item ml-2">
-                    <a class="nav-link btn btn-outline-warning" href="https://github.com/BilledTrain380/sporttag-psa/releases">Download</a>
+                    <a class="nav-link btn btn-outline-warning" href="/sporttag-psa/de/pages/downloads">Download</a>
                 </li>
 
             </ul>
@@ -157,7 +187,7 @@
 </nav>
 
 
-<div class="container mt-3 mb-5">
+<div class="container container-full pt-3 pb-5">
 
     <div class="row">
 
@@ -175,47 +205,32 @@
 
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 mb-4">
+
+        <h5 class="card-title">Corporate</h5>
 
         <div class="card">
-
-            <img class="card-image img-fluid" src="http://via.placeholder.com/1200x720" width="1200" height="720" alt="">
-
-            <div class="card-img-overlay">
-                <h5 class="card-title">Corporate</h5>
-                <!--<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                <!--<p class="card-text">Last updated 3 mins ago</p>-->
-            </div>
+            <img class="card-image img-fluid" src="/sporttag-psa/img/psa-dashboard.png" alt="Corporate Theme">
         </div>
 
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 mb-4">
+
+        <h5 class="card-title">Light</h5>
 
         <div class="card">
-
-            <img class="card-image img-fluid" src="http://via.placeholder.com/1200x720" width="1200" height="720" alt="">
-
-            <div class="card-img-overlay">
-                <h5 class="card-title">Light</h5>
-                <!--<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                <!--<p class="card-text">Last updated 3 mins ago</p>-->
-            </div>
+            <img class="card-image img-fluid" src="/sporttag-psa/img/psa-dashboard-light.png" alt="Light Theme">
         </div>
 
     </div>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 mb-4">
+
+        <h5 class="card-title">Cosmic</h5>
 
         <div class="card">
-
-            <img class="card-image img-fluid" src="http://via.placeholder.com/1200x720" width="1200" height="720" alt="">
-
-            <div class="card-img-overlay">
-                <h5 class="card-title">Cosmic</h5>
-                <!--<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
-                <!--<p class="card-text">Last updated 3 mins ago</p>-->
-            </div>
+            <img class="card-image img-fluid" src="/sporttag-psa/img/psa-dashboard-cosmic.png" alt="Cosmic Theme">
         </div>
 
     </div>
@@ -243,51 +258,43 @@
 
             <div class="col-lg-3">
 
-                <h5>Features</h5>
+                <h5>Benutzerhandbuch</h5>
 
                 <ul class="list-unstyled text-small">
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#csv-import">
-                    CSV Import
-                    </a></li>
+
+                    <li><a class="text-muted" href="/sporttag-psa/de/pages/user-guide/participants">Verwalte Teilnehmer</a></li>
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#teilnehmer-verwaltung">
-                    Teilnehmer Verwaltung
-                    </a></li>
+
+                    <li><a class="text-muted" href="/sporttag-psa/de/pages/user-guide/participation">Verwalte die Teilnahme</a></li>
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#wettkampfblätter-export">
-                    Wettkampfblätter Export
-                    </a></li>
+
+                    <li><a class="text-muted" href="/sporttag-psa/de/pages/user-guide/athletics">Verwalte die Leichtathletik</a></li>
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#resultat-erfassung">
-                    Resultat Erfassung
-                    </a></li>
+
+                    <li><a class="text-muted" href="/sporttag-psa/de/pages/user-guide/ranking">Ranglisten</a></li>
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#ranglisten-export">
-                    Ranglisten Export
-                    </a></li>
+
+                    <li><a class="text-muted" href="/sporttag-psa/de/pages/user-guide/event">Wettkampfblätter</a></li>
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#benutzer-verwaltung">
-                    Benutzer Verwaltung
-                    </a></li>
+
+                    <li><a class="text-muted" href="/sporttag-psa/de/pages/user-guide/users">Verwalte Benutzer</a></li>
 
                     
-                    <li><a class="text-muted" href="/sporttag-psa/de/pages/features#ltr-und-rtl-support">
-                    LTR und RTL Support
-                    </a></li>
+
                 </ul>
 
             </div>
 
             <div class="col-lg-2">
 
-                <h5><a class="text-light" href="https://github.com/BilledTrain380/sporttag-psa/releases">Downloads</a></h5>
+                <h5><a class="text-light" href="/sporttag-psa/de/pages/downloads">Downloads</a></h5>
 
             </div>
 
@@ -297,7 +304,7 @@
 
                 <ul class="list-unstyled text-small">
                     <li><a class="text-muted" href="/sporttag-psa/de/pages/installation">Installation & Update</a></li>
-                    <li><a class="text-muted" href="#">Roadmap</a></li>
+                    <li><a class="text-muted" target="_blank" href="https://trello.com/b/93Bu31qo/sporttag-psa">Roadmap</a></li>
                 </ul>
 
             </div>
@@ -323,7 +330,7 @@
                 <p class="text-muted">
                     Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
                     <br/>
-                    Currently 2.0.0 Code licensed GPLv3, docs CC BY 3.0
+                    Currently 2.0.0-rc-01 Code licensed GPLv3, docs CC BY 3.0
                 </p>
 
             </div>

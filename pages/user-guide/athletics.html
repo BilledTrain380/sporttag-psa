@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Welcome - PSA</title>
+    <title>Manage Athletics - PSA</title>
 
     <link rel="icon" type="image/png" href="/sporttag-psa/favicon.png">
     <link rel="icon" type="image/x-icon" href="/sporttag-psa/favicon.ico">
@@ -186,194 +187,77 @@
 </nav>
 
 
-<section id="product" class="bg-dark">
+<div class="container container-full pt-3 pb-5">
 
-    <div class="container pt-5 pb-5">
-        <div class="row">
-            <div class="col-lg-12 text-center text-light pt-5 pb-5">
+    <h1>User Guide</h1>
 
-                <h1>Organize your sport event.</h1>
+<p>Welcome to PSA User Guide. You'll find here pretty much everything that can be done with PSA.</p>
 
-                <p>Your sport event organized and managed by one app. Fun or competition, both can be accomplished by PSA.</p>
+<ul>
 
-                <a class="btn btn-warning" href="/sporttag-psa/pages/tour">Quick start with our Tour</a>
+    <li>
+        <img src="/sporttag-psa/img/user-guide/note-graphic.png"> Some sort of extra information or tips and tricks.
+    </li>
 
-            </div>
+    <li>
+        <img src="/sporttag-psa/img/user-guide/arrow-graphic.png"> Points to some kind of a button in the PSA UI to show you where a specific action can be found.
+    </li>
 
-            <div class="col-lg-12">
+    <li>
+        <img src="/sporttag-psa/img/user-guide/warning-graphic.png"> Warns for some sort of special case.
+    </li>
 
-                <div class="card-deck">
+</ul>
 
-                    <div class="card text-white border-warning bg-dark">
+<h2>Table of Contents</h2>
 
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-sitemap mb-3 text-warning"></i>
-                            <h5 class="card-title">Organize participants</h5>
-                            <p class="card-text">Organize your participants in different groups.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/sporttag-psa/pages/user-guide/participants" class="card-link text-warning">Learn more</a>
-                        </div>
-                    </div>
+<ol>
 
-                    <div class="card text-white border-warning bg-dark">
+    
 
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-hand-rock mb-3 text-warning"></i>
-                            <h5 class="card-title">Manage athletics</h5>
-                            <p class="card-text">Manage a competition and record the competitors results.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/sporttag-psa/pages/user-guide/athletics" class="card-link text-warning">Learn more</a>
-                        </div>
-                    </div>
+    <li><a href="/sporttag-psa/pages/user-guide/participants">Manage Participants</a></li>
 
-                    <div class="card text-white border-warning bg-dark">
+    
 
-                        <div class="card-body">
-                            <i class="fa fa-2x fa-trophy mb-3 text-warning"></i>
-                            <h5 class="card-title">Generate ranking</h5>
-                            <p class="card-text">Export different rankings of the competition as PDF.</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="/sporttag-psa/pages/user-guide/ranking" class="card-link text-warning">Learn more</a>
-                        </div>
-                    </div>
+    <li><a href="/sporttag-psa/pages/user-guide/participation">Manage Participation</a></li>
 
-                </div>
+    
 
-            </div>
+    <li><a href="/sporttag-psa/pages/user-guide/athletics">Manage Athletics</a></li>
 
-        </div>
-    </div>
+    
 
-</section>
+    <li><a href="/sporttag-psa/pages/user-guide/ranking">Ranking</a></li>
 
-<section id="why" class="bg-light">
+    
 
-    <div class="container pt-5 pb-5">
-        <div class="row">
-            <div class="col-lg-6 pt-5 pb-5">
+    <li><a href="/sporttag-psa/pages/user-guide/event">Event Sheets</a></li>
 
-                <h1>Why PSA</h1>
+    
 
-                <p>PSA is a management system to organize your sport event. It is a standalone application which requires only Java to run. If you don't want to use Java, it is even available as a native app for macOS and Windows.</p>
+    <li><a href="/sporttag-psa/pages/user-guide/users">Manage Users</a></li>
 
-                <p>The setup is simple. It uses the appropriate application support directory of your system. No need to configure any server settings. Just execute the program and your good to go.</p>
+    
 
-                <a class="btn btn-warning" href="/sporttag-psa/pages/downloads">Get PSA for free</a>
+</ol>
 
-            </div>
-            <div class="col-lg-6">
-                <img class="img-fluid" src="/sporttag-psa/img/psa-dashboard.png" alt="PSA Dashboard">
-            </div>
-        </div>
-    </div>
 
-</section>
+    <h1 id="manage-athletics">Manage Athletics</h1>
 
+<p>In order to manage the athletics, you must have closed the participation first.
+Once you’ve done that, you will see the competitors in the results page.</p>
 
-<section id="gui" class="bg-warning">
+<p>The competitors are filtered by group and discipline. In addition, the gender filter
+is optional.</p>
 
-    <div class="container p-4">
+<p>Simply change the result and the points will be recalculated.</p>
 
-        <div class="row">
+<p><img src="/sporttag-psa/img/user-guide/athletics/athletics.png" alt="athletics" class="img-fluid" /></p>
 
-            <div class="col-lg-6">
-                <img class="img-fluid" src="/sporttag-psa/img/admin-gui.png" alt="Admin GUI">
-            </div>
+<p><img src="/sporttag-psa/img/user-guide/note-graphic.png" alt="note" /> The results will be validated, so you can not enter wrong data.</p>
 
-            <div class="col-lg-6">
 
-                <h1>Not a command line fan?</h1>
-
-                <p>PSA can be used with a minimal administration GUI. No need to use any command line commands.</p>
-
-                <ul>
-                    <li>Server status</li>
-                    <li>Start Server</li>
-                    <li>Stop Server</li>
-                </ul>
-
-                <p class="text-muted">
-                    The administration GUI is only available for the macOS or Windows native app.
-                </p>
-
-                <a class="btn btn-dark btn-block" href="/sporttag-psa/pages/downloads">Take me to the downloads</a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section id="features">
-
-    <div class="container p-4">
-
-        <div class="row">
-            <div class="col-lg-12 text-center feature-item">
-
-                <h1>More than just an app</h1>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-gift m-4 text-danger"></i>
-
-                <h3>Free to use</h3>
-
-                <p class="text-muted">
-                    This app is free to download and use!
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-unlock m-4 text-danger"></i>
-
-                <h3>Open Source</h3>
-
-                <p class="text-muted">
-                    GNU GPL v3.0 licensed!
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-desktop m-4 text-danger"></i>
-
-                <h3>Responsive</h3>
-
-                <p class="text-muted">
-                    Ready to use on different sizes!
-                </p>
-
-            </div>
-
-            <div class="col-lg-3 text-center feature-item">
-
-                <i class="fas fa-7x fa-language m-4 text-danger"></i>
-
-                <h3>Multi-Language</h3>
-
-                <p class="text-muted">
-                    Available in english and german!
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
+</div>
 
 <footer class="bg-dark text-light pt-5">
 
