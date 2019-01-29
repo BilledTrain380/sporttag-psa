@@ -1,6 +1,6 @@
 ---
 title: Manage Participation
-layout: default
+layout: user-guide
 ---
 
 {% translate_file user-guide/participation.md %}

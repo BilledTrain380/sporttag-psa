@@ -1,0 +1,25 @@
+---
+# User Guide layout
+---
+<!DOCTYPE html>
+
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+
+{% include nav.html %}
+
+<div class="container mt-3 mb-5">
+
+    {% include user-guide-header.html %}
+
+    {{ content }}
+
+</div>
+
+{% include footer.html %}
+
+</body>
+</html>

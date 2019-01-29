@@ -1,6 +1,6 @@
 ---
 title: Event Sheets
-layout: default
+layout: user-guide
 ---
 
 {% translate_file user-guide/event.md %}

@@ -1,6 +1,6 @@
 ---
 title: Manage Participants
-layout: default
+layout: user-guide
 ---
 
 {% translate_file user-guide/participants.md %}

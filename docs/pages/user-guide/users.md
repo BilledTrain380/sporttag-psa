@@ -1,6 +1,6 @@
 ---
 title: Manage Users
-layout: default
+layout: user-guide
 ---
 
 {% translate_file user-guide/users.md %}

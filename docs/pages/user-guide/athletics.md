@@ -1,6 +1,6 @@
 ---
 title: Manage Athletics
-layout: default
+layout: user-guide
 ---
 
 {% translate_file user-guide/athletics.md %}
