@@ -4,7 +4,7 @@
 
 PSA is a sport event management system.
 
-More info will be available on TODO: Add webpage here
+More info will be available on: https://billedtrain380.github.io/sporttag-psa/
 
 
 ## Getting Started
