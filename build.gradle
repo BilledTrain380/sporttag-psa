@@ -1,8 +1,29 @@
 buildscript {
 	ext {
-		kotlin_version = '1.2.30'
-		springBootVersion = '1.5.3.RELEASE'
-		sporttagPSAVersion = '1.0.1'
+		kotlinVersion = '1.2.50'
+		springBootVersion = '2.0.2.RELEASE'
+		sporttagPSAVersion = '2.0.0'
+
+        /*
+         * Returns the main class depending on the mode command line parameter.
+         *
+         * -Pmode=gui uses the JavaFX Application
+         * -Pmode=tui uses the Spring Application
+         *
+         * If the mode is not defined at all, 'tui' mode will be used.
+         */
+        getMainClass = {
+
+            def mode = project.hasProperty('mode') ? project.property('mode') : 'tui'
+
+            if (mode == 'gui') {
+                return 'ch.schulealtendorf.sporttagpsa.FXApplicationKt'
+            } else if (mode == 'tui') {
+                return 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
+            }
+            
+            throw new IllegalArgumentException('Parameter \'mode\' is invalid: value=' + mode)
+        }
 	}
 	repositories {
 		maven {
@@ -12,65 +33,111 @@ buildscript {
         
 	}
 	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlin_version}")
-		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
-        classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlin_version}"
-        classpath("com.github.cr0:gradle-macappbundle-plugin:3.1.0")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+
+        // Kotlin all open to make specific classes open when compiling e.g. spring's @Configuration classes
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
+
+        // JUnit Platform TestEngine for Spek
+        classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
+
+        // JavaFX Plugin to build native bundles
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
 	}
 }
 
+apply plugin: 'idea'
+apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: "kotlin-jpa"
-apply plugin: "com.github.cr0.macappbundle"
+apply plugin: 'application'
+apply plugin: 'javafx-gradle-plugin'
+
+mainClassName = getMainClass()
+
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
 
 version = "${sporttagPSAVersion}"
 
-allprojects {
-	
-	apply plugin: 'idea'
-	apply plugin: 'kotlin'
+project(":rules") {
 
-	sourceCompatibility = 1.8
-	compileKotlin {
-		kotlinOptions.jvmTarget= "1.8"
-		targetCompatibility = 1.8
-	}
+    apply plugin: 'idea'
+    apply plugin: 'kotlin'
 
-	compileTestKotlin {
-		kotlinOptions.jvmTarget = "1.8"
-		targetCompatibility = 1.8
-	}
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-	repositories {
-		maven { url "http://dl.bintray.com/jetbrains/spek" }
-		maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
-		mavenCentral()
-	}
-	
-	dependencies {
-		compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-	}
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    }
 }
 
 project(":filesystem") {
-    
+
+    apply plugin: 'idea'
+    apply plugin: 'kotlin'
     apply plugin: 'kotlin-spring'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
     
 	dependencies {
-		compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.5.3.RELEASE'
-	}
-}
-
-project(":macos") {
-
-	apply plugin: 'kotlin-spring'
-
-	dependencies {
-		compile group: 'org.springframework.boot', name: 'spring-boot', version: '1.5.3.RELEASE'
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+		compile group: 'org.springframework.boot', name: 'spring-boot', version: "$springBootVersion"
 	}
 }
 
@@ -79,61 +146,27 @@ repositories {
 	maven {
 		url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
 	}
-}
-
-macAppBundle {
-    appName = "Sporttag PSA"
-    appCategory = "public.app-category.utilities"
-    icon = "macos/icon/psa-logo.icns"
-    agent = true
-    version = "${sporttagPSAVersion}"
-    shortVersion = "${sporttagPSAVersion}"
-    // DO NOT USE THE MAIN CLASS OF YOUR APPLICATION!!!
-    // With gradle task build, the bootRepackage goal will be executed.
-    // If this is the case, the JarLauncher class of spring is needed as main class.
-    // Otherwise your main class will not be found, because the bootRepackage goal will
-    // change your directory structure and MANIFEST.inf
-    mainClassName = "org.springframework.boot.loader.JarLauncher"
-    bundleJRE = true
-    jreHome = System.getenv("JAVA_HOME")
-    bundleExecutable = "Sporttag-psa"
-    bundleIdentifier = "ch.schulealtendorf.sporttagpsa"
-    bundleCopyright = "Copyright (C) 2018 Sporttag PSA"
-    volumeName = "Sporttag PSA ${sporttagPSAVersion}"
-    archiveName = "Sporttag PSA ${sporttagPSAVersion}"
-    javaXProperties=[
-            "ms25M",
-            "mx80M",
-            "X:+UseG1GC"
-    ]
-}
-
-createApp.dependsOn(bootRepackage)
-
-junitPlatform {
-	filters {
-		engines {
-			include 'spek'
-		}
-	}
+    maven { url "http://dl.bintray.com/jetbrains/spek" }
+    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
+    mavenCentral()
 }
 
 dependencies {
 
-	
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-security:1.5.3.RELEASE')
+	compile("org.springframework.boot:spring-boot-starter-security")
 	compile("org.springframework.boot:spring-boot-devtools")
-    
-    compile "com.opencsv:opencsv:3.9"
-	compile "joda-time:joda-time:2.9.9"
+
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    compile "joda-time:joda-time:2.9.9"
 	compile "com.deliveredtechnologies:rulebook-core:0.8"
 	compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
 	
 	compile project(":rules")
     compile project(":filesystem")
-    compile project(":macos")
 
 	compile 'com.github.BilledTrain380:Alberta:1.0.0'
 	
@@ -141,38 +174,84 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.flywaydb:flyway-core')
 	runtime('com.h2database:h2')
-	
-	// to enable thymeleaf legacy html5 mode
+
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-oauth2
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.0.0.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt
+    compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.9.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.passay/passay
+    compile group: 'org.passay', name: 'passay', version: '1.3.1'
+
+    // to enable thymeleaf legacy html5 mode
 	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
+
+	compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
 	
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'
-	compile 'org.webjars:bootstrap:4.0.0-alpha.6'
-	compile 'org.webjars:font-awesome:4.7.0'
-	compile 'org.webjars:tether:1.4.0'
-	
-    // basic testing libraries
-	testCompile('org.springframework.boot:spring-boot-starter-test') {
+	compile 'org.webjars:bootstrap:4.1.3'
+	compile 'org.webjars:font-awesome:5.4.1'
+
+    // exclude mockito, because we need a different version
+    testCompile('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.mockito'
     }
-	testCompile 'junit:junit:4.12'
+
+    // common testing libraries
     testCompile 'org.mockito:mockito-core:2.9.0'
+    // exclude mockito, because we need a different version
     testCompile ('com.nhaarman:mockito-kotlin:1.5.0') {
         exclude group: 'org.mockito'
     }
-	testCompile "org.jetbrains.kotlin:kotlin-test:1.1.4-dev-330"
-    
-    // A specification framework
-    testCompile "org.jetbrains.spek:spek-api:1.1.2"
-	
-	// necessary for spek on JUnit4
-	testCompile "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
-	testCompile "org.junit.platform:junit-platform-runner:1.0.0-M4"
-	testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.2'
+    testCompile 'org.jetbrains.spek:spek-api:1.1.5'
+    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
 }
 
-// copy resources to see resource changes
-task copyResources(type: Copy) {
-	from 'src/main/resources/'
-	into 'build/resources/main/'
+task processWebapp(type: Copy) {
+    dependsOn ':psa-kitten:build'
+    mustRunAfter "processResources"
+    from 'psa-kitten/dist'
+    into 'build/resources/main/public/app'
 }
+
+bootJar.dependsOn("processWebapp")
+
+jfx {
+    mainClass = "org.springframework.boot.loader.JarLauncher"
+    skipCopyingDependencies = true
+
+    // jfxNative
+    identifier = "BilledTrain380"
+    nativeReleaseVersion = "$sporttagPSAVersion"
+    vendor = "BilledTrain380"
+    bundleArguments
+    appName = "PSA"
+    skipMainClassScanning = true
+
+    // TODO: add jvm arguments to optimize runtime
+}
+
+/*
+ * This task must never be executed. In order to build the application,
+ * the bootJar task is used.
+ */
+jfxJar {
+    onlyIf {
+        false
+    }
+    doLast {
+        println("Skip jfxJar. bootJar is used to build this application.")
+    }
+}
+
+// Copies the jar file generated from bootJar task to the jfx app output directory.
+task jfxPrepare(type: Copy) {
+    dependsOn("bootJar")
+    from "build/libs"
+    into "build/jfx/app"
+}
+
+jfxNative.dependsOn("jfxPrepare")

@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.export
 
 import ch.schulealtendorf.sporttagpsa.business.export.report.*
+import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.stereotype.Component
@@ -72,7 +73,8 @@ class PRAExportManager(
 
             val reports = eventSheetReporter.generateReport(data.disciplines)
 
-            return fileSystem.createArchive("Wettkampfblätter", reports)
+            val file = ApplicationFile("export", "Wettkampfblätter")
+            return fileSystem.createArchive(file, reports)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -97,7 +99,8 @@ class PRAExportManager(
                     disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
 
-            return fileSystem.createArchive("Rangliste", reports)
+            val file = ApplicationFile("export", "Rangliste")
+            return fileSystem.createArchive(file, reports)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -117,7 +120,8 @@ class PRAExportManager(
 
             val reports = participantListReporter.generateReport(data.sports)
 
-            return fileSystem.createArchive("Teilnehmerliste", reports)
+            val file = ApplicationFile("export", "Teilnehmerliste")
+            return fileSystem.createArchive(file, reports)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -137,7 +141,8 @@ class PRAExportManager(
 
             val csvFiles = disciplineGroupRankingReporter.generateCSV(data)
 
-            return fileSystem.createArchive("UBS Cup", csvFiles)
+            val file = ApplicationFile("export", "UBS Cup")
+            return fileSystem.createArchive(file, csvFiles)
 
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)

@@ -36,18 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
-data class Gender(
-        val value: Boolean = true
-) {
-
-    companion object {
-        fun male() = Gender(true)
-        fun female() = Gender(false)
-    }
-
-    fun isMale() = value
-
-    fun isFemale() = !value
-
-    override fun toString() = if(value) "Knaben" else "Mädchen"
+/**
+ * Enum representing a gender.
+ *
+ * @author nmaerchy
+ * @since 2.0.0
+ */
+enum class Gender {
+    MALE,
+    FEMALE
 }

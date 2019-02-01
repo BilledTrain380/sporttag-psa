@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.model
 
+import java.text.SimpleDateFormat
 import java.util.*
 
 data class Birthday(
@@ -45,4 +46,13 @@ data class Birthday(
     constructor(date: Date) : this(date.time)
 
     fun date() = Date(milliseconds)
+
+    /**
+     * Formats this Birthday by the given {@code pattern}.
+     *
+     * Valid values are the same used in the {@link SimpleDateFormat} class constructor.
+     *
+     * @param pattern the format pattern of the date
+     */
+    fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date())
 }

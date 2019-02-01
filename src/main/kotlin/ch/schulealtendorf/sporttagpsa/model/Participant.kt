@@ -38,13 +38,21 @@ package ch.schulealtendorf.sporttagpsa.model
 
 import java.util.*
 
-data class Participant(
+/**
+ * Data class representing a participant.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+data class Participant @JvmOverloads constructor(
         val id: Int,
         val surname: String,
         val prename: String,
         val gender: Gender,
         val birthday: Birthday,
-        val address: String,
         val absent: Boolean,
-        val sport: Optional<Sport>
+        val address: String,
+        val town: Town,
+        val group: Group,
+        val sport: Optional<Sport> = Optional.empty()
 )

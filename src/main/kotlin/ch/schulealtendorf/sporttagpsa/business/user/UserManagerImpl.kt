@@ -36,107 +36,79 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
+import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
+import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * Default implementation for managing a user.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @since 1.0.0
  */
 @Component
 class UserManagerImpl(
-        private val userRepository: UserRepository
+        private val userRepository: UserRepository,
+        private val passwordValidator: PasswordValidator
 ): UserManager {
 
-    /**
-     * Creates the given {@code user}.
-     * The {@code FreshUser#password} field will be encrypted with {@link BCryptPasswordEncoder}.
-     *
-     * @param user the user to create
-     * 
-     * @throws UserAlreadyExistsException if the user exists already
-     */
-    override fun create(user: FreshUser) {
-        
-        if(userRepository.findByUsername(user.username) != null) {
-            throw UserAlreadyExistsException("User exists already: username=${user.username}")
-        }
-        
-        val userEntity = UserEntity(null, user.username, user.password.encode(), user.enabled, listOf(
-                AuthorityEntity("USER")
-        ))
-        
-        userRepository.save(userEntity)
-    }
+    override fun save(user: User): User {
 
-    /**
-     * Updates the password for the given {@code user}.
-     * The {@code UserPassword#password} field will be encrypted.
-     *
-     * @param user the user password to update
-     */
-    override fun update(user: UserPassword) {
-        
-        val userEntity = userRepository.findOne(user.userId)
-        
-        userEntity.password = user.password.encode()
-        
-        userRepository.save(userEntity)
-    }
-
-    /**
-     * Updates the given {@code user}.
-     *
-     * @param user the user to update
-     */
-    override fun update(user: User) {
-        
-        val userEntity: UserEntity = userRepository.findOne(user.userId)
-        
-        userEntity.username = user.username
-        userEntity.enabled = user.enabled
-        
-        userRepository.save(userEntity)
-    }
-
-    /**
-     * @return all users
-     */
-    override fun getAll(): List<User> {
-        
-        return userRepository.findAll()
-                .map { 
-                    User(it.id!!, it.username, it.enabled)
+        val userEntity = userRepository.findById(user.id)
+                .orElseGet {
+                    user.password.validate()
+                    UserEntity(password = user.password.encode())
                 }
+
+        userEntity.apply {
+            username = user.username
+            enabled = user.enabled
+            authorities = user.authorities.map { AuthorityEntity(it) }
+        }
+
+        return userRepository.save(userEntity).toModel()
     }
 
-    /**
-     * Gets the user by the given {@code userId}.
-     *
-     * @param userId id of the user
-     *
-     * @return an {@code Optional} of the user
-     */
-    override fun getOne(userId: Int): User {
-        
-        val userEntity: UserEntity = userRepository.findOne(userId)
-        
-        return User(userEntity.id!!, userEntity.username, userEntity.enabled)
+    override fun changePassword(user: User, password: String) {
+
+        val userEntity = userRepository.findById(user.id)
+                .orElseThrow { UserNotFoundException("The user could not be found: user=$user") }
+
+        password.validate()
+        userEntity.password = password.encode()
+
+        userRepository.save(userEntity)
     }
 
-    /**
-     * Deletes the user matching the given {@code userId}.
-     *
-     * @param userId id of the user to delete
-     */
+    override fun getAll(): List<User> = userRepository.findAll().map { it.toModel() }
+
+    override fun getOne(userId: Int): Optional<User> = userRepository.findById(userId).map { it.toModel() }
+
+    override fun getOne(username: String): Optional<User> = userRepository.findByUsername(username).map { it.toModel() }
+
     override fun delete(userId: Int) {
-        userRepository.delete(userId)
+
+        val user = userRepository.findById(userId)
+
+        if (user.isPresent && user.get().username == USER_ADMIN)
+            throw IllegalArgumentException("Not allowed to delete administrator")
+
+        userRepository.deleteById(userId)
     }
     
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
+
+    private fun UserEntity.toModel() = User(id!!, username, authorities.map { it.role }, enabled)
+
+    private fun String.validate() {
+        val validationResult = passwordValidator.validate(this)
+        if (validationResult.isValid.not())
+            throw InvalidPasswordException(validationResult.messages.joinToString(", "))
+    }
 }

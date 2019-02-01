@@ -4,7 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2018-02-01
+
+### Changed
+* Redesign PSA index page to avoid confusion with PSA Product Website.
+
+## [2.0.0-rc-01] - 2018-12-20
+
+### Added
+* REST interfaces
+* New index page for better look and feel
+
+### Changed
+* Refactor the entire GUI
+* Remove version from application support directory
+* Webapp is a SPA which is included as a git submodule. During build it will
+be copied to the appropriate resource directory in order to be served by Spring.
+
+### Removed
+* Old Thymeleaf Webapp (which is replaced by the SPA).
 
 ## [1.0.1] - 2018-07-01
 
@@ -59,7 +77,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * Discipline group ranking
     * Total ranking
 
-[Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/BilledTrain380/sporttag-psa/compare/2.0.0-rc-01...2.0.0
+[2.0.0-rc-01]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.1...2.0.0-rc-01
 [1.0.1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-rc-1...1.0.0
 [1.0.0-rc-1]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.0-beta-1...1.0.0-rc-1

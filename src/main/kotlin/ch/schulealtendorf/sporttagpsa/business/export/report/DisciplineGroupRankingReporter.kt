@@ -45,7 +45,7 @@ import java.io.File
  * @author nmaerchy
  * @version 1.1.0
  */
-interface DisciplineGroupRankingReporter: Reporter<Iterable<Boolean>> {
+interface DisciplineGroupRankingReporter: Reporter<Iterable<Gender>> {
 
     /**
      * Generates csv file of discipline group ranking for all given {@code genders}.
@@ -57,5 +57,5 @@ interface DisciplineGroupRankingReporter: Reporter<Iterable<Boolean>> {
      * @return all generated csv files
      * @throws ReportGenerationException if the csv files could not be generated
      */
-    fun generateCSV(genders: Set<Gender>): Set<File>
+    fun generateCSV(genders: Iterable<Gender>): Set<File>
 }

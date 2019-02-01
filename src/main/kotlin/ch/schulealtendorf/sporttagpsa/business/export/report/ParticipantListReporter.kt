@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.sporttagpsa.business.export.SimpleSport
+import ch.schulealtendorf.sporttagpsa.model.Sport
 
 /**
  * Describes a reporter for participant list.
@@ -44,4 +44,4 @@ import ch.schulealtendorf.sporttagpsa.business.export.SimpleSport
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ParticipantListReporter: Reporter<Iterable<SimpleSport>>
+interface ParticipantListReporter: Reporter<Iterable<Sport>>

@@ -33,8 +33,7 @@
  *
  *
  */
-
+rootProject.name = "PSA"
 include 'rules'
 include 'filesystem'
-include 'macos'
-
+include 'psa-kitten'

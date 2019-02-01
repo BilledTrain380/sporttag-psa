@@ -36,71 +36,96 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Clazz
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.SingleParticipant
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.*
+import java.util.*
 
 /**
  * Describes a manager for the participation.
+ * Provides various operations with a {@link Participant}. In addition,
+ * the participation status can be modified.
  * 
  * @author nmaerchy
- * @version 1.0.0
+ * @version 2.0.0
+ * @since 1.0.0
  */
 interface ParticipationManager {
 
     /**
-     * Returns a list of participants which are in the given {@code clazz}.
-     * If the given {@code clazz} does not exists, an empty list will be returned.
+     * Marks the given {@code participant} as absent.
      *
-     * @param clazz the clazz to get its participants
+     * @param participant the participant to mark as absent
      *
-     * @return the resulting list
+     * @throws NoSuchElementException if the given participant could not be found
      */
-    fun getParticipantListByClazz(clazz: Clazz): List<Participant>
+    fun markAsAbsent(participant: Participant)
 
     /**
-     * @return the participant matching the given {@code id}
-     * @throws IllegalArgumentException if the participant matching the given id does not exists
+     * Marks the given {@code participant} as present.
+     *
+     * @param participant the participant to mark as absent
+     *
+     * @throws NoSuchElementException if the given participant could not be found
      */
-    fun getParticipant(id: Int): SingleParticipant
+    fun markAsPresent(participant: Participant)
 
     /**
-     * Updates the given {@code participant}.
+     * Sets the given {@code sport} to the given {@code participant}.
      *
-     * @param participant participant data to update
-     *
-     * @throws IllegalArgumentException if the given {@code participant} could not be found
-     */
-    fun updateParticipant(participant: SingleParticipant)
-
-    /**
-     * Sets the given {@code sport} on the given {@code participant}.
-     * Invokes the {@link SportPreprocessor} before the sport will be set.
+     * This operation can not be performed, if the {@link ParticipationManager#getParticipationStatus}equals {@link ParticipationStatus#CLOSE}.
+     * In order to change the sport of a participant, use the {@link ParticipationManager#reParticipate} method.
      *
      * @param participant the participant to set the sport on
      * @param sport the sport to set on the participant
      *
-     * @throws IllegalArgumentException if either the participant or the sport could not be found
+     * @throws NoSuchElementException if the given participant could not be found
+     * @throws IllegalStateException if the participation is already closed
      */
-    fun setSport(participant: SingleParticipant, sport: Sport)
+    fun participate(participant: Participant, sport: Sport)
 
     /**
-     * Marks the given {@code participant} as absent.
+     * Sets the given {@code sport} to the given {@code participant}.
      *
-     * @param participant the participant to set as absent
+     * In contrast to the {@link ParticipationManager#participate} method, this operation will
+     * consider the participation status.
      *
-     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     * If the {@link ParticipationManager#getParticipationStatus} equals {@link ParticipationStatus#CLOSE},
+     * and the given {@code sport} equals athletics, the participant will be saved as a competitor.
+     *
+     * If the {@link ParticipationManager#getParticipationStatus} equals {@link ParticipationStatus#CLOSE},
+     * and the given {@code participant} is already a competitor, but the given {@code sport} is not athletics,
+     * the competitor will be removed.
+     *
+     * The {@link ParticipationManager#getParticipationStatus} must be equal to {@link ParticipationStatus#CLOSE}
+     * in order to perform this operation. Otherwise use the {@link ParticipationManager#participate} method.
+     *
+     * @param participant the participant to set the sport on
+     * @param sport the sport to set on the participant
+     *
+     * @throws NoSuchElementException if the given participant could not be found
+     * @throws IllegalStateException if the participation status is not CLOSE.
      */
-    fun markAsAbsent(participant: SingleParticipant)
+    fun reParticipate(participant: Participant, sport: Sport)
 
     /**
-     * As a counter part of {@code markAsAbsent},
-     * marks the given {@code participant} as present.
+     * Closes the participation. {@link ParticipationManager#getParticipationStatus} will always
+     * return {@link ParticipationStatus#CLOSE} until {@link ParticipationManager#resetParticipation}
+     * will be invoked.
      *
-     * @param participant the participant to set as present
-     *
-     * @throws IllegalArgumentException if the given {@code participant} could not be found
+     * This operation looks up all participant who participates in the sport athletics
+     * and saves them as {@link Competitor} with default results of all available disciplines.
      */
-    fun markAsPresent(participant: SingleParticipant)
+    fun closeParticipation()
+
+    /**
+     * Resets the participation. All recorded data will be DELETED.
+     *
+     * {@link ParticipationManager#getParticipationStatus} will always return {@link ParticipationStatus#OPEN}
+     * until {@link ParticipationManager#closeParticipation} will be invoked.
+     */
+    fun resetParticipation()
+
+    /**
+     * @return the participation status
+     */
+    fun getParticipationStatus(): ParticipationStatus
 }

@@ -6,6 +6,8 @@
       <module name="filesystem_test" target="1.8" />
       <module name="macos_main" target="1.8" />
       <module name="macos_test" target="1.8" />
+      <module name="PSA_main" target="1.8" />
+      <module name="PSA_test" target="1.8" />
       <module name="rules_main" target="1.8" />
       <module name="rules_test" target="1.8" />
       <module name="sporttag-psa_main" target="1.8" />

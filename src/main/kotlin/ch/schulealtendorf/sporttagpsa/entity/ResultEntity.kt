@@ -41,35 +41,33 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-/**
- * @author nmaerchy
- * @version 0.0.1
- */
 @Entity
 @Table(name = "RESULT")
-data class ResultEntity @JvmOverloads constructor(
+data class ResultEntity(
 
         @Id
         @NotNull
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int? = null,
-        
+
         @Size(max = 5)
         var distance: String? = null,
 
         @NotNull
-        var result: Double = 1.0,
+        var value: Long = 1,
 
         @NotNull
         var points: Int = 1,
 
         @NotNull
         @ManyToOne
-        @JoinColumn(name = "fk_STARTER_number", referencedColumnName = "number")
-        var starter: StarterEntity = StarterEntity(),
-
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_DISCIPLINE_id", referencedColumnName = "id")
+        @JoinColumn(name = "fk_DISCIPLINE", referencedColumnName = "name")
         var discipline: DisciplineEntity = DisciplineEntity()
-)
+) {
+
+    // We have to exclude this property from the toString, hashcode and equals methods, because circular mapping
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_COMPETITOR_startnumber", referencedColumnName = "startnumber")
+    var competitor: CompetitorEntity = CompetitorEntity()
+}

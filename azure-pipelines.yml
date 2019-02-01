@@ -1,0 +1,189 @@
+# Gradle
+# Build your Java project and run tests with Gradle using a Gradle wrapper script.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+- develop
+- release/*
+
+jobs:
+
+- job: Test
+
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+
+  - task: Bash@3
+    displayName: OpenJDK Install
+    inputs:
+      targetType: 'filePath'
+      filePath: azure-jdk-install.sh
+
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '1.8'
+      jdkArchitectureOption: x64
+      jdkSourceOption: localDirectory
+      jdkFile: $(Agent.ToolsDirectory)/jdk-8u191-linux-x64.tar.gz
+      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
+
+  - task: Gradle@2
+    displayName: Gradle Test
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: 'default'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      tasks: 'junitPlatformTest'
+
+
+- job: Java
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+
+  - task: NodeTool@0
+    displayName: NodeJS Install
+    inputs:
+      versionSpec: '10.x'
+
+  - task: Bash@3
+    displayName: OpenJDK Install
+    inputs:
+      targetType: 'filePath'
+      filePath: azure-jdk-install.sh
+
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '1.8'
+      jdkArchitectureOption: x64
+      jdkSourceOption: localDirectory
+      jdkFile: $(Agent.ToolsDirectory)/jdk-8u191-linux-x64.tar.gz
+      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
+
+  - script: git submodule update --init --remote --recursive
+    displayName: Get submodules
+
+  - task: Gradle@2
+    displayName: Gradle Build
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: 'default'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      tasks: 'bootJar'
+
+  - task: CopyFiles@2
+    displayName: 'Copy jar File'
+    inputs:
+      sourceFolder: 'build/libs'
+      contents: '*.jar'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: CopyFiles@2
+    displayName: 'Copy release notes'
+    inputs:
+      sourceFolder: 'RelNotes'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Java artifact'
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: 'PSA Java'
+
+- job: macOS
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+
+  pool:
+    vmImage: 'macOS-10.13'
+
+  steps:
+
+    - task: NodeTool@0
+      displayName: NodeJS Install
+      inputs:
+        versionSpec: '10.x'
+
+    - script: git submodule update --init --remote --recursive
+      displayName: Get submodules
+
+    - task: Gradle@2
+      displayName: Gradle Build
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        tasks: 'jfxNative'
+        options: '-Pmode=gui'
+
+    - task: CopyFiles@2
+      displayName: 'Copy macOS native'
+      inputs:
+        sourceFolder: 'build/jfx/native'
+        targetFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish macOS artifact'
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: 'PSA macOS'
+
+
+- job: Windows
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+
+    - task: NodeTool@0
+      displayName: NodeJS Install
+      inputs:
+        versionSpec: '10.x'
+
+    - script: git submodule update --init --remote --recursive
+      displayName: Get submodules
+
+    - task: Gradle@2
+      displayName: Gradle Build
+      inputs:
+        workingDirectory: ''
+        gradleWrapperFile: 'gradlew'
+        gradleOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        tasks: 'jfxNative'
+        options: '-Pmode=gui'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Windows native'
+      inputs:
+        sourceFolder: 'build/jfx/native'
+        targetFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Windows artifact'
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: 'PSA Windows'

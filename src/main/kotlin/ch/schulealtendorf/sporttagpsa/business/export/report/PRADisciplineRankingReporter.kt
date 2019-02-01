@@ -43,9 +43,11 @@ import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
+import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
-import ch.schulealtendorf.sporttagpsa.repository.AbsentCompetitorRepository
-import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 import java.io.File
@@ -62,9 +64,9 @@ import java.time.Year
 @Component
 class PRADisciplineRankingReporter(
         private val fileSystem: FileSystem,
-        private val resultRepository: ResultRepository,
+        private val competitorRepository: CompetitorRepository,
         private val disciplineRankingAPI: DisciplineRankingAPI,
-        private val absentCompetitorRepository: AbsentCompetitorRepository
+        private val absentParticipantRepository: AbsentParticipantRepository
 ): DisciplineRankingReporter {
 
     /**
@@ -79,38 +81,43 @@ class PRADisciplineRankingReporter(
 
         try {
 
-            val absentCompetitorList = absentCompetitorRepository.findAll()
+            val absentParticipantList = absentParticipantRepository.findAll()
 
             return data.map { disciplineExport ->
-    
-                val results = resultRepository.findByDisciplineNameAndStarterCompetitorGender(disciplineExport.discipline.name, disciplineExport.gender)
-    
-                results
-                    .filter { !absentCompetitorList.any { absent -> absent.competitor.id == it.starter.competitor.id } }
-                    .groupBy { DateTime(it.starter.competitor.birthday).year }
-                    .map {
-    
-                        val ranking = DisciplineRanking().apply {
-                            year = Year.of(it.key)
-                            isGender = disciplineExport.gender
-                            discipline = disciplineExport.discipline.name
-                            competitors = it.value.map {
-                                DisciplineCompetitor().apply {
-                                    prename = it.starter.competitor.prename
-                                    surname = it.starter.competitor.surname
-                                    clazz = it.starter.competitor.clazz.name
-                                    result = it.result()
-                                    points = it.points
+
+                val competitorList = competitorRepository.findByParticipantGender(disciplineExport.gender)
+
+                competitorList
+                        .filterNot { absentParticipantList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
+                        .groupBy { DateTime(it.participant.birthday).year }
+                        .map {
+
+                            val ranking = DisciplineRanking().apply {
+                                year = Year.of(it.key)
+                                isGender = disciplineExport.gender.asBoolean()
+                                discipline = disciplineExport.discipline.name
+                                competitors = it.value.map {
+                                    DisciplineCompetitor().apply {
+                                        prename = it.participant.prename
+                                        surname = it.participant.surname
+                                        clazz = it.participant.group.name
+
+                                        it.results
+                                                .find { result -> result.discipline.name == disciplineExport.discipline.name }
+                                                .let {
+                                                    result = it!!.result()
+                                                    points = it.points
+                                                }
+                                    }
                                 }
                             }
-                        }
-    
-                        val report = disciplineRankingAPI.createReport(ranking)
-    
-                        fileSystem.write("Rangliste ${disciplineExport.gender.text()} ${disciplineExport.discipline.name} ${it.key}.pdf", report)
-                    }.toSet()
+
+                            val report = disciplineRankingAPI.createReport(ranking)
+                            val file = ApplicationFile("export", "ranking", "Rangliste ${disciplineExport.gender.text()} ${disciplineExport.discipline.name} ${it.key}.pdf")
+                            fileSystem.write(file, report)
+                        }.toSet()
             }.flatten().toSet()
-            
+
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not generate discipline ranking: cause=${ex.message}", ex)
         } catch (ex: ReportAPIException) {
@@ -118,12 +125,18 @@ class PRADisciplineRankingReporter(
         }
     }
     
-    private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
+    private fun Gender.text() = if(this == Gender.MALE) "Knaben" else "Mädchen"
 
     private fun ResultEntity.result(): Result {
-        if (discipline.unit.unit == "Meter" || discipline.unit.unit == "Sekunden") {
-            return Result(result)
+
+        val value: Double = value.toDouble() / discipline.unit.factor
+
+        if (value % 1 == 0.0) {
+            return Result(value.toInt())
         }
-        return Result(result.toInt())
+
+        return Result(value)
     }
+
+    private fun Gender.asBoolean() = this == Gender.MALE
 }

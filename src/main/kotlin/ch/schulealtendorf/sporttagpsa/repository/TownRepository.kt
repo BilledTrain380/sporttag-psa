@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.repository
 
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import org.springframework.data.repository.CrudRepository
+import java.util.*
 
 /**
  * @author nmaerchy
@@ -45,6 +46,6 @@ import org.springframework.data.repository.CrudRepository
  */
 interface TownRepository: CrudRepository<TownEntity?, Int> {
 
-    fun findByZipAndName(zip: String, name: String): TownEntity?
-    
+    fun findByZipAndName(zip: String, name: String): Optional<TownEntity>
+
 }

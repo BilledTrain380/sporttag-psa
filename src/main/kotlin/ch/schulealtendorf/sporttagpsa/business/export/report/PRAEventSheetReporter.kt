@@ -41,8 +41,10 @@ import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.Competitor
 import ch.schulealtendorf.pra.pojo.EventSheet
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
+import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
-import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
@@ -56,7 +58,7 @@ import java.io.IOException
  */
 @Component
 class PRAEventSheetReporter(
-        private val resultRepository: ResultRepository,
+        private val competitorRepository: CompetitorRepository,
         private val fileSystem: FileSystem,
         private val eventSheetAPI: EventSheetAPI
 ): EventSheetReporter {
@@ -73,27 +75,31 @@ class PRAEventSheetReporter(
     override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
 
         try {
-            return data.map { 
-                
-                val resultList = resultRepository.findByDisciplineIdAndStarterCompetitorGenderAndStarterCompetitorClazzId(it.discipline.id, it.gender, it.clazz.id)
-    
-                val eventSheet = EventSheet().apply { 
-                    clazz = it.clazz.name
-                    discipline = it.discipline.name
-                    isGender = it.gender
-                    competitors = resultList.map {
-                        Competitor().apply { 
-                            startnumber = it.starter.number!!
-                            prename = it.starter.competitor.prename
-                            surname = it.starter.competitor.surname
-                            setDistance(it.distance)
+            return data.map { eventSheetData ->
+
+                val competitorList = competitorRepository.findByParticipantGenderAndParticipantGroupName(eventSheetData.gender, eventSheetData.group.name)
+
+                val eventSheet = EventSheet().apply {
+                    clazz = eventSheetData.group.name
+                    discipline = eventSheetData.discipline.name
+                    isGender = eventSheetData.gender.asBoolean()
+                    competitors = competitorList.map {
+                        Competitor().apply {
+                            startnumber = it.startnumber!!
+                            prename = it.participant.prename
+                            surname = it.participant.surname
+                            it.results
+                                    .find { it.discipline.name == eventSheetData.discipline.name }
+                                    ?.let {
+                                        setDistance(it.distance)
+                                    }
                         }
                     }
                 }
-                
+
                 val report = eventSheetAPI.createReport(eventSheet)
-                
-                fileSystem.write("Wettkampfblatt ${it.discipline.name} ${it.clazz.name} ${it.gender.text()}.pdf", report)
+                val file = ApplicationFile("export", "event-sheets", "Wettkampfblatt ${eventSheetData.discipline.name} ${eventSheetData.group.name} ${eventSheetData.gender.text()}.pdf")
+                fileSystem.write(file, report)
             }.toSet()
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
@@ -102,5 +108,7 @@ class PRAEventSheetReporter(
         }
     }
     
-    private fun Boolean.text() = if(this) "Knaben" else "Mädchen"
+    private fun Gender.text() = if(this.asBoolean()) "Knaben" else "Mädchen"
+
+    private fun Gender.asBoolean() = this == Gender.MALE
 }

@@ -38,6 +38,7 @@ package ch.schulealtendorf.sporttagpsa.repository
 
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import org.springframework.data.repository.CrudRepository
+import java.util.*
 
 /**
  * Describes a CRUD repository for a user.
@@ -47,5 +48,5 @@ import org.springframework.data.repository.CrudRepository
  */
 interface UserRepository: CrudRepository<UserEntity, Int> {
     
-    fun findByUsername(username: String): UserEntity?
+    fun findByUsername(username: String): Optional<UserEntity>
 }

@@ -38,7 +38,7 @@ cmake-build-debug/
 ## Plugin-specific files:
 
 # IntelliJ
-/out/
+out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -110,3 +110,6 @@ gradle-app.setting
 
 # h2 database file
 /db
+
+# PSA ngx-admin application
+/src/main/resources/public/app

@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.database
 
 import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder
+import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import javax.sql.DataSource
@@ -58,7 +58,7 @@ class DatasourceConfiguration(
     fun datasource(): DataSource {
         
         return DataSourceBuilder.create()
-                .url("jdbc:h2:${fileSystem.getApplicationDir()}/db/psa;USER=psa-user;PASSWORD=Psa1999\$")
+                .url("jdbc:h2:${fileSystem.getApplicationDir()}/db/psa;USER=psa-user;PASSWORD=Psa1999\$;AUTO_SERVER=TRUE")
                 .username("psa-user")
                 .password("Psa1999\$")
                 .driverClassName("org.h2.Driver")
