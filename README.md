@@ -4,7 +4,7 @@
 
 PSA is a sport event management system.
 
-More info will be available on TODO: Add webpage here
+More info will be available on: https://billedtrain380.github.io/sporttag-psa/
 
 
 ## Getting Started
@@ -39,7 +39,7 @@ gradle junitPlatformTest
 
 ## Deployment
 
-Get the latest version of [PSA](https://github.com/BilledTrain380/sporttag-psa/releases).
+Get the latest version of [PSA](https://billedtrain380.github.io/sporttag-psa/pages/downloads).
 
 PSA is a standalone application. It uses the operating system depending application support directory
 to store its data.
