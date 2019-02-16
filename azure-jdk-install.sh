@@ -2,7 +2,7 @@
 # author: nmaerchy
 # description: Bash script to install a specific openjdk version including openjfx.
 
-url="https://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-x64.tar.gz"
+url="https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz"
 
 # Oracle prevents a download without license agreement with a cookie. Workaround: https://stackoverflow.com/questions/10268583/downloading-java-jdk-on-linux-via-wget-is-shown-license-page-instead
 echo "OpenJDK download started..."
