@@ -17,19 +17,19 @@ jobs:
 
   steps:
 
-  - task: Bash@3
-    displayName: OpenJDK Install
-    inputs:
-      targetType: 'filePath'
-      filePath: azure-jdk-install.sh
+#  - task: Bash@3
+#    displayName: OpenJDK Install
+#    inputs:
+#      targetType: 'filePath'
+#      filePath: azure-jdk-install.sh
 
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '1.8'
-      jdkArchitectureOption: x64
-      jdkSourceOption: localDirectory
-      jdkFile: $(Agent.ToolsDirectory)/jdk-8u201-linux-x64.tar.gz
-      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
+#  - task: JavaToolInstaller@0
+#    inputs:
+#      versionSpec: '1.8'
+#      jdkArchitectureOption: x64
+#      jdkSourceOption: localDirectory
+#      jdkFile: $(Agent.ToolsDirectory)/jdk-8u201-linux-x64.tar.gz
+#      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
 
   - task: Gradle@2
     displayName: Gradle Test
@@ -38,7 +38,7 @@ jobs:
       gradleWrapperFile: 'gradlew'
       gradleOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: 'default'
+      jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       tasks: 'junitPlatformTest'
@@ -57,19 +57,19 @@ jobs:
     inputs:
       versionSpec: '10.x'
 
-  - task: Bash@3
-    displayName: OpenJDK Install
-    inputs:
-      targetType: 'filePath'
-      filePath: azure-jdk-install.sh
-
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '1.8'
-      jdkArchitectureOption: x64
-      jdkSourceOption: localDirectory
-      jdkFile: $(Agent.ToolsDirectory)/jdk-8u201-linux-x64.tar.gz
-      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
+#  - task: Bash@3
+#    displayName: OpenJDK Install
+#    inputs:
+#      targetType: 'filePath'
+#      filePath: azure-jdk-install.sh
+#
+#  - task: JavaToolInstaller@0
+#    inputs:
+#      versionSpec: '1.8'
+#      jdkArchitectureOption: x64
+#      jdkSourceOption: localDirectory
+#      jdkFile: $(Agent.ToolsDirectory)/jdk-8u201-linux-x64.tar.gz
+#      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
 
   - script: git submodule update --init --remote --recursive
     displayName: Get submodules
@@ -81,7 +81,7 @@ jobs:
       gradleWrapperFile: 'gradlew'
       gradleOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: 'default'
+      jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       tasks: 'bootJar'
@@ -131,13 +131,13 @@ jobs:
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        tasks: 'jfxNative'
+        tasks: 'bundleNative'
         options: '-Pmode=gui'
 
     - task: CopyFiles@2
       displayName: 'Copy macOS native'
       inputs:
-        sourceFolder: 'build/jfx/native'
+        sourceFolder: 'build/mac'
         targetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
@@ -170,16 +170,16 @@ jobs:
         gradleWrapperFile: 'gradlew'
         gradleOptions: '-Xmx3072m'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.9'
+        jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        tasks: 'jfxNative'
+        tasks: 'bundleNative'
         options: '-Pmode=gui'
 
     - task: CopyFiles@2
       displayName: 'Copy Windows native'
       inputs:
-        sourceFolder: 'build/jfx/native'
+        sourceFolder: 'build/windows'
         targetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
