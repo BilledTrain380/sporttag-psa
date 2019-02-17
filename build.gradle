@@ -4,6 +4,10 @@ buildscript {
 		springBootVersion = '2.0.2.RELEASE'
 		sporttagPSAVersion = '2.0.0'
 
+        defaultMainClass = 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
+        guiMainClass = 'ch.schulealtendorf.sporttagpsa.FXApplicationKt'
+        springLauncherMainClass = "org.springframework.boot.loader.JarLauncher"
+
         /*
          * Returns the main class depending on the mode command line parameter.
          *
@@ -17,9 +21,9 @@ buildscript {
             def mode = project.hasProperty('mode') ? project.property('mode') : 'tui'
 
             if (mode == 'gui') {
-                return 'ch.schulealtendorf.sporttagpsa.FXApplicationKt'
+                return guiMainClass
             } else if (mode == 'tui') {
-                return 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
+                return defaultMainClass
             }
             
             throw new IllegalArgumentException('Parameter \'mode\' is invalid: value=' + mode)
@@ -43,7 +47,9 @@ buildscript {
         classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
 
         // JavaFX Plugin to build native bundles
-        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+//        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+
+        classpath group: 'org.mini2Dx', name: 'parcl', version: '1.4.0'
 	}
 }
 
@@ -54,7 +60,8 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'application'
-apply plugin: 'javafx-gradle-plugin'
+//apply plugin: 'javafx-gradle-plugin'
+apply plugin: 'org.mini2Dx.parcl'
 
 mainClassName = getMainClass()
 
@@ -219,39 +226,93 @@ task processWebapp(type: Copy) {
 
 bootJar.dependsOn("processWebapp")
 
-jfx {
-    mainClass = "org.springframework.boot.loader.JarLauncher"
-    skipCopyingDependencies = true
+parcl {
 
-    // jfxNative
-    identifier = "BilledTrain380"
-    nativeReleaseVersion = "$sporttagPSAVersion"
-    vendor = "BilledTrain380"
-    bundleArguments
-    appName = "PSA"
-    skipMainClassScanning = true
+    exe {
+        vmArgs = ["-Xmx1g"]
+        exeName = project.name
+        zipName = "${project.name}_Windows.zip"
+        withJre(System.getProperty("java.home"))
+    }
 
-    // TODO: add jvm arguments to optimize runtime
+    app {
+        vmArgs = ["-Xmx1g"]
+        appName = project.name
+        displayName = project.name
+        zipName = "${project.name}_macOS.zip"
+        icon = "src/main/deploy/package/macosx/PSA.icns"
+        identifier = "ch.schulealtendorf.psa"
+        applicationCategory = "public.app-category.sports"
+        copyright = "Copyright 2019 BilledTrain380"
+        withJre(System.getProperty("java.home"))
+    }
+}
+
+// Set the GUI Main Class so parcl will use the GUI version.
+installBootDist {
+    mainClassName = "${guiMainClass}"
+}
+
+// Rename to just the project name in order to get it found by parcl.
+task renameBootDist {
+    doLast {
+        file("build/install/${project.name}-boot").renameTo(file("build/install/${project.name}"))
+    }
+    mustRunAfter("installBootDist")
+}
+
+// Define tasks dependencies in order that parlc has the correct install available.
+bundleNative.dependsOn("installBootDist", "renameBootDist")
+
+// Define the Spring Launcher as main class, because parcl uses the repackaged Spring Boot Jar.
+bundleNative {
+    mainClassName = "${springLauncherMainClass}"
 }
 
 /*
- * This task must never be executed. In order to build the application,
- * the bootJar task is used.
+ * Always skip this tasks because the output does not work when using spring boot.
+ * parcl will use this task to get a build. We customize that step with installBootDist config above.
  */
-jfxJar {
+installDist {
     onlyIf {
         false
     }
-    doLast {
-        println("Skip jfxJar. bootJar is used to build this application.")
-    }
 }
 
-// Copies the jar file generated from bootJar task to the jfx app output directory.
-task jfxPrepare(type: Copy) {
-    dependsOn("bootJar")
-    from "build/libs"
-    into "build/jfx/app"
-}
 
-jfxNative.dependsOn("jfxPrepare")
+//jfx {
+//    mainClass = "org.springframework.boot.loader.JarLauncher"
+//    skipCopyingDependencies = true
+//
+//    // jfxNative
+//    identifier = "BilledTrain380"
+//    nativeReleaseVersion = "$sporttagPSAVersion"
+//    vendor = "BilledTrain380"
+//    bundleArguments
+//    appName = "PSA"
+//    skipMainClassScanning = true
+//
+//    // TODO: add jvm arguments to optimize runtime
+//}
+
+///*
+// * This task must never be executed. In order to build the application,
+// * the bootJar task is used.
+// */
+//jfxJar {
+//    onlyIf {
+//        false
+//    }
+//    doLast {
+//        println("Skip jfxJar. bootJar is used to build this application.")
+//    }
+//}
+//
+//// Copies the jar file generated from bootJar task to the jfx app output directory.
+//task jfxPrepare(type: Copy) {
+//    dependsOn("bootJar")
+//    from "build/libs"
+//    into "build/jfx/app"
+//}
+//
+//jfxNative.dependsOn("jfxPrepare")
