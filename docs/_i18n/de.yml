@@ -48,7 +48,7 @@ page:
 
     gui:
       title: Kein Command Line Fan?
-      lead: PSA kann mit einem minimalen Administrations GUI verwendet werden. Sie müssen dafür keinerlei Command Line Befehle benutzen.
+      lead: PSA kann mit einem minimalen Control Panel verwendet werden. Sie müssen dafür keinerlei Command Line Befehle benutzen.
       feature:
         status: Server status
         start: Start Server
