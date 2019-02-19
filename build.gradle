@@ -5,7 +5,7 @@ buildscript {
 		sporttagPSAVersion = '2.0.0'
 
         defaultMainClass = 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
-        guiMainClass = 'ch.schulealtendorf.sporttagpsa.FXApplicationKt'
+        guiMainClass = 'ch.schulealtendorf.sporttagpsa.GUIApplicationKt'
         springLauncherMainClass = "org.springframework.boot.loader.JarLauncher"
 
         /*
@@ -46,9 +46,7 @@ buildscript {
         // JUnit Platform TestEngine for Spek
         classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
 
-        // JavaFX Plugin to build native bundles
-//        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
-
+        // Packager for native bundles
         classpath group: 'org.mini2Dx', name: 'parcl', version: '1.4.0'
 	}
 }
@@ -60,10 +58,13 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'application'
-//apply plugin: 'javafx-gradle-plugin'
 apply plugin: 'org.mini2Dx.parcl'
 
-mainClassName = getMainClass()
+mainClassName = defaultMainClass
+
+bootJar {
+    mainClassName = getMainClass()
+}
 
 junitPlatform {
     filters {
@@ -232,7 +233,7 @@ parcl {
         vmArgs = ["-Xmx1g"]
         exeName = project.name
         zipName = "${project.name}_Windows.zip"
-        withJre(System.getProperty("java.home"))
+        withJre(System.getenv("JAVA_HOME"))
     }
 
     app {
@@ -244,18 +245,17 @@ parcl {
         identifier = "ch.schulealtendorf.psa"
         applicationCategory = "public.app-category.sports"
         copyright = "Copyright 2019 BilledTrain380"
-        withJre(System.getProperty("java.home"))
+        withJre(System.getenv("JAVA_HOME"))
     }
-}
-
-// Set the GUI Main Class so parcl will use the GUI version.
-installBootDist {
-    mainClassName = "${guiMainClass}"
 }
 
 // Rename to just the project name in order to get it found by parcl.
 task renameBootDist {
     doLast {
+        def dist = file("build/install/${project.name}")
+        if (dist.exists()) {
+            dist.delete()
+        }
         file("build/install/${project.name}-boot").renameTo(file("build/install/${project.name}"))
     }
     mustRunAfter("installBootDist")
@@ -278,41 +278,3 @@ installDist {
         false
     }
 }
-
-
-//jfx {
-//    mainClass = "org.springframework.boot.loader.JarLauncher"
-//    skipCopyingDependencies = true
-//
-//    // jfxNative
-//    identifier = "BilledTrain380"
-//    nativeReleaseVersion = "$sporttagPSAVersion"
-//    vendor = "BilledTrain380"
-//    bundleArguments
-//    appName = "PSA"
-//    skipMainClassScanning = true
-//
-//    // TODO: add jvm arguments to optimize runtime
-//}
-
-///*
-// * This task must never be executed. In order to build the application,
-// * the bootJar task is used.
-// */
-//jfxJar {
-//    onlyIf {
-//        false
-//    }
-//    doLast {
-//        println("Skip jfxJar. bootJar is used to build this application.")
-//    }
-//}
-//
-//// Copies the jar file generated from bootJar task to the jfx app output directory.
-//task jfxPrepare(type: Copy) {
-//    dependsOn("bootJar")
-//    from "build/libs"
-//    into "build/jfx/app"
-//}
-//
-//jfxNative.dependsOn("jfxPrepare")
