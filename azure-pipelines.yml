@@ -7,6 +7,7 @@ trigger:
 - master
 - develop
 - release/*
+- hotfix/*
 
 jobs:
 
@@ -31,7 +32,7 @@ jobs:
 
 
 - job: Java
-  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')))
 
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -78,7 +79,7 @@ jobs:
       artifactName: 'PSA Java'
 
 - job: macOS
-  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')))
 
   pool:
     vmImage: 'macOS-10.13'
@@ -121,7 +122,7 @@ jobs:
 
 
 - job: Windows
-  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')))
 
   pool:
     vmImage: 'vs2017-win2016'
