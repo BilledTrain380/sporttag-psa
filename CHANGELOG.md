@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Redesign PSA index page to avoid confusion with PSA Product Website.
+* Replace JavaFX Control Panel with Swing Components
 
 ## [2.0.0-rc-01] - 2018-12-20
 
