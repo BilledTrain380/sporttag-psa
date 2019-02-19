@@ -1,6 +1,6 @@
 # PSA
 
-[![Build Status](https://dev.azure.com/billedtrain380/PSA/_apis/build/status/BilledTrain380.sporttag-psa?branchName=master)](https://dev.azure.com/billedtrain380/PSA/_build/latest?definitionId=1?branchName=master)
+[![Build Status](https://dev.azure.com/billedtrain380/PSA/_apis/build/status/PSA%20Github?branchName=master)](https://dev.azure.com/billedtrain380/PSA/_build/latest?definitionId=3&branchName=master)
 
 PSA is a sport event management system.
 
@@ -14,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * [Gradle](https://gradle.org/) 4.6+
-* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8+ (including JavaFX)
+* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8+
 
 ### Installing
 
@@ -53,7 +53,7 @@ Then simply execute the jar file.
 java -jar sporttag-psa.jar
 ```
 
-> The java version does not have a server managing GUI. Therefore it is
+> The java version does not have a control panel. Therefore it is
 > recommended to run it in a terminal or simply setup a service to run the java file.
 
 ### macOS
@@ -61,13 +61,16 @@ java -jar sporttag-psa.jar
 PSA is available as a macOS app. Just double click the .app file
 on a macOS system. The JRE is bundled, therefore no need to install Java.
 
-> The macOS version is only available with a server managing GUI. If you want to run
+> The macOS version is only available with a control panel. If you want to run
 > the application in a terminal, consider using the java version.
 
 ### Windows
 
 PSA is available as a Windows app. Double click the .exe file on a windows system.
 The JRE is bundled, therefore no need to install Java.
+
+> The Windows version is only available with a control panel. If you want to run
+> the application in a terminal, consider using the java version.
 
 ## Roadmap
 
