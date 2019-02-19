@@ -17,20 +17,6 @@ jobs:
 
   steps:
 
-#  - task: Bash@3
-#    displayName: OpenJDK Install
-#    inputs:
-#      targetType: 'filePath'
-#      filePath: azure-jdk-install.sh
-
-#  - task: JavaToolInstaller@0
-#    inputs:
-#      versionSpec: '1.8'
-#      jdkArchitectureOption: x64
-#      jdkSourceOption: localDirectory
-#      jdkFile: $(Agent.ToolsDirectory)/jdk-8u201-linux-x64.tar.gz
-#      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
-
   - task: Gradle@2
     displayName: Gradle Test
     inputs:
@@ -56,20 +42,6 @@ jobs:
     displayName: NodeJS Install
     inputs:
       versionSpec: '10.x'
-
-#  - task: Bash@3
-#    displayName: OpenJDK Install
-#    inputs:
-#      targetType: 'filePath'
-#      filePath: azure-jdk-install.sh
-#
-#  - task: JavaToolInstaller@0
-#    inputs:
-#      versionSpec: '1.8'
-#      jdkArchitectureOption: x64
-#      jdkSourceOption: localDirectory
-#      jdkFile: $(Agent.ToolsDirectory)/jdk-8u201-linux-x64.tar.gz
-#      jdkDestinationDirectory: $(Agent.ToolsDirectory)/Java8
 
   - script: git submodule update --init --remote --recursive
     displayName: Get submodules
@@ -131,13 +103,14 @@ jobs:
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        tasks: 'bundleNative'
+        tasks: 'bundleNativeZip'
         options: '-Pmode=gui'
 
     - task: CopyFiles@2
       displayName: 'Copy macOS native'
       inputs:
-        sourceFolder: 'build/mac'
+        sourceFolder: 'build'
+        contents: 'PSA_macOS.zip'
         targetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
@@ -173,13 +146,14 @@ jobs:
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        tasks: 'bundleNative'
+        tasks: 'bundleNativeZip'
         options: '-Pmode=gui'
 
     - task: CopyFiles@2
       displayName: 'Copy Windows native'
       inputs:
-        sourceFolder: 'build/windows'
+        sourceFolder: 'build'
+        contents: 'PSA_Windows.zip'
         targetFolder: $(Build.ArtifactStagingDirectory)
 
     - task: PublishBuildArtifacts@1
