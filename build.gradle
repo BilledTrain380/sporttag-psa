@@ -113,6 +113,26 @@ project(':core') {
     }
 }
 
+project(':shared') {
+    apply plugin: 'idea'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'kotlin-spring'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web')
+    }
+
+    bootJar {
+        enabled = false
+    }
+}
+
 project(":rules") {
 
     apply plugin: 'idea'
