@@ -194,8 +194,6 @@ dependencies {
 
     // to enable thymeleaf legacy html5 mode
 	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
-
-	compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
 	
 	// webjars
 	compile 'org.webjars:jquery:3.2.0'

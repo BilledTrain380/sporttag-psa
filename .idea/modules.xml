@@ -5,6 +5,12 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/PSA.iml" filepath="$PROJECT_DIR$/.idea/modules/PSA.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/PSA_main.iml" filepath="$PROJECT_DIR$/.idea/modules/PSA_main.iml" group="PSA" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/PSA_test.iml" filepath="$PROJECT_DIR$/.idea/modules/PSA_test.iml" group="PSA" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core.iml" filepath="$PROJECT_DIR$/.idea/modules/core.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/core_main.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/core_test.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dto.iml" filepath="$PROJECT_DIR$/.idea/modules/dto.iml" group="dto" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dto/dto_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dto/dto_main.iml" group="dto" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dto/dto_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dto/dto_test.iml" group="dto" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem/filesystem.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem/filesystem.iml" group="filesystem" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem/filesystem_main.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem/filesystem_main.iml" group="filesystem" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem/filesystem_test.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem/filesystem_test.iml" group="filesystem" />
@@ -12,6 +18,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules.iml" group="rules" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules_main.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules_main.iml" group="rules" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules_test.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules_test.iml" group="rules" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared.iml" filepath="$PROJECT_DIR$/.idea/modules/shared.iml" group="shared" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared_main.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared_main.iml" group="shared" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared_test.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared_test.iml" group="shared" />
     </modules>
   </component>
 </project>

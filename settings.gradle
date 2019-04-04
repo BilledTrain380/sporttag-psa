@@ -37,3 +37,7 @@ rootProject.name = "PSA"
 include 'rules'
 include 'filesystem'
 include 'psa-kitten'
+include 'shared'
+include 'core'
+include 'dto'
+
