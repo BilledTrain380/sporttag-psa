@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2019 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,10 +34,10 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.business.rulebook
+package ch.schulealtendorf.psa.shared.reporting.rulebook
 
-import ch.schulealtendorf.rules.BasicRuleBook
-import ch.schulealtendorf.rules.Rule
+import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.BasicRuleBook
+import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.Rule
 import org.springframework.stereotype.Component
 
 /**
