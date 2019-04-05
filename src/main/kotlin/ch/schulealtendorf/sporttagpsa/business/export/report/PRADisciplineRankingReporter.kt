@@ -41,10 +41,10 @@ import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.DisciplineCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository

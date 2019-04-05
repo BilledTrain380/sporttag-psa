@@ -40,9 +40,9 @@ import ch.schulealtendorf.pra.api.EventSheetAPI
 import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.Competitor
 import ch.schulealtendorf.pra.pojo.EventSheet
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
-import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component

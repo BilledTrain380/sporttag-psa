@@ -40,8 +40,8 @@ import ch.schulealtendorf.pra.api.ParticipantListAPI
 import ch.schulealtendorf.pra.api.ReportAPIException
 import ch.schulealtendorf.pra.pojo.Participant
 import ch.schulealtendorf.pra.pojo.ParticipantList
-import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.model.Sport
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository

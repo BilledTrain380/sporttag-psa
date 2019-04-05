@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.web.participantlist
 
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
 import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Sport
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize

@@ -36,11 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryModel
+import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
-import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryModel
-import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.*
-import ch.schulealtendorf.sporttagpsa.model.Competitor
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.model.Sport

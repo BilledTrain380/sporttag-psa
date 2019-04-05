@@ -42,9 +42,9 @@ import ch.schulealtendorf.pra.pojo.Discipline
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.pra.pojo.TotalCompetitor
 import ch.schulealtendorf.pra.pojo.TotalRanking
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository

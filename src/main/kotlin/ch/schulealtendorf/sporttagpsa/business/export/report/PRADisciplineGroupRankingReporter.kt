@@ -42,8 +42,8 @@ import ch.schulealtendorf.pra.pojo.Discipline
 import ch.schulealtendorf.pra.pojo.DisciplineGroupCompetitor
 import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
-import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository

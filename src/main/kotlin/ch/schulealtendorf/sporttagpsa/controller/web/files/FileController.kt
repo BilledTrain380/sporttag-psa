@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.web.files
 
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

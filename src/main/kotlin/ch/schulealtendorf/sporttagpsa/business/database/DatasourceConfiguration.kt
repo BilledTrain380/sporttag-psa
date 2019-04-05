@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.database
 
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
+import ch.schulealtendorf.psa.core.io.FileSystem
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

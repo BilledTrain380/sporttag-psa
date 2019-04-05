@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.web.ranking
 
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
@@ -43,7 +44,6 @@ import ch.schulealtendorf.sporttagpsa.business.export.RankingExport
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
 import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller

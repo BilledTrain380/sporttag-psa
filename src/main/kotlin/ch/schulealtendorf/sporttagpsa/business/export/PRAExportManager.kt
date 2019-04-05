@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.report.*
-import ch.schulealtendorf.sporttagpsa.filesystem.ApplicationFile
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.stereotype.Component
 import java.io.File

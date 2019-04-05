@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.web.eventsheets
 
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetExport
@@ -44,7 +45,6 @@ import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
 import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
-import ch.schulealtendorf.sporttagpsa.filesystem.FileSystem
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
