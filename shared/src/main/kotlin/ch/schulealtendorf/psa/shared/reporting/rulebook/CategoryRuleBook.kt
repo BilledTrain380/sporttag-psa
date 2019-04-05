@@ -38,18 +38,18 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook
 
 /**
  * Describes a rule book that provides the distance for a specific category.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
 interface CategoryRuleBook {
 
     /**
-     * Defines the category depending on the given 
+     * Defines the category depending on the given
      * {@code fact} and then determines the distance.
-     * 
+     *
      * @param fact the fact to use
-     * 
+     *
      * @return the resulting distance or null if no distance applies for the given {@code fact}
      */
     fun getDistance(fact: CategoryModel): String?

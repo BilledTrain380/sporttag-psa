@@ -36,8 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.entity.*
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Coach
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.Town
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -58,9 +66,9 @@ class ParticipantManagerImpl(
         private val absentRepository: AbsentParticipantRepository,
         private val townRepository: TownRepository,
         private val groupRepository: GroupRepository
-): ParticipantManager {
+) : ParticipantManager {
 
-    override fun getParticipants() =  participantRepository.findAll().map { it.toParticipant() }
+    override fun getParticipants() = participantRepository.findAll().map { it.toParticipant() }
 
     override fun getParticipant(id: Int): Optional<Participant> = participantRepository.findById(id).map { it.toParticipant() }
 

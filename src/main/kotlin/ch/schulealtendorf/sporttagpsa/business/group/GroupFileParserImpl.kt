@@ -49,7 +49,7 @@ import kotlin.streams.toList
 
 /**
  * An implementation of a FileReader for a competitor input file.
- * 
+ *
  * @author nmaerchy
  * @version 2.0.0
  * @since 1.0.0
@@ -125,7 +125,7 @@ class GroupFileParserImpl : GroupFileParser {
         return map { mapper(index++, it) }
     }
 
-    private fun List<String>.column(endIndex: Int) = this.subList(0, endIndex).joinToString(",").length +1
+    private fun List<String>.column(endIndex: Int) = this.subList(0, endIndex).joinToString(",").length + 1
 
     private fun String.toDate(): Optional<Date> {
 

@@ -43,7 +43,11 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.json
 import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -67,7 +71,7 @@ class ParticipationController(
     fun updateParticipation(@RequestBody participation: RestParticipationStatus) {
 
         when (participation.status) {
-            ParticipationStatus.OPEN -> throw ForbiddenException("Participation can not be set to OPEN. Use RESET to reopen a participation")
+            ParticipationStatus.OPEN  -> throw ForbiddenException("Participation can not be set to OPEN. Use RESET to reopen a participation")
             ParticipationStatus.CLOSE -> participationManager.closeParticipation()
             ParticipationStatus.RESET -> participationManager.resetParticipation()
         }

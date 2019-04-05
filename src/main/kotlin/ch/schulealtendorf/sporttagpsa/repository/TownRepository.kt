@@ -44,7 +44,7 @@ import java.util.*
  * @author nmaerchy
  * @version 0.0.1
  */
-interface TownRepository: CrudRepository<TownEntity?, Int> {
+interface TownRepository : CrudRepository<TownEntity?, Int> {
 
     fun findByZipAndName(zip: String, name: String): Optional<TownEntity>
 

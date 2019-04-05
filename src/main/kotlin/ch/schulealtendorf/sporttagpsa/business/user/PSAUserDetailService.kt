@@ -54,7 +54,7 @@ import org.springframework.stereotype.Component
 @Qualifier("psa-user-service")
 class PSAUserDetailService(
         private val userRepository: UserRepository
-): UserDetailsService {
+) : UserDetailsService {
 
     /**
      * Locates the user based on the username. In the actual implementation, the search
@@ -71,18 +71,18 @@ class PSAUserDetailService(
      * GrantedAuthority
      */
     override fun loadUserByUsername(username: String?): UserDetails {
-        
+
         val userEntity = userRepository.findByUsername(username ?: "")
                 .orElseThrow { throw UsernameNotFoundException("Could not find user: name=$username") }
 
         return User(
-                userEntity.username, 
-                userEntity.password, 
-                userEntity.enabled, 
-                true, 
-                true, 
-                true, 
-                userEntity.authorities.map { 
+                userEntity.username,
+                userEntity.password,
+                userEntity.enabled,
+                true,
+                true,
+                true,
+                userEntity.authorities.map {
                     SimpleGrantedAuthority(it.role) as GrantedAuthority
                 }
         )

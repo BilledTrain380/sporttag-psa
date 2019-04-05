@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
 @Entity
 @Table(name = "AUTHORITY")
 data class AuthorityEntity(
-        
+
         @Id
         @NotNull
         @Size(min = 1, max = 20)

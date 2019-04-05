@@ -45,36 +45,36 @@ import kotlin.reflect.KClass
 
 /**
  * Describes a rule book to add rules and run facts.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.1
  */
-open class BasicRuleBook<T: Any, K: Any>(
+open class BasicRuleBook<T : Any, K : Any>(
         private val fact: KClass<T>,
         private val result: KClass<K>
 ) {
-    
+
     private val ruleBook: RuleBook<K> = RuleBookBuilder.create()
             .withResultType(result.java)
             .withDefaultResult(null)
             .build()
-    
+
     fun addRule(rule: Rule<T, K>) {
-        
+
         val ruleModel: com.deliveredtechnologies.rulebook.model.Rule<T, K> = RuleBuilder.create()
                 .withFactType(fact.java)
                 .withResultType(result.java)
                 .`when` { rule.wheneverMod(it.getValue("input")) }
                 .then { facts, result -> result.value = rule.then(facts.getValue("input")) }
                 .build()
-        
+
         ruleBook.addRule(ruleModel)
     }
-    
+
     fun addRuleSet(ruleSet: RuleSet<T, K>) {
         ruleSet.getRules().forEach { addRule(it) }
     }
-    
+
     fun run(fact: T): K? {
 
         val facts: NameValueReferableMap<Any> = FactMap()
@@ -82,11 +82,11 @@ open class BasicRuleBook<T: Any, K: Any>(
 
         ruleBook.setDefaultResult(null)
         ruleBook.run(facts)
-        
+
         if (ruleBook.result.isPresent) {
             return ruleBook.result.get().value
         }
-        
+
         throw IllegalStateException("No result is available.")
     }
 }

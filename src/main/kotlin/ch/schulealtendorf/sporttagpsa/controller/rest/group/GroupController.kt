@@ -41,7 +41,11 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * Rest controller for {@link Group}.
@@ -78,13 +82,13 @@ class GroupController(
         return this
                 .filter {
                     (competitive == null) ||
-                    competitive && it.isCompetitive() ||
-                    !competitive && !it.isCompetitive()
+                            competitive && it.isCompetitive() ||
+                            !competitive && !it.isCompetitive()
                 }
                 .filter {
                     (pendingParticipation == null) ||
-                    pendingParticipation && it.hasPendingParticipation() ||
-                    !pendingParticipation && !it.hasPendingParticipation()
+                            pendingParticipation && it.hasPendingParticipation() ||
+                            !pendingParticipation && !it.hasPendingParticipation()
                 }
     }
 

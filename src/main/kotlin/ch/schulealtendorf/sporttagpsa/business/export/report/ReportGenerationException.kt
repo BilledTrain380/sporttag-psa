@@ -40,11 +40,11 @@ import java.io.IOException
 
 /**
  * Indicates an exception during the report generation.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-class ReportGenerationException: IOException {
+class ReportGenerationException : IOException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)

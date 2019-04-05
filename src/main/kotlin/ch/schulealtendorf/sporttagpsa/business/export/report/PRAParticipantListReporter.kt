@@ -53,7 +53,7 @@ import java.io.IOException
 /**
  * Participant list reporter that uses PRA.
  * https://github.com/BilledTrain380/PRA
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -63,7 +63,7 @@ class PRAParticipantListReporter(
         private val participantRepository: ParticipantRepository,
         private val participantListAPI: ParticipantListAPI,
         private val absentCompetitorRepository: AbsentParticipantRepository
-): ParticipantListReporter {
+) : ParticipantListReporter {
 
     /**
      * Generates reports depending on the given {@code data}.

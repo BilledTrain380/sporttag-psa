@@ -45,32 +45,32 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for a skipping rule set.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-object SkippingRuleSetSpec: Spek({
-    
+object SkippingRuleSetSpec : Spek({
+
     describe("a skipping rule set") {
 
         val male = true
         val female = false
-        
+
         val ruleSet = SkippingRuleSet()
-        
+
         given("a formula model") {
-            
+
             on("girls") {
 
                 val model = FormulaModel("Seilspringen", null, 170.0, female)
                 val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-                
+
                 it("should return the resulting points") {
                     val expected = 598
                     assertEquals(expected, points)
                 }
             }
-            
+
             on("boys") {
 
                 val model = FormulaModel("Seilspringen", null, 88.0, male)

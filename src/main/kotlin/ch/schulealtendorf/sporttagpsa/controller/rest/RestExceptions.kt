@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
  * @since 2.0.0
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-class BadRequestException: RuntimeException {
+class BadRequestException : RuntimeException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)
@@ -61,7 +61,7 @@ class BadRequestException: RuntimeException {
  * @since 2.0.0
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-class NotFoundException: RuntimeException {
+class NotFoundException : RuntimeException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)
@@ -76,7 +76,7 @@ class NotFoundException: RuntimeException {
  * @since 2.0.0
  */
 @ResponseStatus(HttpStatus.FORBIDDEN)
-class ForbiddenException: RuntimeException {
+class ForbiddenException : RuntimeException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)

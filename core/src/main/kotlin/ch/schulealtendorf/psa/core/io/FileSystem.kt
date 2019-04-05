@@ -41,7 +41,7 @@ import java.io.InputStream
 
 /**
  * Describes a abstraction of the file system used by Sporttag PSA.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */

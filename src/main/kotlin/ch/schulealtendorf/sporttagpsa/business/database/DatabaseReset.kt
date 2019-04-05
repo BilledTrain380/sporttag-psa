@@ -38,8 +38,8 @@ package ch.schulealtendorf.sporttagpsa.business.database
 
 /**
  * Describes a {@link Runnable} to reset the database.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface DatabaseReset: Runnable
+interface DatabaseReset : Runnable

@@ -42,7 +42,7 @@ package ch.schulealtendorf.sporttagpsa.business.user
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-class UserNotFoundException: Exception {
+class UserNotFoundException : Exception {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)

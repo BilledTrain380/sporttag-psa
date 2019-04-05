@@ -57,7 +57,7 @@ import java.time.Year
 /**
  * Total ranking reporter that uses PRA.
  * https://github.com/BilledTrain380/PRA
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -67,7 +67,7 @@ class PRATotalRankingReporter(
         private val competitorRepository: CompetitorRepository,
         private val totalRankingAPI: TotalRankingAPI,
         private val absentParticipantRepository: AbsentParticipantRepository
-): TotalRankingReporter {
+) : TotalRankingReporter {
 
     /**
      * Generates total ranking reports by the given {@code data}.
@@ -175,7 +175,7 @@ class PRATotalRankingReporter(
         return Result(value)
     }
 
-    private fun Gender.text() = if(this == Gender.MALE) "Knaben" else "Mädchen"
+    private fun Gender.text() = if (this == Gender.MALE) "Knaben" else "Mädchen"
 
     private fun Gender.asBoolean() = this == Gender.MALE
 }

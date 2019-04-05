@@ -60,7 +60,7 @@ import kotlin.test.assertFailsWith
  * @version 1.0.0
  * @since 1.0.0
  */
-object GroupFileParserImplSpec : Spek ({
+object GroupFileParserImplSpec : Spek({
 
     fun convertDate(date: String): Date {
 

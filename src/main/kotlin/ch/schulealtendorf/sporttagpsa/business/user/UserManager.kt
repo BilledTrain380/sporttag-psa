@@ -36,14 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
-import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
+import ch.schulealtendorf.sporttagpsa.model.User
 import java.util.*
 
 /**
  * Describes a manager to create, update or delete a user.
  * The manager encrypts the password field.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -84,9 +84,9 @@ interface UserManager {
     /**
      * Gets the user by the given {@code userId} or an empty Optional,
      * if the user does not exist.
-     * 
+     *
      * @param userId id of the user
-     * 
+     *
      * @return the resulting user or an empty Optional, if the user does not exist
      */
     fun getOne(userId: Int): Optional<User>
@@ -105,7 +105,7 @@ interface UserManager {
      * Deletes the user matching the given {@code userId}.
      *
      * The user representing the administrator can not be deleted.
-     * 
+     *
      * @param userId id of the user to delete
      *
      * @throws IllegalArgumentException if the given id belongs to the administrator user

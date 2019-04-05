@@ -49,7 +49,7 @@ import org.springframework.stereotype.Component
 @Component
 class SportManagerImpl(
         private val sportRepository: SportRepository
-): SportManager {
+) : SportManager {
 
     override fun getSports(): List<Sport> {
         return sportRepository.findAll().map { Sport(it.name) }

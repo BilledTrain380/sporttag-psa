@@ -41,7 +41,7 @@ import ch.schulealtendorf.sporttagpsa.model.Gender
 
 /**
  * Data class for competitors in a flat data structure.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  * @since 1.0.0

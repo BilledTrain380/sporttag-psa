@@ -37,25 +37,29 @@
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
 import ch.schulealtendorf.pra.ReportAPIFactory
-import ch.schulealtendorf.pra.api.*
+import ch.schulealtendorf.pra.api.DisciplineGroupRankingAPI
+import ch.schulealtendorf.pra.api.DisciplineRankingAPI
+import ch.schulealtendorf.pra.api.EventSheetAPI
+import ch.schulealtendorf.pra.api.ParticipantListAPI
+import ch.schulealtendorf.pra.api.TotalRankingAPI
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class PRABeanConfiguration {
-    
+
     @Bean
     fun disciplineRankingAPI(): DisciplineRankingAPI = ReportAPIFactory.getDisciplineRanking()
-    
+
     @Bean
     fun disciplineGroupRankingAPI(): DisciplineGroupRankingAPI = ReportAPIFactory.getDisciplineGroupRanking()
-    
+
     @Bean
     fun totalRankingAPI(): TotalRankingAPI = ReportAPIFactory.getTotalRanking()
-    
+
     @Bean
     fun participantListAPI(): ParticipantListAPI = ReportAPIFactory.getParticipantList()
-    
+
     @Bean
     fun eventSheetAPI(): EventSheetAPI = ReportAPIFactory.getEventSheet()
 }

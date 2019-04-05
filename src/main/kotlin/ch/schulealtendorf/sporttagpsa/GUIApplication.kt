@@ -38,15 +38,25 @@ package ch.schulealtendorf.sporttagpsa
 
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
-import java.awt.*
+import java.awt.BorderLayout
+import java.awt.Component
+import java.awt.Desktop
+import java.awt.Font
+import java.awt.GridLayout
 import java.net.URI
 import java.util.*
 import javax.imageio.ImageIO
-import javax.swing.*
+import javax.swing.BorderFactory
+import javax.swing.BoxLayout
+import javax.swing.ImageIcon
+import javax.swing.JButton
+import javax.swing.JFrame
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.SwingUtilities
 import kotlin.concurrent.thread
 
-
-class ControlPanel: JFrame("PSA Control Panel") {
+class ControlPanel : JFrame("PSA Control Panel") {
 
     private val statusLabel = JLabel("Status")
     private val statusText = JLabel("STOPPED")
@@ -135,8 +145,6 @@ class ControlPanel: JFrame("PSA Control Panel") {
         isVisible = true
         defaultCloseOperation = EXIT_ON_CLOSE
     }
-
-
 
     private fun start() {
 

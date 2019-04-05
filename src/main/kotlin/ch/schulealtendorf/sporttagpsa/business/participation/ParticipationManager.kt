@@ -36,14 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
+import ch.schulealtendorf.sporttagpsa.model.Sport
 import java.util.*
 
 /**
  * Describes a manager for the participation.
  * Provides various operations with a {@link Participant}. In addition,
  * the participation status can be modified.
- * 
+ *
  * @author nmaerchy
  * @version 2.0.0
  * @since 1.0.0

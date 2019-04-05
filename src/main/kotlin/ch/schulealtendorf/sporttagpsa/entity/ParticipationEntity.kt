@@ -51,12 +51,12 @@ const val MAIN_PARTICIPATION = "main"
 @Entity
 @Table(name = "PARTICIPATION")
 data class ParticipationEntity @JvmOverloads constructor(
-        
+
         @Id
         @NotNull
         @Size(min = 1, max = 10)
         var name: String = MAIN_PARTICIPATION,
-        
+
         @NotNull
         @Size(min = 1, max = 10)
         var status: String = "OPEN"

@@ -36,7 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest
 
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Competitor
+import ch.schulealtendorf.sporttagpsa.model.Discipline
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
+import ch.schulealtendorf.sporttagpsa.model.Result
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.Town
+import ch.schulealtendorf.sporttagpsa.model.User
 
 // Data classes representing the JSON object, where the model class itself does not fit.
 

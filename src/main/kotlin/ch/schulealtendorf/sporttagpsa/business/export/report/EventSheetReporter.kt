@@ -40,8 +40,8 @@ import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
 
 /**
  * Describes a reporter for event sheets.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface EventSheetReporter: Reporter<Iterable<EventSheetDisciplineExport>>
+interface EventSheetReporter : Reporter<Iterable<EventSheetDisciplineExport>>

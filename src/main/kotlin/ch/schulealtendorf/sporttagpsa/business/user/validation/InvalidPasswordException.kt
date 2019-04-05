@@ -43,7 +43,7 @@ package ch.schulealtendorf.sporttagpsa.business.user.validation
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-class InvalidPasswordException: Exception {
+class InvalidPasswordException : Exception {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)

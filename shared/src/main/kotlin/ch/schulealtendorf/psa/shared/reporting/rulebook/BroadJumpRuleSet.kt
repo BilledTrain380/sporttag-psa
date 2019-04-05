@@ -40,31 +40,31 @@ import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.RuleSet
 
 /**
  * Defines all the rules that can be applied to a borad jump.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-class BroadJumpRuleSet: RuleSet<FormulaModel, Int>() {
+class BroadJumpRuleSet : RuleSet<FormulaModel, Int>() {
 
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
     override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Weitsprung" }
-    
+
     init {
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { if (it < 1.81) 1 else ((220.628792 * (((it * 100) - 180) / 100)) pow 1.0).toInt() }
-                    
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
                 }
         )
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { if (it < 1.91) 1 else ((180.85908 * (((it * 100) - 190) / 100)) pow 1.0).toInt() }
-                    
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
                 }
         )

@@ -43,12 +43,12 @@ import java.util.*
 
 /**
  * Describes a CRUD repository for the {@link StarterEntity}.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface CompetitorRepository: CrudRepository<CompetitorEntity, Int> {
-    
+interface CompetitorRepository : CrudRepository<CompetitorEntity, Int> {
+
     fun findByParticipantGender(gender: Gender): List<CompetitorEntity>
 
     fun findByParticipantId(id: Int): Optional<CompetitorEntity>

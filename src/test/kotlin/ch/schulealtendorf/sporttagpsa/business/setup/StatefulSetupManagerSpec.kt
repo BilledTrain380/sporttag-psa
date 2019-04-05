@@ -36,14 +36,17 @@
 
 package ch.schulealtendorf.sporttagpsa.business.setup
 
-import ch.schulealtendorf.sporttagpsa.business.setup.SetupInformation
-import ch.schulealtendorf.sporttagpsa.business.setup.StatefulSetupManager
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.entity.SetupEntity
 import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
@@ -55,7 +58,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-object StatefulSetupManagerSpec: Spek({
+object StatefulSetupManagerSpec : Spek({
 
     describe("a stateful setup manager") {
 

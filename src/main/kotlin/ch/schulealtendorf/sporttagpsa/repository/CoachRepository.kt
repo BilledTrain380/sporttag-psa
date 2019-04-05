@@ -44,7 +44,7 @@ import java.util.*
  * @author nmaerchy
  * @since 1.0.0
  */
-interface CoachRepository: CrudRepository<CoachEntity, Int> {
+interface CoachRepository : CrudRepository<CoachEntity, Int> {
 
     fun findByName(name: String): Optional<CoachEntity>
 }

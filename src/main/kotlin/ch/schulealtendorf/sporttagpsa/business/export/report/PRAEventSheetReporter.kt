@@ -52,7 +52,7 @@ import java.io.IOException
 /**
  * Event sheet reporter that uses PRA.
  * https://github.com/BilledTrain380/PRA
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -61,7 +61,7 @@ class PRAEventSheetReporter(
         private val competitorRepository: CompetitorRepository,
         private val fileSystem: FileSystem,
         private val eventSheetAPI: EventSheetAPI
-): EventSheetReporter {
+) : EventSheetReporter {
 
     /**
      * Generates a report for each given {@link EventSheetExport}.
@@ -107,8 +107,8 @@ class PRAEventSheetReporter(
             throw ReportGenerationException("Could not generate event sheets: message=${ex.message}", ex)
         }
     }
-    
-    private fun Gender.text() = if(this.asBoolean()) "Knaben" else "Mädchen"
+
+    private fun Gender.text() = if (this.asBoolean()) "Knaben" else "Mädchen"
 
     private fun Gender.asBoolean() = this == Gender.MALE
 }

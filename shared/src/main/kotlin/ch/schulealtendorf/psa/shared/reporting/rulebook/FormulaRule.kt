@@ -42,18 +42,18 @@ import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.Rule
  * @author nmaerchy
  * @version 0.0.1
  */
-abstract class FormulaRule: Rule<FormulaModel, Int>() {
+abstract class FormulaRule : Rule<FormulaModel, Int>() {
 
     protected abstract val formula: (Double) -> Int
-    
+
     /**
      * @return the result for this rule
      */
     override val then: (FormulaModel) -> Int = { formula(it.result) }
-    
+
     protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
-    
+
     protected fun Boolean.isMale() = this
-    
+
     protected fun Boolean.isFemale() = !this
 }

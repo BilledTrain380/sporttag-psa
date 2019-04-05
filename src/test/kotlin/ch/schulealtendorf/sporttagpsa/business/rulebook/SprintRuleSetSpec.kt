@@ -45,32 +45,32 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for a sprint rule set.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-object SprintRuleSetSpec: Spek({
-    
+object SprintRuleSetSpec : Spek({
+
     describe("a sprint rule set") {
-        
+
         val male = true
         val female = false
-        
+
         val ruleSet = SprintRuleSet()
-        
+
         given("a formula model") {
-            
+
             on("girls 60m") {
-                
+
                 val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
                 val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-                
+
                 it("should return the resulting points") {
                     val expected = 224
                     assertEquals(expected, points)
                 }
             }
-            
+
             on("boys 60m") {
 
                 val model = FormulaModel("Schnelllauf", "60m", 11.4, male)

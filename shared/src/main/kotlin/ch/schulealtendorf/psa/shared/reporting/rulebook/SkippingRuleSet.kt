@@ -40,31 +40,31 @@ import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.RuleSet
 
 /**
  * Defines all the rules that can be applied to a skipping.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-class SkippingRuleSet: RuleSet<FormulaModel, Int>() {
+class SkippingRuleSet : RuleSet<FormulaModel, Int>() {
 
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
     override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Seilspringen" }
-    
+
     init {
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (1 * ((it - 0) pow 1.245)).toInt() }
-                   
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
                 }
         )
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (1.4 * ((it - 0) pow 1.18)).toInt() }
-                    
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
                 }
         )

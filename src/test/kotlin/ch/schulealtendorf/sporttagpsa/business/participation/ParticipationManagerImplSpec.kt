@@ -36,11 +36,38 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.business.rulebook.CategoryRuleBook
-import ch.schulealtendorf.sporttagpsa.entity.*
-import ch.schulealtendorf.sporttagpsa.model.*
-import ch.schulealtendorf.sporttagpsa.repository.*
-import com.nhaarman.mockito_kotlin.*
+import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
+import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
+import ch.schulealtendorf.sporttagpsa.entity.MAIN_PARTICIPATION
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity
+import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
+import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.entity.UnitEntity
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Coach
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.Town
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import com.nhaarman.mockito_kotlin.verifyZeroInteractions
+import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
@@ -54,7 +81,7 @@ import kotlin.test.assertFailsWith
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-object ParticipationManagerImplSpec: Spek({
+object ParticipationManagerImplSpec : Spek({
 
     describe("a participation manager") {
 

@@ -40,11 +40,11 @@ import java.io.IOException
 
 /**
  * Indicates that an archive could not be generated.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-class ArchiveGenerationException: IOException {
+class ArchiveGenerationException : IOException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)

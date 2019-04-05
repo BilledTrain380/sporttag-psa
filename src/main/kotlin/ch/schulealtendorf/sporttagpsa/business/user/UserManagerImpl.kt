@@ -48,7 +48,7 @@ import java.util.*
 
 /**
  * Default implementation for managing a user.
- * 
+ *
  * @author nmaerchy
  * @since 1.0.0
  */
@@ -56,7 +56,7 @@ import java.util.*
 class UserManagerImpl(
         private val userRepository: UserRepository,
         private val passwordValidator: PasswordValidator
-): UserManager {
+) : UserManager {
 
     override fun save(user: User): User {
 
@@ -101,7 +101,7 @@ class UserManagerImpl(
 
         userRepository.deleteById(userId)
     }
-    
+
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 
     private fun UserEntity.toModel() = User(id!!, username, authorities.map { it.role }, enabled)

@@ -40,29 +40,29 @@ import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.RuleSet
 
 /**
  * Defines all the rules that can be applied to a ball throwing.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-class BallThrowingRuleSet: RuleSet<FormulaModel, Int>() {
+class BallThrowingRuleSet : RuleSet<FormulaModel, Int>() {
 
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
     override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Ballwurf" }
-    
+
     init {
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (22 * ((((it * 100) - 500) / 100) pow 0.9)).toInt() }
-                    
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
                 }
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (18 * ((((it * 100) - 800) / 100) pow 0.9)).toInt() }
 
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }

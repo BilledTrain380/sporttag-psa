@@ -44,7 +44,7 @@ import java.util.*
  * @author nmaerchy
  * @since 1.0.0
  */
-interface GroupRepository: CrudRepository<GroupEntity, String> {
+interface GroupRepository : CrudRepository<GroupEntity, String> {
 
     fun findByName(name: String): Optional<GroupEntity>
 }

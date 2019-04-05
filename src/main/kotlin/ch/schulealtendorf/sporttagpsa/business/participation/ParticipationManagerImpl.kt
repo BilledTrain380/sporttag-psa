@@ -39,11 +39,21 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryModel
 import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
-import ch.schulealtendorf.sporttagpsa.entity.*
+import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import ch.schulealtendorf.sporttagpsa.entity.MAIN_PARTICIPATION
+import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity
+import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
+import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.model.Participant
 import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import ch.schulealtendorf.sporttagpsa.model.Sport
-import ch.schulealtendorf.sporttagpsa.repository.*
+import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
+import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
 
@@ -60,7 +70,7 @@ class ParticipationManagerImpl(
         private val categoryRuleBook: CategoryRuleBook,
         private val disciplineRepository: DisciplineRepository,
         private val databaseReset: DatabaseReset
-): ParticipationManager {
+) : ParticipationManager {
 
     /**
      * Marks the given {@code participant} as absent.

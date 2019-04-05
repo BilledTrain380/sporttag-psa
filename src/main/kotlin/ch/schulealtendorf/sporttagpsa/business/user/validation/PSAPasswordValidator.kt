@@ -36,7 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user.validation
 
-import org.passay.*
+import org.passay.CharacterRule
+import org.passay.EnglishCharacterData
+import org.passay.LengthRule
+import org.passay.PasswordData
+import org.passay.RuleResult
+import org.passay.WhitespaceRule
 import org.springframework.stereotype.Component
 
 /**
@@ -44,7 +49,7 @@ import org.springframework.stereotype.Component
  * @since 0.0.1
  */
 @Component
-class PSAPasswordValidator: PasswordValidator {
+class PSAPasswordValidator : PasswordValidator {
 
     private val validator = org.passay.PasswordValidator(
             LengthRule(8, 64),

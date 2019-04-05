@@ -40,29 +40,29 @@ import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.RuleSet
 
 /**
  * Defines all the rules that can be applied to a basket throwing.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-class BasketThrowingRuleSet: RuleSet<FormulaModel, Int>() {
+class BasketThrowingRuleSet : RuleSet<FormulaModel, Int>() {
 
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
     override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Korbeinwurf" }
-    
+
     init {
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (29 * ((it - 0) pow 1.1)).toInt() }
-                    
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "2m" }
                 }
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (32 * ((it - 0) pow 1.1)).toInt() }
 
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "2.5m" }
@@ -70,7 +70,7 @@ class BasketThrowingRuleSet: RuleSet<FormulaModel, Int>() {
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (28 * ((it - 0) pow 1.08)).toInt() }
 
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "2m" }
@@ -78,7 +78,7 @@ class BasketThrowingRuleSet: RuleSet<FormulaModel, Int>() {
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
                     override val formula: (Double) -> Int = { (31 * ((it - 0) pow 1.08)).toInt() }
 
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "2.5m" }

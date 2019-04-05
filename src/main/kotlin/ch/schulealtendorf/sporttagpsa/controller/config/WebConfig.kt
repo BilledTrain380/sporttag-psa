@@ -52,7 +52,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
  * @since 1.0.0
  */
 @Configuration
-class WebConfig: WebMvcConfigurer {
+class WebConfig : WebMvcConfigurer {
 
     /**
      * Configure cross origin requests processing.

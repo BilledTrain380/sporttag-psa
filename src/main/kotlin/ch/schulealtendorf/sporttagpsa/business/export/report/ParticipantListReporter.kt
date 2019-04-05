@@ -40,8 +40,8 @@ import ch.schulealtendorf.sporttagpsa.model.Sport
 
 /**
  * Describes a reporter for participant list.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ParticipantListReporter: Reporter<Iterable<Sport>>
+interface ParticipantListReporter : Reporter<Iterable<Sport>>

@@ -40,12 +40,12 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook.rules
  * Describes a set of rules, with a condition that applies for
  * all rules. The rules itself can have further conditions.
  * @see Rule#whenever
- * 
+ *
  * @author nmaerchy
  * @version 1.0.1
  */
 abstract class RuleSet<T, K> {
-    
+
     private val rules: MutableSet<Rule<T, K>> = HashSet()
 
     /**
@@ -55,11 +55,11 @@ abstract class RuleSet<T, K> {
 
     /**
      * Adds the {@code whenever} of this rule set to the given rule.
-     * 
+     *
      * @param rule the rule to add
      */
     fun addRule(rule: Rule<T, K>) {
-        
+
         rule.wheneverSet = { whenever(it) }
         rules.add(rule)
     }

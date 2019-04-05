@@ -68,7 +68,7 @@ class PRADisciplineGroupRankingReporter(
         private val competitorRepository: CompetitorRepository,
         private val disciplineGroupRankingAPI: DisciplineGroupRankingAPI,
         private val absentParticipantRepository: AbsentParticipantRepository
-): DisciplineGroupRankingReporter {
+) : DisciplineGroupRankingReporter {
 
     /**
      * Generates reports depending on the given {@code data}.
@@ -85,56 +85,56 @@ class PRADisciplineGroupRankingReporter(
             val absentParticipantList = absentParticipantRepository.findAll()
 
             return data.map { gender ->
-    
+
                 competitorRepository.findByParticipantGender(gender)
-                    .filterNot { absentParticipantList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
-                    .groupBy { DateTime(it.participant.birthday).year }
-                    .map {
-    
-                        val ranking = DisciplineGroupRanking().apply {
-                            year = Year.of(it.key)
-                            isGender = gender.asBoolean()
-                            competitors = it.value.map {
-                                DisciplineGroupCompetitor().apply {
-                                    prename = it.participant.prename
-                                    surname = it.participant.surname
-                                    clazz = it.participant.group.name
+                        .filterNot { absentParticipantList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
+                        .groupBy { DateTime(it.participant.birthday).year }
+                        .map {
 
-                                    ballwurf = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
+                            val ranking = DisciplineGroupRanking().apply {
+                                year = Year.of(it.key)
+                                isGender = gender.asBoolean()
+                                competitors = it.value.map {
+                                    DisciplineGroupCompetitor().apply {
+                                        prename = it.participant.prename
+                                        surname = it.participant.surname
+                                        clazz = it.participant.group.name
 
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
-                                        points = resultEntity.points
-                                    }
+                                        ballwurf = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Ballwurf" }
 
-                                    weitsprung = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
+                                            points = resultEntity.points
+                                        }
 
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
-                                        points = resultEntity.points
-                                    }
+                                        weitsprung = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Weitsprung" }
 
-                                    schnelllauf = Discipline().apply {
-                                        val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
+                                            points = resultEntity.points
+                                        }
 
-                                        setDistance(resultEntity.distance)
-                                        result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
-                                        points = resultEntity.points
+                                        schnelllauf = Discipline().apply {
+                                            val resultEntity = it.results.single { it.discipline.name == "Schnelllauf" }
+
+                                            setDistance(resultEntity.distance)
+                                            result = Result(resultEntity.value.toDouble() / resultEntity.discipline.unit.factor)
+                                            points = resultEntity.points
+                                        }
                                     }
                                 }
                             }
-                        }
-    
-                        val report = disciplineGroupRankingAPI.createReport(ranking)
 
-                        val file = ApplicationFile("export", "ranking", "Rangliste ${gender.text()} 3-Kampf ${it.key}.pdf")
-                        fileSystem.write(file, report)
-                    }.toSet()
-                
+                            val report = disciplineGroupRankingAPI.createReport(ranking)
+
+                            val file = ApplicationFile("export", "ranking", "Rangliste ${gender.text()} 3-Kampf ${it.key}.pdf")
+                            fileSystem.write(file, report)
+                        }.toSet()
+
             }.flatten().toSet()
-            
+
         } catch (ex: IOException) {
             throw ReportGenerationException("Could not create discipline group report: cause=${ex.message}", ex)
         } catch (ex: ReportAPIException) {
@@ -203,7 +203,7 @@ class PRADisciplineGroupRankingReporter(
 
     private fun Gender.asBoolean() = this == Gender.MALE
 
-    private fun Gender.text() = if(this.asBoolean()) "Knaben" else "Mädchen"
+    private fun Gender.text() = if (this.asBoolean()) "Knaben" else "Mädchen"
 
     private fun Long.formattedDate(): String {
         val date = Date(this)

@@ -38,7 +38,7 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook.rules
 
 /**
  * Describes a basic rule with a when condition, then do..
- * 
+ *
  * @author nmaerchy
  * @version 1.0.1
  */
@@ -49,7 +49,7 @@ abstract class Rule<T, out K> {
      * and the condition of a rule set.
      * If the rule is not used in a rule set, the rule sets condition
      * will always return true
-     * 
+     *
      * @return true if this rule should be applied, otherwise false
      */
     internal val wheneverMod: (T) -> Boolean = { whenever(it) && wheneverSet(it) }
@@ -58,7 +58,7 @@ abstract class Rule<T, out K> {
      * Additional whenever condition for a rule set
      */
     internal var wheneverSet: (T) -> Boolean = { true }
-    
+
     /**
      * @return true, if this rule should be applied, otherwise false
      */

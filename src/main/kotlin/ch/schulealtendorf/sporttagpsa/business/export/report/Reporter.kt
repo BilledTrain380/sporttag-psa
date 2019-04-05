@@ -41,7 +41,7 @@ import java.io.File
 /**
  * Describes a reporter which generates
  * one or more reports.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -49,9 +49,9 @@ interface Reporter<in T> {
 
     /**
      * Generates reports depending on the given {@code data}.
-     * 
+     *
      * @param data the data for the report/s
-     * 
+     *
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */

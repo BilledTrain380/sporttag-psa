@@ -43,7 +43,10 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -70,7 +73,7 @@ class GroupImportController(
 
         } catch (exception: CSVParsingException) {
             // we increment the line, so its not zero based line number for the user
-            throw BadRequestException("${exception.message} (at line ${exception.line+1}:${exception.column})")
+            throw BadRequestException("${exception.message} (at line ${exception.line + 1}:${exception.column})")
         } catch (exception: IllegalArgumentException) {
             throw BadRequestException(exception.message)
         }

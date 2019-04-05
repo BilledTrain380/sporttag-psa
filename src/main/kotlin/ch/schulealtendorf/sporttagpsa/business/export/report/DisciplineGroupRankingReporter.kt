@@ -41,11 +41,11 @@ import java.io.File
 
 /**
  * Describes a reporter for a discipline group ranking.
- * 
+ *
  * @author nmaerchy
  * @version 1.1.0
  */
-interface DisciplineGroupRankingReporter: Reporter<Iterable<Gender>> {
+interface DisciplineGroupRankingReporter : Reporter<Iterable<Gender>> {
 
     /**
      * Generates csv file of discipline group ranking for all given {@code genders}.

@@ -41,16 +41,16 @@ import org.springframework.stereotype.Component
 
 /**
  * Contains all the rules that are used in a PSA sport tournament.
- * 
+ *
  * @author nmaerchy
  * @version 1.1.0
  */
 @Component
-class PSARuleBook: BasicRuleBook<FormulaModel, Int>(
+class PSARuleBook : BasicRuleBook<FormulaModel, Int>(
         FormulaModel::class,
         Int::class
 ), ResultRuleBook {
-    
+
     init {
         addRuleSet(SprintRuleSet())
         addRuleSet(SkippingRuleSet())
@@ -65,7 +65,7 @@ class PSARuleBook: BasicRuleBook<FormulaModel, Int>(
      * the result depending on it.
      *
      * The result is at least 1.
-     * 
+     *
      * @param fact the fact to run
      *
      * @return the resulting result

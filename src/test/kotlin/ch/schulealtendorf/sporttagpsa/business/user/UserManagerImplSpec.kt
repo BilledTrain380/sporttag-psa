@@ -42,24 +42,33 @@ import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.argWhere
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.api.dsl.context
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-object UserManagerImplSpec: Spek({
-    
+object UserManagerImplSpec : Spek({
+
     describe("a user manager") {
-        
+
         val mockUserRepository: UserRepository = mock()
         val mockPasswordValidator: PasswordValidator = mock()
-        
+
         val userManager = UserManagerImpl(mockUserRepository, mockPasswordValidator)
-        
-        beforeEachTest { 
+
+        beforeEachTest {
             reset(mockUserRepository, mockPasswordValidator)
         }
 

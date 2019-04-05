@@ -52,7 +52,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
-
 /**
  * Security Configuration for the resource server resources and the authorization server resources.
  *
@@ -65,7 +64,7 @@ class SecurityConfig(
         @Qualifier("psa-user-service")
         private val userDetailsService: UserDetailsService,
         private val setupManager: SetupManager
-): WebSecurityConfigurerAdapter() {
+) : WebSecurityConfigurerAdapter() {
 
     @Autowired
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
@@ -76,9 +75,9 @@ class SecurityConfig(
 
         http
                 ?.authorizeRequests()
-                    ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
-                    ?.antMatchers("/login", "/webjars/**", "/setup", "/", "/index", "/app/**")?.permitAll()
-                    ?.anyRequest()?.authenticated()
+                ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
+                ?.antMatchers("/login", "/webjars/**", "/setup", "/", "/index", "/app/**")?.permitAll()
+                ?.anyRequest()?.authenticated()
 
                 ?.and()
                 ?.formLogin()?.loginPage("/login")?.permitAll()

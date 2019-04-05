@@ -45,4 +45,4 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-interface SetupRepository: CrudRepository<SetupEntity, String>
+interface SetupRepository : CrudRepository<SetupEntity, String>

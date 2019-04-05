@@ -41,7 +41,7 @@ import java.io.File
 
 /**
  * Describes a manager that generates files that can be exported.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -49,9 +49,9 @@ interface ExportManager {
 
     /**
      * Generates an archive file by the given {@code data}.
-     * 
+     *
      * @param data contains the data to generate an archive
-     * 
+     *
      * @return the generated archive
      * @throws ArchiveGenerationException if the archive could not be generated
      */
@@ -59,9 +59,9 @@ interface ExportManager {
 
     /**
      * Generates an archive file by the given {@code data}.
-     * 
+     *
      * @param data contains the data to generate the archive
-     * 
+     *
      * @return the generated archive
      * @throws ArchiveGenerationException if the archive could not be generated
      */

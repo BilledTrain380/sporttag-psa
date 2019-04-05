@@ -38,7 +38,7 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook
 
 /**
  * Describes a rule book for result calculation.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -47,11 +47,11 @@ interface ResultRuleBook {
     /**
      * Runs a fact in this rulebook and calculates
      * the result depending on it.
-     * 
+     *
      * The result is at least 1.
-     * 
+     *
      * @param fact the fact to run
-     * 
+     *
      * @return the resulting result
      */
     fun calc(fact: FormulaModel): Int

@@ -39,11 +39,25 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.*
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
+import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
+import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipant
+import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 /**
@@ -119,7 +133,7 @@ class ParticipantController(
         var participant = participantManager.getParticipantById(id)
 
         participant = participant
-                .copy(surname = patchParticipant.surname ?: participant.surname )
+                .copy(surname = patchParticipant.surname ?: participant.surname)
                 .copy(prename = patchParticipant.prename ?: participant.prename)
                 .copy(gender = patchParticipant.gender ?: participant.gender)
                 .copy(birthday = patchParticipant.birthday.toBirthday() ?: participant.birthday)
@@ -174,5 +188,5 @@ class ParticipantController(
                 .orElseThrow { NotFoundException("Could not found participant: id=$id") }
     }
 
-    private fun Long?.toBirthday() = if(this == null) null else Birthday(this)
+    private fun Long?.toBirthday() = if (this == null) null else Birthday(this)
 }

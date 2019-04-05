@@ -38,7 +38,11 @@ package ch.schulealtendorf.sporttagpsa.business.export
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.sporttagpsa.business.export.report.*
+import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineGroupRankingReporter
+import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineRankingReporter
+import ch.schulealtendorf.sporttagpsa.business.export.report.EventSheetReporter
+import ch.schulealtendorf.sporttagpsa.business.export.report.ParticipantListReporter
+import ch.schulealtendorf.sporttagpsa.business.export.report.TotalRankingReporter
 import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.stereotype.Component
 import java.io.File
@@ -46,7 +50,7 @@ import java.io.File
 /**
  * Export manager that uses PRA.
  * https://github.com/BilledTrain380/PRA
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -58,7 +62,7 @@ class PRAExportManager(
         private val totalRankingReporter: TotalRankingReporter,
         private val disciplineGroupRankingReporter: DisciplineGroupRankingReporter,
         private val disciplineRankingReporter: DisciplineRankingReporter
-): ExportManager {
+) : ExportManager {
 
     /**
      * Generates an archive file for the event sheets by the given {@code data}.

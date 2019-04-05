@@ -38,7 +38,13 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Coach
+import ch.schulealtendorf.sporttagpsa.model.Competitor
+import ch.schulealtendorf.sporttagpsa.model.Discipline
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Result
+import ch.schulealtendorf.sporttagpsa.model.Town
 import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -58,7 +64,7 @@ class CompetitorManagerImpl(
         private val competitorRepository: CompetitorRepository,
         private val absentRepository: AbsentParticipantRepository,
         private val disciplineRepository: DisciplineRepository
-): CompetitorManager {
+) : CompetitorManager {
 
     /**
      * @return a list of all competitors

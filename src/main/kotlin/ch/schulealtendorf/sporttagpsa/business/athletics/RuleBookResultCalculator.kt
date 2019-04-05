@@ -51,7 +51,7 @@ import org.springframework.stereotype.Component
 @Component
 class RuleBookResultCalculator(
         private val resultRuleBook: ResultRuleBook
-): ResultCalculator {
+) : ResultCalculator {
 
     override fun calculate(result: TemporaryResult): Result {
 

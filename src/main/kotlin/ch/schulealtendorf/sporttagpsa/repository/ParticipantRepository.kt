@@ -43,10 +43,10 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @since 2.0.0
  */
-interface ParticipantRepository: CrudRepository<ParticipantEntity, Int> {
+interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
 
     fun findByGroupName(name: String): List<ParticipantEntity>
-    
+
     fun findBySportName(name: String): List<ParticipantEntity>
 
     fun findByGender(gender: String): List<ParticipantEntity>

@@ -36,7 +36,7 @@
 
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 
 <head th:replace="fragments/main :: head(#{page.home.title} + ' - PSA')">
 </head>
@@ -53,7 +53,8 @@
             PSA
         </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -62,7 +63,8 @@
 
             <ul class="navbar-nav ml-auto">
 
-                <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}" th:text="#{label.hello} + ' ' + ${username}"></span>
+                <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}"
+                      th:text="#{label.hello} + ' ' + ${username}"></span>
 
                 <li th:if="${isAuthenticated}" class="nav-item">
                     <a class="nav-link" th:href="@{/logout}" th:text="#{label.logout}"></a>
@@ -114,7 +116,8 @@
                             <p class="card-text" th:text="#{page.home.product.tour.text}"></p>
                         </div>
                         <div class="card-footer">
-                            <a href="https://billedtrain380.github.io/sporttag-psa/pages/tour" target="_blank" class="card-link text-warning" th:text="#{label.learnMore}"></a>
+                            <a href="https://billedtrain380.github.io/sporttag-psa/pages/tour" target="_blank"
+                               class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
 
@@ -126,7 +129,8 @@
                             <p class="card-text" th:text="#{page.home.product.features.text}"></p>
                         </div>
                         <div class="card-footer">
-                            <a href="https://billedtrain380.github.io/sporttag-psa/pages/user-guide" target="_blank" class="card-link text-warning" th:text="#{label.learnMore}"></a>
+                            <a href="https://billedtrain380.github.io/sporttag-psa/pages/user-guide" target="_blank"
+                               class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
 
@@ -138,7 +142,8 @@
                             <p class="card-text" th:text="#{page.home.product.themes.text}"></p>
                         </div>
                         <div class="card-footer">
-                            <a href="https://billedtrain380.github.io/sporttag-psa/pages/themes" target="_blank" class="card-link text-warning" th:text="#{label.learnMore}"></a>
+                            <a href="https://billedtrain380.github.io/sporttag-psa/pages/themes" target="_blank"
+                               class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
 
@@ -153,7 +158,6 @@
 </div>
 
 
-
 <footer class="bg-dark text-light">
 
     <div class="container pt-3">
@@ -163,7 +167,8 @@
             <div class="col-lg-8">
 
                 <p class="text-muted">
-                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule
+                    Altendorf</a>.
                 </p>
 
             </div>
@@ -171,7 +176,8 @@
             <div class="col-lg-4">
 
                 <div class="float-right">
-                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa"
+                       target="_blank">
                         <i class="fab fa-2x fa-github"></i>
                     </a>
                 </div>

@@ -53,7 +53,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 @EnableResourceServer
 class ResourceServerConfig(
         private val tokenServices: DefaultTokenServices
-): ResourceServerConfigurerAdapter() {
+) : ResourceServerConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
 
@@ -61,29 +61,29 @@ class ResourceServerConfig(
                 ?.antMatcher("/api/**")
                 ?.authorizeRequests()
 
-                    ?.antMatchers(
-                            "/api/rest/groups",
-                            "/api/rest/participation",
-                            "/api/rest/competitors",
-                            "/api/rest/competitor/**",
-                            "/api/rest/sports",
-                            "/api/rest/disciplines"
-                    )?.hasRole("USER")
+                ?.antMatchers(
+                        "/api/rest/groups",
+                        "/api/rest/participation",
+                        "/api/rest/competitors",
+                        "/api/rest/competitor/**",
+                        "/api/rest/sports",
+                        "/api/rest/disciplines"
+                )?.hasRole("USER")
 
-                    ?.antMatchers(
-                            "/api/rest/group/**",
-                            "/api/rest/participant/**",
-                            "/api/rest/participants",
-                            "/api/rest/users",
-                            "/api/rest/user/**",
-                            "/api/web/group-import",
-                            "/api/web/ranking",
-                            "/api/web/event-sheets",
-                            "/api/web/file/**",
-                            "/api/web/participant-list"
-                    )?.hasRole("ADMIN")
+                ?.antMatchers(
+                        "/api/rest/group/**",
+                        "/api/rest/participant/**",
+                        "/api/rest/participants",
+                        "/api/rest/users",
+                        "/api/rest/user/**",
+                        "/api/web/group-import",
+                        "/api/web/ranking",
+                        "/api/web/event-sheets",
+                        "/api/web/file/**",
+                        "/api/web/participant-list"
+                )?.hasRole("ADMIN")
 
-                    ?.anyRequest()?.authenticated()
+                ?.anyRequest()?.authenticated()
 
                 ?.and()
                 ?.csrf()?.disable()

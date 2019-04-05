@@ -55,7 +55,7 @@ import javax.servlet.http.HttpServletResponse
  */
 class SetupAuthorizationFilter(
         private val setupManager: SetupManager
-): OncePerRequestFilter() {
+) : OncePerRequestFilter() {
 
     /**
      * Checks if the setup page can be accessed, if it is forbidden or if it should redirect to it.

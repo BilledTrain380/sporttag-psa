@@ -45,7 +45,7 @@ package ch.schulealtendorf.sporttagpsa.business.group
  * @property line The line where the error occurred. The line count is zero based
  * @property column The column of the line where the error occurred. The column is zero based
  */
-class CSVParsingException: Exception {
+class CSVParsingException : Exception {
 
     val line: Int
     val column: Int

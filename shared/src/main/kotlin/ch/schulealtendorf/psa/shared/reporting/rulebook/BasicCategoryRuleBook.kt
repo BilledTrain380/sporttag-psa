@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component
 
 /**
  * Rulebook that determines the distance by the age and discipline.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -51,46 +51,46 @@ class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
         CategoryModel::class,
         String::class
 ), CategoryRuleBook {
-    
+
     init {
         addRule(
-                object: Rule<CategoryModel, String>() {
-                    
+                object : Rule<CategoryModel, String>() {
+
                     override val whenever: (CategoryModel) -> Boolean = { it.discipline == "Schnelllauf" }
-                    
+
                     override val then: (CategoryModel) -> String = { "60m" }
                 }
         )
-        
+
         addRule(
-                object: Rule<CategoryModel, String>() {
-                    
-                    override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Ballzielwurf"}
-                    
+                object : Rule<CategoryModel, String>() {
+
+                    override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Ballzielwurf" }
+
                     override val then: (CategoryModel) -> String = { "4m" }
                 }
         )
-        
+
         addRule(
-                object: Rule<CategoryModel, String>() {
-                    
+                object : Rule<CategoryModel, String>() {
+
                     override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Ballzielwurf" }
-                    
+
                     override val then: (CategoryModel) -> String = { "5m" }
                 }
         )
-        
+
         addRule(
-                object: Rule<CategoryModel, String>() {
-                    
+                object : Rule<CategoryModel, String>() {
+
                     override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Korbeinwurf" }
-                    
+
                     override val then: (CategoryModel) -> String = { "2m" }
                 }
         )
 
         addRule(
-                object: Rule<CategoryModel, String>() {
+                object : Rule<CategoryModel, String>() {
 
                     override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Korbeinwurf" }
 

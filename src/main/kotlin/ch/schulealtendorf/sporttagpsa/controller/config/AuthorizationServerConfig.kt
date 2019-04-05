@@ -69,7 +69,7 @@ class AuthorizationServerConfig(
         private val setupManager: SetupManager,
         @Qualifier("psa")
         private val tokenEnhancer: TokenEnhancer
-): AuthorizationServerConfigurerAdapter() {
+) : AuthorizationServerConfigurerAdapter() {
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
 
@@ -83,27 +83,27 @@ class AuthorizationServerConfig(
         clients
                 ?.inMemory()
 
-                    ?.withClient("psa-kitten")
-                        ?.autoApprove(true)
-                        ?.authorities("ADMIN", "USER")
-                        ?.authorizedGrantTypes("implicit")
-                        ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
-                        ?.scopes(
-                                PSAScope.USER,
-                                PSAScope.GROUP_READ,
-                                PSAScope.GROUP_WRITE,
-                                PSAScope.SPORT_READ,
-                                PSAScope.DISCIPLINE_READ,
-                                PSAScope.COMPETITOR_READ,
-                                PSAScope.COMPETITOR_WRITE,
-                                PSAScope.PARTICIPANT_READ,
-                                PSAScope.PARTICIPANT_WRITE,
-                                PSAScope.PARTICIPATION,
-                                PSAScope.FILES,
-                                PSAScope.RANKING,
-                                PSAScope.EVENT_SHEETS,
-                                PSAScope.PARTICIPANT_LIST
-                        )
+                ?.withClient("psa-kitten")
+                ?.autoApprove(true)
+                ?.authorities("ADMIN", "USER")
+                ?.authorizedGrantTypes("implicit")
+                ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
+                ?.scopes(
+                        PSAScope.USER,
+                        PSAScope.GROUP_READ,
+                        PSAScope.GROUP_WRITE,
+                        PSAScope.SPORT_READ,
+                        PSAScope.DISCIPLINE_READ,
+                        PSAScope.COMPETITOR_READ,
+                        PSAScope.COMPETITOR_WRITE,
+                        PSAScope.PARTICIPANT_READ,
+                        PSAScope.PARTICIPANT_WRITE,
+                        PSAScope.PARTICIPATION,
+                        PSAScope.FILES,
+                        PSAScope.RANKING,
+                        PSAScope.EVENT_SHEETS,
+                        PSAScope.PARTICIPANT_LIST
+                )
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {
@@ -133,7 +133,7 @@ class AuthorizationServerConfig(
         }
     }
 
-    private fun <B: ClientDetailsServiceBuilder<B>> ClientDetailsServiceBuilder<B>.ClientBuilder.scopes(vararg values: PSAScope): ClientDetailsServiceBuilder<B>.ClientBuilder {
+    private fun <B : ClientDetailsServiceBuilder<B>> ClientDetailsServiceBuilder<B>.ClientBuilder.scopes(vararg values: PSAScope): ClientDetailsServiceBuilder<B>.ClientBuilder {
         return scopes(*values.map { it.value }.toTypedArray())
     }
 }

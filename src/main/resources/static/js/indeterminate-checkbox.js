@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     // Configs:
     var selectorForCheckboxes = 'input[type="checkbox"].select-element',
@@ -7,9 +7,9 @@
 
 
     var IndeterminateCheckbox = {
-        init: function() {
+        init: function () {
             // Hook the onchange event for all checkboxes of the appropriate class
-            $(selectorForCheckboxes).change(function(e) {
+            $(selectorForCheckboxes).change(function (e) {
                 var checkStateOfTarget = $(this).prop("checked"),
                     container = getListItemContainingCheckbox($(this));
 
@@ -51,7 +51,6 @@
                     }
 
 
-
                     /**
                      * Returns true if all the siblings of the specified element
                      * (either target or one of it's direct anncestors) are of
@@ -87,7 +86,7 @@
                     function checkIfSiblingsToEitherTargetOrParentsAreTheSameCheckStateAsTarget(elContainer) {
                         var onesNotRight = false;
 
-                        elContainer.siblings().each(function() {
+                        elContainer.siblings().each(function () {
                             var doesSiblingStateMatchesTarget =
                                 (getCheckboxOfContainer($(this)).prop("checked") === checkStateOfTarget);
 

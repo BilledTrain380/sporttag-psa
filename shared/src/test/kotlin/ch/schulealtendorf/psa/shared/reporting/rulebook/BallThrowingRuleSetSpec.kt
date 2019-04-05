@@ -45,12 +45,12 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for a ball thorwing rule set.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-object BallThrowingRuleSetSpec: Spek({
-    
+object BallThrowingRuleSetSpec : Spek({
+
     describe("a ball throwing rule set") {
 
         val male = true

@@ -36,9 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.model.Result
 import java.util.*
 

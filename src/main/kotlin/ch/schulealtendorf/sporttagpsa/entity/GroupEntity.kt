@@ -36,7 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -52,7 +57,7 @@ data class GroupEntity(
         @NotNull
         @Size(min = 1, max = 20)
         var name: String = "",
-        
+
         @NotNull
         @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
         @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")

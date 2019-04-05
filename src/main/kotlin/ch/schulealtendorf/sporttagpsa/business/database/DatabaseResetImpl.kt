@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component
 
 /**
  * Resets the database.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.1
  */
@@ -53,7 +53,7 @@ class DatabaseResetImpl(
         private val starterRepository: ParticipantRepository,
         private val clazzRepository: GroupRepository,
         private val participationRepository: ParticipationRepository
-): DatabaseReset {
+) : DatabaseReset {
 
     /**
      * Resets the database by deleting all competitor related data.
@@ -63,7 +63,7 @@ class DatabaseResetImpl(
      * - teachers
      */
     override fun run() {
-        
+
         starterRepository.deleteAll()
         competitorRepository.deleteAll()
         clazzRepository.deleteAll()

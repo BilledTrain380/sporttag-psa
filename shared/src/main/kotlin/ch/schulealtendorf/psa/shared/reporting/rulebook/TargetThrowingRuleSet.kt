@@ -40,7 +40,7 @@ import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.RuleSet
 
 /**
  * Defines all the rules that can be applied to a target throwing.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -50,20 +50,20 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
      * @return true if the rules of this rule set can be used, otherwise false
      */
     override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Ballzielwurf" }
-    
+
     init {
-        
+
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
 
                     override val formula: (Double) -> Int = { (4.4 * ((it - 0) pow 1.27)).toInt() }
-                    
+
                     override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "4m" }
                 }
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
 
                     override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.27)).toInt() }
 
@@ -72,7 +72,7 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
 
                     override val formula: (Double) -> Int = { (4.3 * ((it - 0) pow 1.25)).toInt() }
 
@@ -81,7 +81,7 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
         )
 
         addRule(
-                object: FormulaRule() {
+                object : FormulaRule() {
 
                     override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.25)).toInt() }
 

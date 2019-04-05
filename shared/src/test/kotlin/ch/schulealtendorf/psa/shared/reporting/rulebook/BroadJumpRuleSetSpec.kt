@@ -45,12 +45,12 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for a broad jump rule set.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-object BroadJumpRuleSetSpec: Spek({
-    
+object BroadJumpRuleSetSpec : Spek({
+
     describe("a broad jump rule set") {
 
         val male = true

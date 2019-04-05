@@ -45,41 +45,41 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for {@link CategoryRuleBook}.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
 object BasicCategoryRuleBookSpec : Spek({
-    
+
     describe("a category rule book") {
-        
+
         val ruleBook = BasicCategoryRuleBook()
-        
+
         given("a target throwing discipline") {
-            
+
             on("age under 12") {
-                
+
                 // Arrange
                 val categoryModel = CategoryModel(11, "Ballzielwurf")
-                
+
                 // Act
                 val distance = ruleBook.run(categoryModel)
-                
+
                 // Assert
                 it("should return 4m") {
                     val expected = "4m"
                     assertEquals(expected, distance)
                 }
             }
-            
+
             on("age higher than 11") {
-                
+
                 // Arrange
                 val categoryModel = CategoryModel(12, "Ballzielwurf")
-                
+
                 // Act
                 val distance = ruleBook.run(categoryModel)
-                
+
                 // Assert
                 it("should return 5m") {
                     val expected = "5m"
@@ -87,24 +87,24 @@ object BasicCategoryRuleBookSpec : Spek({
                 }
             }
         }
-        
+
         given("a basket throwing discipline") {
-            
+
             on("age under 12") {
-                
+
                 // Arrange
                 val categoryModel = CategoryModel(11, "Korbeinwurf")
-                
+
                 // Act
                 val distance = ruleBook.run(categoryModel)
-                
+
                 // Assert
                 it("should return 2m") {
                     val expected = "2m"
                     assertEquals(expected, distance)
                 }
             }
-            
+
             on("age higher than 11") {
 
                 // Arrange
@@ -120,20 +120,20 @@ object BasicCategoryRuleBookSpec : Spek({
                 }
             }
         }
-        
+
         given("a skipping discipline") {
-        
+
             on("running after an applied rule") {
-        
+
                 // Arrange
                 val ballThrowing = CategoryModel(12, "Korbeinwurf")
                 val skipping = CategoryModel(12, "Seilspringen")
-                
+
                 ruleBook.run(ballThrowing)
-                
+
                 // Act
                 val distance = ruleBook.run(skipping)
-                
+
                 // Assert
                 it("should return null") {
                     val expected = null

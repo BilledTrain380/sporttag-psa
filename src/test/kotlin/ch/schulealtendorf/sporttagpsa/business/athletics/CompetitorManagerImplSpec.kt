@@ -39,19 +39,30 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.model.*
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Coach
+import ch.schulealtendorf.sporttagpsa.model.Competitor
+import ch.schulealtendorf.sporttagpsa.model.Discipline
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Result
+import ch.schulealtendorf.sporttagpsa.model.Town
 import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import java.util.*
-import kotlin.NoSuchElementException
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -59,7 +70,7 @@ import kotlin.test.assertFailsWith
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-object CompetitorManagerImplSpec: Spek({
+object CompetitorManagerImplSpec : Spek({
 
     describe("a competitor manager") {
 

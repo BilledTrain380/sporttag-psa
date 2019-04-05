@@ -42,11 +42,11 @@ import java.util.*
 
 /**
  * Describes a CRUD repository for a user.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface UserRepository: CrudRepository<UserEntity, Int> {
-    
+interface UserRepository : CrudRepository<UserEntity, Int> {
+
     fun findByUsername(username: String): Optional<UserEntity>
 }

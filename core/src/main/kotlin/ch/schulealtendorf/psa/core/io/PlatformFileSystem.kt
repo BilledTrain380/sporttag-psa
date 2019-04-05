@@ -47,23 +47,23 @@ import java.io.InputStream
 /**
  * The file system considers the special directory of the platform.
  * The application directory will be created by the constructor.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
 @Component
 class PlatformFileSystem(
         appDirs: AppDirs
-): FileSystem {
-    
+) : FileSystem {
+
     private val applicationDir = File(appDirs.getUserDataDir("PSA", "", ""))
-    
+
     init {
-        
+
         if (!applicationDir.exists())
             applicationDir.mkdirs()
     }
-    
+
     /**
      * @return the application directory which Sporttag PSA can use
      */
@@ -101,7 +101,7 @@ class PlatformFileSystem(
 
         val zipFile = createFile(file, ".zip")
 
-        if(zipFile.exists())
+        if (zipFile.exists())
             zipFile.delete()
 
         val rankingZip = ZipFile(zipFile).apply {

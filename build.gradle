@@ -1,8 +1,8 @@
 buildscript {
-	ext {
-		kotlinVersion = '1.2.60'
-		springBootVersion = '2.0.2.RELEASE'
-		sporttagPSAVersion = '2.0.0'
+    ext {
+        kotlinVersion = '1.2.60'
+        springBootVersion = '2.0.2.RELEASE'
+        sporttagPSAVersion = '2.0.0'
 
         defaultMainClass = 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
         guiMainClass = 'ch.schulealtendorf.sporttagpsa.GUIApplicationKt'
@@ -25,20 +25,20 @@ buildscript {
             } else if (mode == 'tui') {
                 return defaultMainClass
             }
-            
+
             throw new IllegalArgumentException('Parameter \'mode\' is invalid: value=' + mode)
         }
-	}
-	repositories {
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-		mavenCentral()
-        
-	}
-	dependencies {
+    }
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+
+    }
+    dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
 
         // Kotlin all open to make specific classes open when compiling e.g. spring's @Configuration classes
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
@@ -48,7 +48,7 @@ buildscript {
 
         // Packager for native bundles
         classpath group: 'org.mini2Dx', name: 'parcl', version: '1.4.0'
-	}
+    }
 }
 
 apply plugin: 'idea'
@@ -137,7 +137,7 @@ project(':shared') {
         // common testing libraries
         testCompile 'org.mockito:mockito-core:2.9.0'
         // exclude mockito, because we need a different version
-        testCompile ('com.nhaarman:mockito-kotlin:1.5.0') {
+        testCompile('com.nhaarman:mockito-kotlin:1.5.0') {
             exclude group: 'org.mockito'
         }
         testCompile 'org.jetbrains.spek:spek-api:1.1.5'
@@ -159,12 +159,12 @@ project(':shared') {
 }
 
 repositories {
-	maven { url 'https://jitpack.io' }
-	maven {
-		url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
-	}
+    maven { url 'https://jitpack.io' }
+    maven {
+        url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
+    }
     maven { url "http://dl.bintray.com/jetbrains/spek" }
-    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/"}
+    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/" }
     mavenCentral()
 }
 
@@ -173,25 +173,25 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("org.springframework.boot:spring-boot-starter-security")
-	compile("org.springframework.boot:spring-boot-devtools")
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-devtools")
 
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     compile "joda-time:joda-time:2.9.9"
-	compile "com.deliveredtechnologies:rulebook-core:0.8"
-	compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
-	
-	compile project(":core")
+    compile "com.deliveredtechnologies:rulebook-core:0.8"
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
+
+    compile project(":core")
     compile project(':shared')
     compile project(':dto')
 
-	compile 'com.github.BilledTrain380:Alberta:1.0.0'
-	
+    compile 'com.github.BilledTrain380:Alberta:1.0.0'
+
     // database dependencies
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.flywaydb:flyway-core')
-	runtime('com.h2database:h2')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.flywaydb:flyway-core')
+    runtime('com.h2database:h2')
 
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-oauth2
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.0.0.RELEASE'
@@ -203,12 +203,12 @@ dependencies {
     compile group: 'org.passay', name: 'passay', version: '1.3.1'
 
     // to enable thymeleaf legacy html5 mode
-	compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
-	
-	// webjars
-	compile 'org.webjars:jquery:3.2.0'
-	compile 'org.webjars:bootstrap:4.1.3'
-	compile 'org.webjars:font-awesome:5.4.1'
+    compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
+
+    // webjars
+    compile 'org.webjars:jquery:3.2.0'
+    compile 'org.webjars:bootstrap:4.1.3'
+    compile 'org.webjars:font-awesome:5.4.1'
 
     // exclude mockito, because we need a different version
     testCompile('org.springframework.boot:spring-boot-starter-test') {
@@ -218,7 +218,7 @@ dependencies {
     // common testing libraries
     testCompile 'org.mockito:mockito-core:2.9.0'
     // exclude mockito, because we need a different version
-    testCompile ('com.nhaarman:mockito-kotlin:1.5.0') {
+    testCompile('com.nhaarman:mockito-kotlin:1.5.0') {
         exclude group: 'org.mockito'
     }
     testCompile 'org.jetbrains.spek:spek-api:1.1.5'

@@ -45,7 +45,7 @@ import javax.sql.DataSource
 /**
  * Configuration for the database location.
  * The database location is determined by the {@link FileSystem#getApplicationDir} method.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
@@ -53,10 +53,10 @@ import javax.sql.DataSource
 class DatasourceConfiguration(
         private val fileSystem: FileSystem
 ) {
-    
+
     @Bean
     fun datasource(): DataSource {
-        
+
         return DataSourceBuilder.create()
                 .url("jdbc:h2:${fileSystem.getApplicationDir()}/db/psa;USER=psa-user;PASSWORD=Psa1999\$;AUTO_SERVER=TRUE")
                 .username("psa-user")

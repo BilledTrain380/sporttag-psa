@@ -62,7 +62,7 @@ class GroupManagerImpl(
         private val participantRepository: ParticipantRepository,
         private val coachRepository: CoachRepository,
         private val townRepository: TownRepository
-): GroupManager {
+) : GroupManager {
 
     /**
      * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
@@ -96,7 +96,7 @@ class GroupManagerImpl(
      *
      * @return an Optional containing the group, or empty if the group could not be found
      */
-    override fun getGroup(name: String): Optional<Group> =  groupRepository.findById(name).map { it.toModel() }
+    override fun getGroup(name: String): Optional<Group> = groupRepository.findById(name).map { it.toModel() }
 
     /**
      * Gets the coach matching the given {@code name}.

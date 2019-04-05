@@ -40,7 +40,7 @@ import org.springframework.web.multipart.MultipartFile
 
 /**
  * Describes a FileReader for a competitor input file.
- * 
+ *
  * @author nmaerchy
  * @version 0.0.1
  */

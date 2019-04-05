@@ -45,11 +45,11 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for a basket throwing.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-object BasketThrowingRuleSetSpec: Spek({
+object BasketThrowingRuleSetSpec : Spek({
 
     describe("a basket throwing set") {
 

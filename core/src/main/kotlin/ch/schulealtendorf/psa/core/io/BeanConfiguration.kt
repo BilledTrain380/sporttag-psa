@@ -43,13 +43,13 @@ import org.springframework.context.annotation.Configuration
 
 /**
  * Bean configuration for the Sporttag PSA file system.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
 @Configuration
 class BeanConfiguration {
-    
+
     @Bean
     fun appDirs(): AppDirs = AppDirsFactory.getInstance()
 }

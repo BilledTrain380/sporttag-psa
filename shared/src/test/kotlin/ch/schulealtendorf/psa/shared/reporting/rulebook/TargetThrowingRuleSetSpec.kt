@@ -45,7 +45,7 @@ import kotlin.test.assertEquals
 
 /**
  * Specification for a target throwing rule set.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */

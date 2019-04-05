@@ -40,8 +40,20 @@ import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import ch.schulealtendorf.sporttagpsa.model.*
-import com.nhaarman.mockito_kotlin.*
+import ch.schulealtendorf.sporttagpsa.model.Birthday
+import ch.schulealtendorf.sporttagpsa.model.Coach
+import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
+import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.sporttagpsa.model.Town
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
@@ -54,7 +66,7 @@ import kotlin.test.assertEquals
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-object ParticipantControllerSpec: Spek({
+object ParticipantControllerSpec : Spek({
 
     describe("a participant controller") {
 

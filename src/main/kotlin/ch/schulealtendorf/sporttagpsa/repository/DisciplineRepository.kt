@@ -41,8 +41,8 @@ import org.springframework.data.repository.CrudRepository
 
 /**
  * Describes a CRUD repository for a {@link DisciplineEntity}.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface DisciplineRepository: CrudRepository<DisciplineEntity, String>
+interface DisciplineRepository : CrudRepository<DisciplineEntity, String>

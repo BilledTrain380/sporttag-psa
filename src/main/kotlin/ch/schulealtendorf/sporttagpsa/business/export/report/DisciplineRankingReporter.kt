@@ -40,8 +40,8 @@ import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 
 /**
  * Describes a reporter discipline ranking.
- * 
+ *
  * @author nmaerchy
  * @version 1.0.0
  */
-interface DisciplineRankingReporter: Reporter<Iterable<DisciplineExport>>
+interface DisciplineRankingReporter : Reporter<Iterable<DisciplineExport>>

@@ -52,10 +52,10 @@ import java.util.*
 @Component
 class DisciplineManagerImpl(
         private val disciplineRepository: DisciplineRepository
-): DisciplineManager {
+) : DisciplineManager {
 
     override fun getDisciplineList(): List<Discipline> {
-        return disciplineRepository.findAll().map {it.toModel()}
+        return disciplineRepository.findAll().map { it.toModel() }
     }
 
     override fun getDiscipline(name: String): Optional<Discipline> {

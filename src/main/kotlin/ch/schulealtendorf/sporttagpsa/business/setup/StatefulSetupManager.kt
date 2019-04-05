@@ -43,7 +43,6 @@ import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
 import org.springframework.stereotype.Component
 import java.util.*
 
-
 /**
  * A {@link SetupManager} which is stateful to reduce db access.
  *
@@ -54,7 +53,7 @@ import java.util.*
 class StatefulSetupManager(
         private val setupRepository: SetupRepository,
         private val userManager: UserManager
-): SetupManager {
+) : SetupManager {
 
     private var isInit = false
     private var jwtSec = ""
