@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
 import ch.schulealtendorf.sporttagpsa.business.user.validation.ValidationResult
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
-import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argWhere
@@ -83,7 +83,7 @@ object UserManagerImplSpec : Spek({
                 whenever(mockPasswordValidator.validate(any())).thenReturn(ValidationResult(true))
 
 
-                val user = User(0, "user", listOf("ROLE_USER"), password = "secret")
+                val user = UserDto(0, "user", listOf("ROLE_USER"), password = "secret")
                 val result = userManager.save(user)
 
                 it("should validate the password") {
@@ -102,7 +102,7 @@ object UserManagerImplSpec : Spek({
                 }
 
                 it("should return the created user") {
-                    val expected = User(1, "user", listOf("ROLE_USER"))
+                    val expected = UserDto(1, "user", listOf("ROLE_USER"))
                     assertEquals(expected, result)
                 }
             }
@@ -115,7 +115,7 @@ object UserManagerImplSpec : Spek({
                 whenever(mockUserRepository.save(any<UserEntity>())).thenReturn(updatedEntity.copy())
 
 
-                val user = User(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), password = "should not be considered", enabled = false)
+                val user = UserDto(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), password = "should not be considered", enabled = false)
                 val result = userManager.save(user)
 
 
@@ -131,7 +131,7 @@ object UserManagerImplSpec : Spek({
                 }
 
                 it("should return the created user") {
-                    val expected = User(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), false)
+                    val expected = UserDto(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), false)
                     assertEquals(expected, result)
                 }
             }
@@ -145,7 +145,7 @@ object UserManagerImplSpec : Spek({
                 whenever(mockPasswordValidator.validate(any())).thenReturn(ValidationResult(true))
 
 
-                val user = User(1, "username", listOf())
+                val user = UserDto(1, "username", listOf())
                 userManager.changePassword(user, "newPassword")
 
 
@@ -165,7 +165,7 @@ object UserManagerImplSpec : Spek({
                 whenever(mockUserRepository.findById(any())).thenReturn(Optional.empty())
 
 
-                val user = User(1, "username", listOf())
+                val user = UserDto(1, "username", listOf())
 
 
                 it("should throw a user not found exception, indicating that the user could not be found") {

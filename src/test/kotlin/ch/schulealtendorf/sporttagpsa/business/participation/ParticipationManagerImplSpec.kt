@@ -36,6 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.TownDto
+import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
@@ -48,13 +56,6 @@ import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.entity.UnitEntity
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.Sport
-import ch.schulealtendorf.sporttagpsa.model.Town
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
@@ -119,7 +120,7 @@ object ParticipationManagerImplSpec : Spek({
                 name = "Bern"
         )
 
-        val town = Town(
+        val town = TownDto(
                 zip = "3000",
                 name = "Bern"
         )
@@ -132,9 +133,9 @@ object ParticipationManagerImplSpec : Spek({
                 )
         )
 
-        val group = Group(
+        val group = GroupDto(
                 name = "2a",
-                coach = Coach(
+                coach = CoachDto(
                         id = 1,
                         name = "Willi"
                 )
@@ -144,19 +145,19 @@ object ParticipationManagerImplSpec : Spek({
                 id = 1,
                 surname = "Muster",
                 prename = "Max",
-                gender = Gender.MALE,
+                gender = GenderDto.MALE,
                 birthday = 0,
                 address = "Musterstrasse 8",
                 town = townEntity,
                 group = groupEntity
         )
 
-        val participantModel = Participant(
+        val participantModel = ParticipantDto(
                 1,
                 "Muster",
                 "Max",
-                Gender.MALE,
-                Birthday(0),
+                GenderDto.MALE,
+                BirthdayDto(0),
                 false,
                 "Musterstrasse 8",
                 town,
@@ -266,7 +267,7 @@ object ParticipationManagerImplSpec : Spek({
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
 
 
-                manager.participate(participantModel, Sport("athletics"))
+                manager.participate(participantModel, SportDto("athletics"))
 
 
                 it("should set the sport to the participant") {
@@ -283,7 +284,7 @@ object ParticipationManagerImplSpec : Spek({
 
                 it("should throw a no such element exception, indicating that the participant does not exist") {
                     val exception = assertFailsWith<NoSuchElementException> {
-                        manager.participate(participantModel, Sport(""))
+                        manager.participate(participantModel, SportDto(""))
                     }
                     assertEquals("Could not find participant: id=1", exception.message)
                 }
@@ -296,7 +297,7 @@ object ParticipationManagerImplSpec : Spek({
 
                 it("should throw an illegal state exception, indicating that this operation can not be performed") {
                     val exception = assertFailsWith<IllegalStateException> {
-                        manager.participate(participantModel, Sport(""))
+                        manager.participate(participantModel, SportDto(""))
                     }
                     assertEquals("Participation already closed. Use ParticipationManager#reParticipate instead", exception.message)
                 }
@@ -324,7 +325,7 @@ object ParticipationManagerImplSpec : Spek({
                 whenever(mockCompetitorRepository.save(any<CompetitorEntity>())).thenReturn(competitor)
 
 
-                manager.reParticipate(participantModel, Sport(ATHLETICS))
+                manager.reParticipate(participantModel, SportDto(ATHLETICS))
 
 
                 it("should save the participant as competitor with default results") {
@@ -356,7 +357,7 @@ object ParticipationManagerImplSpec : Spek({
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitor))
 
 
-                manager.reParticipate(participantModel, Sport("bike"))
+                manager.reParticipate(participantModel, SportDto("bike"))
 
 
                 it("should remove the competitor entry") {
@@ -376,7 +377,7 @@ object ParticipationManagerImplSpec : Spek({
 
                 it("should throw an illegal state exception, indicating that this operation can not be performed") {
                     val exception = assertFailsWith<IllegalStateException> {
-                        manager.reParticipate(participantModel, Sport(""))
+                        manager.reParticipate(participantModel, SportDto(""))
                     }
                     assertEquals("Participation is open. Use ParticipationManager#participate instead", exception.message)
                 }
@@ -388,7 +389,7 @@ object ParticipationManagerImplSpec : Spek({
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy(sport = SportEntity("running"))))
 
 
-                val sport = Sport("running")
+                val sport = SportDto("running")
                 val participant = participantModel.copy(sport = Optional.of(sport))
                 manager.reParticipate(participant, sport)
 
@@ -407,7 +408,7 @@ object ParticipationManagerImplSpec : Spek({
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
 
 
-                manager.reParticipate(participantModel, Sport("running"))
+                manager.reParticipate(participantModel, SportDto("running"))
 
 
                 it("should not remove any competitor") {

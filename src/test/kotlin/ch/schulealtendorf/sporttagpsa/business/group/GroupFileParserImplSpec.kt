@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.GenderDto
 import com.nhaarman.mockito_kotlin.whenever
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -95,8 +95,8 @@ object GroupFileParserImplSpec : Spek({
 
                 it("should return list of csv participants") {
                     val expected = listOf(
-                            FlatParticipant("Muster", "Hans", Gender.MALE, Birthday(convertDate("07.09.2017")), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
-                            FlatParticipant("Wirbelwind", "Will", Gender.FEMALE, Birthday(convertDate("08.12.2015")), "Wirbelstrasse 16", "4000", "Willhausen", "1a", "Hans Müller")
+                            FlatParticipant("Muster", "Hans", GenderDto.MALE, BirthdayDto(convertDate("07.09.2017")), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
+                            FlatParticipant("Wirbelwind", "Will", GenderDto.FEMALE, BirthdayDto(convertDate("08.12.2015")), "Wirbelstrasse 16", "4000", "Willhausen", "1a", "Hans Müller")
                     )
                     assertEquals(expected, result)
                 }

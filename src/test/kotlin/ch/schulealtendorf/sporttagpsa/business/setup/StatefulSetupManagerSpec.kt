@@ -36,10 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.setup
 
+import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.entity.SetupEntity
-import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -75,7 +75,7 @@ object StatefulSetupManagerSpec : Spek({
 
             on("successful initialization") {
 
-                val admin = User(1, USER_ADMIN, listOf())
+                val admin = UserDto(1, USER_ADMIN, listOf())
                 whenever(mockUserManager.getOne(USER_ADMIN)).thenReturn(Optional.of(admin))
 
                 whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy()))

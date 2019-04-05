@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.Town
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -100,7 +100,7 @@ object ParticipantManagerImplSpec : Spek({
                 name = "Bern"
         )
 
-        val town = Town(
+        val town = TownDto(
                 zip = "3000",
                 name = "Bern"
         )
@@ -113,9 +113,9 @@ object ParticipantManagerImplSpec : Spek({
                 )
         )
 
-        val group = Group(
+        val group = GroupDto(
                 name = "2a",
-                coach = Coach(
+                coach = CoachDto(
                         id = 1,
                         name = "Willi"
                 )
@@ -125,19 +125,19 @@ object ParticipantManagerImplSpec : Spek({
                 id = 1,
                 surname = "Muster",
                 prename = "Max",
-                gender = Gender.MALE,
+                gender = GenderDto.MALE,
                 birthday = 0,
                 address = "Musterstrasse 8",
                 town = townEntity,
                 group = groupEntity
         )
 
-        val participantModel = Participant(
+        val participantModel = ParticipantDto(
                 1,
                 "Muster",
                 "Max",
-                Gender.MALE,
-                Birthday(0),
+                GenderDto.MALE,
+                BirthdayDto(0),
                 false,
                 "Musterstrasse 8",
                 town,
@@ -179,7 +179,7 @@ object ParticipantManagerImplSpec : Spek({
 
 
                 val participant = participantModel.copy(
-                        town = Town("8000", "Zürich")
+                        town = TownDto("8000", "Zürich")
 
                 )
                 manager.saveParticipant(participant)
@@ -203,7 +203,7 @@ object ParticipantManagerImplSpec : Spek({
 
 
                 val participant = participantModel.copy(
-                        group = Group("3a", Coach(0, "Müller")) // coach id 0 to create the coach
+                        group = GroupDto("3a", CoachDto(0, "Müller")) // coach id 0 to create the coach
                 )
 
 

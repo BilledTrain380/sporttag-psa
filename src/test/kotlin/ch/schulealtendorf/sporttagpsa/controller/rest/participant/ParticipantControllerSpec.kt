@@ -36,18 +36,18 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.ParticipationStatusDto
+import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
-import ch.schulealtendorf.sporttagpsa.model.Sport
-import ch.schulealtendorf.sporttagpsa.model.Town
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
@@ -84,17 +84,17 @@ object ParticipantControllerSpec : Spek({
             whenever(mockGroupManager.hasPendingParticipation(any())).thenReturn(false)
         }
 
-        val g2a = Group("2a", Coach(1, "Müller"))
-        val g3a = Group("3a", Coach(2, "Meyer"))
+        val g2a = GroupDto("2a", CoachDto(1, "Müller"))
+        val g3a = GroupDto("3a", CoachDto(2, "Meyer"))
 
-        val mmuster = Participant(1, "Muster", "Max", Gender.MALE,
-                Birthday(0), false, "",
-                Town("", ""),
+        val mmuster = ParticipantDto(1, "Muster", "Max", GenderDto.MALE,
+                BirthdayDto(0), false, "",
+                TownDto("", ""),
                 g2a)
 
-        val wwirbelwind = Participant(2, "Wirbelwind", "Willi", Gender.MALE,
-                Birthday(0), false, "",
-                Town("", ""),
+        val wwirbelwind = ParticipantDto(2, "Wirbelwind", "Willi", GenderDto.MALE,
+                BirthdayDto(0), false, "",
+                TownDto("", ""),
                 g3a)
 
         context("participant list request") {
@@ -133,10 +133,10 @@ object ParticipantControllerSpec : Spek({
 
                 whenever(mockGroupManager.getGroup("2a")).thenReturn(Optional.of(g2a))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
-                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatus.OPEN)
+                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.OPEN)
 
 
-                val newParticipant = CreateParticipant(mmuster.surname, mmuster.prename, mmuster.gender, mmuster.birthday.milliseconds, mmuster.address, mmuster.town, Sport("athletics"))
+                val newParticipant = CreateParticipant(mmuster.surname, mmuster.prename, mmuster.gender, mmuster.birthday.milliseconds, mmuster.address, mmuster.town, SportDto("athletics"))
                 controller.createParticipant("2a", newParticipant)
 
 
@@ -145,7 +145,7 @@ object ParticipantControllerSpec : Spek({
                 }
 
                 it("should participate the created participant in the given sport") {
-                    verify(mockParticipationManager, times(1)).participate(mmuster, Sport("athletics"))
+                    verify(mockParticipationManager, times(1)).participate(mmuster, SportDto("athletics"))
                 }
             }
 
@@ -153,10 +153,10 @@ object ParticipantControllerSpec : Spek({
 
                 whenever(mockGroupManager.getGroup("2a")).thenReturn(Optional.of(g2a))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
-                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatus.CLOSE)
+                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.CLOSE)
 
 
-                val newParticipant = CreateParticipant(mmuster.surname, mmuster.prename, mmuster.gender, mmuster.birthday.milliseconds, mmuster.address, mmuster.town, Sport("athletics"))
+                val newParticipant = CreateParticipant(mmuster.surname, mmuster.prename, mmuster.gender, mmuster.birthday.milliseconds, mmuster.address, mmuster.town, SportDto("athletics"))
                 controller.createParticipant("2a", newParticipant)
 
 
@@ -165,7 +165,7 @@ object ParticipantControllerSpec : Spek({
                 }
 
                 it("should re participate  the created participant in the given sport") {
-                    verify(mockParticipationManager, times(1)).reParticipate(mmuster, Sport("athletics"))
+                    verify(mockParticipationManager, times(1)).reParticipate(mmuster, SportDto("athletics"))
                 }
             }
         }
@@ -224,11 +224,11 @@ object ParticipantControllerSpec : Spek({
 
                 whenever(mockParticipantManager.getParticipant(1)).thenReturn(Optional.of(mmuster))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
-                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatus.OPEN)
+                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.OPEN)
 
 
-                val town = Town("8000", "Zürich")
-                val sport = Sport("athletics")
+                val town = TownDto("8000", "Zürich")
+                val sport = SportDto("athletics")
                 val updateParticipant = UpdateParticipant(town = town, sport = sport)
                 controller.putParticipantTown(1, updateParticipant)
 
@@ -246,10 +246,10 @@ object ParticipantControllerSpec : Spek({
 
                 whenever(mockParticipantManager.getParticipant(1)).thenReturn(Optional.of(mmuster))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
-                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatus.CLOSE)
+                whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.CLOSE)
 
 
-                val sport = Sport("athletics")
+                val sport = SportDto("athletics")
                 val updateParticipant = UpdateParticipant(sport = sport)
                 controller.putParticipantTown(1, updateParticipant)
 

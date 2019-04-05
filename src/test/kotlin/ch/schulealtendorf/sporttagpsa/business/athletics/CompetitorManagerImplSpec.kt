@@ -36,18 +36,18 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.TownDto
+import ch.schulealtendorf.psa.dto.UnitDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Result
-import ch.schulealtendorf.sporttagpsa.model.Town
-import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
@@ -85,17 +85,17 @@ object CompetitorManagerImplSpec : Spek({
         }
 
         // just a test instance which we copy for the specs
-        val competitor = Competitor(
+        val competitor = CompetitorDto(
                 1,
                 1,
                 "",
                 "",
-                Gender.MALE,
-                Birthday(0),
+                GenderDto.MALE,
+                BirthdayDto(0),
                 false,
                 "",
-                Town("", ""),
-                Group("", Coach(1, "")),
+                TownDto("", ""),
+                GroupDto("", CoachDto(1, "")),
                 listOf())
 
         context("results to merge") {
@@ -104,9 +104,9 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        Result(1, 50, 800, Optional.empty(), Discipline("", Unit("", 1))),
-                        Result(2, 49, 795, Optional.empty(), Discipline("", Unit("", 1))),
-                        Result(3, 45, 846, Optional.empty(), Discipline("", Unit("", 1)))
+                        ResultDto(1, 50, 800, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(2, 49, 795, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(3, 45, 846, Optional.empty(), DisciplineDto("", UnitDto("", 1)))
                 )
 
 
@@ -123,15 +123,15 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        Result(1, 50, 800, Optional.empty(), Discipline("", Unit("", 1))),
-                        Result(2, 49, 795, Optional.empty(), Discipline("", Unit("", 1)))
+                        ResultDto(1, 50, 800, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(2, 49, 795, Optional.empty(), DisciplineDto("", UnitDto("", 1)))
                 )
 
 
                 val existingResults = listOf(
-                        Result(1, 20, 122, Optional.empty(), Discipline("", Unit("", 1))),
-                        Result(2, 21, 158, Optional.empty(), Discipline("", Unit("", 1))),
-                        Result(3, 45, 456, Optional.empty(), Discipline("", Unit("", 1)))
+                        ResultDto(1, 20, 122, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(2, 21, 158, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(3, 45, 456, Optional.empty(), DisciplineDto("", UnitDto("", 1)))
                 )
                 val result = manager.mergeResults(competitor.copy(results = existingResults), results)
 
@@ -154,9 +154,9 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        Result(0, 20, 122, Optional.empty(), Discipline("test", Unit("", 1))),
-                        Result(0, 21, 158, Optional.empty(), Discipline("test", Unit("", 1))),
-                        Result(0, 45, 456, Optional.empty(), Discipline("test", Unit("", 1)))
+                        ResultDto(0, 20, 122, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 21, 158, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 45, 456, Optional.empty(), DisciplineDto("test", UnitDto("", 1)))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -186,9 +186,9 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        Result(1, 25, 133, Optional.empty(), Discipline("test", Unit("", 1))),
-                        Result(2, 12, 102, Optional.empty(), Discipline("test", Unit("", 1))),
-                        Result(0, 45, 456, Optional.empty(), Discipline("test", Unit("", 1)))
+                        ResultDto(1, 25, 133, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(2, 12, 102, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 45, 456, Optional.empty(), DisciplineDto("test", UnitDto("", 1)))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -216,15 +216,15 @@ object CompetitorManagerImplSpec : Spek({
                 }
             }
 
-            on("discipline not found") {
+            on("disciplineDto not found") {
 
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
                 whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.empty())
 
 
                 val results = listOf(
-                        Result(0, 20, 122, Optional.empty(), Discipline("test", Unit("", 1))),
-                        Result(0, 21, 158, Optional.empty(), Discipline("test", Unit("", 1)))
+                        ResultDto(0, 20, 122, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 21, 158, Optional.empty(), DisciplineDto("test", UnitDto("", 1)))
                 )
 
 
