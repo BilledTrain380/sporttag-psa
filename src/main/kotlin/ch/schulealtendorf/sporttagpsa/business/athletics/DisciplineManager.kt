@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.Discipline
+import ch.schulealtendorf.psa.dto.DisciplineDto
 import java.util.*
 
 /**
@@ -50,12 +50,12 @@ interface DisciplineManager {
     /**
      * @return all available disciplines
      */
-    fun getDisciplineList(): List<Discipline>
+    fun getDisciplineList(): List<DisciplineDto>
 
     /**
      * @param name the name of the discipline to get
      *
      * @return an Optional containing the discipline or empty if the discipline does not exist
      */
-    fun getDiscipline(name: String): Optional<Discipline>
+    fun getDiscipline(name: String): Optional<DisciplineDto>
 }

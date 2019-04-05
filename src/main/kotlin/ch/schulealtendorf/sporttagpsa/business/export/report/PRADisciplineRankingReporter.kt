@@ -43,9 +43,9 @@ import ch.schulealtendorf.pra.pojo.DisciplineRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
+import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
@@ -125,7 +125,7 @@ class PRADisciplineRankingReporter(
         }
     }
 
-    private fun Gender.text() = if (this == Gender.MALE) "Knaben" else "Mädchen"
+    private fun GenderDto.text() = if (this == GenderDto.MALE) "Knaben" else "Mädchen"
 
     private fun ResultEntity.result(): Result {
 
@@ -138,5 +138,5 @@ class PRADisciplineRankingReporter(
         return Result(value)
     }
 
-    private fun Gender.asBoolean() = this == Gender.MALE
+    private fun GenderDto.asBoolean() = this == GenderDto.MALE
 }

@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.competitor
 
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.athletics.ResultCalculator
 import ch.schulealtendorf.sporttagpsa.business.athletics.TemporaryResult
@@ -43,8 +45,6 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestCompetitor
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -70,7 +70,7 @@ class CompetitorController(
     @GetMapping("/competitors")
     fun getCompetitors(
             @RequestParam("group", required = false) groupName: String?,
-            @RequestParam("gender", required = false) gender: Gender?,
+            @RequestParam("gender", required = false) gender: GenderDto?,
             @RequestParam("absent", required = false) absent: Boolean?
     ): List<RestCompetitor> {
 
@@ -113,7 +113,7 @@ class CompetitorController(
         return results.map { json(it) }
     }
 
-    private fun Iterable<Competitor>.filter(group: String? = null, gender: Gender? = null, absent: Boolean? = null): List<Competitor> {
+    private fun Iterable<CompetitorDto>.filter(group: String? = null, gender: GenderDto? = null, absent: Boolean? = null): List<CompetitorDto> {
 
         return this
                 .filter { group == null || it.group.name == group }

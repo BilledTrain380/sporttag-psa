@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.psa.dto.SportDto
 
 /**
  * Describes a manager for {@link Sport} related data.
@@ -49,5 +49,5 @@ interface SportManager {
     /**
      * @return all sport types
      */
-    fun getSports(): List<Sport>
+    fun getSports(): List<SportDto>
 }

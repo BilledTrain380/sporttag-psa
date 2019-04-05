@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.GenderDto
 import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -74,7 +74,7 @@ data class ParticipantEntity(
         @Enumerated(EnumType.STRING)
         @NotNull
         @Size(min = 1, max = 6)
-        var gender: Gender = Gender.MALE,
+        var gender: GenderDto = GenderDto.MALE,
 
         @NotNull
         var birthday: Long = 0,

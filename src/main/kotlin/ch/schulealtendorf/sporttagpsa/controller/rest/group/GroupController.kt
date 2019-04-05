@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.group
 
+import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.model.Group
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -61,7 +61,7 @@ class GroupController(
 
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getGroup(@PathVariable("group_name") name: String): Group {
+    fun getGroup(@PathVariable("group_name") name: String): GroupDto {
         return groupManager.getGroup(name)
                 .orElseThrow { NotFoundException("Could not find group: name=$name") }
     }
@@ -71,13 +71,13 @@ class GroupController(
     fun getGroups(
             @RequestParam("competitive", required = false) competitive: Boolean?,
             @RequestParam("pendingParticipation", required = false) pendingParticipation: Boolean?
-    ): List<Group> {
+    ): List<GroupDto> {
 
         return groupManager.getGroups()
                 .filter(competitive, pendingParticipation)
     }
 
-    private fun Iterable<Group>.filter(competitive: Boolean?, pendingParticipation: Boolean?): List<Group> {
+    private fun Iterable<GroupDto>.filter(competitive: Boolean?, pendingParticipation: Boolean?): List<GroupDto> {
 
         return this
                 .filter {
@@ -92,7 +92,7 @@ class GroupController(
                 }
     }
 
-    private fun Group.isCompetitive() = groupManager.isCompetitive(this)
+    private fun GroupDto.isCompetitive() = groupManager.isCompetitive(this)
 
-    private fun Group.hasPendingParticipation() = groupManager.hasPendingParticipation(this)
+    private fun GroupDto.hasPendingParticipation() = groupManager.hasPendingParticipation(this)
 }

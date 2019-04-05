@@ -36,10 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.ResultDto
 import ch.schulealtendorf.psa.shared.reporting.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.reporting.rulebook.ResultRuleBook
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Result
 import org.springframework.stereotype.Component
 
 /**
@@ -53,17 +53,17 @@ class RuleBookResultCalculator(
         private val resultRuleBook: ResultRuleBook
 ) : ResultCalculator {
 
-    override fun calculate(result: TemporaryResult): Result {
+    override fun calculate(result: TemporaryResult): ResultDto {
 
         val formulaModel = FormulaModel(
                 result.discipline.name,
                 result.distance.orElseGet { null },
                 result.value.toDouble() / result.discipline.unit.factor,
-                (result.gender == Gender.MALE))
+                (result.gender == GenderDto.MALE))
 
         val points = resultRuleBook.calc(formulaModel)
 
-        return Result(
+        return ResultDto(
                 result.id,
                 result.value,
                 points,

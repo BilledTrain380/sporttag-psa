@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.ParticipationStatusDto
+import ch.schulealtendorf.psa.dto.SportDto
 import java.util.*
 
 /**
@@ -59,7 +59,7 @@ interface ParticipationManager {
      *
      * @throws NoSuchElementException if the given participant could not be found
      */
-    fun markAsAbsent(participant: Participant)
+    fun markAsAbsent(participant: ParticipantDto)
 
     /**
      * Marks the given {@code participant} as present.
@@ -68,7 +68,7 @@ interface ParticipationManager {
      *
      * @throws NoSuchElementException if the given participant could not be found
      */
-    fun markAsPresent(participant: Participant)
+    fun markAsPresent(participant: ParticipantDto)
 
     /**
      * Sets the given {@code sport} to the given {@code participant}.
@@ -82,7 +82,7 @@ interface ParticipationManager {
      * @throws NoSuchElementException if the given participant could not be found
      * @throws IllegalStateException if the participation is already closed
      */
-    fun participate(participant: Participant, sport: Sport)
+    fun participate(participant: ParticipantDto, sport: SportDto)
 
     /**
      * Sets the given {@code sport} to the given {@code participant}.
@@ -106,7 +106,7 @@ interface ParticipationManager {
      * @throws NoSuchElementException if the given participant could not be found
      * @throws IllegalStateException if the participation status is not CLOSE.
      */
-    fun reParticipate(participant: Participant, sport: Sport)
+    fun reParticipate(participant: ParticipantDto, sport: SportDto)
 
     /**
      * Closes the participation. {@link ParticipationManager#getParticipationStatus} will always
@@ -129,5 +129,5 @@ interface ParticipationManager {
     /**
      * @return the participation status
      */
-    fun getParticipationStatus(): ParticipationStatus
+    fun getParticipationStatus(): ParticipationStatusDto
 }

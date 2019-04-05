@@ -36,20 +36,20 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Sport
-import ch.schulealtendorf.sporttagpsa.model.Town
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.TownDto
 import javax.validation.constraints.NotNull
 
 data class UpdateParticipant(
         val surname: String? = null,
         val prename: String? = null,
-        val gender: Gender? = null,
+        val gender: GenderDto? = null,
         val birthday: Long? = null,
         val address: String? = null,
         val absent: Boolean? = null,
-        val town: Town? = null,
-        val sport: Sport? = null
+        val town: TownDto? = null,
+        val sport: SportDto? = null
 )
 
 data class CreateParticipant(
@@ -61,7 +61,7 @@ data class CreateParticipant(
         val prename: String,
 
         @NotNull
-        val gender: Gender,
+        val gender: GenderDto,
 
         @NotNull
         val birthday: Long,
@@ -70,8 +70,8 @@ data class CreateParticipant(
         val address: String,
 
         @NotNull
-        val town: Town,
+        val town: TownDto,
 
         @NotNull
-        val sport: Sport
+        val sport: SportDto
 )

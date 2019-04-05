@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.GenderDto
 import java.io.File
 
 /**
@@ -45,7 +45,7 @@ import java.io.File
  * @author nmaerchy
  * @version 1.1.0
  */
-interface DisciplineGroupRankingReporter : Reporter<Iterable<Gender>> {
+interface DisciplineGroupRankingReporter : Reporter<Iterable<GenderDto>> {
 
     /**
      * Generates csv file of discipline group ranking for all given {@code genders}.
@@ -57,5 +57,5 @@ interface DisciplineGroupRankingReporter : Reporter<Iterable<Gender>> {
      * @return all generated csv files
      * @throws ReportGenerationException if the csv files could not be generated
      */
-    fun generateCSV(genders: Iterable<Gender>): Set<File>
+    fun generateCSV(genders: Iterable<GenderDto>): Set<File>
 }

@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.GenderDto
 
 /**
  * Describes a reporter for a total ranking.
@@ -44,4 +44,4 @@ import ch.schulealtendorf.sporttagpsa.model.Gender
  * @author nmaerchy
  * @version 1.0.0
  */
-interface TotalRankingReporter : Reporter<Iterable<Gender>>
+interface TotalRankingReporter : Reporter<Iterable<GenderDto>>

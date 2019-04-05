@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
+import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.UnitDto
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import org.springframework.stereotype.Component
 import java.util.*
@@ -54,15 +54,15 @@ class DisciplineManagerImpl(
         private val disciplineRepository: DisciplineRepository
 ) : DisciplineManager {
 
-    override fun getDisciplineList(): List<Discipline> {
+    override fun getDisciplineList(): List<DisciplineDto> {
         return disciplineRepository.findAll().map { it.toModel() }
     }
 
-    override fun getDiscipline(name: String): Optional<Discipline> {
+    override fun getDiscipline(name: String): Optional<DisciplineDto> {
         return disciplineRepository.findById(name).map { it.toModel() }
     }
 
-    private fun DisciplineEntity.toModel(): Discipline {
-        return Discipline(name, Unit(unit.name, unit.factor))
+    private fun DisciplineEntity.toModel(): DisciplineDto {
+        return DisciplineDto(name, UnitDto(unit.name, unit.factor))
     }
 }

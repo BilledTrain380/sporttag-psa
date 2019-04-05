@@ -38,12 +38,12 @@ package ch.schulealtendorf.sporttagpsa.business.export
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
+import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineGroupRankingReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineRankingReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.EventSheetReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.ParticipantListReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.TotalRankingReporter
-import ch.schulealtendorf.sporttagpsa.model.Gender
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -140,7 +140,7 @@ class PRAExportManager(
      * @return the generated archive
      * @throws ArchiveGenerationException if the archive could not be generated
      */
-    override fun generateArchive(data: Set<Gender>): File {
+    override fun generateArchive(data: Set<GenderDto>): File {
         try {
 
             val csvFiles = disciplineGroupRankingReporter.generateCSV(data)

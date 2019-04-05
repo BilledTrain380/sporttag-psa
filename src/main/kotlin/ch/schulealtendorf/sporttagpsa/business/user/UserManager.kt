@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
-import ch.schulealtendorf.sporttagpsa.model.User
 import java.util.*
 
 /**
@@ -63,7 +63,7 @@ interface UserManager {
      * @return the saved user
      * @throws InvalidPasswordException if the password does not match the validation requirements
      */
-    fun save(user: User): User
+    fun save(user: UserDto): UserDto
 
     /**
      * Changes the password for the given {@code user}.
@@ -74,12 +74,12 @@ interface UserManager {
      *
      * @throws UserNotFoundException if the given {@code user} does not exist
      */
-    fun changePassword(user: User, password: String)
+    fun changePassword(user: UserDto, password: String)
 
     /**
      * @return all users
      */
-    fun getAll(): List<User>
+    fun getAll(): List<UserDto>
 
     /**
      * Gets the user by the given {@code userId} or an empty Optional,
@@ -89,7 +89,7 @@ interface UserManager {
      *
      * @return the resulting user or an empty Optional, if the user does not exist
      */
-    fun getOne(userId: Int): Optional<User>
+    fun getOne(userId: Int): Optional<UserDto>
 
     /**
      * Gets the user by the given {@code username} or an empty Optional,
@@ -99,7 +99,7 @@ interface UserManager {
      *
      * @return the user or an empty Optional, if the username does not exist
      */
-    fun getOne(username: String): Optional<User>
+    fun getOne(username: String): Optional<UserDto>
 
     /**
      * Deletes the user matching the given {@code userId}.

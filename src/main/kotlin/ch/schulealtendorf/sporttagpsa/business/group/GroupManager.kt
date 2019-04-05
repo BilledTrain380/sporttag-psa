@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Group
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.GroupDto
 import java.util.*
 
 /**
@@ -51,17 +51,17 @@ interface GroupManager {
     /**
      * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
      */
-    fun hasPendingParticipation(group: Group): Boolean
+    fun hasPendingParticipation(group: GroupDto): Boolean
 
     /**
      * @return true whenever any participant of the given group is a competitor, otherwise false
      */
-    fun isCompetitive(group: Group): Boolean
+    fun isCompetitive(group: GroupDto): Boolean
 
     /**
      * @return all groups
      */
-    fun getGroups(): List<Group>
+    fun getGroups(): List<GroupDto>
 
     /**
      * Gets the group matching the given {@code name}.
@@ -70,7 +70,7 @@ interface GroupManager {
      *
      * @return an Optional containing the group, or empty if the group could not be found
      */
-    fun getGroup(name: String): Optional<Group>
+    fun getGroup(name: String): Optional<GroupDto>
 
     /**
      * Gets the coach matching the given {@code name}.
@@ -79,7 +79,7 @@ interface GroupManager {
      *
      * @return an Optional containing the coach, or empty if the coach could not be found
      */
-    fun getCoach(name: String): Optional<Coach>
+    fun getCoach(name: String): Optional<CoachDto>
 
     /**
      * Imports the given {@code participant} by considering all their relations.

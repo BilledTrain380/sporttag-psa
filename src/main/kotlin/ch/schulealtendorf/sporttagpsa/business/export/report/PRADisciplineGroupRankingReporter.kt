@@ -44,7 +44,7 @@ import ch.schulealtendorf.pra.pojo.DisciplineGroupRanking
 import ch.schulealtendorf.pra.pojo.Result
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
@@ -78,7 +78,7 @@ class PRADisciplineGroupRankingReporter(
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: Iterable<Gender>): Set<File> {
+    override fun generateReport(data: Iterable<GenderDto>): Set<File> {
 
         try {
 
@@ -152,7 +152,7 @@ class PRADisciplineGroupRankingReporter(
      * @return all generated csv files
      * @throws ReportGenerationException if the csv files could not be generated
      */
-    override fun generateCSV(genders: Iterable<Gender>): Set<File> {
+    override fun generateCSV(genders: Iterable<GenderDto>): Set<File> {
 
         try {
 
@@ -201,9 +201,9 @@ class PRADisciplineGroupRankingReporter(
         }
     }
 
-    private fun Gender.asBoolean() = this == Gender.MALE
+    private fun GenderDto.asBoolean() = this == GenderDto.MALE
 
-    private fun Gender.text() = if (this.asBoolean()) "Knaben" else "Mädchen"
+    private fun GenderDto.text() = if (this.asBoolean()) "Knaben" else "Mädchen"
 
     private fun Long.formattedDate(): String {
         val date = Date(this)

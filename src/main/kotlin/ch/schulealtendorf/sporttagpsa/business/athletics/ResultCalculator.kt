@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.Result
+import ch.schulealtendorf.psa.dto.ResultDto
 
 /**
  * Calculator for {@link Result#points} based on the {@link Result#value}.
@@ -54,5 +54,5 @@ interface ResultCalculator {
      *
      * @return the resulting result
      */
-    fun calculate(result: TemporaryResult): Result
+    fun calculate(result: TemporaryResult): ResultDto
 }

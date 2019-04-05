@@ -36,13 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.sporttagpsa.business.participation.ATHLETICS
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Group
 import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -67,7 +67,7 @@ class GroupManagerImpl(
     /**
      * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
      */
-    override fun hasPendingParticipation(group: Group): Boolean {
+    override fun hasPendingParticipation(group: GroupDto): Boolean {
 
         val participants = participantRepository.findByGroupName(group.name)
 
@@ -77,12 +77,12 @@ class GroupManagerImpl(
     /**
      * @return all groups
      */
-    override fun getGroups(): List<Group> {
+    override fun getGroups(): List<GroupDto> {
         return groupRepository.findAll()
                 .map { it.toModel() }
     }
 
-    override fun isCompetitive(group: Group): Boolean {
+    override fun isCompetitive(group: GroupDto): Boolean {
 
         val participants = participantRepository.findByGroupName(group.name)
 
@@ -96,7 +96,7 @@ class GroupManagerImpl(
      *
      * @return an Optional containing the group, or empty if the group could not be found
      */
-    override fun getGroup(name: String): Optional<Group> = groupRepository.findById(name).map { it.toModel() }
+    override fun getGroup(name: String): Optional<GroupDto> = groupRepository.findById(name).map { it.toModel() }
 
     /**
      * Gets the coach matching the given {@code name}.
@@ -105,7 +105,7 @@ class GroupManagerImpl(
      *
      * @return an Optional containing the coach, or empty if the coach could not be found
      */
-    override fun getCoach(name: String): Optional<Coach> = coachRepository.findByName(name).map { it.toModel() }
+    override fun getCoach(name: String): Optional<CoachDto> = coachRepository.findByName(name).map { it.toModel() }
 
     /**
      * Imports the given {@code participant} by considering all their relations.
@@ -140,7 +140,7 @@ class GroupManagerImpl(
         participantRepository.save(participantEntity)
     }
 
-    private fun GroupEntity.toModel() = Group(name, coach.toModel())
+    private fun GroupEntity.toModel() = GroupDto(name, coach.toModel())
 
-    private fun CoachEntity.toModel() = Coach(id!!, name)
+    private fun CoachEntity.toModel() = CoachDto(id!!, name)
 }

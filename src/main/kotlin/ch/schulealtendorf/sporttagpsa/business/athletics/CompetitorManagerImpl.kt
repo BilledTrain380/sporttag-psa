@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.TownDto
+import ch.schulealtendorf.psa.dto.UnitDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Result
-import ch.schulealtendorf.sporttagpsa.model.Town
-import ch.schulealtendorf.sporttagpsa.model.Unit
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
@@ -80,9 +80,9 @@ class CompetitorManagerImpl(
      *
      * @return an Optional containing the resulting competitor
      */
-    override fun getCompetitor(id: Int): Optional<Competitor> = competitorRepository.findByParticipantId(id).map { it.map() }
+    override fun getCompetitor(id: Int): Optional<CompetitorDto> = competitorRepository.findByParticipantId(id).map { it.map() }
 
-    override fun saveCompetitorResults(competitor: Competitor) {
+    override fun saveCompetitorResults(competitor: CompetitorDto) {
 
         val competitorEntity = competitorRepository.findByParticipantId(competitor.id)
                 .orElseThrow { NoSuchElementException("Could not find competitor: id=${competitor.id}") }
@@ -109,7 +109,7 @@ class CompetitorManagerImpl(
         competitorRepository.save(competitorEntity)
     }
 
-    override fun mergeResults(competitor: Competitor, results: Iterable<Result>): Competitor {
+    override fun mergeResults(competitor: CompetitorDto, results: Iterable<ResultDto>): CompetitorDto {
 
         val mergedResults = competitor.results
                 .map {
@@ -124,37 +124,37 @@ class CompetitorManagerImpl(
         return Optional.ofNullable(find { it.id == id })
     }
 
-    private fun Result.existsIn(results: Iterable<Result>): Boolean {
+    private fun ResultDto.existsIn(results: Iterable<ResultDto>): Boolean {
         return results.any { id == it.id }
     }
 
-    private infix fun Iterable<Result>.take(result: Result): Result {
+    private infix fun Iterable<ResultDto>.take(result: ResultDto): ResultDto {
         return find { it.id == result.id }!!
     }
 
-    private fun Iterable<Result>.notIn(results: Iterable<Result>): Iterable<Result> {
+    private fun Iterable<ResultDto>.notIn(results: Iterable<ResultDto>): Iterable<ResultDto> {
         return filterNot { results.any { result -> result.id == it.id } }
     }
 
-    private fun CompetitorEntity.map(): Competitor {
-        return Competitor(
+    private fun CompetitorEntity.map(): CompetitorDto {
+        return CompetitorDto(
                 participant.id!!,
                 startnumber!!,
                 participant.surname,
                 participant.prename,
                 participant.gender,
-                Birthday(participant.birthday),
+                BirthdayDto(participant.birthday),
                 absentRepository.findByParticipantId(participant.id!!).isPresent,
                 participant.address,
-                Town(participant.town.zip, participant.town.name),
-                Group(participant.group.name, Coach(participant.group.coach.id!!, participant.group.coach.name)),
+                TownDto(participant.town.zip, participant.town.name),
+                GroupDto(participant.group.name, CoachDto(participant.group.coach.id!!, participant.group.coach.name)),
                 results.map {
-                    Result(
+                    ResultDto(
                             it.id!!,
                             it.value,
                             it.points,
                             Optional.ofNullable(it.distance),
-                            Discipline(it.discipline.name, Unit(it.discipline.unit.name, it.discipline.unit.factor)))
+                            DisciplineDto(it.discipline.name, UnitDto(it.discipline.unit.name, it.discipline.unit.factor)))
                 }
         )
     }

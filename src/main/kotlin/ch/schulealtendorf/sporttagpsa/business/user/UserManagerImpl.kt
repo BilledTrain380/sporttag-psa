@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
+import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
-import ch.schulealtendorf.sporttagpsa.model.User
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
@@ -58,7 +58,7 @@ class UserManagerImpl(
         private val passwordValidator: PasswordValidator
 ) : UserManager {
 
-    override fun save(user: User): User {
+    override fun save(user: UserDto): UserDto {
 
         val userEntity = userRepository.findById(user.id)
                 .orElseGet {
@@ -75,7 +75,7 @@ class UserManagerImpl(
         return userRepository.save(userEntity).toModel()
     }
 
-    override fun changePassword(user: User, password: String) {
+    override fun changePassword(user: UserDto, password: String) {
 
         val userEntity = userRepository.findById(user.id)
                 .orElseThrow { UserNotFoundException("The user could not be found: user=$user") }
@@ -86,11 +86,11 @@ class UserManagerImpl(
         userRepository.save(userEntity)
     }
 
-    override fun getAll(): List<User> = userRepository.findAll().map { it.toModel() }
+    override fun getAll(): List<UserDto> = userRepository.findAll().map { it.toModel() }
 
-    override fun getOne(userId: Int): Optional<User> = userRepository.findById(userId).map { it.toModel() }
+    override fun getOne(userId: Int): Optional<UserDto> = userRepository.findById(userId).map { it.toModel() }
 
-    override fun getOne(username: String): Optional<User> = userRepository.findByUsername(username).map { it.toModel() }
+    override fun getOne(username: String): Optional<UserDto> = userRepository.findByUsername(username).map { it.toModel() }
 
     override fun delete(userId: Int) {
 
@@ -104,7 +104,7 @@ class UserManagerImpl(
 
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 
-    private fun UserEntity.toModel() = User(id!!, username, authorities.map { it.role }, enabled)
+    private fun UserEntity.toModel() = UserDto(id!!, username, authorities.map { it.role }, enabled)
 
     private fun String.validate() {
         val validationResult = passwordValidator.validate(this)

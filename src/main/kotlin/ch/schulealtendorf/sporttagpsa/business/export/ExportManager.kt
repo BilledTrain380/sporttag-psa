@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.GenderDto
 import java.io.File
 
 /**
@@ -86,5 +86,5 @@ interface ExportManager {
      * @throws ArchiveGenerationException if the archive could not be generated
      */
     @Deprecated("Use generateArchive(RankingExport) ubsCup")
-    fun generateArchive(data: Set<Gender>): File
+    fun generateArchive(data: Set<GenderDto>): File
 }

@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.GenderDto
 
 /**
  * Data class for competitors in a flat data structure.
@@ -49,8 +49,8 @@ import ch.schulealtendorf.sporttagpsa.model.Gender
 data class FlatParticipant(
         val surname: String,
         val prename: String,
-        val gender: Gender,
-        val birthday: Birthday,
+        val gender: GenderDto,
+        val birthday: BirthdayDto,
         val address: String,
         val zipCode: String,
         val town: String,

@@ -36,6 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.ParticipationStatusDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
@@ -43,9 +46,6 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipant
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -94,12 +94,12 @@ class ParticipantController(
         val group = groupManager.getGroup(groupName)
                 .orElseThrow { BadRequestException("Could not find group: name=$groupName") }
 
-        var newParticipant = Participant(
+        var newParticipant = ParticipantDto(
                 0,
                 participant.surname,
                 participant.prename,
                 participant.gender,
-                Birthday(participant.birthday),
+                BirthdayDto(participant.birthday),
                 false,
                 participant.address,
                 participant.town,
@@ -110,9 +110,9 @@ class ParticipantController(
 
         val participationStatus = participationManager.getParticipationStatus()
 
-        if (participationStatus == ParticipationStatus.OPEN) {
+        if (participationStatus == ParticipationStatusDto.OPEN) {
             participationManager.participate(newParticipant, participant.sport)
-        } else if (participationStatus == ParticipationStatus.CLOSE) {
+        } else if (participationStatus == ParticipationStatusDto.CLOSE) {
             participationManager.reParticipate(newParticipant, participant.sport)
         }
     }
@@ -165,9 +165,9 @@ class ParticipantController(
 
         val participationStatus = participationManager.getParticipationStatus()
 
-        if (participationStatus == ParticipationStatus.OPEN) {
+        if (participationStatus == ParticipationStatusDto.OPEN) {
             participationManager.participate(participant, patchParticipant.sport)
-        } else if (participationStatus == ParticipationStatus.CLOSE) {
+        } else if (participationStatus == ParticipationStatusDto.CLOSE) {
             participationManager.reParticipate(participant, patchParticipant.sport)
         }
     }
@@ -183,10 +183,10 @@ class ParticipantController(
         }
     }
 
-    private fun ParticipantManager.getParticipantById(id: Int): Participant {
+    private fun ParticipantManager.getParticipantById(id: Int): ParticipantDto {
         return getParticipant(id)
                 .orElseThrow { NotFoundException("Could not found participant: id=$id") }
     }
 
-    private fun Long?.toBirthday() = if (this == null) null else Birthday(this)
+    private fun Long?.toBirthday() = if (this == null) null else BirthdayDto(this)
 }

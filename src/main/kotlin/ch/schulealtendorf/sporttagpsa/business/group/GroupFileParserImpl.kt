@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.GenderDto
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.nio.charset.Charset
@@ -93,7 +93,7 @@ class GroupFileParserImpl : GroupFileParser {
                         if (!(genderValue == "w" || genderValue == "m")) {
                             throw CSVParsingException("Can not parse gender: value=$genderValue", index, parts.column(3))
                         }
-                        val gender = if (genderValue == "m") Gender.MALE else Gender.FEMALE
+                        val gender = if (genderValue == "m") GenderDto.MALE else GenderDto.FEMALE
 
                         val address: String = parts[4]
                         val zipCode: String = parts[5]
@@ -109,7 +109,7 @@ class GroupFileParserImpl : GroupFileParser {
                                 surname,
                                 prename,
                                 gender,
-                                Birthday(birthday.time),
+                                BirthdayDto(birthday.time),
                                 address,
                                 zipCode,
                                 town,

@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.SportDto
 
 data class RankingExport(
         val disciplines: Iterable<DisciplineExport>,
-        val disciplineGroup: Iterable<Gender>,
-        val total: Iterable<Gender>,
-        val ubsCup: Iterable<Gender>
+        val disciplineGroup: Iterable<GenderDto>,
+        val total: Iterable<GenderDto>,
+        val ubsCup: Iterable<GenderDto>
 )
 
 data class EventSheetExport(
@@ -53,16 +53,16 @@ data class EventSheetExport(
 )
 
 data class ParticipantExport(
-        val sports: Iterable<Sport>
+        val sports: Iterable<SportDto>
 )
 
 data class DisciplineExport(
-        val discipline: Discipline,
-        val gender: Gender
+        val discipline: DisciplineDto,
+        val gender: GenderDto
 )
 
 data class EventSheetDisciplineExport(
-        val discipline: Discipline,
-        val group: Group,
-        val gender: Gender
+        val discipline: DisciplineDto,
+        val group: GroupDto,
+        val gender: GenderDto
 )

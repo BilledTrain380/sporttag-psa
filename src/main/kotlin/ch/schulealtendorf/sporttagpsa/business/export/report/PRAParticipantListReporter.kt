@@ -42,8 +42,8 @@ import ch.schulealtendorf.pra.pojo.Participant
 import ch.schulealtendorf.pra.pojo.ParticipantList
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Sport
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
@@ -73,7 +73,7 @@ class PRAParticipantListReporter(
      * @return all generated reports
      * @throws ReportGenerationException if the report generation fails
      */
-    override fun generateReport(data: Iterable<Sport>): Set<File> {
+    override fun generateReport(data: Iterable<SportDto>): Set<File> {
 
         try {
             val absentCompetitorList = absentCompetitorRepository.findAll()
@@ -111,5 +111,5 @@ class PRAParticipantListReporter(
         }
     }
 
-    private fun Gender.asBoolean() = this == Gender.MALE
+    private fun GenderDto.asBoolean() = this == GenderDto.MALE
 }

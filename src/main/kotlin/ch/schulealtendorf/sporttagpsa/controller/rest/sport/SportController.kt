@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.sport
 
+import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.sporttagpsa.business.participation.SportManager
-import ch.schulealtendorf.sporttagpsa.model.Sport
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -56,7 +56,7 @@ class SportController(
 
     @PreAuthorize("#oauth2.hasScope('sport_read')")
     @GetMapping("/sports", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getSports(): List<Sport> {
+    fun getSports(): List<SportDto> {
         return sportManager.getSports()
     }
 }

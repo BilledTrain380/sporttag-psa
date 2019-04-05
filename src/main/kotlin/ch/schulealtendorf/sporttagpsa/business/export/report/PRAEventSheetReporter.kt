@@ -42,8 +42,8 @@ import ch.schulealtendorf.pra.pojo.Competitor
 import ch.schulealtendorf.pra.pojo.EventSheet
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
+import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
-import ch.schulealtendorf.sporttagpsa.model.Gender
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.springframework.stereotype.Component
 import java.io.File
@@ -108,7 +108,7 @@ class PRAEventSheetReporter(
         }
     }
 
-    private fun Gender.text() = if (this.asBoolean()) "Knaben" else "Mädchen"
+    private fun GenderDto.text() = if (this.asBoolean()) "Knaben" else "Mädchen"
 
-    private fun Gender.asBoolean() = this == Gender.MALE
+    private fun GenderDto.asBoolean() = this == GenderDto.MALE
 }

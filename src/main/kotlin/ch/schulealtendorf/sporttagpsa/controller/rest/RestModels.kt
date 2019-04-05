@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest
 
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Gender
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.ParticipationStatus
-import ch.schulealtendorf.sporttagpsa.model.Result
-import ch.schulealtendorf.sporttagpsa.model.Sport
-import ch.schulealtendorf.sporttagpsa.model.Town
-import ch.schulealtendorf.sporttagpsa.model.User
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.ParticipationStatusDto
+import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.TownDto
+import ch.schulealtendorf.psa.dto.UserDto
 
 // Data classes representing the JSON object, where the model class itself does not fit.
 
@@ -53,17 +53,17 @@ data class RestParticipant @JvmOverloads constructor(
         val id: Int,
         val surname: String,
         val prename: String,
-        val gender: Gender,
+        val gender: GenderDto,
         val birthday: Long,
         val absent: Boolean,
         val address: String,
-        val town: Town,
-        val group: Group,
-        val sport: Sport? = null
+        val town: TownDto,
+        val group: GroupDto,
+        val sport: SportDto? = null
 )
 
 data class RestParticipationStatus(
-        val status: ParticipationStatus
+        val status: ParticipationStatusDto
 )
 
 data class RestCompetitor(
@@ -71,12 +71,12 @@ data class RestCompetitor(
         val startNumber: Int,
         val surname: String,
         val prename: String,
-        val gender: Gender,
+        val gender: GenderDto,
         val birthday: Long,
         val absent: Boolean,
         val address: String,
-        val town: Town,
-        val group: Group,
+        val town: TownDto,
+        val group: GroupDto,
         val results: List<RestResult>
 )
 
@@ -85,7 +85,7 @@ data class RestResult(
         val value: Long,
         val points: Int,
         val distance: String?,
-        val discipline: Discipline
+        val discipline: DisciplineDto
 )
 
 data class RestUser(
@@ -96,7 +96,7 @@ data class RestUser(
 
 // Factory functions to create a data class representing the the JSON object of the given parameter.
 
-fun json(participant: Participant): RestParticipant {
+fun json(participant: ParticipantDto): RestParticipant {
     return RestParticipant(
             participant.id,
             participant.surname,
@@ -111,11 +111,11 @@ fun json(participant: Participant): RestParticipant {
     )
 }
 
-fun json(participationStatus: ParticipationStatus): RestParticipationStatus {
+fun json(participationStatus: ParticipationStatusDto): RestParticipationStatus {
     return RestParticipationStatus(participationStatus)
 }
 
-fun json(competitor: Competitor): RestCompetitor {
+fun json(competitor: CompetitorDto): RestCompetitor {
     return RestCompetitor(
             competitor.id,
             competitor.startNumber,
@@ -131,7 +131,7 @@ fun json(competitor: Competitor): RestCompetitor {
     )
 }
 
-fun json(result: Result): RestResult {
+fun json(result: ResultDto): RestResult {
     return RestResult(
             result.id,
             result.value,
@@ -141,7 +141,7 @@ fun json(result: Result): RestResult {
     )
 }
 
-fun json(user: User): RestUser {
+fun json(user: UserDto): RestUser {
     return RestUser(
             user.id,
             user.username,

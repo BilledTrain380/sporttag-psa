@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.web.ranking
 
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.GenderDto
 
 data class DisciplineRanking(
         val discipline: String,
-        val gender: Gender
+        val gender: GenderDto
 )
 
 data class RankingData(
-        val total: List<Gender> = listOf(),
+        val total: List<GenderDto> = listOf(),
         val discipline: List<DisciplineRanking> = listOf(),
-        val disciplineGroup: List<Gender> = listOf(),
-        val ubsCup: List<Gender> = listOf()
+        val disciplineGroup: List<GenderDto> = listOf(),
+        val ubsCup: List<GenderDto> = listOf()
 )

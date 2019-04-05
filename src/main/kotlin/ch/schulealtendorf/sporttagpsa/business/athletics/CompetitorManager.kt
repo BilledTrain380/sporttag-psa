@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.Competitor
-import ch.schulealtendorf.sporttagpsa.model.Result
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.ResultDto
 import java.util.*
 
 /**
@@ -51,7 +51,7 @@ interface CompetitorManager {
     /**
      * @return a list of all competitors
      */
-    fun getCompetitorList(): List<Competitor>
+    fun getCompetitorList(): List<CompetitorDto>
 
     /**
      * Get a competitor as a {@link Optional} matching the given {@code id}.
@@ -62,7 +62,7 @@ interface CompetitorManager {
      *
      * @return an Optional containing the resulting competitor
      */
-    fun getCompetitor(id: Int): Optional<Competitor>
+    fun getCompetitor(id: Int): Optional<CompetitorDto>
 
     /**
      * Saves the results of the given {@code competitor}.
@@ -73,7 +73,7 @@ interface CompetitorManager {
      *
      * @throws NoSuchElementException if the competitor does not exist
      */
-    fun saveCompetitorResults(competitor: Competitor)
+    fun saveCompetitorResults(competitor: CompetitorDto)
 
     /**
      * Merges the results of the given {@code competitor} with the given {@code results}
@@ -86,5 +86,5 @@ interface CompetitorManager {
      *
      * @return the competitor containing the merged results
      */
-    fun mergeResults(competitor: Competitor, results: Iterable<Result>): Competitor
+    fun mergeResults(competitor: CompetitorDto, results: Iterable<ResultDto>): CompetitorDto
 }

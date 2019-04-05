@@ -37,11 +37,11 @@
 package ch.schulealtendorf.sporttagpsa.controller.web.participantlist
 
 import ch.schulealtendorf.psa.core.io.FileSystem
+import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
 import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
-import ch.schulealtendorf.sporttagpsa.model.Sport
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
@@ -60,7 +60,7 @@ class ParticipantListController(
     @PreAuthorize("#oauth2.hasScope('participant_list')")
     @PostMapping("/participant-list", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
-    fun createParticipantList(@RequestBody data: List<Sport>): FileQualifier {
+    fun createParticipantList(@RequestBody data: List<SportDto>): FileQualifier {
 
         val exportData = ParticipantExport(data)
 

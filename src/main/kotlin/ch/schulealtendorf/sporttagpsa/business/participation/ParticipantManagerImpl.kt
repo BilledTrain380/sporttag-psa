@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.CoachDto
+import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.model.Birthday
-import ch.schulealtendorf.sporttagpsa.model.Coach
-import ch.schulealtendorf.sporttagpsa.model.Group
-import ch.schulealtendorf.sporttagpsa.model.Participant
-import ch.schulealtendorf.sporttagpsa.model.Sport
-import ch.schulealtendorf.sporttagpsa.model.Town
 import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -70,9 +70,9 @@ class ParticipantManagerImpl(
 
     override fun getParticipants() = participantRepository.findAll().map { it.toParticipant() }
 
-    override fun getParticipant(id: Int): Optional<Participant> = participantRepository.findById(id).map { it.toParticipant() }
+    override fun getParticipant(id: Int): Optional<ParticipantDto> = participantRepository.findById(id).map { it.toParticipant() }
 
-    override fun saveParticipant(participant: Participant): Participant {
+    override fun saveParticipant(participant: ParticipantDto): ParticipantDto {
 
         val participantEntity: ParticipantEntity = participantRepository.findById(participant.id)
                 .orElseGet { ParticipantEntity() }
@@ -96,7 +96,7 @@ class ParticipantManagerImpl(
         return participantRepository.save(participantEntity).toParticipant()
     }
 
-    override fun deleteParticipant(participant: Participant) {
+    override fun deleteParticipant(participant: ParticipantDto) {
 
         val participantEntity = participantRepository.findById(participant.id)
 
@@ -105,13 +105,13 @@ class ParticipantManagerImpl(
         }
     }
 
-    private fun ParticipantEntity.toParticipant(): Participant {
-        return Participant(
+    private fun ParticipantEntity.toParticipant(): ParticipantDto {
+        return ParticipantDto(
                 id!!,
                 surname,
                 prename,
                 gender,
-                Birthday(birthday),
+                BirthdayDto(birthday),
                 absentRepository.findByParticipantId(id!!).isPresent,
                 address,
                 town.toTown(),
@@ -120,13 +120,13 @@ class ParticipantManagerImpl(
         )
     }
 
-    private fun TownEntity.toTown() = Town(zip, name)
+    private fun TownEntity.toTown() = TownDto(zip, name)
 
-    private fun GroupEntity.toGroup() = Group(name, Coach(coach.id!!, coach.name))
+    private fun GroupEntity.toGroup() = GroupDto(name, CoachDto(coach.id!!, coach.name))
 
-    private fun SportEntity?.toSport(): Optional<Sport> {
+    private fun SportEntity?.toSport(): Optional<SportDto> {
         return Optional.ofNullable(
-                if (this == null) this else Sport(name)
+                if (this == null) this else SportDto(name)
         )
     }
 }

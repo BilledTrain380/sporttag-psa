@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.sporttagpsa.model.Discipline
-import ch.schulealtendorf.sporttagpsa.model.Gender
+import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.GenderDto
 import java.util.*
 
 /**
@@ -49,8 +49,8 @@ import java.util.*
  */
 data class TemporaryResult @JvmOverloads constructor(
         val id: Int,
-        val gender: Gender,
+        val gender: GenderDto,
         val value: Long,
-        val discipline: Discipline,
+        val discipline: DisciplineDto,
         val distance: Optional<String> = Optional.empty()
 )

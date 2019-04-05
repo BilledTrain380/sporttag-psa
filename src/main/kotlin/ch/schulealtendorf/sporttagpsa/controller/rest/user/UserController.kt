@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.user
 
+import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
@@ -44,7 +45,6 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.ForbiddenException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestUser
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import ch.schulealtendorf.sporttagpsa.model.User
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -76,7 +76,7 @@ class UserController(
     @PostMapping("/users")
     fun createUser(@RequestBody newUser: NewUser) {
 
-        val user = User(0, newUser.username, listOf("ROLE_USER"), newUser.enabled, newUser.password)
+        val user = UserDto(0, newUser.username, listOf("ROLE_USER"), newUser.enabled, newUser.password)
         userManager.save(user)
     }
 
@@ -120,10 +120,10 @@ class UserController(
         userManager.delete(id)
     }
 
-    private fun UserManager.findOne(id: Int): User {
+    private fun UserManager.findOne(id: Int): UserDto {
         return getOne(id)
                 .orElseThrow { NotFoundException("Could not find user: user_id=$id") }
     }
 
-    private fun Principal.isAuthorized(user: User) = (name == USER_ADMIN || name == user.username)
+    private fun Principal.isAuthorized(user: UserDto) = (name == USER_ADMIN || name == user.username)
 }

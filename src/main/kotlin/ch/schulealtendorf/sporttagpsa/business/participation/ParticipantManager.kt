@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.sporttagpsa.model.Participant
+import ch.schulealtendorf.psa.dto.ParticipantDto
 import java.util.*
 
 /**
@@ -50,14 +50,14 @@ interface ParticipantManager {
     /**
      * @return a list of all participants
      */
-    fun getParticipants(): List<Participant>
+    fun getParticipants(): List<ParticipantDto>
 
     /**
      * @param id the id of the participant
      *
      * @return an Optional containing the participant or empty if the participant could not be found
      */
-    fun getParticipant(id: Int): Optional<Participant>
+    fun getParticipant(id: Int): Optional<ParticipantDto>
 
     /**
      * Saves the given {@code participant}.
@@ -77,12 +77,12 @@ interface ParticipantManager {
      * @return the created participant
      * @throws NoSuchElementException if the group of the given {@code participant} does not exist
      */
-    fun saveParticipant(participant: Participant): Participant
+    fun saveParticipant(participant: ParticipantDto): ParticipantDto
 
     /**
      * Deletes the given {@code participant}.
      *
      * @param participant the participant to delete
      */
-    fun deleteParticipant(participant: Participant)
+    fun deleteParticipant(participant: ParticipantDto)
 }
