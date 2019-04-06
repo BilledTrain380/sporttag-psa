@@ -46,7 +46,6 @@ import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
@@ -63,7 +62,6 @@ import kotlin.NoSuchElementException
 @Component
 class ParticipantManagerImpl(
         private val participantRepository: ParticipantRepository,
-        private val absentRepository: AbsentParticipantRepository,
         private val townRepository: TownRepository,
         private val groupRepository: GroupRepository
 ) : ParticipantManager {
@@ -112,7 +110,7 @@ class ParticipantManagerImpl(
                 prename,
                 gender,
                 BirthdayDto(birthday),
-                absentRepository.findByParticipantId(id!!).isPresent,
+                absent,
                 address,
                 town.toTown(),
                 group.toGroup(),

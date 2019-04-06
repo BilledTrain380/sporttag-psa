@@ -46,7 +46,6 @@ import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.psa.dto.UnitDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import org.springframework.stereotype.Component
@@ -62,7 +61,6 @@ import kotlin.NoSuchElementException
 @Component
 class CompetitorManagerImpl(
         private val competitorRepository: CompetitorRepository,
-        private val absentRepository: AbsentParticipantRepository,
         private val disciplineRepository: DisciplineRepository
 ) : CompetitorManager {
 
@@ -144,7 +142,7 @@ class CompetitorManagerImpl(
                 participant.prename,
                 participant.gender,
                 BirthdayDto(participant.birthday),
-                absentRepository.findByParticipantId(participant.id!!).isPresent,
+                participant.absent,
                 participant.address,
                 TownDto(participant.town.zip, participant.town.name),
                 GroupDto(participant.group.name, CoachDto(participant.group.coach.id!!, participant.group.coach.name)),

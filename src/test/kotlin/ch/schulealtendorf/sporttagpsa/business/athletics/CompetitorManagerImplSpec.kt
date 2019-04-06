@@ -48,7 +48,6 @@ import ch.schulealtendorf.psa.dto.UnitDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import com.nhaarman.mockito_kotlin.any
@@ -66,22 +65,17 @@ import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
 object CompetitorManagerImplSpec : Spek({
 
     describe("a competitor manager") {
 
         val mockCompetitorRepository: CompetitorRepository = mock()
-        val mockAbsentRepository: AbsentParticipantRepository = mock()
         val mockDisciplineRepository: DisciplineRepository = mock()
 
-        val manager = CompetitorManagerImpl(mockCompetitorRepository, mockAbsentRepository, mockDisciplineRepository)
+        val manager = CompetitorManagerImpl(mockCompetitorRepository, mockDisciplineRepository)
 
         beforeEachTest {
-            reset(mockCompetitorRepository, mockAbsentRepository, mockDisciplineRepository)
+            reset(mockCompetitorRepository, mockDisciplineRepository)
         }
 
         // just a test instance which we copy for the specs

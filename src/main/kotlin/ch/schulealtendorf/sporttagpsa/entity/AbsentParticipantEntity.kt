@@ -45,6 +45,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.OneToOne
 import javax.persistence.Table
 
+@Deprecated("Will be deleted")
 @Entity
 @Table(name = "ABSENT_PARTICIPANT")
 data class AbsentParticipantEntity(

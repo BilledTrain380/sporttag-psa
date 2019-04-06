@@ -46,7 +46,6 @@ import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.joda.time.DateTime
 import org.springframework.stereotype.Component
@@ -65,8 +64,7 @@ import java.time.Year
 class PRATotalRankingReporter(
         private val fileSystem: FileSystem,
         private val competitorRepository: CompetitorRepository,
-        private val totalRankingAPI: TotalRankingAPI,
-        private val absentParticipantRepository: AbsentParticipantRepository
+        private val totalRankingAPI: TotalRankingAPI
 ) : TotalRankingReporter {
 
     /**
@@ -81,12 +79,10 @@ class PRATotalRankingReporter(
 
         try {
 
-            val absentParticipantList = absentParticipantRepository.findAll()
-
             return data.map { gender ->
 
                 competitorRepository.findByParticipantGender(gender)
-                        .filterNot { absentParticipantList.any { absentParticipant -> absentParticipant.participant.id == it.participant.id } }
+                        .filterNot { it.participant.absent }
                         .groupBy { DateTime(it.participant.birthday).year }
                         .map {
 

@@ -42,14 +42,12 @@ import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryModel
 import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
-import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.MAIN_PARTICIPATION
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -64,7 +62,6 @@ import org.springframework.stereotype.Component
 @Component
 class ParticipationManagerImpl(
         private val participantRepository: ParticipantRepository,
-        private val absentRepository: AbsentParticipantRepository,
         private val participationRepository: ParticipationRepository,
         private val competitorRepository: CompetitorRepository,
         private val categoryRuleBook: CategoryRuleBook,
@@ -84,15 +81,9 @@ class ParticipationManagerImpl(
         val participantEntity = participantRepository.findById(participant.id)
                 .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
 
-        val absentParticipant = absentRepository.findByParticipantId(participant.id)
+        participantEntity.absent = true
 
-        if (absentParticipant.isPresent.not()) {
-            val absentEntity = AbsentParticipantEntity(
-                    participant = participantEntity
-            )
-
-            absentRepository.save(absentEntity)
-        }
+        participantRepository.save(participantEntity)
     }
 
     /**
@@ -104,15 +95,12 @@ class ParticipationManagerImpl(
      */
     override fun markAsPresent(participant: ParticipantDto) {
 
-        if (participantRepository.existsById(participant.id).not()) {
-            throw NoSuchElementException("Could not found participant: id=${participant.id}")
-        }
+        val participantEntity = participantRepository.findById(participant.id)
+                .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
 
-        val absentParticipant = absentRepository.findByParticipantId(participant.id)
+        participantEntity.absent = false
 
-        absentParticipant.ifPresent {
-            absentRepository.delete(it)
-        }
+        participantRepository.save(participantEntity)
     }
 
     /**

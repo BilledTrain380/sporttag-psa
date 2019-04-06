@@ -80,6 +80,9 @@ data class ParticipantEntity(
         var birthday: Long = 0,
 
         @NotNull
+        var absent: Boolean = false,
+
+        @NotNull
         @Size(min = 1, max = 80)
         var address: String = "",
 

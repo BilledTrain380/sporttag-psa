@@ -44,7 +44,6 @@ import ch.schulealtendorf.psa.dto.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryRuleBook
-import ch.schulealtendorf.sporttagpsa.entity.AbsentParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
@@ -56,7 +55,6 @@ import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.entity.UnitEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -78,16 +76,11 @@ import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
 object ParticipationManagerImplSpec : Spek({
 
     describe("a participation manager") {
 
         val mockParticipantRepository: ParticipantRepository = mock()
-        val mockAbsentRepository: AbsentParticipantRepository = mock()
         val mockParticipationRepository: ParticipationRepository = mock()
         val mockCompetitorRepository: CompetitorRepository = mock()
         val mockCategoryBook: CategoryRuleBook = mock()
@@ -95,7 +88,6 @@ object ParticipationManagerImplSpec : Spek({
 
         val manager = ParticipationManagerImpl(
                 mockParticipantRepository,
-                mockAbsentRepository,
                 mockParticipationRepository,
                 mockCompetitorRepository,
                 mockCategoryBook,
@@ -106,7 +98,6 @@ object ParticipationManagerImplSpec : Spek({
         beforeEachTest {
             reset(
                     mockParticipantRepository,
-                    mockAbsentRepository,
                     mockParticipationRepository,
                     mockCompetitorRepository,
                     mockCategoryBook,
@@ -163,101 +154,6 @@ object ParticipationManagerImplSpec : Spek({
                 town,
                 group
         )
-
-        context("mark as absent") {
-
-            on("present participant") {
-
-                whenever(mockAbsentRepository.findByParticipantId(any())).thenReturn(Optional.empty())
-                whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
-
-
-                manager.markAsAbsent(participantModel)
-
-
-                it("should create a absent participant entry") {
-                    val expected = AbsentParticipantEntity(
-                            participant = participantEntity.copy()
-                    )
-                    verify(mockAbsentRepository, times(1)).save(expected)
-                }
-            }
-
-            on("already absent participant") {
-
-                whenever(mockAbsentRepository.findByParticipantId(any())).thenReturn(Optional.of(AbsentParticipantEntity(1, participantEntity.copy())))
-                whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
-
-
-                manager.markAsAbsent(participantModel)
-
-
-                it("should not create or update any entities") {
-                    verify(mockAbsentRepository, times(1)).findByParticipantId(any())
-                    verifyNoMoreInteractions(mockAbsentRepository)
-                }
-            }
-
-            on("participant does not exist") {
-
-                whenever(mockAbsentRepository.findByParticipantId(any())).thenReturn(Optional.empty())
-
-
-                it("should throw a now such element exception indicating, that the given participant could not be found") {
-                    val exception = assertFailsWith<NoSuchElementException> {
-                        manager.markAsAbsent(participantModel)
-                    }
-                    assertEquals("Could not found participant: id=1", exception.message)
-                }
-            }
-        }
-
-        context("mark as present") {
-
-            on("absent participant") {
-
-                whenever(mockParticipantRepository.existsById(any())).thenReturn(true)
-
-                val absentParticipant = AbsentParticipantEntity(1, participantEntity.copy())
-                whenever(mockAbsentRepository.findByParticipantId(any())).thenReturn(Optional.of(absentParticipant))
-
-
-                manager.markAsPresent(participantModel)
-
-
-                it("should remove the absent participant entry") {
-                    verify(mockAbsentRepository, times(1)).delete(absentParticipant)
-                }
-            }
-
-            on("already present paritcipant") {
-
-                whenever(mockParticipantRepository.existsById(any())).thenReturn(true)
-                whenever(mockAbsentRepository.findByParticipantId(any())).thenReturn(Optional.empty())
-
-
-                manager.markAsPresent(participantModel)
-
-
-                it("should not create or update any entities") {
-                    verify(mockAbsentRepository, times(1)).findByParticipantId(any())
-                    verifyNoMoreInteractions(mockAbsentRepository)
-                }
-            }
-
-            on("participant does not exist") {
-
-                whenever(mockParticipantRepository.existsById(any())).thenReturn(false)
-
-
-                it("should throw a now such element exception indicating, that the given participant could not be found") {
-                    val exception = assertFailsWith<NoSuchElementException> {
-                        manager.markAsPresent(participantModel)
-                    }
-                    assertEquals("Could not found participant: id=1", exception.message)
-                }
-            }
-        }
 
         context("participate") {
 

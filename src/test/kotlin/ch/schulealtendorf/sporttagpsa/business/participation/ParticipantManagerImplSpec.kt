@@ -46,7 +46,6 @@ import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
@@ -74,20 +73,17 @@ object ParticipantManagerImplSpec : Spek({
     describe("a participant manager") {
 
         val mockParticipantRepository: ParticipantRepository = mock()
-        val mockAbsentRepository: AbsentParticipantRepository = mock()
         val mockTownRepository: TownRepository = mock()
         val mockGroupRepository: GroupRepository = mock()
 
         val manager = ParticipantManagerImpl(
                 mockParticipantRepository,
-                mockAbsentRepository,
                 mockTownRepository,
                 mockGroupRepository
         )
 
         beforeEachTest {
             reset(
-                    mockAbsentRepository,
                     mockParticipantRepository,
                     mockTownRepository,
                     mockGroupRepository

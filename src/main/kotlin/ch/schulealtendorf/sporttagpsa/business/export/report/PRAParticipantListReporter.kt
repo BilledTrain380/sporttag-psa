@@ -44,7 +44,6 @@ import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.psa.dto.SportDto
-import ch.schulealtendorf.sporttagpsa.repository.AbsentParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import org.springframework.stereotype.Component
 import java.io.File
@@ -61,8 +60,7 @@ import java.io.IOException
 class PRAParticipantListReporter(
         private val fileSystem: FileSystem,
         private val participantRepository: ParticipantRepository,
-        private val participantListAPI: ParticipantListAPI,
-        private val absentCompetitorRepository: AbsentParticipantRepository
+        private val participantListAPI: ParticipantListAPI
 ) : ParticipantListReporter {
 
     /**
@@ -76,7 +74,6 @@ class PRAParticipantListReporter(
     override fun generateReport(data: Iterable<SportDto>): Set<File> {
 
         try {
-            val absentCompetitorList = absentCompetitorRepository.findAll()
 
             return data
                     .map {
@@ -86,7 +83,7 @@ class PRAParticipantListReporter(
                         val participantList = ParticipantList().apply {
                             sport = it.name
                             this.participants = participants
-                                    .filter { !absentCompetitorList.any { absent -> absent.participant.id == it.id } }
+                                    .filterNot { it.absent }
                                     .map {
                                         Participant().apply {
                                             prename = it.prename
