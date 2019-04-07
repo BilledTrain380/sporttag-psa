@@ -126,6 +126,7 @@ project(':shared') {
 
     dependencies {
         compile project(':core')
+        compile project(':dto')
 
         compile('org.springframework.boot:spring-boot-starter-web')
 
