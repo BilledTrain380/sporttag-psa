@@ -43,4 +43,6 @@ package ch.schulealtendorf.psa.dto
 data class UnitDto(
         val name: String,
         val factor: Int
-)
+) {
+    companion object
+}

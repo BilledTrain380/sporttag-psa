@@ -54,4 +54,6 @@ data class CompetitorDto(
         val town: TownDto,
         val group: GroupDto,
         val results: List<ResultDto>
-)
+) {
+    companion object
+}

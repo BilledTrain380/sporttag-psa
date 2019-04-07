@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.psa.dto
 
-import java.util.*
-
 /**
  * Data class representing a participant.
  *
@@ -54,5 +52,7 @@ data class ParticipantDto @JvmOverloads constructor(
         val address: String,
         val town: TownDto,
         val group: GroupDto,
-        val sport: Optional<SportDto> = Optional.empty()
-)
+        val sport: SportDto? = null
+) {
+    companion object
+}

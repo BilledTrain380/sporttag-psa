@@ -50,4 +50,6 @@ data class UserDto @JvmOverloads constructor(
         val authorities: List<String>,
         val enabled: Boolean = true,
         val password: String = "protected"
-)
+) {
+    companion object
+}

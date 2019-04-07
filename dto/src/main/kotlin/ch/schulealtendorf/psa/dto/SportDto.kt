@@ -38,4 +38,6 @@ package ch.schulealtendorf.psa.dto
 
 data class SportDto(
         val name: String
-)
+) {
+    companion object
+}

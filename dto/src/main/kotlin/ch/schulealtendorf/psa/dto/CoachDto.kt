@@ -45,4 +45,6 @@ package ch.schulealtendorf.psa.dto
 data class CoachDto(
         val id: Int,
         val name: String
-)
+) {
+    companion object
+}

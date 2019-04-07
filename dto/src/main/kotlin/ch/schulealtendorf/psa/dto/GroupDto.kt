@@ -45,4 +45,6 @@ package ch.schulealtendorf.psa.dto
 data class GroupDto(
         val name: String,
         val coach: CoachDto
-)
+) {
+    companion object
+}

@@ -36,18 +36,18 @@
 
 package ch.schulealtendorf.psa.dto
 
-import java.util.*
-
 /**
  * Data class representing a result of a competitor.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class ResultDto(
+data class ResultDto @JvmOverloads constructor(
         val id: Int,
         val value: Long,
         val points: Int,
-        val distance: Optional<String> = Optional.empty(),
-        val discipline: DisciplineDto
-)
+        val discipline: DisciplineDto,
+        val distance: String? = null
+) {
+    companion object
+}
