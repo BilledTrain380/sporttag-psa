@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
 
@@ -51,7 +52,5 @@ class SportManagerImpl(
         private val sportRepository: SportRepository
 ) : SportManager {
 
-    override fun getSports(): List<SportDto> {
-        return sportRepository.findAll().map { SportDto(it.name) }
-    }
+    override fun getSports(): List<SportDto> = sportRepository.findAll().mapNotNull { SportDto from it }
 }

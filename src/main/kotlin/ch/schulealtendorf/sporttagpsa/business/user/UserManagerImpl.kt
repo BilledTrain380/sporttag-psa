@@ -41,6 +41,7 @@ import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordEx
 import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
+import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
@@ -72,7 +73,7 @@ class UserManagerImpl(
             authorities = user.authorities.map { AuthorityEntity(it) }
         }
 
-        return userRepository.save(userEntity).toModel()
+        return userRepository.save(userEntity).toDto()
     }
 
     override fun changePassword(user: UserDto, password: String) {
@@ -86,11 +87,11 @@ class UserManagerImpl(
         userRepository.save(userEntity)
     }
 
-    override fun getAll(): List<UserDto> = userRepository.findAll().map { it.toModel() }
+    override fun getAll(): List<UserDto> = userRepository.findAll().map { UserDto from it }
 
-    override fun getOne(userId: Int): Optional<UserDto> = userRepository.findById(userId).map { it.toModel() }
+    override fun getOne(userId: Int): Optional<UserDto> = userRepository.findById(userId).map { UserDto from it }
 
-    override fun getOne(username: String): Optional<UserDto> = userRepository.findByUsername(username).map { it.toModel() }
+    override fun getOne(username: String): Optional<UserDto> = userRepository.findByUsername(username).map { UserDto from it }
 
     override fun delete(userId: Int) {
 
@@ -102,9 +103,9 @@ class UserManagerImpl(
         userRepository.deleteById(userId)
     }
 
-    private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
+    private fun UserEntity.toDto() = UserDto from this
 
-    private fun UserEntity.toModel() = UserDto(id!!, username, authorities.map { it.role }, enabled)
+    private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 
     private fun String.validate() {
         val validationResult = passwordValidator.validate(this)

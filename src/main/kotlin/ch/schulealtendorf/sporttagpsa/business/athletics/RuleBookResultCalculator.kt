@@ -67,8 +67,8 @@ class RuleBookResultCalculator(
                 result.id,
                 result.value,
                 points,
-                result.distance,
-                result.discipline
+                result.discipline,
+                result.distance.orElseGet { null }
         )
     }
 }

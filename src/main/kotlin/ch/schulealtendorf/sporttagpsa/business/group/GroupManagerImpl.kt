@@ -43,6 +43,7 @@ import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -79,7 +80,7 @@ class GroupManagerImpl(
      */
     override fun getGroups(): List<GroupDto> {
         return groupRepository.findAll()
-                .map { it.toModel() }
+                .map { GroupDto from it }
     }
 
     override fun isCompetitive(group: GroupDto): Boolean {
@@ -96,7 +97,7 @@ class GroupManagerImpl(
      *
      * @return an Optional containing the group, or empty if the group could not be found
      */
-    override fun getGroup(name: String): Optional<GroupDto> = groupRepository.findById(name).map { it.toModel() }
+    override fun getGroup(name: String): Optional<GroupDto> = groupRepository.findById(name).map { GroupDto from it }
 
     /**
      * Gets the coach matching the given {@code name}.
@@ -105,7 +106,7 @@ class GroupManagerImpl(
      *
      * @return an Optional containing the coach, or empty if the coach could not be found
      */
-    override fun getCoach(name: String): Optional<CoachDto> = coachRepository.findByName(name).map { it.toModel() }
+    override fun getCoach(name: String): Optional<CoachDto> = coachRepository.findByName(name).map { CoachDto from it }
 
     /**
      * Imports the given {@code participant} by considering all their relations.
@@ -139,8 +140,4 @@ class GroupManagerImpl(
 
         participantRepository.save(participantEntity)
     }
-
-    private fun GroupEntity.toModel() = GroupDto(name, coach.toModel())
-
-    private fun CoachEntity.toModel() = CoachDto(id!!, name)
 }

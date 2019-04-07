@@ -36,16 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.CoachDto
 import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.DisciplineDto
-import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.psa.dto.ResultDto
-import ch.schulealtendorf.psa.dto.TownDto
-import ch.schulealtendorf.psa.dto.UnitDto
-import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
+import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import org.springframework.stereotype.Component
@@ -67,7 +61,7 @@ class CompetitorManagerImpl(
     /**
      * @return a list of all competitors
      */
-    override fun getCompetitorList() = competitorRepository.findAll().map { it.map() }
+    override fun getCompetitorList() = competitorRepository.findAll().map { CompetitorDto from it }
 
     /**
      * Get a competitor as a {@link Optional} matching the given {@code id}.
@@ -78,7 +72,7 @@ class CompetitorManagerImpl(
      *
      * @return an Optional containing the resulting competitor
      */
-    override fun getCompetitor(id: Int): Optional<CompetitorDto> = competitorRepository.findByParticipantId(id).map { it.map() }
+    override fun getCompetitor(id: Int): Optional<CompetitorDto> = competitorRepository.findByParticipantId(id).map { CompetitorDto from it }
 
     override fun saveCompetitorResults(competitor: CompetitorDto) {
 
@@ -94,7 +88,7 @@ class CompetitorManagerImpl(
                                 .orElseThrow { NoSuchElementException("Could not find discipline: name=${it.discipline.name}") }
 
                         ResultEntity(
-                                distance = it.distance.orElseGet { null },
+                                distance = it.distance,
                                 discipline = discipline
                         )
                     }.apply {
@@ -132,28 +126,5 @@ class CompetitorManagerImpl(
 
     private fun Iterable<ResultDto>.notIn(results: Iterable<ResultDto>): Iterable<ResultDto> {
         return filterNot { results.any { result -> result.id == it.id } }
-    }
-
-    private fun CompetitorEntity.map(): CompetitorDto {
-        return CompetitorDto(
-                participant.id!!,
-                startnumber!!,
-                participant.surname,
-                participant.prename,
-                participant.gender,
-                BirthdayDto(participant.birthday),
-                participant.absent,
-                participant.address,
-                TownDto(participant.town.zip, participant.town.name),
-                GroupDto(participant.group.name, CoachDto(participant.group.coach.id!!, participant.group.coach.name)),
-                results.map {
-                    ResultDto(
-                            it.id!!,
-                            it.value,
-                            it.points,
-                            Optional.ofNullable(it.distance),
-                            DisciplineDto(it.discipline.name, UnitDto(it.discipline.unit.name, it.discipline.unit.factor)))
-                }
-        )
     }
 }

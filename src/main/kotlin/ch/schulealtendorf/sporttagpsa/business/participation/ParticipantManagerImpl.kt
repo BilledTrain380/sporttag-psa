@@ -36,16 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.CoachDto
-import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.psa.dto.ParticipantDto
-import ch.schulealtendorf.psa.dto.SportDto
-import ch.schulealtendorf.psa.dto.TownDto
-import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
-import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
@@ -66,9 +60,9 @@ class ParticipantManagerImpl(
         private val groupRepository: GroupRepository
 ) : ParticipantManager {
 
-    override fun getParticipants() = participantRepository.findAll().map { it.toParticipant() }
+    override fun getParticipants() = participantRepository.findAll().map { ParticipantDto from it }
 
-    override fun getParticipant(id: Int): Optional<ParticipantDto> = participantRepository.findById(id).map { it.toParticipant() }
+    override fun getParticipant(id: Int): Optional<ParticipantDto> = participantRepository.findById(id).map { ParticipantDto from it }
 
     override fun saveParticipant(participant: ParticipantDto): ParticipantDto {
 
@@ -91,7 +85,7 @@ class ParticipantManagerImpl(
             group = groupEntity
         }
 
-        return participantRepository.save(participantEntity).toParticipant()
+        return participantRepository.save(participantEntity).toDto()
     }
 
     override fun deleteParticipant(participant: ParticipantDto) {
@@ -103,28 +97,5 @@ class ParticipantManagerImpl(
         }
     }
 
-    private fun ParticipantEntity.toParticipant(): ParticipantDto {
-        return ParticipantDto(
-                id!!,
-                surname,
-                prename,
-                gender,
-                BirthdayDto(birthday),
-                absent,
-                address,
-                town.toTown(),
-                group.toGroup(),
-                sport.toSport()
-        )
-    }
-
-    private fun TownEntity.toTown() = TownDto(zip, name)
-
-    private fun GroupEntity.toGroup() = GroupDto(name, CoachDto(coach.id!!, coach.name))
-
-    private fun SportEntity?.toSport(): Optional<SportDto> {
-        return Optional.ofNullable(
-                if (this == null) this else SportDto(name)
-        )
-    }
+    private fun ParticipantEntity.toDto() = ParticipantDto from this
 }

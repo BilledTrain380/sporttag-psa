@@ -286,7 +286,7 @@ object ParticipationManagerImplSpec : Spek({
 
 
                 val sport = SportDto("running")
-                val participant = participantModel.copy(sport = Optional.of(sport))
+                val participant = participantModel.copy(sport = sport)
                 manager.reParticipate(participant, sport)
 
 

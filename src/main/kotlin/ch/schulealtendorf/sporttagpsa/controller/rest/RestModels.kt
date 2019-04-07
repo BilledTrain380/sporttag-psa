@@ -107,7 +107,7 @@ fun json(participant: ParticipantDto): RestParticipant {
             participant.address,
             participant.town,
             participant.group,
-            participant.sport.orElseGet { null }
+            participant.sport
     )
 }
 
@@ -136,7 +136,7 @@ fun json(result: ResultDto): RestResult {
             result.id,
             result.value,
             result.points,
-            result.distance.orElseGet { null },
+            result.distance,
             result.discipline
     )
 }
