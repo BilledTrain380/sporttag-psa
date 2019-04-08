@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook.rules
+package ch.schulealtendorf.psa.shared.rulebook.rules
 
 /**
  * Describes a basic rule with a when condition, then do..

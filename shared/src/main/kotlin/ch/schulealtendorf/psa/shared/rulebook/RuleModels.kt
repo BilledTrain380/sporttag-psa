@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook
+package ch.schulealtendorf.psa.shared.rulebook
 
 data class CategoryModel(
         val age: Int,

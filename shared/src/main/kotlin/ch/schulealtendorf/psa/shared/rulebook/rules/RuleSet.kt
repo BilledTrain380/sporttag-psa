@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook.rules
+package ch.schulealtendorf.psa.shared.rulebook.rules
 
 /**
  * Describes a set of rules, with a condition that applies for

@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook.rules
+package ch.schulealtendorf.psa.shared.rulebook.rules
 
 import com.deliveredtechnologies.rulebook.FactMap
 import com.deliveredtechnologies.rulebook.NameValueReferableMap

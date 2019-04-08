@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook
+package ch.schulealtendorf.psa.shared.rulebook
 
 /**
  * Describes a rule book that provides the distance for a specific category.

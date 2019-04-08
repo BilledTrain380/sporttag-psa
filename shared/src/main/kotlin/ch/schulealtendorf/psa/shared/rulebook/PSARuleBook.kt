@@ -34,9 +34,9 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook
+package ch.schulealtendorf.psa.shared.rulebook
 
-import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.BasicRuleBook
+import ch.schulealtendorf.psa.shared.rulebook.rules.BasicRuleBook
 import org.springframework.stereotype.Component
 
 /**

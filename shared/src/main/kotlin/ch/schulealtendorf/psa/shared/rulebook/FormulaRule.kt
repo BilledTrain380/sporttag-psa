@@ -34,9 +34,9 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook
+package ch.schulealtendorf.psa.shared.rulebook
 
-import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.Rule
+import ch.schulealtendorf.psa.shared.rulebook.rules.Rule
 
 /**
  * @author nmaerchy

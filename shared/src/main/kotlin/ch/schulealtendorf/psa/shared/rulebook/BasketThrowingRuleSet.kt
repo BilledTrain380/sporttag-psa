@@ -34,9 +34,9 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.rulebook
+package ch.schulealtendorf.psa.shared.rulebook
 
-import ch.schulealtendorf.psa.shared.reporting.rulebook.rules.RuleSet
+import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
  * Defines all the rules that can be applied to a basket throwing.

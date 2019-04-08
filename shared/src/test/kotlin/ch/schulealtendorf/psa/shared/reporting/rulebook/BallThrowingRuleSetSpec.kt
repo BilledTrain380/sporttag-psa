@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.shared.reporting.rulebook
 
+import ch.schulealtendorf.psa.shared.rulebook.BallThrowingRuleSet
+import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given

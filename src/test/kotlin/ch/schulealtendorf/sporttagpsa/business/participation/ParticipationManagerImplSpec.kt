@@ -43,7 +43,7 @@ import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.psa.dto.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.dto.TownDto
-import ch.schulealtendorf.psa.shared.reporting.rulebook.CategoryRuleBook
+import ch.schulealtendorf.psa.shared.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity

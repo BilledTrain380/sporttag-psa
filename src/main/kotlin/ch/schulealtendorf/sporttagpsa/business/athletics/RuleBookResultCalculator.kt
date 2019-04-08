@@ -38,8 +38,8 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.psa.dto.ResultDto
-import ch.schulealtendorf.psa.shared.reporting.rulebook.FormulaModel
-import ch.schulealtendorf.psa.shared.reporting.rulebook.ResultRuleBook
+import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
+import ch.schulealtendorf.psa.shared.rulebook.ResultRuleBook
 import org.springframework.stereotype.Component
 
 /**
