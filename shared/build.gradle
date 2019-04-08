@@ -1,9 +1,25 @@
 version '2.0.0'
 
+repositories {
+    maven {
+        url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     compile "com.deliveredtechnologies:rulebook-core:0.8"
+
+    // Jasper dependencies
+    compile('com.guigarage:flatter:0.7')
+    compile('com.lowagie:itext:2.1.7')
+    compile('org.olap4j:olap4j:1.2.0')
+    compile('net.sf.jasperreports:jasperreports-functions:6.2.2')
+    compile ('net.sf.jasperreports:jasperreports:6.4.3') {
+        exclude group: 'com.lowagie'
+        exclude group: 'org.olap4j'
+    }
 }
 
 compileKotlin {
