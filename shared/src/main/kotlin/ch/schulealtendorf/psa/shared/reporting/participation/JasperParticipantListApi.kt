@@ -60,6 +60,7 @@ class JasperParticipantListApi(
     override fun createReport(data: Collection<ParticipantDto>, config: SportDto): File {
 
         val participants = data
+                .filter { it.sport == config }
                 .map { ParticipantDataSet from it }
                 .sortedBy { it.group }
 
@@ -75,7 +76,7 @@ class JasperParticipantListApi(
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Teilnehmerliste.pdf")
+        val file = ApplicationFile("reporting", "Teilnehmerliste ${config.name}.pdf")
 
         return filesystem.write(file, reportInputStream)
     }
