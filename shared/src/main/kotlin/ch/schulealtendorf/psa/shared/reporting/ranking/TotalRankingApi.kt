@@ -34,28 +34,13 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.shared.reporting.ranking
 
-import org.joda.time.DateTime
-import java.text.SimpleDateFormat
-import java.util.*
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.shared.reporting.ReportApi
 
-data class BirthdayDto(
-        val milliseconds: Long
-) {
-
-    constructor(date: Date) : this(date.time)
-
-    fun date() = Date(milliseconds)
-
-    /**
-     * Formats this Birthday by the given {@code pattern}.
-     *
-     * Valid values are the same used in the {@link SimpleDateFormat} class constructor.
-     *
-     * @param pattern the format pattern of the date
-     */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date())
-
-    fun toAge(): Int = DateTime.now().minusMillis(milliseconds.toInt()).year
-}
+/**
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.1.0
+ */
+interface TotalRankingApi : ReportApi<CompetitorDto, TotalRankingConfig>

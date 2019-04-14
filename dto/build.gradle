@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "joda-time:joda-time:2.9.9"
 }
 
 compileKotlin {

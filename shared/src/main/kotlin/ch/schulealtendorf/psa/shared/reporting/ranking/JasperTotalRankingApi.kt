@@ -34,12 +34,11 @@
  *
  */
 
-package ch.schulealtendorf.psa.shared.reporting.participation
+package ch.schulealtendorf.psa.shared.reporting.ranking
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.text
@@ -53,39 +52,38 @@ import java.io.InputStream
  * @since 2.1.0
  */
 @Component
-class JasperEventSheetApi(
+class JasperTotalRankingApi(
         private val reportManager: ReportManager,
         private val filesystem: FileSystem
-) : EventSheetApi {
-    override fun createReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
+) : TotalRankingApi {
 
-        val competitors: List<EventSheetDataSet> = data.map {
+    private val rankingFactory = RankingFactory()
 
-            if (config.hasDistance.not()) {
-                return@map EventSheetDataSet from it
-            }
+    override fun createReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
 
-            val distance = it.results.find { it.discipline.name == config.discipline.name }?.distance ?: ""
-            EventSheetDataSet.from(it, distance)
-        }.sortedBy { it.startnumber }
+        val competitors = data
+                .filter { it.gender == config.gender }
+                .filter { it.birthday.toAge() == config.age }
+                .filterNot { it.absent }
+
+        val rankedCompetitors = rankingFactory.totalRankingOf(competitors)
 
         val parameters: Map<String, Any> = hashMapOf(
-                "discipline" to config.discipline.name,
-                "gender" to config.gender.name,
-                "group" to config.group.name,
-                "multipleTrials" to config.hasTrials,
-                "withDistance" to config.hasDistance,
-                "competitors" to JRBeanCollectionDataSource(competitors))
-
+                "age" to config.age,
+                "gender" to config.gender.text(),
+                "year" to config.year.value,
+                "ballzielWurfDistance" to config.targetThrowingDistance,
+                "korbeinwurfDistance" to config.ballThrowingDistance,
+                "competitors" to JRBeanCollectionDataSource(rankedCompetitors))
 
         val template = object : Template {
             override val source: InputStream
-                get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
+                get() = JasperTotalRankingApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/total-ranking.jrxml")
             override val parameters = parameters
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Wettkampfblatt ${config.discipline.name} ${config.group.name} ${config.gender.text()}.pdf")
+        val file = ApplicationFile("reporting", "Rangliste ${config.gender.text()} Gesamt ${config.year.value}.pdf")
 
         return filesystem.write(file, reportInputStream)
     }

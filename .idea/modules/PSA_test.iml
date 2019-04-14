@@ -84,8 +84,8 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-test:2.0.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.mockito:mockito-core:2.9.0" level="project" />
     <orderEntry type="library" name="Gradle: com.nhaarman:mockito-kotlin:1.5.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.spek:spek-api:1.1.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.h2database:h2:1.4.197" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.spek:spek-api:1.1.5" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlin:kotlin-test:1.2.50">
         <CLASSES>

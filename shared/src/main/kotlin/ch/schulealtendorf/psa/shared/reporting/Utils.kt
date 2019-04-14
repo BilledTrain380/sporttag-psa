@@ -34,28 +34,14 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.shared.reporting
 
-import org.joda.time.DateTime
-import java.text.SimpleDateFormat
-import java.util.*
+import ch.schulealtendorf.psa.dto.GenderDto
 
-data class BirthdayDto(
-        val milliseconds: Long
-) {
-
-    constructor(date: Date) : this(date.time)
-
-    fun date() = Date(milliseconds)
-
-    /**
-     * Formats this Birthday by the given {@code pattern}.
-     *
-     * Valid values are the same used in the {@link SimpleDateFormat} class constructor.
-     *
-     * @param pattern the format pattern of the date
-     */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date())
-
-    fun toAge(): Int = DateTime.now().minusMillis(milliseconds.toInt()).year
+internal fun GenderDto.text(): String {
+    return when (this) {
+        GenderDto.MALE   -> "Knaben"
+        GenderDto.FEMALE -> "Mädchen"
+        else             -> ""
+    }
 }
