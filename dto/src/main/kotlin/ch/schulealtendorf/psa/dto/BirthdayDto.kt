@@ -38,6 +38,7 @@ package ch.schulealtendorf.psa.dto
 
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
+import java.time.Year
 import java.util.*
 
 data class BirthdayDto(
@@ -57,5 +58,7 @@ data class BirthdayDto(
      */
     fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date())
 
-    fun toAge(): Int = DateTime.now().minusMillis(milliseconds.toInt()).year
+    fun age(): Int = DateTime.now().minusMillis(milliseconds.toInt()).year
+
+    fun year(): Year = Year.of(DateTime(date()).year)
 }

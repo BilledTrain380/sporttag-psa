@@ -63,7 +63,7 @@ class JasperTotalRankingApi(
 
         val competitors = data
                 .filter { it.gender == config.gender }
-                .filter { it.birthday.toAge() == config.age }
+                .filter { it.birthday.age() == config.age }
                 .filterNot { it.absent }
 
         val rankedCompetitors = rankingFactory.totalRankingOf(competitors)
