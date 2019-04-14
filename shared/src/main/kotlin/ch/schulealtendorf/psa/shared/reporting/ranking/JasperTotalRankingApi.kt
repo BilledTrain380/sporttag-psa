@@ -46,6 +46,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
+import java.time.Year
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -63,13 +64,13 @@ class JasperTotalRankingApi(
 
         val competitors = data
                 .filter { it.gender == config.gender }
-                .filter { it.birthday.age() == config.age }
+                .filter { it.birthday.year() == config.year }
                 .filterNot { it.absent }
 
         val rankedCompetitors = rankingFactory.totalRankingOf(competitors)
 
         val parameters: Map<String, Any> = hashMapOf(
-                "age" to config.age,
+                "age" to Year.now().value - config.year.value,
                 "gender" to config.gender.text(),
                 "year" to config.year.value,
                 "ballzielWurfDistance" to config.targetThrowingDistance,
