@@ -61,7 +61,64 @@ object RankingFactorySpec : Spek({
             rankingFactory = RankingFactory()
         }
 
-        describe("a total ranking factory") {
+        describe("discipline ranking") {
+
+            given("a competitor list") {
+
+                val competitors = listOf(
+                        competitorDtoOf(surname = "3. Rank", results = listOf(
+                                resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 200, discipline = "Ballzielwurf")
+                        )),
+                        competitorDtoOf(surname = "2. rank", results = listOf(
+                                resultDtoOf(points = 300, discipline = "Ballzielwurf")
+                        ))
+                )
+
+                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0))
+                val ranking = rankingFactory.disciplineRankingOf(competitors, discipline)
+
+                it("should order by the rank") {
+                    val expected = listOf(1, 2, 3)
+                    assertEquals(expected, ranking.map { it.rank })
+                }
+            }
+
+            given("a competitor list when competitors have the same points") {
+
+                val competitors = listOf(
+                        competitorDtoOf(surname = "3. Rank", results = listOf(
+                                resultDtoOf(points = 50, discipline = "Ballzielwurf")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        ))
+                )
+
+                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0))
+                val ranking = rankingFactory.disciplineRankingOf(competitors, discipline)
+
+                it("should give them the same rank") {
+                    assertEquals(ranking[0].rank, 1)
+                    assertEquals(ranking[1].rank, 1)
+                    assertEquals(ranking[2].rank, 1)
+                }
+
+                it("should skip the next rank") {
+                    assertEquals(ranking[3].rank, 4)
+                }
+            }
+        }
+
+        describe("total ranking") {
             given("a competitor list") {
 
                 val competitors = listOf(

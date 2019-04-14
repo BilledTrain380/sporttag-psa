@@ -43,6 +43,34 @@ import ch.schulealtendorf.psa.dto.UnitDto
 
 internal class RankingFactory {
 
+    fun disciplineRankingOf(competitors: Collection<CompetitorDto>, discipline: DisciplineDto): List<DisciplineRankingDataSet> {
+
+        var rank = 1
+        var previousPoints = -1
+
+        return competitors
+                .sortedBy { it.results.find(discipline).points }
+                .reversed() // Highest result first
+                .mapIndexed { index, competitor ->
+
+                    val result = competitor.results.find(discipline)
+
+                    if (result.points != previousPoints)
+                        rank = index + 1
+
+                    previousPoints = result.points
+
+                    DisciplineRankingDataSet(
+                            rank,
+                            competitor.prename,
+                            competitor.surname,
+                            competitor.group.name,
+                            result.asText(),
+                            result.points
+                    )
+                }
+    }
+
     fun totalRankingOf(competitors: Collection<CompetitorDto>): List<TotalRankingDataSet> {
 
         var rank = 1
@@ -94,6 +122,9 @@ internal class RankingFactory {
                     )
                 }
     }
+
+    private fun List<ResultDto>.find(discipline: DisciplineDto) = this.find { it.discipline == discipline }
+            ?: emptyResult()
 
     private fun List<ResultDto>.total() = this.map { it.points }.sorted().reversed().dropLast(1).sum()
 
