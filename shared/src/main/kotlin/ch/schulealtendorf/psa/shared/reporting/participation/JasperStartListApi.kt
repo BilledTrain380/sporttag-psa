@@ -36,16 +36,49 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
+import ch.schulealtendorf.psa.core.io.ApplicationFile
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.shared.reporting.ReportApi
+import ch.schulealtendorf.psa.shared.reporting.ReportManager
+import ch.schulealtendorf.psa.shared.reporting.Template
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 import java.io.File
+import java.io.InputStream
 
 /**
- * Describes a report api to create a start list.
- *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.1.0
  */
-interface StartListApi : ReportApi<CompetitorDto, Void> {
-    fun createReport(data: Collection<CompetitorDto>): File
+@Component
+class JasperStartListApi(
+        private val reportManager: ReportManager,
+        private val filesystem: FileSystem
+) : StartListApi {
+
+    override fun createReport(data: Collection<CompetitorDto>): File {
+
+        val competitors = data
+                .map { StartListDataSet from it }
+                .sortedBy { it.startNumber }
+
+        val parameters: Map<String, Any> = hashMapOf(
+                "competitors" to JRBeanCollectionDataSource(competitors)
+        )
+
+        val template = object : Template {
+            override val source: InputStream
+                get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/startlist.jrxml")
+            override val parameters = parameters
+        }
+
+        val reportInputStream = reportManager.exportToPdf(template)
+        val file = ApplicationFile("reporting", "Startliste.pdf")
+
+        return filesystem.write(file, reportInputStream)
+    }
+
+    override fun createReport(data: Collection<CompetitorDto>, config: Void): File {
+        return createReport(data)
+    }
 }

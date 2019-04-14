@@ -37,15 +37,29 @@
 package ch.schulealtendorf.psa.shared.reporting.participation
 
 import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.shared.reporting.ReportApi
-import java.io.File
 
 /**
- * Describes a report api to create a start list.
- *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.1.0
  */
-interface StartListApi : ReportApi<CompetitorDto, Void> {
-    fun createReport(data: Collection<CompetitorDto>): File
+data class StartListDataSet(
+        val startNumber: Int,
+        val prename: String,
+        val surname: String,
+        val gender: String,
+        val group: String,
+        val coach: String
+) {
+    companion object {
+        infix fun from(competitor: CompetitorDto): StartListDataSet {
+            return StartListDataSet(
+                    competitor.startNumber,
+                    competitor.prename,
+                    competitor.surname,
+                    competitor.group.name,
+                    competitor.group.name,
+                    competitor.group.coach.name
+            )
+        }
+    }
 }
