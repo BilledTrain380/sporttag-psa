@@ -63,7 +63,6 @@ class JasperParticipantListApi(
                 .map { ParticipantDataSet from it }
                 .sortedBy { it.group }
 
-
         val parameters: Map<String, Any> = hashMapOf(
                 "sport" to config.name,
                 "participants" to JRBeanCollectionDataSource(participants)
