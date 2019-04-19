@@ -42,6 +42,7 @@ import ch.schulealtendorf.psa.dto.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
+import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
@@ -64,19 +65,16 @@ class JasperParticipantListApi(
                 .map { ParticipantDataSet from it }
                 .sortedBy { it.group }
 
-        val parameters: Map<String, Any> = hashMapOf(
-                "sport" to config.name,
-                "participants" to JRBeanCollectionDataSource(participants)
-        )
-
         val template = object : Template {
             override val source: InputStream
                 get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/participant-list.jrxml")
-            override val parameters = parameters
+            override val parameters = hashMapOf(
+                    "sport" to config.name,
+                    "participants" to JRBeanCollectionDataSource(participants))
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Teilnehmerliste ${config.name}.pdf")
+        val file = ApplicationFile("reporting", pdfNameOf(config))
 
         return filesystem.write(file, reportInputStream)
     }

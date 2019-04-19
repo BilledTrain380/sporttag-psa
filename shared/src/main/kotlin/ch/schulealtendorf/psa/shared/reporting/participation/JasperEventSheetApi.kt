@@ -41,7 +41,7 @@ import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
-import ch.schulealtendorf.psa.shared.reporting.text
+import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
@@ -56,6 +56,7 @@ class JasperEventSheetApi(
         private val reportManager: ReportManager,
         private val filesystem: FileSystem
 ) : EventSheetApi {
+
     override fun createPdfReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
 
         val competitors: List<EventSheetDataSet> = data.map {
@@ -68,23 +69,20 @@ class JasperEventSheetApi(
             EventSheetDataSet.from(it, distance)
         }.sortedBy { it.startnumber }
 
-        val parameters: Map<String, Any> = hashMapOf(
+        val template = object : Template {
+            override val source: InputStream
+                get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
+            override val parameters = hashMapOf(
                 "discipline" to config.discipline.name,
                 "gender" to config.gender.name,
                 "group" to config.group.name,
                 "multipleTrials" to config.hasTrials,
                 "withDistance" to config.hasDistance,
                 "competitors" to JRBeanCollectionDataSource(competitors))
-
-
-        val template = object : Template {
-            override val source: InputStream
-                get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
-            override val parameters = parameters
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Wettkampfblatt ${config.discipline.name} ${config.group.name} ${config.gender.text()}.pdf")
+        val file = ApplicationFile("reporting", pdfNameOf(config))
 
         return filesystem.write(file, reportInputStream)
     }

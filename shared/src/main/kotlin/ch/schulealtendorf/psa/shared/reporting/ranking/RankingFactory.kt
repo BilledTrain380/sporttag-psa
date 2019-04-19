@@ -41,7 +41,7 @@ import ch.schulealtendorf.psa.dto.DisciplineDto
 import ch.schulealtendorf.psa.dto.ResultDto
 import ch.schulealtendorf.psa.dto.UnitDto
 
-internal class RankingFactory {
+internal object RankingFactory {
 
     fun disciplineRankingOf(competitors: Collection<CompetitorDto>, discipline: DisciplineDto): List<DisciplineRankingDataSet> {
 
@@ -65,7 +65,7 @@ internal class RankingFactory {
                             competitor.prename,
                             competitor.surname,
                             competitor.group.name,
-                            result.asText(),
+                            result.relValue,
                             result.points
                     )
                 }
@@ -98,11 +98,11 @@ internal class RankingFactory {
                             competitor.surname,
                             competitor.group.name,
                             totalPoints,
-                            schnelllauf.asText(),
+                            schnelllauf.relValue,
                             schnelllauf.points,
-                            ballwurf.asText(),
+                            ballwurf.relValue,
                             ballwurf.points,
-                            weitsprung.asText(),
+                            weitsprung.relValue,
                             weitsprung.points
                     )
                 }
@@ -144,17 +144,17 @@ internal class RankingFactory {
                             competitor.group.name,
                             totalPoints,
                             competitor.results.lowest(),
-                            schnelllauf.asText(),
+                            schnelllauf.relValue,
                             schnelllauf.points,
-                            ballwurf.asText(),
+                            ballwurf.relValue,
                             ballwurf.points,
-                            ballzielwurf.asText(),
+                            ballzielwurf.relValue,
                             ballzielwurf.points,
-                            korbeinwurf.asText(),
+                            korbeinwurf.relValue,
                             korbeinwurf.points,
-                            seilspringen.asText(),
+                            seilspringen.relValue,
                             seilspringen.points,
-                            weitsprung.asText(),
+                            weitsprung.relValue,
                             weitsprung.points
                     )
                 }
@@ -168,17 +168,6 @@ internal class RankingFactory {
     private fun List<ResultDto>.lowest() = this.map { it.points }.sorted().reversed().last()
 
     private fun List<ResultDto>.disciplineGroupTotal() = this.filter { it.discipline.name == "Ballwurf" || it.discipline.name == "Schnelllauf" || it.discipline.name == "Weitsprung" }.map { it.points }.sum()
-
-    private fun ResultDto.asText(): String {
-
-        val value: Double = value.toDouble() / discipline.unit.factor
-
-        if (value % 1 == 0.0) {
-            return value.toInt().toString()
-        }
-
-        return value.toString()
-    }
 
     private fun emptyResult(): ResultDto {
         return ResultDto(

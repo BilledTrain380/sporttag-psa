@@ -41,7 +41,7 @@ import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
-import ch.schulealtendorf.psa.shared.reporting.text
+import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
@@ -58,32 +58,28 @@ class JasperDisciplineRankingApi(
         private val filesystem: FileSystem
 ) : DisciplineRankingApi {
 
-    private val rankingFactory = RankingFactory()
-
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineRankingConfig): File {
 
         val competitors = data
                 .filter { it.gender == config.gender }
-                .filter { it.birthday.year() == config.year }
+                .filter { it.birthday.year == config.year }
                 .filterNot { it.absent }
 
-        val rankingDataSet = rankingFactory.disciplineRankingOf(competitors, config.discipline)
-
-        val parameters: Map<String, Any> = hashMapOf(
-                "discipline" to config.discipline.name,
-                "gender" to config.gender.text(),
-                "age" to Year.now().value - config.year.value,
-                "year" to config.year.value,
-                "competitors" to JRBeanCollectionDataSource(rankingDataSet))
+        val rankingDataSet = RankingFactory.disciplineRankingOf(competitors, config.discipline)
 
         val template = object : Template {
             override val source: InputStream
-                get() = JasperDisciplineRankingApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/")
-            override val parameters = parameters
+                get() = JasperDisciplineRankingApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/discipline-ranking.jrxml")
+            override val parameters = hashMapOf(
+                    "discipline" to config.discipline.name,
+                    "gender" to config.gender.text,
+                    "age" to Year.now().value - config.year.value,
+                    "year" to config.year.value,
+                    "competitors" to JRBeanCollectionDataSource(rankingDataSet))
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Rangliste ${config.gender.text()} ${config.discipline.name} ${config.year.value}.pdf")
+        val file = ApplicationFile("reporting", pdfNameOf(config))
 
         return filesystem.write(file, reportInputStream)
     }

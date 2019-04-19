@@ -41,7 +41,7 @@ import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
-import ch.schulealtendorf.psa.shared.reporting.text
+import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
@@ -58,20 +58,18 @@ class JasperTotalRankingApi(
         private val filesystem: FileSystem
 ) : TotalRankingApi {
 
-    private val rankingFactory = RankingFactory()
-
     override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
 
         val competitors = data
                 .filter { it.gender == config.gender }
-                .filter { it.birthday.year() == config.year }
+                .filter { it.birthday.year == config.year }
                 .filterNot { it.absent }
 
-        val rankedCompetitors = rankingFactory.totalRankingOf(competitors)
+        val rankedCompetitors = RankingFactory.totalRankingOf(competitors)
 
         val parameters: Map<String, Any> = hashMapOf(
                 "age" to Year.now().value - config.year.value,
-                "gender" to config.gender.text(),
+                "gender" to config.gender.text,
                 "year" to config.year.value,
                 "ballzielWurfDistance" to config.targetThrowingDistance,
                 "korbeinwurfDistance" to config.ballThrowingDistance,
@@ -84,7 +82,7 @@ class JasperTotalRankingApi(
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Rangliste ${config.gender.text()} Gesamt ${config.year.value}.pdf")
+        val file = ApplicationFile("reporting", pdfNameOf(config))
 
         return filesystem.write(file, reportInputStream)
     }

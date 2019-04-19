@@ -45,6 +45,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
+import java.util.*
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -56,24 +57,23 @@ class JasperStartListApi(
         private val filesystem: FileSystem
 ) : StartListApi {
 
+    private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
+
     override fun createReport(data: Collection<CompetitorDto>): File {
 
         val competitors = data
                 .map { StartListDataSet from it }
                 .sortedBy { it.startNumber }
 
-        val parameters: Map<String, Any> = hashMapOf(
-                "competitors" to JRBeanCollectionDataSource(competitors)
-        )
-
         val template = object : Template {
             override val source: InputStream
                 get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/startlist.jrxml")
-            override val parameters = parameters
+            override val parameters = hashMapOf(
+                    "competitors" to JRBeanCollectionDataSource(competitors))
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "Startliste.pdf")
+        val file = ApplicationFile("reporting", "${resourceBundle.getString("file.name.startlist")}.pdf")
 
         return filesystem.write(file, reportInputStream)
     }
