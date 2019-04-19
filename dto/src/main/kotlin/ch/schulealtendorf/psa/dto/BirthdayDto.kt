@@ -53,9 +53,6 @@ data class BirthdayDto(
 
     constructor(date: Date) : this(date.time)
 
-    @Deprecated("Use property date instead")
-    fun date() = Date(milliseconds)
-
     /**
      * Formats this Birthday by the given {@code pattern}.
      *
@@ -63,17 +60,11 @@ data class BirthdayDto(
      *
      * @param pattern the format pattern of the date
      */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date())
+    fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date)
 
     /**
      * Formats the birthday based on the default locale.
      * @see Locale.getDefault
      */
     fun format() = format(resourceBundle.getString("birthday.format"))
-
-    @Deprecated("Use property age")
-    fun age(): Int = DateTime.now().minusMillis(milliseconds.toInt()).year
-
-    @Deprecated("Use property year")
-    fun year(): Year = Year.of(DateTime(date()).year)
 }

@@ -113,7 +113,7 @@ class JasperDisciplineGroupApi(
     private infix fun Collection<CompetitorDto>.filterByConfig(config: DisciplineGroupConfig): List<CompetitorDto> {
         return this
                 .filter { it.gender == config.gender }
-                .filter { it.birthday.year() == config.year }
+                .filter { it.birthday.year == config.year }
                 .filterNot { it.absent }
     }
 
