@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.dto
 
+import java.util.*
+
 /**
  * Data class representing a competitor.
  *
@@ -56,4 +58,8 @@ data class CompetitorDto(
         val results: List<ResultDto>
 ) {
     companion object
+
+    fun resultByDiscipline(disciplineDto: DisciplineDto) = resultByDiscipline(disciplineDto.name)
+
+    fun resultByDiscipline(discipline: String) = Optional.ofNullable(results.find { it.discipline.name == discipline })
 }
