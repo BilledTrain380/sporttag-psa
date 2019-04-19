@@ -44,11 +44,11 @@ import java.util.*
  * @author nmaerchy
  * @since 2.0.0
  */
-enum class GenderDto(private val localeKey: String) {
+enum class GenderDto(localeKey: String) {
     MALE("gender.male"),
     FEMALE("gender.female");
 
-    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms", Locale.getDefault())
+    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
 
     val text: String = resourceBundle.getString(localeKey)
 }
