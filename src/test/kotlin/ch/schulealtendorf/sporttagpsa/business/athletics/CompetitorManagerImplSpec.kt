@@ -98,9 +98,9 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        ResultDto(1, 50, 800, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(2, 49, 795, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(3, 45, 846, Optional.empty(), DisciplineDto("", UnitDto("", 1)))
+                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1)))
                 )
 
 
@@ -117,15 +117,15 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        ResultDto(1, 50, 800, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(2, 49, 795, Optional.empty(), DisciplineDto("", UnitDto("", 1)))
+                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1)))
                 )
 
 
                 val existingResults = listOf(
-                        ResultDto(1, 20, 122, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(2, 21, 158, Optional.empty(), DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(3, 45, 456, Optional.empty(), DisciplineDto("", UnitDto("", 1)))
+                        ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1))),
+                        ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1)))
                 )
                 val result = manager.mergeResults(competitor.copy(results = existingResults), results)
 
@@ -148,9 +148,9 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        ResultDto(0, 20, 122, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 21, 158, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 45, 456, Optional.empty(), DisciplineDto("test", UnitDto("", 1)))
+                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1)))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -180,9 +180,9 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        ResultDto(1, 25, 133, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(2, 12, 102, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 45, 456, Optional.empty(), DisciplineDto("test", UnitDto("", 1)))
+                        ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1)))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -217,8 +217,8 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        ResultDto(0, 20, 122, Optional.empty(), DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 21, 158, Optional.empty(), DisciplineDto("test", UnitDto("", 1)))
+                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1))),
+                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1)))
                 )
 
 
