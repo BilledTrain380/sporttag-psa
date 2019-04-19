@@ -4,6 +4,9 @@ buildscript {
         springBootVersion = '2.0.2.RELEASE'
         sporttagPSAVersion = '2.0.0'
 
+        jUnitPlatformVersion = "1.0.0"
+        parclVersion = "1.4.0"
+
         defaultMainClass = 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
         guiMainClass = 'ch.schulealtendorf.sporttagpsa.GUIApplicationKt'
         springLauncherMainClass = "org.springframework.boot.loader.JarLauncher"
@@ -44,10 +47,10 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
 
         // JUnit Platform TestEngine for Spek
-        classpath "org.junit.platform:junit-platform-gradle-plugin:1.0.0"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:${jUnitPlatformVersion}"
 
         // Packager for native bundles
-        classpath group: 'org.mini2Dx', name: 'parcl', version: '1.4.0'
+        classpath "org.mini2Dx:parcl:${parclVersion}"
     }
 }
 
@@ -94,13 +97,19 @@ compileTestKotlin {
 version = "${sporttagPSAVersion}"
 
 configure([project(':core'), project(':shared'), project(':dto')]) {
+
     apply plugin: 'idea'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.junit.platform.gradle.plugin'
 
     repositories {
         mavenCentral()
+        maven { url "http://dl.bintray.com/jetbrains/spek" }
     }
 
     dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
         // common testing libraries
         testCompile 'org.mockito:mockito-core:2.9.0'
         // exclude mockito, because we need a different version
@@ -111,7 +120,7 @@ configure([project(':core'), project(':shared'), project(':dto')]) {
         testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
         testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
     }
-    
+
     junitPlatform {
         filters {
             engines {
@@ -122,8 +131,6 @@ configure([project(':core'), project(':shared'), project(':dto')]) {
 }
 
 project(':core') {
-    apply plugin: 'idea'
-    apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'kotlin-spring'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -133,17 +140,19 @@ project(':core') {
     }
 
     dependencies {
-        compile('org.springframework.boot:spring-boot-starter-web')
+        implementation('org.springframework.boot:spring-boot-starter-web')
     }
 
     bootJar {
         enabled = false
+    }
+
+    jar {
+        enabled = true
     }
 }
 
 project(':shared') {
-    apply plugin: 'idea'
-    apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'kotlin-spring'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -153,37 +162,18 @@ project(':shared') {
     }
 
     dependencies {
-        compile project(':core')
-        compile project(':dto')
+        implementation project(':core')
+        implementation project(':dto')
 
         compile('org.springframework.boot:spring-boot-starter-web')
-
-        // exclude mockito, because we need a different version
-        testCompile('org.springframework.boot:spring-boot-starter-test') {
-            exclude group: 'org.mockito'
-        }
-
-        // common testing libraries
-        testCompile 'org.mockito:mockito-core:2.9.0'
-        // exclude mockito, because we need a different version
-        testCompile('com.nhaarman:mockito-kotlin:1.5.0') {
-            exclude group: 'org.mockito'
-        }
-        testCompile 'org.jetbrains.spek:spek-api:1.1.5'
-        testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
-        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
     }
 
     bootJar {
         enabled = false
     }
 
-    junitPlatform {
-        filters {
-            engines {
-                include 'spek'
-            }
-        }
+    jar {
+        enabled = true
     }
 }
 

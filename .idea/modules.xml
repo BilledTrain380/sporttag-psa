@@ -11,9 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dto.iml" filepath="$PROJECT_DIR$/.idea/modules/dto.iml" group="dto" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dto/dto_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dto/dto_main.iml" group="dto" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dto/dto_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dto/dto_test.iml" group="dto" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/filesystem/filesystem.iml" filepath="$PROJECT_DIR$/.idea/modules/filesystem/filesystem.iml" group="filesystem" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/psa-kitten/psa-kitten.iml" filepath="$PROJECT_DIR$/.idea/modules/psa-kitten/psa-kitten.iml" group="psa-kitten" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rules/rules.iml" filepath="$PROJECT_DIR$/.idea/modules/rules/rules.iml" group="rules" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared.iml" filepath="$PROJECT_DIR$/.idea/modules/shared.iml" group="shared" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared_main.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared_main.iml" group="shared" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared_test.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared_test.iml" group="shared" />

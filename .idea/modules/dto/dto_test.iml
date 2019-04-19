@@ -29,6 +29,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../dto/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../../dto/src/test/kotlin" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../dto/src/test/resources" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

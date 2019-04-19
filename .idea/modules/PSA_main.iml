@@ -57,8 +57,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="shared_main" />
     <orderEntry type="module" module-name="core_main" />
+    <orderEntry type="module" module-name="shared_main" />
     <orderEntry type="module" module-name="dto_main" />
     <orderEntry type="library" name="Gradle: com.github.BilledTrain380:Alberta:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60" level="project" />
