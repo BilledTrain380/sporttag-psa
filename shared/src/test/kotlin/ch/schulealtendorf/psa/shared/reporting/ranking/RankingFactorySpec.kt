@@ -55,12 +55,6 @@ object RankingFactorySpec : Spek({
 
     describe("RankingFactory") {
 
-        var rankingFactory = RankingFactory()
-
-        beforeEachTest {
-            rankingFactory = RankingFactory()
-        }
-
         describe("discipline group ranking") {
 
             given("a competitor list") {
@@ -83,7 +77,7 @@ object RankingFactorySpec : Spek({
                         ))
                 )
 
-                val ranking = rankingFactory.disciplineGroupRankingFactoryOf(competitors)
+                val ranking = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
 
                 it("should order by the rank") {
                     val expected = listOf("1. rank", "2. rank", "3. rank")
@@ -116,7 +110,7 @@ object RankingFactorySpec : Spek({
                         ))
                 )
 
-                val ranking = rankingFactory.disciplineGroupRankingFactoryOf(competitors)
+                val ranking = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
 
                 it("should give them the same rank") {
                     assertEquals(ranking[0].rank, 1)
@@ -147,7 +141,7 @@ object RankingFactorySpec : Spek({
                 )
 
                 val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0))
-                val ranking = rankingFactory.disciplineRankingOf(competitors, discipline)
+                val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
 
                 it("should order by the rank") {
                     val expected = listOf("1. rank", "2. rank", "3. rank")
@@ -173,7 +167,7 @@ object RankingFactorySpec : Spek({
                 )
 
                 val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0))
-                val ranking = rankingFactory.disciplineRankingOf(competitors, discipline)
+                val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
 
                 it("should give them the same rank") {
                     assertEquals(ranking[0].rank, 1)
@@ -208,7 +202,7 @@ object RankingFactorySpec : Spek({
                         ))
                 )
 
-                val ranking = rankingFactory.totalRankingOf(competitors)
+                val ranking = RankingFactory.totalRankingOf(competitors)
 
 
                 it("should not count the weakest result to the total points") {
@@ -250,7 +244,7 @@ object RankingFactorySpec : Spek({
                         ))
                 )
 
-                val ranking = rankingFactory.totalRankingOf(competitors)
+                val ranking = RankingFactory.totalRankingOf(competitors)
 
                 it("should give them the same rank") {
                     assertEquals(ranking[0].rank, 1)
