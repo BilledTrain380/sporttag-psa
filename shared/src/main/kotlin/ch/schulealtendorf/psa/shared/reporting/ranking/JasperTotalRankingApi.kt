@@ -60,7 +60,7 @@ class JasperTotalRankingApi(
 
     private val rankingFactory = RankingFactory()
 
-    override fun createReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
+    override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
 
         val competitors = data
                 .filter { it.gender == config.gender }

@@ -57,7 +57,7 @@ class JasperParticipantListApi(
         private val filesystem: FileSystem
 ) : ParticipantListApi {
 
-    override fun createReport(data: Collection<ParticipantDto>, config: SportDto): File {
+    override fun createPdfReport(data: Collection<ParticipantDto>, config: SportDto): File {
 
         val participants = data
                 .filter { it.sport == config }

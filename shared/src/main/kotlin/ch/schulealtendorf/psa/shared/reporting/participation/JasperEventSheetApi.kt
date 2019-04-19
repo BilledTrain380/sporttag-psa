@@ -39,7 +39,6 @@ package ch.schulealtendorf.psa.shared.reporting.participation
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.text
@@ -57,7 +56,7 @@ class JasperEventSheetApi(
         private val reportManager: ReportManager,
         private val filesystem: FileSystem
 ) : EventSheetApi {
-    override fun createReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
+    override fun createPdfReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
 
         val competitors: List<EventSheetDataSet> = data.map {
 

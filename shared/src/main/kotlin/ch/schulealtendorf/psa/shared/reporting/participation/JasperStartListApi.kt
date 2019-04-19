@@ -78,7 +78,7 @@ class JasperStartListApi(
         return filesystem.write(file, reportInputStream)
     }
 
-    override fun createReport(data: Collection<CompetitorDto>, config: Void): File {
+    override fun createPdfReport(data: Collection<CompetitorDto>, config: Void): File {
         return createReport(data)
     }
 }

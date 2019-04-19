@@ -54,5 +54,5 @@ interface ReportApi<TDataSet, TConfig> {
      *
      * @return the created report
      */
-    fun createReport(data: Collection<TDataSet>, config: TConfig): File
+    fun createPdfReport(data: Collection<TDataSet>, config: TConfig): File
 }
