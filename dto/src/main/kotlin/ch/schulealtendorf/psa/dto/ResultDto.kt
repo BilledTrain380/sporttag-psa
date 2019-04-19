@@ -49,7 +49,16 @@ data class ResultDto @JvmOverloads constructor(
         val discipline: DisciplineDto,
         val distance: String? = null
 ) {
-    companion object
+    companion object {
+        fun empty(): ResultDto {
+            return ResultDto(
+                    0,
+                    0,
+                    0,
+                    DisciplineDto("", UnitDto("", 0))
+            )
+        }
+    }
 
     val relValue: String get() {
 

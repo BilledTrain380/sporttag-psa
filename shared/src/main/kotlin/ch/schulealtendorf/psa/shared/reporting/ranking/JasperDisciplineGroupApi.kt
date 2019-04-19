@@ -39,6 +39,7 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.ResultDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.csvNameOf
@@ -76,10 +77,10 @@ class JasperDisciplineGroupApi(
                             it.town.zip,
                             it.town.name,
                             it.birthday.format(),
-                            it.schnelllauf(),
+                            it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
                             "Primarschule Altendorf / KTV",
-                            it.weitsprung(),
-                            it.ballwurf()
+                            it.resultByDiscipline("Weitsprung").orElse(ResultDto.empty()).relValue,
+                            it.resultByDiscipline("Ballwurf").orElse(ResultDto.empty()).relValue
                     ).joinToString(",") { it }
                 })
 
@@ -116,8 +117,4 @@ class JasperDisciplineGroupApi(
                 .filter { it.birthday.year == config.year }
                 .filterNot { it.absent }
     }
-
-    private fun CompetitorDto.ballwurf() = results.find { it.discipline.name == "Ballwurf" }?.let { it.value / it.discipline.unit.factor }.toString()
-    private fun CompetitorDto.schnelllauf() = results.find { it.discipline.name == "Schnelllauf" }?.let { it.value / it.discipline.unit.factor }.toString()
-    private fun CompetitorDto.weitsprung() = results.find { it.discipline.name == "Weitsprung" }?.let { it.value / it.discipline.unit.factor }.toString()
 }
