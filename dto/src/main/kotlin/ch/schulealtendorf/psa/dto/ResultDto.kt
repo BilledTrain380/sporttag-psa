@@ -50,4 +50,12 @@ data class ResultDto @JvmOverloads constructor(
         val distance: String? = null
 ) {
     companion object
+
+    val relValue: String get() {
+
+        if (discipline.unit.factor == 1)
+            return value.toString()
+
+        return (value.toDouble() / discipline.unit.factor).toString()
+    }
 }

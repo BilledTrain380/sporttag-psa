@@ -36,13 +36,19 @@
 
 package ch.schulealtendorf.psa.dto
 
+import java.util.*
+
 /**
  * Enum representing a gender.
  *
  * @author nmaerchy
  * @since 2.0.0
  */
-enum class GenderDto {
-    MALE,
-    FEMALE
+enum class GenderDto(private val localeKey: String) {
+    MALE("gender.male"),
+    FEMALE("gender.female");
+
+    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms", Locale.getDefault())
+
+    val text: String = resourceBundle.getString(localeKey)
 }

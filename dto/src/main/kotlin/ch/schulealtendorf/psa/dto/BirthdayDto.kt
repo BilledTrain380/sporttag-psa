@@ -45,8 +45,15 @@ data class BirthdayDto(
         val milliseconds: Long
 ) {
 
+    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
+
+    val date: Date = Date(milliseconds)
+    val age: Int = DateTime.now().minusMillis(milliseconds.toInt()).year
+    val year: Year = Year.of(DateTime(date).year)
+
     constructor(date: Date) : this(date.time)
 
+    @Deprecated("Use property date instead")
     fun date() = Date(milliseconds)
 
     /**
@@ -58,7 +65,15 @@ data class BirthdayDto(
      */
     fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date())
 
+    /**
+     * Formats the birthday based on the default locale.
+     * @see Locale.getDefault
+     */
+    fun format() = format(resourceBundle.getString("birthday.format"))
+
+    @Deprecated("Use property age")
     fun age(): Int = DateTime.now().minusMillis(milliseconds.toInt()).year
 
+    @Deprecated("Use property year")
     fun year(): Year = Year.of(DateTime(date()).year)
 }
