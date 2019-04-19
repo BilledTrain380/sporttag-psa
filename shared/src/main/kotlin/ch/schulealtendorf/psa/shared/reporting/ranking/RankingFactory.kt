@@ -49,11 +49,11 @@ internal object RankingFactory {
         var previousPoints = -1
 
         return competitors
-                .sortedBy { it.results.find(discipline).points }
+                .sortedBy { it.resultByDiscipline(discipline).orElse(emptyResult()).points }
                 .reversed() // Highest result first
                 .mapIndexed { index, competitor ->
 
-                    val result = competitor.results.find(discipline)
+                    val result = competitor.resultByDiscipline(discipline).orElse(emptyResult())
 
                     if (result.points != previousPoints)
                         rank = index + 1
@@ -88,9 +88,9 @@ internal object RankingFactory {
 
                     previousPoints = totalPoints
 
-                    val schnelllauf = competitor.results.find { it.discipline.name == "Schnelllauf" } ?: emptyResult()
-                    val ballwurf = competitor.results.find { it.discipline.name == "Ballwurf" } ?: emptyResult()
-                    val weitsprung = competitor.results.find { it.discipline.name == "Weitsprung" } ?: emptyResult()
+                    val schnelllauf = competitor.resultByDiscipline("Schnelllauf").orElse(emptyResult())
+                    val ballwurf = competitor.resultByDiscipline("Ballwurf").orElse(emptyResult())
+                    val weitsprung = competitor.resultByDiscipline("Weitsprung").orElse(emptyResult())
 
                     DisciplineGroupRankingDataSet(
                             rank,
@@ -125,17 +125,12 @@ internal object RankingFactory {
 
                     previousPoints = totalPoints
 
-                    val schnelllauf = competitor.results.find { it.discipline.name == "Schnelllauf" }
-                            ?: emptyResult()
-                    val ballwurf = competitor.results.find { it.discipline.name == "Ballwurf" } ?: emptyResult()
-                    val ballzielwurf = competitor.results.find { it.discipline.name == "Ballzielwurf" }
-                            ?: emptyResult()
-                    val korbeinwurf = competitor.results.find { it.discipline.name == "Korbeinwurf" }
-                            ?: emptyResult()
-                    val seilspringen = competitor.results.find { it.discipline.name == "Seilspringen" }
-                            ?: emptyResult()
-                    val weitsprung = competitor.results.find { it.discipline.name == "Weitsprung" }
-                            ?: emptyResult()
+                    val schnelllauf = competitor.resultByDiscipline("Schnelllauf").orElse(emptyResult())
+                    val ballwurf = competitor.resultByDiscipline("Ballwurf").orElse(emptyResult())
+                    val ballzielwurf = competitor.resultByDiscipline("Ballzielwurf").orElse(emptyResult())
+                    val korbeinwurf = competitor.resultByDiscipline("Korbeinwurf").orElse(emptyResult())
+                    val seilspringen = competitor.resultByDiscipline("Seilspringen").orElse(emptyResult())
+                    val weitsprung = competitor.resultByDiscipline("Weitsprung").orElse(emptyResult())
 
                     TotalRankingDataSet(
                             rank,
@@ -159,9 +154,6 @@ internal object RankingFactory {
                     )
                 }
     }
-
-    private fun List<ResultDto>.find(discipline: DisciplineDto) = this.find { it.discipline == discipline }
-            ?: emptyResult()
 
     private fun List<ResultDto>.total() = this.map { it.points }.sorted().reversed().dropLast(1).sum()
 
