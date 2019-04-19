@@ -61,19 +61,88 @@ object RankingFactorySpec : Spek({
             rankingFactory = RankingFactory()
         }
 
+        describe("discipline group ranking") {
+
+            given("a competitor list") {
+
+                val competitors = listOf(
+                        competitorDtoOf(surname = "3. rank", results = listOf(
+                                resultDtoOf(points = 100, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 100, discipline = "Ballwurf"),
+                                resultDtoOf(points = 100, discipline = "Weitsprung")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 300, discipline = "Ballwurf"),
+                                resultDtoOf(points = 300, discipline = "Weitsprung")
+                        )),
+                        competitorDtoOf(surname = "2. rank", results = listOf(
+                                resultDtoOf(points = 200, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 200, discipline = "Ballwurf"),
+                                resultDtoOf(points = 200, discipline = "Weitsprung")
+                        ))
+                )
+
+                val ranking = rankingFactory.disciplineGroupRankingFactoryOf(competitors)
+
+                it("should order by the rank") {
+                    val expected = listOf("1. rank", "2. rank", "3. rank")
+                    assertEquals(expected, ranking.map { it.surname })
+                }
+            }
+
+            given("a competitor list when competitors have the same points") {
+
+                val competitors = listOf(
+                        competitorDtoOf(surname = "3. rank", results = listOf(
+                                resultDtoOf(points = 100, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 100, discipline = "Ballwurf"),
+                                resultDtoOf(points = 100, discipline = "Weitsprung")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 300, discipline = "Ballwurf"),
+                                resultDtoOf(points = 300, discipline = "Weitsprung")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 300, discipline = "Ballwurf"),
+                                resultDtoOf(points = 300, discipline = "Weitsprung")
+                        )),
+                        competitorDtoOf(surname = "1. rank", results = listOf(
+                                resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                                resultDtoOf(points = 300, discipline = "Ballwurf"),
+                                resultDtoOf(points = 300, discipline = "Weitsprung")
+                        ))
+                )
+
+                val ranking = rankingFactory.disciplineGroupRankingFactoryOf(competitors)
+
+                it("should give them the same rank") {
+                    assertEquals(ranking[0].rank, 1)
+                    assertEquals(ranking[1].rank, 1)
+                    assertEquals(ranking[2].rank, 1)
+                }
+
+                it("should skip the next rank") {
+                    assertEquals(ranking[3].rank, 4)
+                }
+            }
+        }
+
         describe("discipline ranking") {
 
             given("a competitor list") {
 
                 val competitors = listOf(
-                        competitorDtoOf(surname = "3. Rank", results = listOf(
+                        competitorDtoOf(surname = "3. rank", results = listOf(
                                 resultDtoOf(points = 100, discipline = "Ballzielwurf")
                         )),
                         competitorDtoOf(surname = "1. rank", results = listOf(
-                                resultDtoOf(points = 200, discipline = "Ballzielwurf")
+                                resultDtoOf(points = 300, discipline = "Ballzielwurf")
                         )),
                         competitorDtoOf(surname = "2. rank", results = listOf(
-                                resultDtoOf(points = 300, discipline = "Ballzielwurf")
+                                resultDtoOf(points = 200, discipline = "Ballzielwurf")
                         ))
                 )
 
@@ -81,8 +150,8 @@ object RankingFactorySpec : Spek({
                 val ranking = rankingFactory.disciplineRankingOf(competitors, discipline)
 
                 it("should order by the rank") {
-                    val expected = listOf(1, 2, 3)
-                    assertEquals(expected, ranking.map { it.rank })
+                    val expected = listOf("1. rank", "2. rank", "3. rank")
+                    assertEquals(expected, ranking.map { it.surname })
                 }
             }
 
@@ -122,7 +191,7 @@ object RankingFactorySpec : Spek({
             given("a competitor list") {
 
                 val competitors = listOf(
-                        competitorDtoOf(surname = "3. Rank", results = listOf(
+                        competitorDtoOf(surname = "3. rank", results = listOf(
                                 resultDtoOf(points = 100),
                                 resultDtoOf(points = 100),
                                 resultDtoOf(points = 100)
@@ -151,15 +220,15 @@ object RankingFactorySpec : Spek({
                 }
 
                 it("should order by the rank") {
-                    val expected = listOf(1, 2, 3)
-                    assertEquals(expected, ranking.map { it.rank })
+                    val expected = listOf("1. rank", "2. rank", "3. rank")
+                    assertEquals(expected, ranking.map { it.surname })
                 }
             }
 
             given("a competitor list where competitors have the same total points") {
 
                 val competitors = listOf(
-                        competitorDtoOf(surname = "3. Rank", results = listOf(
+                        competitorDtoOf(surname = "3. rank", results = listOf(
                                 resultDtoOf(points = 100),
                                 resultDtoOf(points = 100),
                                 resultDtoOf(points = 100)

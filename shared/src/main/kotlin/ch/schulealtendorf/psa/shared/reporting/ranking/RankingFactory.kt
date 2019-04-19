@@ -71,6 +71,43 @@ internal class RankingFactory {
                 }
     }
 
+    fun disciplineGroupRankingFactoryOf(competitors: Collection<CompetitorDto>): List<DisciplineGroupRankingDataSet> {
+
+        var rank = 1
+        var previousPoints = -1
+
+        return competitors
+                .sortedBy { it.results.disciplineGroupTotal() }
+                .reversed() // Highest result first
+                .mapIndexed { index, competitor ->
+
+                    val totalPoints = competitor.results.disciplineGroupTotal()
+
+                    if (totalPoints != previousPoints) // if total equals previous, the competitor gets the same rank
+                        rank = index + 1
+
+                    previousPoints = totalPoints
+
+                    val schnelllauf = competitor.results.find { it.discipline.name == "Schnelllauf" } ?: emptyResult()
+                    val ballwurf = competitor.results.find { it.discipline.name == "Ballwurf" } ?: emptyResult()
+                    val weitsprung = competitor.results.find { it.discipline.name == "Weitsprung" } ?: emptyResult()
+
+                    DisciplineGroupRankingDataSet(
+                            rank,
+                            competitor.prename,
+                            competitor.surname,
+                            competitor.group.name,
+                            totalPoints,
+                            schnelllauf.asText(),
+                            schnelllauf.points,
+                            ballwurf.asText(),
+                            ballwurf.points,
+                            weitsprung.asText(),
+                            weitsprung.points
+                    )
+                }
+    }
+
     fun totalRankingOf(competitors: Collection<CompetitorDto>): List<TotalRankingDataSet> {
 
         var rank = 1
@@ -97,7 +134,7 @@ internal class RankingFactory {
                             ?: emptyResult()
                     val seilspringen = competitor.results.find { it.discipline.name == "Seilspringen" }
                             ?: emptyResult()
-                    val weitsprung = competitor.results.find { it.discipline.name == "Wecompetitorsprung" }
+                    val weitsprung = competitor.results.find { it.discipline.name == "Weitsprung" }
                             ?: emptyResult()
 
                     TotalRankingDataSet(
@@ -129,6 +166,8 @@ internal class RankingFactory {
     private fun List<ResultDto>.total() = this.map { it.points }.sorted().reversed().dropLast(1).sum()
 
     private fun List<ResultDto>.lowest() = this.map { it.points }.sorted().reversed().last()
+
+    private fun List<ResultDto>.disciplineGroupTotal() = this.filter { it.discipline.name == "Ballwurf" || it.discipline.name == "Schnelllauf" || it.discipline.name == "Weitsprung" }.map { it.points }.sum()
 
     private fun ResultDto.asText(): String {
 
