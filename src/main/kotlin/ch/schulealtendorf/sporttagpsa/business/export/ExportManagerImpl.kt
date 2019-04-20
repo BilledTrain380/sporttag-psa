@@ -38,7 +38,6 @@ package ch.schulealtendorf.sporttagpsa.business.export
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineGroupRankingReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineRankingReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.EventSheetReporter
@@ -46,6 +45,7 @@ import ch.schulealtendorf.sporttagpsa.business.export.report.ParticipantListRepo
 import ch.schulealtendorf.sporttagpsa.business.export.report.TotalRankingReporter
 import org.springframework.stereotype.Component
 import java.io.File
+import java.util.*
 
 /**
  * Export manager that uses PRA.
@@ -64,6 +64,8 @@ class ExportManagerImpl(
         private val disciplineRankingReporter: DisciplineRankingReporter
 ) : ExportManager {
 
+    private val resourceBundle = ResourceBundle.getBundle("i18n.archives")
+
     /**
      * Generates an archive file for the event sheets by the given {@code data}.
      *
@@ -77,7 +79,7 @@ class ExportManagerImpl(
 
             val reports = eventSheetReporter.generateReport(data.disciplines)
 
-            val file = ApplicationFile("export", "Wettkampfblätter")
+            val file = ApplicationFile("export", resourceBundle.getString("name.event-sheets"))
             return fileSystem.createArchive(file, reports)
 
         } catch (ex: Exception) {
@@ -103,7 +105,7 @@ class ExportManagerImpl(
                     disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
 
-            val file = ApplicationFile("export", "Rangliste")
+            val file = ApplicationFile("export", resourceBundle.getString("name.ranking"))
             return fileSystem.createArchive(file, reports)
 
         } catch (ex: Exception) {
@@ -124,7 +126,7 @@ class ExportManagerImpl(
 
             val reports = participantListReporter.generateReport(data.sports)
 
-            val file = ApplicationFile("export", "Teilnehmerliste")
+            val file = ApplicationFile("export", resourceBundle.getString("name.participant-list"))
             return fileSystem.createArchive(file, reports)
 
         } catch (ex: Exception) {
