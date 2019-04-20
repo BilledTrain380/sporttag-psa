@@ -48,11 +48,8 @@ import java.io.File
 import java.util.*
 
 /**
- * Export manager that uses PRA.
- * https://github.com/BilledTrain380/PRA
- *
  * @author nmaerchy
- * @version 1.0.0
+ * @since 2.0.0
  */
 @Component
 class ExportManagerImpl(
