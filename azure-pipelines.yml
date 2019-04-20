@@ -9,6 +9,9 @@ trigger:
 - release/*
 - hotfix/*
 
+variables:
+  spring_profiles_active: prod
+
 jobs:
 
 - job: Test
@@ -59,6 +62,9 @@ jobs:
       publishJUnitResults: false
       tasks: 'bootJar'
 
+    env:
+      spring_profiles_active: $(spring_profiles_active)
+
   - task: CopyFiles@2
     displayName: 'Copy jar File'
     inputs:
@@ -107,6 +113,9 @@ jobs:
         tasks: 'bundleNativeZip'
         options: '-Pmode=gui'
 
+      env:
+        spring_profiles_active: $(spring_profiles_active)
+
     - task: CopyFiles@2
       displayName: 'Copy macOS native'
       inputs:
@@ -149,6 +158,9 @@ jobs:
         publishJUnitResults: false
         tasks: 'bundleNativeZip'
         options: '-Pmode=gui'
+
+      env:
+        spring_profiles_active: $(spring_profiles_active)
 
     - task: CopyFiles@2
       displayName: 'Copy Windows native'
