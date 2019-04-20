@@ -56,7 +56,6 @@ import java.io.IOException
  * @author nmaerchy
  * @version 1.0.0
  */
-@Component
 class PRAParticipantListReporter(
         private val fileSystem: FileSystem,
         private val participantRepository: ParticipantRepository,
