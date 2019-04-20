@@ -44,4 +44,4 @@ import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
  * @author nmaerchy
  * @version 1.0.0
  */
-interface DisciplineRankingReporter : Reporter<Iterable<DisciplineExport>>
+interface DisciplineRankingReporter : ExportReporter<Iterable<DisciplineExport>>

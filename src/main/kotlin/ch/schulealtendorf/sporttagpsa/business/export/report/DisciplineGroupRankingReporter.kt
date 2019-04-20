@@ -45,7 +45,7 @@ import java.io.File
  * @author nmaerchy
  * @version 1.1.0
  */
-interface DisciplineGroupRankingReporter : Reporter<Iterable<GenderDto>> {
+interface DisciplineGroupRankingReporter : ExportReporter<Iterable<GenderDto>> {
 
     /**
      * Generates csv file of discipline group ranking for all given {@code genders}.

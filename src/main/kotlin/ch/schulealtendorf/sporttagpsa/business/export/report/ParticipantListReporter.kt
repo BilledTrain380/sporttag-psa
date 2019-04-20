@@ -44,4 +44,4 @@ import ch.schulealtendorf.psa.dto.SportDto
  * @author nmaerchy
  * @version 1.0.0
  */
-interface ParticipantListReporter : Reporter<Iterable<SportDto>>
+interface ParticipantListReporter : ExportReporter<Iterable<SportDto>>

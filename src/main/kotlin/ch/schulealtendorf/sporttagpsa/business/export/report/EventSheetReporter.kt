@@ -44,4 +44,4 @@ import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
  * @author nmaerchy
  * @version 1.0.0
  */
-interface EventSheetReporter : Reporter<Iterable<EventSheetDisciplineExport>>
+interface EventSheetReporter : ExportReporter<Iterable<EventSheetDisciplineExport>>

@@ -44,7 +44,7 @@ import java.io.File
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.10
  */
-interface StartlistReporter : Reporter<Void> {
+interface StartlistReporter : ExportReporter<Void> {
 
     fun generateReport(): File
 }

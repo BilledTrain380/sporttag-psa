@@ -44,4 +44,4 @@ import ch.schulealtendorf.psa.dto.GenderDto
  * @author nmaerchy
  * @version 1.0.0
  */
-interface TotalRankingReporter : Reporter<Iterable<GenderDto>>
+interface TotalRankingReporter : ExportReporter<Iterable<GenderDto>>
