@@ -178,7 +178,6 @@ project(':shared') {
 }
 
 repositories {
-    maven { url 'https://jitpack.io' }
     maven {
         url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
     }
@@ -204,8 +203,6 @@ dependencies {
     compile project(":core")
     compile project(':shared')
     compile project(':dto')
-
-    compile 'com.github.BilledTrain380:Alberta:1.0.0'
 
     // database dependencies
     compile('org.springframework.boot:spring-boot-starter-data-jpa')

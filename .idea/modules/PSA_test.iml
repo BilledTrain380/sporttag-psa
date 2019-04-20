@@ -58,7 +58,6 @@
     <orderEntry type="module" module-name="core_main" />
     <orderEntry type="module" module-name="shared_main" />
     <orderEntry type="module" module-name="dto_main" />
-    <orderEntry type="library" name="Gradle: com.github.BilledTrain380:Alberta:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:2.0.2.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-starter-oauth2:2.0.0.RELEASE" level="project" />
@@ -147,7 +146,6 @@
     <orderEntry type="library" name="Gradle: com.guigarage:flatter:0.7" level="project" />
     <orderEntry type="library" name="Gradle: com.lowagie:itext:2.1.7" level="project" />
     <orderEntry type="library" name="Gradle: org.olap4j:olap4j:1.2.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.BilledTrain380:PRA:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-core:5.2.17.Final" level="project" />
     <orderEntry type="library" name="Gradle: javax.transaction:javax.transaction-api:1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-aspects:5.0.6.RELEASE" level="project" />
