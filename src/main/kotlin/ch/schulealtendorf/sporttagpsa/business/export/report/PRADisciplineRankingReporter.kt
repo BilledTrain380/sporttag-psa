@@ -60,7 +60,6 @@ import java.time.Year
  * @author nmaerchy
  * @version 1.0.0
  */
-@Component
 class PRADisciplineRankingReporter(
         private val fileSystem: FileSystem,
         private val competitorRepository: CompetitorRepository,
