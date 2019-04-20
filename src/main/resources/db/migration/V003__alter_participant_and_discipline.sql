@@ -7,10 +7,10 @@ ALTER TABLE DISCIPLINE
   ADD (hasTrials BOOLEAN NOT NULL DEFAULT FALSE ,
       hasDistance BOOLEAN NOT NULL DEFAULT FALSE);
 
-UPDATE TABLE DISCIPLINE
+UPDATE DISCIPLINE
   SET hasTrials = TRUE
   WHERE name = 'Ballwurf' OR name = 'Seilspringen' OR name = 'Weitsprung';
 
-UPDATE TABLE DISCIPLINE
+UPDATE DISCIPLINE
   SET hasDistance = TRUE
   WHERE name = 'Ballzielwurf' OR name = 'Korbeinwurf';
