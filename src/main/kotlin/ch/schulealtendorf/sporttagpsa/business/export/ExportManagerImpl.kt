@@ -131,25 +131,4 @@ class ExportManagerImpl(
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
         }
     }
-
-    /**
-     * Generates an archive file by the given {@code data}.
-     *
-     * @param data contains the data to generate teh archive
-     *
-     * @return the generated archive
-     * @throws ArchiveGenerationException if the archive could not be generated
-     */
-    override fun generateArchive(data: Set<GenderDto>): File {
-        try {
-
-            val csvFiles = disciplineGroupRankingReporter.generateCSV(data)
-
-            val file = ApplicationFile("export", "UBS Cup")
-            return fileSystem.createArchive(file, csvFiles)
-
-        } catch (ex: Exception) {
-            throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
-        }
-    }
 }

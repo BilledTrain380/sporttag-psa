@@ -76,15 +76,4 @@ interface ExportManager {
      * @throws ArchiveGenerationException if the archive could not be generated
      */
     fun generateArchive(data: ParticipantExport): File
-
-    /**
-     * Generates an archive file by the given {@code data}.
-     *
-     * @param data contains the data to generate teh archive
-     *
-     * @return the generated archive
-     * @throws ArchiveGenerationException if the archive could not be generated
-     */
-    @Deprecated("Use generateArchive(RankingExport) ubsCup")
-    fun generateArchive(data: Set<GenderDto>): File
 }
