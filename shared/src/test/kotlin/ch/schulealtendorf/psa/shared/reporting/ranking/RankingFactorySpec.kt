@@ -140,7 +140,7 @@ object RankingFactorySpec : Spek({
                         ))
                 )
 
-                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0))
+                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0), false, false)
                 val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
 
                 it("should order by the rank") {
@@ -166,7 +166,7 @@ object RankingFactorySpec : Spek({
                         ))
                 )
 
-                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0))
+                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0), false, false)
                 val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
 
                 it("should give them the same rank") {
@@ -281,4 +281,4 @@ internal fun resultDtoOf(
         value: Long = 0,
         points: Int = 0,
         discipline: String = ""
-) = ResultDto(id, value, points, DisciplineDto(discipline, UnitDto("", 0)), "")
+) = ResultDto(id, value, points, DisciplineDto(discipline, UnitDto("", 0), false, false), "")

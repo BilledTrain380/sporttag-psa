@@ -52,7 +52,9 @@ object ResultDtoSpec : Spek({
 
                 val discipline = DisciplineDto(
                         "",
-                        UnitDto("", 1)
+                        UnitDto("", 1),
+                        false,
+                        false
                 )
 
                 val result = ResultDto(
@@ -69,7 +71,9 @@ object ResultDtoSpec : Spek({
 
                 val discipline = DisciplineDto(
                         "",
-                        UnitDto("", 100)
+                        UnitDto("", 100),
+                        false,
+                        false
                 )
 
                 val result = ResultDto(

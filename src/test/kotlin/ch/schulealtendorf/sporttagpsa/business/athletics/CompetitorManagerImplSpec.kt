@@ -98,9 +98,9 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1)))
+                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
+                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false)),
+                        ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1), false, false))
                 )
 
 
@@ -117,15 +117,15 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1)))
+                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
+                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false))
                 )
 
 
                 val existingResults = listOf(
-                        ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1))),
-                        ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1)))
+                        ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1), false, false)),
+                        ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1), false, false)),
+                        ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1), false, false))
                 )
                 val result = manager.mergeResults(competitor.copy(results = existingResults), results)
 
@@ -148,9 +148,9 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1)))
+                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
+                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false)),
+                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -180,9 +180,9 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1)))
+                        ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1), false, false)),
+                        ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1), false, false)),
+                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
@@ -217,8 +217,8 @@ object CompetitorManagerImplSpec : Spek({
 
 
                 val results = listOf(
-                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1))),
-                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1)))
+                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
+                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false))
                 )
 
 

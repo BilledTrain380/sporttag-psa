@@ -44,7 +44,9 @@ package ch.schulealtendorf.psa.dto
  */
 data class DisciplineDto(
         val name: String,
-        val unit: UnitDto
+        val unit: UnitDto,
+        val hasTrials: Boolean,
+        val hasDistance: Boolean
 ) {
     companion object
 }

@@ -98,7 +98,7 @@ infix fun UnitDto.Companion.from(entity: UnitEntity): UnitDto {
 }
 
 infix fun DisciplineDto.Companion.from(entity: DisciplineEntity): DisciplineDto {
-    return DisciplineDto(entity.name, UnitDto from entity.unit)
+    return DisciplineDto(entity.name, UnitDto from entity.unit, entity.hasTrials, entity.hasDistance)
 }
 
 infix fun ResultDto.Companion.from(entity: ResultEntity): ResultDto {

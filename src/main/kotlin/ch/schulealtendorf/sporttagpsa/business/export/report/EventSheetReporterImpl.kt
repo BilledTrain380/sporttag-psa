@@ -34,37 +34,45 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.sporttagpsa.business.export.report
+
+import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetApi
+import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetConfig
+import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
+import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import java.io.File
 
 /**
- * Data class representing a result of a competitor.
- *
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
+ * @since 2.1.0
  */
-data class ResultDto @JvmOverloads constructor(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val discipline: DisciplineDto,
-        val distance: String? = null
-) {
-    companion object {
-        fun empty(): ResultDto {
-            return ResultDto(
-                    0,
-                    0,
-                    0,
-                    DisciplineDto("", UnitDto("", 0), false, false)
-            )
+class EventSheetReporterImpl(
+        private val competitorRepository: CompetitorRepository,
+        private val eventSheetApi: EventSheetApi
+) : EventSheetReporter {
+    override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
+
+        return try {
+
+            data.map { export ->
+
+                val competitors = competitorRepository.findByParticipantGenderAndParticipantGroupName(export.gender, export.group.name)
+                        .map { CompetitorDto from it }
+
+                val config = EventSheetConfig(
+                        export.discipline,
+                        export.gender,
+                        export.group,
+                        true,
+                        true
+                )
+
+                eventSheetApi.createPdfReport(competitors, config)
+            }.toSet()
+        } catch (exception: Exception) {
+            throw ReportGenerationException("Could not create event sheets report", exception)
         }
-    }
-
-    val relValue: String get() {
-
-        if (discipline.unit.factor == 1)
-            return value.toString()
-
-        return (value.toDouble() / discipline.unit.factor).toString()
     }
 }

@@ -60,5 +60,11 @@ data class DisciplineEntity(
         @NotNull
         @ManyToOne
         @JoinColumn(name = "fk_UNIT_name", referencedColumnName = "name")
-        var unit: UnitEntity = UnitEntity()
+        var unit: UnitEntity = UnitEntity(),
+
+        @NotNull
+        var hasTrials: Boolean = false,
+
+        @NotNull
+        var hasDistance: Boolean = false
 )
