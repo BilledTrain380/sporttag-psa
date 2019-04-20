@@ -36,7 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-import ch.schulealtendorf.psa.dto.GenderDto
 import java.io.File
 
 /**
