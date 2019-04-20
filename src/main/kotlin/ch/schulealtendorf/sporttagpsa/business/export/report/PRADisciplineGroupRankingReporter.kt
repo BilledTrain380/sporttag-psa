@@ -61,7 +61,6 @@ import java.util.*
  * @author nmaerchy
  * @version 1.0.0
  */
-@Component
 class PRADisciplineGroupRankingReporter(
         private val fileSystem: FileSystem,
         private val competitorRepository: CompetitorRepository,
