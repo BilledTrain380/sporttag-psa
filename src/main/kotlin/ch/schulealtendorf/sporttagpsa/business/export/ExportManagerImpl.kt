@@ -55,7 +55,7 @@ import java.io.File
  * @version 1.0.0
  */
 @Component
-class PRAExportManager(
+class ExportManagerImpl(
         private val fileSystem: FileSystem,
         private val eventSheetReporter: EventSheetReporter,
         private val participantListReporter: ParticipantListReporter,
