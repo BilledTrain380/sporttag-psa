@@ -42,12 +42,14 @@ import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetConfig
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
+import org.springframework.stereotype.Component
 import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.1.0
  */
+@Component
 class EventSheetReporterImpl(
         private val competitorRepository: CompetitorRepository,
         private val eventSheetApi: EventSheetApi
@@ -64,9 +66,7 @@ class EventSheetReporterImpl(
                 val config = EventSheetConfig(
                         export.discipline,
                         export.gender,
-                        export.group,
-                        true,
-                        true
+                        export.group
                 )
 
                 eventSheetApi.createPdfReport(competitors, config)

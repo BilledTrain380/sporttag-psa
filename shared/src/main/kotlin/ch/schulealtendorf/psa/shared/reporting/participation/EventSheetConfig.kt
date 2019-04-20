@@ -49,7 +49,5 @@ import ch.schulealtendorf.psa.dto.GroupDto
 data class EventSheetConfig(
         val discipline: DisciplineDto,
         val gender: GenderDto,
-        val group: GroupDto,
-        val hasTrials: Boolean,
-        val hasDistance: Boolean
+        val group: GroupDto
 )

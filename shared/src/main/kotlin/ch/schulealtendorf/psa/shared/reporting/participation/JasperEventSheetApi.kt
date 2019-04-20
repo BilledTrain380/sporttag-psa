@@ -59,26 +59,28 @@ class JasperEventSheetApi(
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
 
-        val competitors: List<EventSheetDataSet> = data.map {
+        val competitors: List<EventSheetDataSet> = data.map { competitor ->
 
-            if (config.hasDistance.not()) {
-                return@map EventSheetDataSet from it
+            if (config.discipline.hasDistance.not()) {
+                return@map EventSheetDataSet from competitor
             }
 
-            val distance = it.results.find { it.discipline.name == config.discipline.name }?.distance ?: ""
-            EventSheetDataSet.from(it, distance)
+            val distance = competitor.resultByDiscipline(config.discipline).map { it.distance }
+                    .orElseThrow { NoSuchElementException("Could not find a result for discipline: discipline=${config.discipline.name}") }
+
+            return@map EventSheetDataSet.from(competitor, distance ?: "")
         }.sortedBy { it.startnumber }
 
         val template = object : Template {
             override val source: InputStream
                 get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
             override val parameters = hashMapOf(
-                "discipline" to config.discipline.name,
-                "gender" to config.gender.name,
-                "group" to config.group.name,
-                "multipleTrials" to config.hasTrials,
-                "withDistance" to config.hasDistance,
-                "competitors" to JRBeanCollectionDataSource(competitors))
+                    "discipline" to config.discipline.name,
+                    "gender" to config.gender.name,
+                    "group" to config.group.name,
+                    "multipleTrials" to config.discipline.hasTrials,
+                    "withDistance" to config.discipline.hasDistance,
+                    "competitors" to JRBeanCollectionDataSource(competitors))
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
