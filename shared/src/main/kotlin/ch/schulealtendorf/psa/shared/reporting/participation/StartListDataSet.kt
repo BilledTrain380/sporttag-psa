@@ -43,7 +43,7 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
  * @since 2.1.0
  */
 data class StartListDataSet(
-        val startNumber: Int,
+        val startnumber: Int,
         val prename: String,
         val surname: String,
         val gender: String,

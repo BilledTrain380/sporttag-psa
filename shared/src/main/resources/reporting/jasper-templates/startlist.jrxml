@@ -96,7 +96,12 @@
 						</jr:tableHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="50" height="20" uuid="a09b11a2-4ee5-457d-8c24-d395f71fe5d0"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="a09b11a2-4ee5-457d-8c24-d395f71fe5d0">
+									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								</reportElement>
+								<textElement>
+									<paragraph leftIndent="5"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{startnumber}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>

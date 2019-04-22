@@ -63,7 +63,7 @@ class JasperStartListApi(
 
         val competitors = data
                 .map { StartListDataSet from it }
-                .sortedBy { it.startNumber }
+                .sortedBy { it.startnumber }
 
         val template = object : Template {
             override val source: InputStream
