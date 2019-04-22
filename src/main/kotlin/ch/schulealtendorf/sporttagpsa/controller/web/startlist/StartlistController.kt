@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.startlist
+package ch.schulealtendorf.sporttagpsa.controller.web.startlist
 
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.report.StartlistReporter
