@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.business.setup
 
-import ch.schulealtendorf.psa.core.io.ApplicationFile
-import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.entity.DEFAULT_SETUP
@@ -54,8 +52,7 @@ import java.util.*
 @Component
 class StatefulSetupManager(
         private val setupRepository: SetupRepository,
-        private val userManager: UserManager,
-        private val filesystem: FileSystem
+        private val userManager: UserManager
 ) : SetupManager {
 
     private var isInit = false
@@ -89,8 +86,6 @@ class StatefulSetupManager(
 
         isInit = true
         jwtSec = setupEntity.jwtSecret
-
-        copyResources()
     }
 
     override fun generateJWTSecret(length: Int): String {
@@ -108,14 +103,5 @@ class StatefulSetupManager(
         val setup = this.setupRepository.findById(DEFAULT_SETUP).get()
         this.setupRepository.save(setup.apply { jwtSecret = secret })
         jwtSec = secret
-    }
-
-    private fun copyResources() {
-
-        val altendorfLogo = StatefulSetupManager::class.java.getResourceAsStream("/img/gemeinde-altendorf.jpg")
-
-        val applicationFile = ApplicationFile("reporting", "gemeinde-altendorf.jpg")
-
-        filesystem.write(applicationFile, altendorfLogo)
     }
 }
