@@ -77,7 +77,7 @@ class JasperTotalRankingApi(
 
         val template = object : Template {
             override val source: InputStream
-                get() = JasperTotalRankingApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/total-ranking.jrxml")
+                get() = JasperTotalRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/total-ranking.jrxml")
             override val parameters = parameters
         }
 

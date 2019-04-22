@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
 encoding//shared/src/main/resources/reporting/jasper-templates/discipline-group-ranking.jrxml=UTF-8
 encoding//shared/src/main/resources/reporting/jasper-templates/discipline-ranking.jrxml=UTF-8
+encoding//shared/src/main/resources/reporting/jasper-templates/event-sheet.jrxml=UTF-8
+encoding//shared/src/main/resources/reporting/jasper-templates/participant-list.jrxml=UTF-8
 encoding//shared/src/main/resources/reporting/jasper-templates/startlist.jrxml=UTF-8
 encoding//shared/src/main/resources/reporting/jasper-templates/total-ranking.jrxml=UTF-8

@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting
 
+import net.sf.jasperreports.engine.JREmptyDataSource
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperExportManager
 import net.sf.jasperreports.engine.JasperFillManager
@@ -57,7 +58,7 @@ class JasperReportManager : ReportManager {
 
         val report = JasperCompileManager.compileReport(template.source)
 
-        val jasperPrint: JasperPrint = JasperFillManager.fillReport(report, template.parameters)
+        val jasperPrint: JasperPrint = JasperFillManager.fillReport(report, template.parameters, JREmptyDataSource())
         val output = JasperExportManager.exportReportToPdf(jasperPrint)
 
         return ByteArrayInputStream(output)

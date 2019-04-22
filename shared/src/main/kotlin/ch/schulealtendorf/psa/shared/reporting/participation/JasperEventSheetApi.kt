@@ -73,7 +73,7 @@ class JasperEventSheetApi(
 
         val template = object : Template {
             override val source: InputStream
-                get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
+                get() = JasperParticipantListApi::class.java.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
             override val parameters = hashMapOf(
                     "discipline" to config.discipline.name,
                     "gender" to config.gender.name,

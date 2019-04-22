@@ -67,7 +67,7 @@ class JasperStartListApi(
 
         val template = object : Template {
             override val source: InputStream
-                get() = JasperParticipantListApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/startlist.jrxml")
+                get() = JasperParticipantListApi::class.java.getResourceAsStream("/reporting/jasper-templates/startlist.jrxml")
             override val parameters = hashMapOf(
                     "competitors" to JRBeanCollectionDataSource(competitors))
         }

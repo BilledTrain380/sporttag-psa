@@ -69,7 +69,7 @@ class JasperDisciplineRankingApi(
 
         val template = object : Template {
             override val source: InputStream
-                get() = JasperDisciplineRankingApi::class.java.classLoader.getResourceAsStream("/reporting/jasper-templates/discipline-ranking.jrxml")
+                get() = JasperDisciplineRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-ranking.jrxml")
             override val parameters = hashMapOf(
                     "discipline" to config.discipline.name,
                     "gender" to config.gender.text,

@@ -45,7 +45,7 @@
 				</textElement>
 				<text><![CDATA[Organisation: KTV und Primarschule Altendorf]]></text>
 			</staticText>
-			<image>
+			<image onErrorType="Blank">
 				<reportElement x="0" y="0" width="271" height="79" uuid="842f1156-772a-4a04-a65b-5042558ba6f2"/>
 				<imageExpression><![CDATA["gemeinde-altendorf.jpg"]]></imageExpression>
 			</image>
