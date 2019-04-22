@@ -54,6 +54,7 @@
 	<parameter name="gender" class="java.lang.String"/>
 	<parameter name="ballzielWurfDistance" class="java.lang.String"/>
 	<parameter name="korbeinwurfDistance" class="java.lang.String"/>
+	<parameter name="logoPath" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -68,7 +69,7 @@
 			</staticText>
 			<image onErrorType="Blank">
 				<reportElement x="0" y="0" width="271" height="79" uuid="842f1156-772a-4a04-a65b-5042558ba6f2"/>
-				<imageExpression><![CDATA["gemeinde-altendorf.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoPath}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="420" y="60" width="135" height="20" uuid="b7201185-0737-467d-9014-e13f6b685be1"/>

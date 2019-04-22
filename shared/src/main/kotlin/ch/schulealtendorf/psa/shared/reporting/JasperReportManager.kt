@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting
 
+import ch.schulealtendorf.psa.core.io.FileSystem
 import net.sf.jasperreports.engine.JREmptyDataSource
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperExportManager
@@ -52,13 +53,17 @@ import java.io.InputStream
  * @since 2.1.0
  */
 @Component
-class JasperReportManager : ReportManager {
+class JasperReportManager(
+        private val filesystem: FileSystem
+) : ReportManager {
 
     override fun exportToPdf(template: Template): InputStream {
 
         val report = JasperCompileManager.compileReport(template.source)
 
-        val jasperPrint: JasperPrint = JasperFillManager.fillReport(report, template.parameters, JREmptyDataSource())
+        val parameters = template.parameters.plus("logoPath" to "${filesystem.getApplicationDir()}/reporting/gemeinde-altendorf.jpg")
+
+        val jasperPrint: JasperPrint = JasperFillManager.fillReport(report, parameters, JREmptyDataSource())
         val output = JasperExportManager.exportReportToPdf(jasperPrint)
 
         return ByteArrayInputStream(output)
