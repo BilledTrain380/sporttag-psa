@@ -4,13 +4,13 @@ ALTER TABLE PARTICIPANT
   ADD absent BOOLEAN NOT NULL DEFAULT FALSE;
 
 ALTER TABLE DISCIPLINE
-  ADD (hasTrials BOOLEAN NOT NULL DEFAULT FALSE ,
-      hasDistance BOOLEAN NOT NULL DEFAULT FALSE);
+  ADD (has_trials BOOLEAN NOT NULL DEFAULT FALSE ,
+      has_distance BOOLEAN NOT NULL DEFAULT FALSE);
 
 UPDATE DISCIPLINE
-  SET hasTrials = TRUE
+  SET has_trials = TRUE
   WHERE name = 'Ballwurf' OR name = 'Seilspringen' OR name = 'Weitsprung';
 
 UPDATE DISCIPLINE
-  SET hasDistance = TRUE
+  SET has_distance = TRUE
   WHERE name = 'Ballzielwurf' OR name = 'Korbeinwurf';

@@ -31,6 +31,10 @@
               <option value="$KOTLIN_BUNDLED$/lib/allopen-compiler-plugin.jar" />
             </array>
           </option>
+          <option name="coroutinesState" value="warn" />
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
         </compilerArguments>
       </configuration>
     </facet>
@@ -48,7 +52,7 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output url="file://$MODULE_DIR$/../../../core/out/production/classes" />
+    <output url="file://$MODULE_DIR$/../../../core/build/classes/java/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../core/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../../core/src/main/java" isTestSource="false" />
