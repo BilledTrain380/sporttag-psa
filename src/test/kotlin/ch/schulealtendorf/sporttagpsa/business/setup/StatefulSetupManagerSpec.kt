@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.setup
 
+import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
@@ -64,9 +65,10 @@ object StatefulSetupManagerSpec : Spek({
 
         val mockSetupRepository: SetupRepository = mock()
         val mockUserManager: UserManager = mock()
+        val mockFilesystem: FileSystem = mock()
 
         beforeEachTest {
-            reset(mockSetupRepository, mockUserManager)
+            reset(mockSetupRepository, mockUserManager, mockFilesystem)
         }
 
         val defaultSetup = SetupEntity(jwtSecret = "my_secret")
@@ -81,7 +83,7 @@ object StatefulSetupManagerSpec : Spek({
                 whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy()))
 
 
-                val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
+                val manager = StatefulSetupManager(mockSetupRepository, mockUserManager, mockFilesystem)
                 val setup = SetupInformation("admin")
                 manager.initialize(setup)
 
@@ -109,7 +111,7 @@ object StatefulSetupManagerSpec : Spek({
 
                 whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy(initialized = true)))
 
-                val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
+                val manager = StatefulSetupManager(mockSetupRepository, mockUserManager, mockFilesystem)
 
 
                 it("should throw an illegal state exception, indicating that the setup is already initialized") {
