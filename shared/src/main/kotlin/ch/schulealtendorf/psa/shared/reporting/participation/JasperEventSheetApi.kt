@@ -76,7 +76,7 @@ class JasperEventSheetApi(
                 get() = JasperParticipantListApi::class.java.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
             override val parameters = hashMapOf(
                     "discipline" to config.discipline.name,
-                    "gender" to config.gender.name,
+                    "gender" to config.gender.text,
                     "group" to config.group.name,
                     "multipleTrials" to config.discipline.hasTrials,
                     "withDistance" to config.discipline.hasDistance,
