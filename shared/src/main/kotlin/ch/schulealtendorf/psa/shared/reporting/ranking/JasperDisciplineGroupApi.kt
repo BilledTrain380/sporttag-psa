@@ -77,8 +77,8 @@ class JasperDisciplineGroupApi(
                             it.town.zip,
                             it.town.name,
                             it.birthday.format(),
-                            it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
                             "Primarschule Altendorf / KTV",
+                            it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
                             it.resultByDiscipline("Weitsprung").orElse(ResultDto.empty()).relValue,
                             it.resultByDiscipline("Ballwurf").orElse(ResultDto.empty()).relValue
                     ).joinToString(",") { it }
