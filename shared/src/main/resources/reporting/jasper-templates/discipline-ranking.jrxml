@@ -79,13 +79,6 @@
 	</title>
 	<pageHeader>
 		<band height="45" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="13" width="130" height="20" uuid="552f0bcb-7cbe-4aa0-a60c-30c479e01c54"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<text><![CDATA[Rangliste]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="281" y="13" width="274" height="20" uuid="3c0a499b-23a2-4d7d-b01c-6a7f99cce473"/>
 				<textElement textAlignment="Right">
@@ -96,6 +89,13 @@
 			<line>
 				<reportElement x="0" y="39" width="555" height="1" uuid="83b86d2c-2660-4da7-ace4-3e9d6f4952ec"/>
 			</line>
+			<textField>
+				<reportElement x="0" y="13" width="274" height="20" uuid="7369a135-548e-4b1c-b910-6b62999d5a94"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rangliste " + YEAR(TODAY( ))]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
