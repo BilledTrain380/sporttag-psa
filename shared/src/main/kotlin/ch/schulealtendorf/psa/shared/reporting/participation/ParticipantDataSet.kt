@@ -56,7 +56,7 @@ internal data class ParticipantDataSet(
             return ParticipantDataSet(
                     participant.prename,
                     participant.surname,
-                    participant.group.name,
+                    participant.gender.text,
                     participant.group.name,
                     participant.group.coach.name
             )
