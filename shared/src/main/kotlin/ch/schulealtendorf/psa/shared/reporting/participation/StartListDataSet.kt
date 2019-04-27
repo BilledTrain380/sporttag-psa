@@ -56,7 +56,7 @@ data class StartListDataSet(
                     competitor.startNumber,
                     competitor.prename,
                     competitor.surname,
-                    competitor.group.name,
+                    competitor.gender.text,
                     competitor.group.name,
                     competitor.group.coach.name
             )
