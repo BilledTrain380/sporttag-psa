@@ -1,17 +1,17 @@
-currentStableVersion: "2.0.0 (2019-02-19)"
+currentStableVersion: "2.1.0 (2019-05-12)"
 minJavaVersion: "Java 1.8"
 
 stable:
-  version: 2.0.0
+  version: 2.1.0
   links:
-    relNotes: "https://github.com/BilledTrain380/sporttag-psa/blob/2.0.0/RelNotes/2.0.0.md"
-    changelog: "https://github.com/BilledTrain380/sporttag-psa/blob/2.0.0/CHANGELOG.md"
+    relNotes: "https://github.com/BilledTrain380/sporttag-psa/blob/2.1.0/RelNotes/2.1.0.md"
+    changelog: "https://github.com/BilledTrain380/sporttag-psa/blob/2.1.0/CHANGELOG.md"
   downloads:
     - name: java
-      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.0.0/PSA_Java.zip"
+      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.0/PSA_Java.zip"
 
     - name: macOS
-      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.0.0/PSA_macOS.zip"
+      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.0/PSA_macOS.zip"
 
     - name: windows
-      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.0.0/PSA_Windows.zip"
+      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.0/PSA_Windows.zip"
