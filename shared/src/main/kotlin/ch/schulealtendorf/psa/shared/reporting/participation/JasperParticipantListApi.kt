@@ -61,6 +61,7 @@ class JasperParticipantListApi(
     override fun createPdfReport(data: Collection<ParticipantDto>, config: SportDto): File {
 
         val participants = data
+                .filterNot { it.absent }
                 .filter { it.sport == config }
                 .map { ParticipantDataSet from it }
                 .sortedBy { it.group }
