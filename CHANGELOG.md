@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2019-06-12
+
+### Fixed
+* Exclude absent participants and competitors from pdf export
+
 ## [2.1.0] - 2019-05-12
 
-## Added
+### Added
 * Startlist pdf export
 
 ### Changed
@@ -90,7 +95,8 @@ be copied to the appropriate resource directory in order to be served by Spring.
     * Discipline group ranking
     * Total ranking
 
-[Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/BilledTrain380/sporttag-psa/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/BilledTrain380/sporttag-psa/compare/2.1.1...2.1.0
 [2.1.0]: https://github.com/BilledTrain380/sporttag-psa/compare/2.1.0...2.0.0
 [2.0.0]: https://github.com/BilledTrain380/sporttag-psa/compare/2.0.0-rc-01...2.0.0
 [2.0.0-rc-01]: https://github.com/BilledTrain380/sporttag-psa/compare/1.0.1...2.0.0-rc-01
