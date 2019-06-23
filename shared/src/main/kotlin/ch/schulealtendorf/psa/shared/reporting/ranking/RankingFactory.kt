@@ -99,10 +99,10 @@ internal object RankingFactory {
                             totalPoints,
                             schnelllauf.relValue,
                             schnelllauf.points,
-                            ballwurf.relValue,
-                            ballwurf.points,
                             weitsprung.relValue,
-                            weitsprung.points
+                            weitsprung.points,
+                            ballwurf.relValue,
+                            ballwurf.points
                     )
                 }
     }
