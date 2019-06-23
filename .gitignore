@@ -114,3 +114,5 @@ gradle-app.setting
 
 # PSA ngx-admin application
 /src/main/resources/public/app
+
+.DS_Store
