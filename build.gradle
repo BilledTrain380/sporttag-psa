@@ -2,7 +2,7 @@ buildscript {
     ext {
         kotlinVersion = '1.2.60'
         springBootVersion = '2.0.2.RELEASE'
-        sporttagPSAVersion = '2.1.1'
+        sporttagPSAVersion = '2.1.2'
 
         jUnitPlatformVersion = "1.0.0"
         parclVersion = "1.4.0"
