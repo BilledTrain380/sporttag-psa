@@ -65,6 +65,14 @@ jobs:
     env:
       spring_profiles_active: $(spring_profiles_active)
 
+  - task: Gradle@2
+    displayName: Prepare Release
+    intputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      publishJUnitResults: false
+      task: 'prepareRelease'
+
   - task: CopyFiles@2
     displayName: 'Copy jar File'
     inputs:
@@ -75,7 +83,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy release notes'
     inputs:
-      sourceFolder: 'RelNotes'
+      sourceFolder: 'build/RelNotes'
       targetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: PublishBuildArtifacts@1
