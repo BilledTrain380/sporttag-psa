@@ -49,7 +49,7 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output-test url="file://$MODULE_DIR$/../../../shared/build/classes/java/test" />
+    <output-test url="file://$MODULE_DIR$/../../../shared/out/test/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../shared/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../../shared/src/test/java" isTestSource="true" />
