@@ -14,7 +14,7 @@ buildscript {
         /*
          * Returns the main class depending on the mode command line parameter.
          *
-         * -Pmode=gui uses the JavaFX Application
+         * -Pmode=gui uses the Swing Application
          * -Pmode=tui uses the Spring Application
          *
          * If the mode is not defined at all, 'tui' mode will be used.
