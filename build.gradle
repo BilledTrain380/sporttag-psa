@@ -30,6 +30,10 @@ buildscript {
 
             throw new IllegalArgumentException('Parameter \'mode\' is invalid: value=' + mode)
         }
+
+        regexerizeVersion = {
+            return "${version}".replace(".", "\\.")
+        }
     }
     repositories {
         maven {
@@ -297,4 +301,33 @@ installDist {
     onlyIf {
         false
     }
+}
+
+// Check if release files are ready
+task prepareRelease(type: Copy) {
+
+    def errors = []
+
+    // Check release notes
+    def releaseNotes = file("RelNotes/${version}.md")
+    if (!releaseNotes.exists()) {
+        errors.add("Release notes for version ${version} does not exist")
+    }
+
+    // Check Changelog
+    def changelogError = "Changelog is missing release version ${version}"
+    errors.add(changelogError)
+    file("CHANGELOG.md").eachLine { line ->
+        if (line.matches("## \\[${regexerizeVersion()}] - \\d{4}-\\d{2}-\\d{2}")) {
+            errors.remove(changelogError)
+        }
+    }
+
+    if (errors.size() > 0) {
+        errors.forEach { error -> println(error) }
+        throw new RuntimeException("Some release files are not correct. Check the log output for more information!")
+    }
+
+    from file("RelNotes/${version}.md")
+    into file("build/RelNotes")
 }
