@@ -305,6 +305,9 @@ installDist {
 
 // Check if release files are ready
 task prepareRelease(type: Copy) {
+    if (version.endsWith("-SNAPSHOT")) {
+        return
+    }
 
     def errors = []
 
