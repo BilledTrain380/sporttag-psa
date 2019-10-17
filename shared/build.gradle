@@ -2,7 +2,7 @@ version '2.0.0'
 
 repositories {
     maven {
-        url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
+        url "https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases"
     }
 }
 
