@@ -40,6 +40,7 @@ import ch.schulealtendorf.psa.core.io.FileSystem
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import javax.sql.DataSource
 
 /**
@@ -50,6 +51,7 @@ import javax.sql.DataSource
  * @version 1.0.0
  */
 @Configuration
+@Profile("prod")
 class DatasourceConfiguration(
         private val fileSystem: FileSystem
 ) {
