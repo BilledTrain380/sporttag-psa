@@ -1,0 +1,64 @@
+<ngx-page-title [title]="'group.title.groups' | translate"></ngx-page-title>
+
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <nb-card>
+            <nb-card-header>
+
+                <span>{{ 'group.title.overview' | translate }}</span>
+
+                <div *nbIsGranted="['create', 'groups']" ngxAutoFloat class="btn-group btn-divided-group">
+
+                    <button type="button" class="btn btn-sm btn-primary active" (click)="showImportModal()">
+                        <i class="fa fa-upload"></i>
+                        {{ 'group.action.import' | translate }}
+                    </button>
+                </div>
+
+            </nb-card-header>
+            <nb-card-body>
+
+                <div *ngIf="importSuccessful" class="alert alert-success" role="alert">
+                    <strong>{{ 'alert.great' | translate }}</strong> {{ 'group.alert.importSuccess' | translate }}
+                </div>
+
+                <div *ngIf="groupList.length < 1" class="alert alert-primary" role="alert">
+                    <strong>{{ 'alert.info' | translate }}</strong> {{ 'group.status.noGroups' | translate }}
+                </div>
+
+                <nb-card *ngFor="let group of groupList">
+                    <nb-card-header>
+
+                        <a *ngIf="accessChecker.isGranted('view', 'group') | async" routerLink="/pages/group/detail/{{ group.name }}" class="text-heading">
+                            <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
+                        </a>
+
+                        <span *ngIf="!(accessChecker.isGranted('view', 'group') | async)" class="text-heading">
+                            <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
+                        </span>
+
+                        &nbsp;
+
+                        <button type="button" class="btn btn-secondary btn-tn btn-round">
+                            {{ group.coach }}
+                        </button>
+
+                        <div *ngIf="group.pendingParticipation" ngxAutoFloat>
+                            <i class="fa fa-exclamation-triangle text-warning"></i> {{ 'group.status.withPendingParticipation' | translate }}
+                        </div>
+
+                        <div *ngIf="!group.pendingParticipation" ngxAutoFloat>
+                            <i class="fa fa-check-circle text-success"></i> {{ 'group.status.withNoPendingParticipation' | translate }}
+                        </div>
+
+                    </nb-card-header>
+
+                </nb-card>
+
+            </nb-card-body>
+        </nb-card>
+
+    </div>
+</div>

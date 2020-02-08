@@ -1,0 +1,179 @@
+<ngx-page-title [title]="'athleticsPage.results.title.default' | translate"></ngx-page-title>
+
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <nb-card>
+
+            <nb-card-header>
+
+                {{ 'athleticsPage.results.title.competitors' | translate }}
+
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <div class="row">
+
+                    <div *ngIf="isParticipationOpen" class="col-lg-12">
+                        <div class="alert alert-primary" role="alert">
+                            <strong>{{ 'alert.info' | translate }}</strong> {{ 'participation.status.open' | translate }}.
+                            <span *nbIsGranted="['view', 'management']">
+                                {{ 'participation.text.toManagement' | translate }} <a routerLink="/pages/management">{{ 'participation.text.toManagementHere' | translate }}</a>.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" [(ngModel)]="isMale" (change)="maleChanged()">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" [value]="'MALE' | translate" disabled>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" [(ngModel)]="isFemale" (change)="femaleChanged()">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" [value]="'FEMALE' | translate" disabled>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+                        <ngx-smart-select
+                            label="Gruppe"
+                            [data]="groups"
+                            [settings]="groupSelectSettings"
+                            (onChange)="onGroupChange($event)">
+                        </ngx-smart-select>
+                        <small *ngIf="groups.length < 1" class="form-text text-info p-3">{{ 'athleticsPage.results.status.noGroups' | translate }}</small>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <ngx-smart-select
+                            label="Disziplin"
+                            [data]="disciplines"
+                            [settings]="disciplineSelectSettings"
+                            (onChange)="onDisciplineChange($event)">
+                        </ngx-smart-select>
+                    </div>
+
+                </div>
+
+                <nb-card [nbSpinner]="isLoading">
+
+                    <nb-card-body>
+
+                        <table class="table">
+
+                            <thead>
+                            <tr class="ng2-smart-titles">
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.startNumber' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.surname' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.prename' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.gender' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.result' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.points' | translate }}</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr *ngFor="let competitor of competitors">
+                                <td>{{ competitor.startNumber }}</td>
+                                <td>{{ competitor.surname }}</td>
+                                <td>{{ competitor.prename }}</td>
+                                <td>{{ competitor.gender | translate }}</td>
+                                <td>
+
+                                    <div class="input-group input-group-sm"  *ngIf="competitor.result">
+                                <span class="input-group-prepend" *ngIf="competitor.result.distance">
+                                    <button class="btn btn-secondary input-group-text" style="text-transform: none" tabindex="-1">
+                                      {{ 'athleticsPage.results.label.distance' | translate }}: {{ competitor.result.distance }}
+                                    </button>
+                                </span>
+                                        <input type="text" class="form-control" style="max-width: 100px"
+                                               [ngClass]="{ 'form-control-danger': !competitor.result.isValueValid }"
+                                               [(ngModel)]="competitor.result.value"
+                                               (ngModelChange)="competitor.result.valueChanged()">
+                                        <span class="input-group-append">
+                                    <button class="btn btn-secondary input-group-text" style="text-transform: none" tabindex="-1">
+                                      {{ competitor.result.unit }}
+                                    </button>
+                                </span>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div  *ngIf="competitor.result">
+                                        <span *ngIf="!competitor.result.isCalculating">{{ competitor.result.points }}</span>
+                                        <i *ngIf="competitor.result.isCalculating" class="fa fa-spinner fa-spin"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </nb-card-body>
+
+                </nb-card>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+    <div class="col-lg-12" *ngIf="absentCompetitors.length > 0">
+
+        <nb-card>
+
+            <nb-card-header>
+                {{ 'athleticsPage.results.title.absentCompetitors' | translate }}
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <table class="table">
+
+                    <thead>
+                    <tr class="ng2-smart-titles">
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.startNumber' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.surname' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.prename' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.gender' | translate }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr *ngFor="let absentCompetitor of absentCompetitors">
+                        <td>{{ absentCompetitor.startNumber }}</td>
+                        <td>{{ absentCompetitor.surname }}</td>
+                        <td>{{ absentCompetitor.prename }}</td>
+                        <td>{{ absentCompetitor.gender }}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+</div>

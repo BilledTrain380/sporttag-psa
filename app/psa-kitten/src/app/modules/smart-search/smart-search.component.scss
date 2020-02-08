@@ -1,0 +1,29 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+    .filter-wrapper {
+        position: relative;
+    }
+
+    .filter-select {
+        position: absolute;
+        top: 100%;
+        z-index: 10000;
+        width: 100%;
+        background-color: nb-theme(color-bg);
+        border-left: 1px solid nb-theme(form-control-border-color);
+        border-right: 1px solid nb-theme(form-control-border-color);
+        border-bottom: 1px solid nb-theme(form-control-border-color);
+        display: none;
+
+        &.show {
+            display: block;
+        }
+
+        .search-result:hover {
+            background-color: nb-theme(color-primary);
+            cursor: pointer;
+        }
+    }
+}

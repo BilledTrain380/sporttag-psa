@@ -1,0 +1,39 @@
+<ngx-page-title [title]="'page.ranking' | translate"></ngx-page-title>
+
+<nb-card>
+
+    <nb-card-header>
+
+        {{ 'athleticsPage.ranking.title.types' | translate }}
+
+    </nb-card-header>
+
+    <nb-card-body>
+
+        <div class="row">
+
+            <div *ngIf="isParticipationOpen" class="col-lg-12">
+                <div class="alert alert-primary" role="alert">
+                    <strong>{{ 'alert.info' | translate }}</strong> {{ 'participation.status.open' | translate }}.
+                    <span *nbIsGranted="['view', 'management']">
+                        {{ 'participation.text.toManagement' | translate }} <a routerLink="/pages/management">{{ 'participation.text.toManagementHere' | translate }}</a>.
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+
+                <ngx-tree-checkbox [root]="rootCheckbox"></ngx-tree-checkbox>
+
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary mb-2" (click)="export()" [disabled]="isParticipationOpen">
+            <span *ngIf="!isRankingLoading">{{ 'eventPage.action.export' | translate }}</span>
+            <i *ngIf="isRankingLoading" class="fa fa-spinner fa-spin"></i>
+        </button>
+
+    </nb-card-body>
+
+</nb-card>

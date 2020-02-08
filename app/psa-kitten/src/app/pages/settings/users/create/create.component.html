@@ -1,0 +1,100 @@
+
+<form #userForm="ngForm" (ngSubmit)="submit(userForm)">
+
+    <nb-card>
+
+        <nb-card-header>
+            {{ 'settings.users.action.create' | translate }}
+        </nb-card-header>
+
+        <nb-card-body>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="inputUsername">{{ 'settings.users.label.username' | translate }}</label>
+                        <input type="text" class="form-control" id="inputUsername"
+                               name="username"
+                               ngModel
+                               #username="ngModel"
+                               [ngClass]="{ 'form-control-danger': username.dirty && username.invalid || usernameIsTaken }"
+                               required (change)="checkUsername(username.value)">
+                        <small *ngIf="username.dirty && username.invalid" class="form-text">
+                            {{ 'form.validation.required' | translate }}
+                        </small>
+
+                        <small *ngIf="usernameIsTaken" class="form-text">
+                            {{ 'settings.users.form.validation.usernameIsTaken' | translate }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+
+                    <div class="form-group">
+                        <label for="inputPassword">{{ 'settings.users.label.password' | translate }}</label>
+                        <div class="input-group">
+
+                            <input [type]="isPasswordRevealed ? 'text' : 'password'" class="form-control" id="inputPassword"
+                                   name="password"
+                                   ngModel
+                                   #password="ngModel"
+                                   [ngClass]="{ 'form-control-danger': password.dirty && password.invalid }"
+                                   required
+                                   [pattern]="passwordPolicyRegex">
+
+                            <div class="input-group-append">
+
+                                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordReveal()">
+                                    <i *ngIf="!isPasswordRevealed" class="fa fa-eye"></i>
+                                    <i *ngIf="isPasswordRevealed" class="fa fa-eye-slash"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <small *ngIf="password.dirty && password.invalid" class="form-text">
+                            {{ 'form.validation.pattern' | translate }}
+                        </small>
+
+                        <div class="mt-2 alert alert-info" [innerHTML]="'settings.users.text.passwordRequirements' | translate"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="enabled"
+                               name="enabled"
+                               ngModel
+                               #enabled="ngModel">
+                        <label class="form-check-label" for="enabled">{{ 'settings.users.label.enabled' | translate }}</label>
+                    </div>
+                </div>
+
+            </div>
+
+        </nb-card-body>
+
+        <nb-card-footer>
+
+            <div ngxAutoFloat class="btn-group btn-divided-group">
+
+                <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+                    {{ 'form.action.abort' | translate }}
+                </button>
+
+                <button class="btn btn-md btn-primary active" [disabled]="userForm.invalid || usernameIsTaken" type="submit">
+                    {{ 'form.action.save' | translate }}
+                </button>
+
+            </div>
+
+        </nb-card-footer>
+
+    </nb-card>
+
+</form>
