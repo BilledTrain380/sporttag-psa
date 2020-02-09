@@ -76,6 +76,12 @@
       true,
       "kebab-case"
     ],
+    "variable-name": [
+      true,
+      "allow-leading-underscore",
+      "require-const-for-all-caps",
+      "check-format"
+    ],
     "no-parameter-properties": false,
     "only-arrow-functions": [true, "allow-named-functions"],
     "no-non-null-assertion": false,

@@ -1,0 +1,22 @@
+<ul class="nav flex-column border-right">
+  <li class="nav-item menu" *ngFor="let item of items">
+    <app-menu-item *ngIf="item.children === undefined; else submenu" [item]="item"></app-menu-item>
+
+    <ng-template #submenu>
+      <a class="nav-link submenu" (click)="toggleCollapse(item)">
+        <fa-icon [icon]="item.icon"></fa-icon>
+        {{ item.title }}
+        <fa-icon class="align-right"
+                 [icon]="(currentExpandedMenuId === item.id || (route.fragment | async) === item.id) ? faChevronDown : faChevronLeft">
+        </fa-icon>
+      </a>
+
+      <ul class="nav flex-column pl-3"
+          [ngbCollapse]="!(currentExpandedMenuId === item.id || (route.fragment | async) === item.id)">
+        <li class="nav-item" *ngFor="let child of item.children">
+          <app-menu-item [item]="child" [parentId]="item.id"></app-menu-item>
+        </li>
+      </ul>
+    </ng-template>
+  </li>
+</ul>

@@ -1,0 +1,16 @@
+@import "~bootstrap/scss/bootstrap";
+
+:host {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 56px);
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.container-fluid {
+  flex: 6;
+  background-color: var(--light);
+}

@@ -1,0 +1,19 @@
+@import "~bootstrap/scss/bootstrap";
+
+:host {
+  background-color: $gray-200;
+  border-right: 1px solid $gray-400;
+}
+
+.nav-item.menu {
+  border-bottom: 1px solid $gray-400;
+}
+
+.submenu {
+  cursor: pointer;
+  color: var(--gray)!important;
+
+  fa-icon.align-right {
+    float: right;
+  }
+}
