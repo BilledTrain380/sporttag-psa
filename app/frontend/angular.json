@@ -8,6 +8,9 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@ngrx/schematics:component": {
+          "styleext": "scss"
         }
       },
       "root": "",
@@ -124,6 +127,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "frontend"
+    }
+  },
+  "defaultProject": "frontend",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

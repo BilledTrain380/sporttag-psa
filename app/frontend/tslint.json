@@ -77,6 +77,8 @@
       true,
       "kebab-case"
     ],
+    "no-parameter-properties": false,
+    "only-arrow-functions": [true, "allow-named-functions"],
     "no-non-null-assertion": false,
     "no-void-expression": [true, "ignore-arrow-function-shorthand"],
     "no-floating-promises": false,
