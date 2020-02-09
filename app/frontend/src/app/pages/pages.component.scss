@@ -10,7 +10,18 @@
   flex: 1;
 }
 
-.container-fluid {
+.pages-container {
   flex: 6;
-  background-color: var(--light);
+  display: flex;
+  flex-direction: column;
+
+  .container-fluid {
+    flex: 8;
+    background-color: var(--light);
+  }
+
+  .footer {
+    max-height: 80px;
+    min-height: 70px;
+  }
 }

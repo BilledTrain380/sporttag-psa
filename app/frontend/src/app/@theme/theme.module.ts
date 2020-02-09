@@ -6,6 +6,7 @@ import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstra
 
 import { CoreModule } from "../@core/core.module";
 
+import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
 import { LayoutButtonsComponent } from "./layout/layout-buttons/layout-buttons.component";
 import { PageHeaderComponent } from "./layout/page-header/page-header.component";
@@ -19,6 +20,7 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
     PageHeaderComponent,
     SimplePageComponent,
     LayoutButtonsComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
   ],
   exports: [
     HeaderComponent,
+    FooterComponent,
     SidebarComponent,
     SimplePageComponent,
     LayoutButtonsComponent,
