@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -23,9 +23,9 @@ import { metaReducers, reducers } from "./store";
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
-    NgbModule,
     CoreModule,
     ThemeModule,
+    FontAwesomeModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {

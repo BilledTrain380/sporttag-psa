@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">
+    <img src="/assets/brand/psa-logo.svg" width="30" height="30" class="d-inline-block align-top"
+         alt="PSA Logo">
+    PSA
+  </a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse" [class.collapse]="collapsed" id="navbarContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
+        <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown3" role="button">
+          <fa-icon [icon]="faUser"></fa-icon> {{ username$ | async }}
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
+          <a ngbDropdownItem href="#" (click)="$event.preventDefault()" i18n>Change password</a>
+          <a ngbDropdownItem href="#" (click)="$event.preventDefault()" i18n>Sign out</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
