@@ -9,6 +9,7 @@ import { CoreModule } from "../@core/core.module";
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
 import { ColumnLayoutComponent } from "./layout/column-layout/column-layout.component";
+import { LayoutButtonComponent } from "./layout/layout-button/layout-button.component";
 import { LayoutButtonsComponent } from "./layout/layout-buttons/layout-buttons.component";
 import { PageHeaderComponent } from "./layout/page-header/page-header.component";
 import { RowLayoutComponent } from "./layout/row-layout/row-layout.component";
@@ -25,6 +26,7 @@ const BASE_COMPONENTS = [
   RowLayoutComponent,
   ColumnLayoutComponent,
   LayoutButtonsComponent,
+  LayoutButtonComponent,
 ];
 
 @NgModule({
