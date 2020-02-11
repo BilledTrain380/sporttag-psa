@@ -8,19 +8,29 @@ import { CoreModule } from "../@core/core.module";
 
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
+import { ColumnLayoutComponent } from "./layout/column-layout/column-layout.component";
 import { LayoutButtonsComponent } from "./layout/layout-buttons/layout-buttons.component";
 import { PageHeaderComponent } from "./layout/page-header/page-header.component";
+import { RowLayoutComponent } from "./layout/row-layout/row-layout.component";
+import { RowPageComponent } from "./layout/row-page/row-page.component";
 import { SimplePageComponent } from "./layout/simple-page/simple-page.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 
+const BASE_COMPONENTS = [
+  HeaderComponent,
+  FooterComponent,
+  SidebarComponent,
+  SimplePageComponent,
+  RowPageComponent,
+  RowLayoutComponent,
+  ColumnLayoutComponent,
+  LayoutButtonsComponent,
+];
+
 @NgModule({
   declarations: [
-    HeaderComponent,
-    SidebarComponent,
+    ...BASE_COMPONENTS,
     PageHeaderComponent,
-    SimplePageComponent,
-    LayoutButtonsComponent,
-    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -31,13 +41,7 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
     RouterModule,
     FontAwesomeModule,
   ],
-  exports: [
-    HeaderComponent,
-    FooterComponent,
-    SidebarComponent,
-    SimplePageComponent,
-    LayoutButtonsComponent,
-  ],
+  exports: [...BASE_COMPONENTS],
 })
 export class ThemeModule {
 }

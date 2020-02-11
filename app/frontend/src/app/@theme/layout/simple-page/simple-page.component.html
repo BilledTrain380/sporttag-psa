@@ -1,5 +1,7 @@
-<app-page-header [title]="pageTitle"></app-page-header>
-
-<app-card class="card-layout" [title]="title">
-  <ng-content></ng-content>
-</app-card>
+<app-row-page [pageTitle]="pageTitle" [pageSubTitle]="pageSubTitle">
+  <app-row-layout>
+    <app-column-layout [title]="cardTitle">
+      <ng-content></ng-content>
+    </app-column-layout>
+  </app-row-layout>
+</app-row-page>

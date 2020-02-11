@@ -7,20 +7,14 @@ import { MENU_ITEMS } from "./pages-menu";
   styleUrls: ["./pages.component.scss"],
   template: `
     <app-sidebar class="sidebar" [items]="menu"></app-sidebar>
-    
     <div class="pages-container">
-        
-        <div class="container-fluid p-4">
+        <div class="container-fluid">
             <router-outlet></router-outlet>
         </div>
-        
-        
-            <app-footer class="footer"></app-footer>
-        
-        
+        <app-footer class="footer"></app-footer>
     </div>
   `,
 })
 export class PagesComponent {
-  menu = MENU_ITEMS;
+  readonly menu = MENU_ITEMS;
 }

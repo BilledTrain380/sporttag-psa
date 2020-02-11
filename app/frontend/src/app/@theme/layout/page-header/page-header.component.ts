@@ -9,4 +9,7 @@ export class PageHeaderComponent {
 
   @Input()
   title?: string;
+
+  @Input()
+  subTitle?: string;
 }
