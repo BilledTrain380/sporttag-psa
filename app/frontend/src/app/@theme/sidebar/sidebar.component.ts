@@ -46,13 +46,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         Breakpoints.Small,
         Breakpoints.XSmall,
       ])
-      .pipe(tap(result => {
-        const breakpoints = Array.from(Object.entries(result.breakpoints))
-          .filter(entry => entry[1])
-          .map(entry => entry[0]);
-
-        this.log.info("Detected media breakpoint change: ", breakpoints);
-      }))
+      .pipe(tap(() => this.log.info("Detected media breakpoint change")))
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => this.collapsed = result.matches);
   }
