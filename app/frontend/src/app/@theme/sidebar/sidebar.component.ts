@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { PageMenu } from "../../@core/menu/page-menu";
-import { faChevronDown, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faChevronDown, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -16,6 +16,9 @@ export class SidebarComponent {
   @Input()
   items: ReadonlyArray<PageMenu> = [];
 
+  collapsed = false;
+
+  faBars = faBars;
   faChevronDown = faChevronDown;
   faChevronLeft = faChevronLeft;
 

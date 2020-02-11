@@ -1,4 +1,10 @@
-<ul class="nav flex-column border-right">
+<div class="d-flex nav-toggle-button p-2 mb-3">
+  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="collapsed = !collapsed">
+    <fa-icon [icon]="faBars"></fa-icon>
+  </button>
+</div>
+
+<ul class="nav flex-column border-right" [ngbCollapse]="collapsed">
   <li class="nav-item menu" *ngFor="let item of items">
     <app-menu-item *ngIf="item.children === undefined; else submenu" [item]="item"></app-menu-item>
 
