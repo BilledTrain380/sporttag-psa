@@ -2,8 +2,9 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { faBars, faChevronDown, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { NGXLogger } from "ngx-logger";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, tap } from "rxjs/operators";
 
 import { PageMenu } from "../../@core/menu/page-menu";
 
@@ -34,6 +35,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     readonly route: ActivatedRoute,
     private readonly breakpointObserver: BreakpointObserver,
+    private readonly log: NGXLogger,
   ) {
   }
 
@@ -44,6 +46,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
         Breakpoints.Small,
         Breakpoints.XSmall,
       ])
+      .pipe(tap(result => {
+        const breakpoints = Array.from(Object.entries(result.breakpoints))
+          .filter(entry => entry[1])
+          .map(entry => entry[0]);
+
+        this.log.info("Detected media breakpoint change: ", breakpoints);
+      }))
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => this.collapsed = result.matches);
   }

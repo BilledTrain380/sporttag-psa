@@ -1,3 +1,4 @@
+import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
@@ -5,6 +6,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 
 import { environment } from "../environments/environment";
 
@@ -26,6 +28,10 @@ import { metaReducers, reducers } from "./store";
     CoreModule,
     ThemeModule,
     FontAwesomeModule,
+    HttpClientModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.INFO,
+    }),
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
