@@ -1,4 +1,12 @@
+@import "~bootstrap/scss/bootstrap";
+
 :host {
   display: flex;
   height: 100%;
+}
+
+@include media-breakpoint-down(sm) {
+  .mobile-card {
+    flex: 1;
+  }
 }

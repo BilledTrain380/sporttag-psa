@@ -1,4 +1,14 @@
-.layout-buttons {
-  float: right;
-  transform: translateY(-35px);
+@import "~bootstrap/scss/bootstrap";
+
+@include media-breakpoint-up(sm) {
+  .layout-buttons {
+    float: right;
+    transform: translateY(-35px);
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .layout-buttons {
+    margin-bottom: 20px;
+  }
 }
