@@ -6,6 +6,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { OAuthModule } from "angular-oauth2-oidc";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 
 import { environment } from "../environments/environment";
@@ -29,6 +30,7 @@ import { metaReducers, reducers } from "./store";
     ThemeModule,
     FontAwesomeModule,
     HttpClientModule,
+    OAuthModule.forRoot(),
     LoggerModule.forRoot({
       level: NgxLoggerLevel.INFO,
     }),

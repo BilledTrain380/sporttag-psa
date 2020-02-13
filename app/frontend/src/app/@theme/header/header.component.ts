@@ -1,9 +1,13 @@
 import { Component, OnInit } from "@angular/core";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Store } from "@ngrx/store";
+import { OAuthService } from "angular-oauth2-oidc";
+import { NGXLogger } from "ngx-logger";
 import { Observable } from "rxjs";
+
 import { AppState } from "../../store/app";
 import { selectUsername } from "../../store/user/user.selector";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { logout } from "../../store/user/user.action";
 
 @Component({
   selector: "app-header",
@@ -12,16 +16,25 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 })
 export class HeaderComponent implements OnInit {
 
-  collapsed = true;
-
   username$?: Observable<string>;
 
-  faUser = faUser;
+  readonly faUser = faUser;
 
-  constructor(private readonly store: Store<AppState>) {
+  constructor(
+    private readonly store: Store<AppState>,
+    private readonly oauthService: OAuthService,
+    private readonly log: NGXLogger,
+  ) {
   }
 
   ngOnInit(): void {
     this.username$ = this.store.select(selectUsername);
+  }
+
+  logout(event: Event): void {
+    this.log.info("Log out user");
+    event.preventDefault();
+    this.store.dispatch(logout());
+    this.oauthService.logOut();
   }
 }

@@ -1,18 +1,21 @@
-import { Action, createReducer } from "@ngrx/store";
+import { Action, createReducer, on } from "@ngrx/store";
+
+import { loginSuccess, logout } from "./user.action";
 
 export interface UserState {
   readonly username: string;
-  readonly token: string;
+  readonly authorities: Array<string>;
 }
 
 const initialState: UserState = {
   username: "anonymous",
-  token: "",
+  authorities: [],
 };
 
 const reducer = createReducer(
   initialState,
-  // TOOD add on actions
+  on(loginSuccess, ((state, action) => ({username: action.username, authorities: action.authorities}))),
+  on(logout, (() => initialState)),
 );
 
 export function userReducer(state: UserState | undefined, action: Action): UserState {
