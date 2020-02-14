@@ -6,7 +6,7 @@ import { MENU_ITEMS } from "./pages-menu";
   selector: "app-pages",
   styleUrls: ["./pages.component.scss"],
   template: `
-    <app-sidebar class="sidebar" [items]="menu"></app-sidebar>
+    <app-sidebar [items]="menu"></app-sidebar>
     <div class="pages-container">
         <div class="container-fluid">
             <router-outlet></router-outlet>
