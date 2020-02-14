@@ -57,6 +57,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   toggleCollapse(item: PageMenu): void {
+    this.log.debug("Toggle menu item ", item.title);
     this._currentExpandedMenuId = this._currentExpandedMenuId === item.id
       ? undefined
       : item.id;
