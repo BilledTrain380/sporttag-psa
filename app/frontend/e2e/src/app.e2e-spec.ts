@@ -36,8 +36,7 @@ describe("PSA frontend", () => {
       browser.wait(EC.invisibilityOf(menu));
 
       expect(menu.isPresent())
-        .withContext("Expected navigation menu to be hidden")
-        .toBeTrue();
+        .toBe(true, "Expected navigation menu to be hidden");
     });
 
     it("should show the navigation menu on desktop screen size", async () => {
@@ -51,8 +50,7 @@ describe("PSA frontend", () => {
       browser.wait(EC.visibilityOf(menu));
 
       expect(menu.isPresent())
-        .withContext("Expected navigation menu to be visible")
-        .toBeTrue();
+        .toBe(true, "Expected navigation menu to be visible");
     });
   });
 

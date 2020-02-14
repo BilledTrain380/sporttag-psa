@@ -4,7 +4,7 @@
   </button>
 </div>
 
-<ul class="nav flex-column border-right" [ngbCollapse]="collapsed">
+<ul class="nav flex-column border-right" [ngbCollapse]="collapsed" data-test-selector="navigation-menu">
   <li class="nav-item menu" *ngFor="let item of items">
     <app-menu-item *ngIf="item.children === undefined; else submenu" [item]="item"></app-menu-item>
 

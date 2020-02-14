@@ -11,6 +11,6 @@ export class AppPage {
   }
 
   getMenu(): ElementFinder {
-    return element(by.css("app-sidebar .nav"));
+    return element(by.css('app-sidebar [data-test-selector="navigation-menu"]'));
   }
 }
