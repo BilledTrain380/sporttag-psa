@@ -8,7 +8,7 @@
   <div class="navbar flex-grow-1">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
-        <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button">
+        <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button" data-test-selector="user-menu">
           <fa-icon [icon]="faUser"></fa-icon> {{ username$ | async }}
         </a>
         <div ngbDropdownMenu class="dropdown-menu">

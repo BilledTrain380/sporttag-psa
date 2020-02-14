@@ -2,7 +2,7 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const { SpecReporter } = require('jasmine-spec-reporter');
+const {SpecReporter} = require('jasmine-spec-reporter');
 
 /**
  * @type { import("protractor").Config }
@@ -15,18 +15,41 @@ exports.config = {
   capabilities: {
     browserName: 'chrome'
   },
+
   directConnect: true,
+
   baseUrl: 'http://localhost:4200/',
+
+  params: {
+    username: "admin",
+    password: "gibbiX12345$",
+  },
+
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function() {}
+    print: () => {
+    }
   },
-  onPrepare() {
-    require('ts-node').register({
+  onPrepare: async () => {
+    require("ts-node").register({
       project: require('path').join(__dirname, './tsconfig.json')
     });
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+
+    jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
+
+    // Perform Login
+    await browser.waitForAngularEnabled(false);
+
+    await browser.driver.get(browser.baseUrl);
+
+    await browser.findElement(by.id("username")).sendKeys(browser.params.username);
+    await browser.findElement(by.id("password")).sendKeys(browser.params.password);
+    await browser.findElement(by.buttonText("Sign In")).click();
+
+    browser.driver.sleep(250);
+
+    await browser.waitForAngularEnabled(true);
   }
 };
