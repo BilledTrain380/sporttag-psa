@@ -3,10 +3,11 @@ import { By } from "@angular/platform-browser";
 import { RouterTestingModule } from "@angular/router/testing";
 import { faSquare } from "@fortawesome/free-solid-svg-icons";
 import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
+
+import { CoreTestingModule } from "../../@core/core-testing-module";
 import { PageMenu } from "../../@core/menu/page-menu";
 
 import { SidebarComponent } from "./sidebar.component";
-import { CoreTestingModule } from "../../@core/core-testing-module";
 
 describe("SidebarComponent", () => {
   let component: SidebarComponent;

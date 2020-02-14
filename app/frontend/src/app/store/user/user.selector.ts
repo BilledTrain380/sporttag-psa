@@ -1,6 +1,8 @@
-import { UserState } from "./user.reducer";
 import { createSelector } from "@ngrx/store";
+
 import { AppState } from "../app";
+
+import { UserState } from "./user.reducer";
 
 export const selectUser = (state: AppState) => state.user;
 

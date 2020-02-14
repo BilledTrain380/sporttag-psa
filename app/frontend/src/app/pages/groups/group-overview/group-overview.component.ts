@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -6,10 +6,7 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
   templateUrl: "./group-overview.component.html",
   styleUrls: ["./group-overview.component.scss"],
 })
-export class GroupOverviewComponent implements OnInit {
+export class GroupOverviewComponent {
 
   faUpload = faUpload;
-
-  ngOnInit(): void {
-  }
 }

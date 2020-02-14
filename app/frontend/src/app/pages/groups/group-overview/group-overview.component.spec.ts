@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { GroupOverviewComponent } from './group-overview.component';
+import { GroupOverviewComponent } from "./group-overview.component";
 
-describe('GroupOverviewComponent', () => {
+describe("GroupOverviewComponent", () => {
   let component: GroupOverviewComponent;
   let fixture: ComponentFixture<GroupOverviewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupOverviewComponent ]
+      declarations: [GroupOverviewComponent],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,8 @@ describe('GroupOverviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it("should create", () => {
+    expect(component)
+      .toBeDefined();
   });
 });

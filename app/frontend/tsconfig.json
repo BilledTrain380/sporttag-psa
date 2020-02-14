@@ -8,6 +8,8 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

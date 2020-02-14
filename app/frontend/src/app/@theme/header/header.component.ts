@@ -6,8 +6,8 @@ import { NGXLogger } from "ngx-logger";
 import { Observable } from "rxjs";
 
 import { AppState } from "../../store/app";
-import { selectUsername } from "../../store/user/user.selector";
 import { logout } from "../../store/user/user.action";
+import { selectUsername } from "../../store/user/user.selector";
 
 @Component({
   selector: "app-header",

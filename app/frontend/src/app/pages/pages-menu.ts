@@ -27,5 +27,5 @@ export const MENU_ITEMS: ReadonlyArray<PageMenu> = [
         link: "/pages/athletics/results",
       },
     ],
-  }
+  },
 ];

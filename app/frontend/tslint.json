@@ -83,6 +83,8 @@
       "check-format"
     ],
     "no-parameter-properties": false,
+    "no-unsafe-any": false,
+    "no-use-before-declare": false,
     "only-arrow-functions": [true, "allow-named-functions"],
     "no-non-null-assertion": false,
     "no-void-expression": [true, "ignore-arrow-function-shorthand"],

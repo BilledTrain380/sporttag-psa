@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 @Component({
@@ -6,11 +6,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
   templateUrl: "./footer.component.html",
   styleUrls: ["./footer.component.scss"],
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
 
   faGithub = faGithub;
-
-  ngOnInit(): void {
-  }
-
 }
