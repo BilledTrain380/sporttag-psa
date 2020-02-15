@@ -49,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 class AppController {
 
-    @RequestMapping("/app", "/app/auth/**", "/app/pages/**")
-    fun forward() = "forward:/app/index.html"
+    // FIXME Use user locale to forward correctly
+    @RequestMapping("/app", "/app/*", "/app/*/pages/**")
+    fun forward() = "forward:/app/ch-de/index.html"
 }
