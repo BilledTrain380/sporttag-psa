@@ -78,10 +78,7 @@ configure([
             dependency "net.harawata:appdirs:1.0.1"
 
             // Testing libraries
-            dependency "org.mockito:mockito-core:3.2.4"
-            dependency("com.nhaarman:mockito-kotlin:1.6.0") {
-                exclude "org.mockito:mokito-core"
-            }
+            dependency "com.nhaarman:mockito-kotlin:1.6.0"
             dependency "org.jetbrains.spek:spek-api:1.1.5"
             dependency "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
@@ -103,7 +100,6 @@ configure([
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
         // common testing libraries
-        testImplementation "org.mockito:mockito-core"
         testImplementation "com.nhaarman:mockito-kotlin"
         testImplementation "org.jetbrains.spek:spek-api"
         testImplementation "org.jetbrains.spek:spek-junit-platform-engine"
