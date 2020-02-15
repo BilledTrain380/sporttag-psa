@@ -1,4 +1,5 @@
 import { AuthConfig } from "angular-oauth2-oidc";
+import { environment } from "../../../environments/environment";
 
 export interface PsaJwt {
   readonly user_id: number;
@@ -10,12 +11,13 @@ export interface PsaJwt {
   readonly client_id: string;
 }
 
-// FIXME: Don't use http://localhost address
+const devHost = "http://localhost:8080";
+
 export const authConfig: AuthConfig = {
-  loginUrl: "http://localhost:8100/oauth/authorize",
-  logoutUrl: "http://localhost:8100/logout",
-  tokenEndpoint: "http://localhost:8100/oauth/token",
-  redirectUri: `${window.location.origin}/index.html`,
+  loginUrl: `${environment.production ? "" : devHost}/oauth/authorize`,
+  logoutUrl: `${environment.production ? "" : devHost}/logout`,
+  tokenEndpoint: `${environment.production ? "" : devHost}/oauth/token`,
+  redirectUri: `${window.location.origin}${environment.production ? "/app" : "/index.html"}`,
   requireHttps: false,
   oidc: false,
   clientId: "psa-kitten",
