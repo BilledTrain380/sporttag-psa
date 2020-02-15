@@ -34,10 +34,10 @@
  *
  */
 rootProject.name = "PSA"
-include ':app:desktop'
 include ':app:psa-kitten'
 include ':app:starter'
 include ':app:shared'
 include ':app:core'
 include ':app:dto'
+include 'distribution'
 

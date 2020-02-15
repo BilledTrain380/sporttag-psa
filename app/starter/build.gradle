@@ -70,16 +70,6 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.mockito'
     }
-
-    // common testing libraries
-    testImplementation 'org.mockito:mockito-core:2.9.0'
-    // exclude mockito, because we need a different version
-    testImplementation('com.nhaarman:mockito-kotlin:1.5.0') {
-        exclude group: 'org.mockito'
-    }
-    testImplementation 'org.jetbrains.spek:spek-api:1.1.5'
-    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
-    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
 }
 
 // task processWebapp(type: Copy) {
