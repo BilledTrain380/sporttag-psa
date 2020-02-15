@@ -22,7 +22,7 @@ exports.config = {
 
   params: {
     username: "admin",
-    password: "gibbiX12345$",
+    password: "admin",
   },
 
   framework: 'jasmine',
