@@ -36,5 +36,5 @@ task prepareRelease(type: Copy) {
     }
 
     from file("RelNotes/${version}.md")
-    into file("build/RelNotes")
+    into file("app/starter/build/libs")
 }

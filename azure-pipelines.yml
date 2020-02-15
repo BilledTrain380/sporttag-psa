@@ -19,21 +19,25 @@ pr:
 
 variables:
   profileProd: prod
+  frontendArtifact: Frontend
   frontendDir: app/frontend
+  ubuntu: Ubuntu-18.04
 
 resources:
   containers:
     - container: openjdk
       image: openjdk:8-slim
 
-stages:
+    - container: node
+      image: node:lts-slim
 
+stages:
   - stage: analyze_test_build
     displayName: 'Analyze, test, build'
     jobs:
       - job: Backend
         pool:
-          vmImage: Ubuntu-18.04
+          vmImage: $(ubuntu)
 
         container: openjdk
 
@@ -44,7 +48,7 @@ stages:
 
       - job: Frontend
         pool:
-          vmImage: Ubuntu-18.04
+          vmImage: $(ubuntu)
 
         steps:
           - script: printenv
@@ -64,3 +68,42 @@ stages:
           - script: npm run test -- --watch=false
             displayName: 'Run tests'
             workingDirectory: $(frontendDir)
+
+          - script: npm run build:prod
+            displayName: 'Build frontend'
+            workingDirectory: $(frontendDir)
+
+          - publish: $(System.DefaultWorkingDirectory)/app/frontend/dist/frontend
+            displayName: 'Publish Frontend'
+            artifact: $(frontendArtifact)
+
+  - stage: build
+    displayName: 'Build / Package'
+    jobs:
+      - job: Package
+
+        pool:
+          vmImage: $(ubuntu)
+
+        container: openjdk
+
+        steps:
+          - script: printenv
+          - download: current
+            artifact: $(FrontendArtifact)
+            displayName: 'Download Frontend'
+
+          - task: CopyFiles@2
+            displayName: 'Copy Frontend to java resources'
+            inputs:
+              sourceFolder: $(Pipeline.Workspace)/$(frontendArtifact)
+              targetFolder: "app/starter/src/main/resources/public/app"
+
+          - script: ./gradlew :app:starter:bootJar
+            displayName: 'Package App'
+            env:
+              spring_profiles_active: $(profileProd)
+
+          - publish: $(System.DefaultWorkingDirectory)/app/starter/build/libs
+            displayName: 'Publish Jar'
+            artifact: 'PSA Java'

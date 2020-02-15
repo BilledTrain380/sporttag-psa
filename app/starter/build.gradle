@@ -1,5 +1,9 @@
 mainClassName = "ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt"
 
+bootJar {
+    archiveFileName = "PSA-${archiveVersion.get()}.${archiveExtension.get()}"
+}
+
 compileKotlin {
     kotlinOptions {
         freeCompilerArgs = ["-Xjsr305=strict"]
