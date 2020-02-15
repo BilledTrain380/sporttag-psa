@@ -1,18 +1,3 @@
-buildscript {
-    ext {
-
-        // Build params
-        production = "prod"
-        development = "dev"
-        env = project.hasProperty("env") ? project.getProperty("env") : development
-    }
-}
-
-ext {
-    buildNumber = "git describe --match=NeVeRmAtCh --aways --abbrev=7 --dirty".execute().text.trim()
-    isReleaseBuild = version != null && !version.toString().toLowerCase().contains("snapshot")
-}
-
 group = "ch.schulealtendorf.psa"
 
 allprojects() {
