@@ -1,9 +1,3 @@
-repositories {
-    maven {
-        url "https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases"
-    }
-}
-
 dependencies {
     implementation project(':app:core')
     implementation project(':app:dto')

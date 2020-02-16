@@ -18,14 +18,6 @@ compileTestKotlin {
     }
 }
 
-repositories {
-    maven {
-        url "https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases"
-    }
-    maven { url "http://dl.bintray.com/jetbrains/spek" }
-    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/" }
-}
-
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
     implementation "org.springframework.boot:spring-boot-starter-web"
@@ -43,7 +35,7 @@ dependencies {
     // database dependencies
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.flywaydb:flyway-core"
-    runtime "com.h2database:h2"
+    runtimeOnly "com.h2database:h2"
 
 
     implementation "org.springframework.cloud:spring-cloud-starter-oauth2"
@@ -58,26 +50,4 @@ dependencies {
     implementation "org.webjars:font-awesome"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-// task processWebapp(type: Copy) {
-//     dependsOn ':app:psa-kitten:build'
-//     mustRunAfter "processResources"
-//     from 'app/psa-kitten/dist'
-//     into 'app/starter/build/resources/main/public/app'
-// }
-
-// bootJar.dependsOn("processWebapp")
-
-
-// Rename to just the project name in order to get it found by parcl.
-task renameBootDist {
-    doLast {
-        def dist = file("build/install/${project.name}")
-        if (dist.exists()) {
-            dist.delete()
-        }
-        file("build/install/${project.name}-boot").renameTo(file("build/install/${project.name}"))
-    }
-    mustRunAfter("installBootDist")
 }
