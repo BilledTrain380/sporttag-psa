@@ -29,6 +29,7 @@ exports.config = {
     const tunnelArgs = {
       user: process.env.LT_USERNAME,
       key: process.env.LT_ACCESS_KEY,
+      tunnelName: 'ci-automated-build'
     };
 
     try {
