@@ -1,3 +1,32 @@
+ext {
+    commitHash = "git rev-parse --short HEAD".execute().text
+    isReleaseBuild = version != null && !version.toString().toLowerCase().contains("snapshot")
+}
+
+task printCommitHash {
+    doLast {
+        print commitHash
+    }
+}
+
+task printVersion {
+    doLast {
+        print version
+    }
+}
+
+task printFullVersion {
+    doLast {
+        print "$version+$commitHash"
+    }
+}
+
+task printDockerTag {
+    doLast {
+        print "$version-g$commitHash"
+    }
+}
+
 group = "ch.schulealtendorf.psa"
 
 allprojects() {
@@ -9,7 +38,7 @@ allprojects() {
 
 // Check if release files are ready
 task prepareRelease(type: Copy) {
-    if (version.endsWith("-SNAPSHOT")) {
+    if (!isReleaseBuild) {
         return
     }
 

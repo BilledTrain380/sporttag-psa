@@ -1,7 +1,7 @@
 mainClassName = "ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt"
 
 bootJar {
-    archiveFileName = "PSA-${archiveVersion.get()}.${archiveExtension.get()}"
+    archiveFileName = "PSA-${archiveVersion.get()}+$commitHash.${archiveExtension.get()}"
 }
 
 compileKotlin {
