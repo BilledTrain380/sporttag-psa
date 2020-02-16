@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="PSA.app.desktop.main" target="1.8" />
       <module name="PSA.app.desktop.test" target="1.8" />
+      <module name="PSA.app.main" target="1.8" />
+      <module name="PSA.app.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

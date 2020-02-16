@@ -19,17 +19,10 @@ pr:
 
 variables:
   profileProd: prod
+  psaJavaArtifact: psaJava
   frontendArtifact: Frontend
   frontendDir: app/frontend
   ubuntu: Ubuntu-18.04
-
-resources:
-  containers:
-    - container: openjdk
-      image: openjdk:8-slim
-
-    - container: node
-      image: node:lts-slim
 
 stages:
   - stage: analyze_test_build
@@ -39,23 +32,26 @@ stages:
         pool:
           vmImage: $(ubuntu)
 
-        container: openjdk
-
         steps:
           - script: printenv
-          - script: './gradlew junitPlatformTest'
-            displayName: 'Test Backend'
+          - task: Gradle@2
+            displayName: 'Test backend'
+            inputs:
+              javaHomeOption: JDKVersion
+              jdkVersionOption: 1.8
+              jdkArchitectureOption: x64
+              tasks: 'junitPlatformTest'
 
       - job: Frontend
         pool:
           vmImage: $(ubuntu)
 
         steps:
-          - script: printenv
           - task: NodeTool@0
             displayName: 'Setup environment'
             inputs:
               versionSpec: '10.x'
+          - script: printenv
 
           - script: npm ci
             displayName: 'Install dependencies'
@@ -85,12 +81,17 @@ stages:
         pool:
           vmImage: $(ubuntu)
 
-        container: openjdk
-
         steps:
+          - task: Gradle@2
+            displayName: 'Setup Environment'
+            inputs:
+              javaHomeOptions: JDKVersion
+              jdkVersionOption: 1.8
+              jdkArchitecture: x64
           - script: printenv
+
           - download: current
-            artifact: $(FrontendArtifact)
+            artifact: $(frontendArtifact)
             displayName: 'Download Frontend'
 
           - task: CopyFiles@2
@@ -106,4 +107,79 @@ stages:
 
           - publish: $(System.DefaultWorkingDirectory)/app/starter/build/libs
             displayName: 'Publish Jar'
-            artifact: 'PSA Java'
+            artifact: $(psaJavaArtifact)
+
+  - stage: build_push_docker_image
+    displayName: 'Build / Push Docker Image'
+    jobs:
+      - job: prepare_version_var
+        displayName: 'Prepare Version variables'
+
+        pool:
+          vmImage: $(ubuntu)
+
+        steps:
+          - task: Gradle@2
+            displayName: 'Setup Environment'
+            name: Versions
+            inputs:
+              javaHomeOptions: JDKVersion
+              jdkVersionOption: 1.8
+              jdkArchitecture: x64
+              tasks: 'setPipelineVariables'
+
+      - job: build_push_docker_image
+        displayName: 'Build / Push Docker Image'
+        dependsOn: prepare_version_var
+
+        pool:
+          vmIMage: $(ubuntu)
+
+        variables:
+          dockerTag: $[ dependencies.prepare_version_var.outputs['Versions.dockerTag'] ]
+          version: $[ dependencies.prepare_version_var.outputs['Versions.version'] ]
+          fullVersion: $[ dependencies.prepare_version_var.outputs['Versions.fullVersion'] ]
+
+        steps:
+          - script: printenv
+          - script: |
+              echo "PSA version: $(version)"
+              echo "PSA full version: $(fullVersion)"
+              echo "PSA docker tag: $(dockerTag)"
+            displayName: Print Versions
+
+          - download: current
+            artifact: $(psaJavaArtifact)
+            displayName: 'Download PSA Java'
+
+          - task: CopyFiles@2
+            displayName: 'Copy PSA Java to distributions'
+            inputs:
+              sourceFolder: $(Pipeline.Workspace)/$(psaJavaArtifact)
+              contents: '*.jar'
+              targetFolder: "distribution/docker/psa/resources"
+
+          - task: Docker@2
+            displayName: Login to Docker Hub
+            inputs:
+              command: login
+              containerRegistry: 'BilledTrain380 Docker Hub'
+
+          - task: Docker@2
+            displayName: 'Build Docker Image'
+            inputs:
+              command: build
+              containerRegistry: 'BilledTrain380 Docker Hub'
+              repository: 'billedtrain380/psa'
+              buildContext: distribution/docker/psa/
+              arguments: '--build-arg PSA_VERSION=$(fullVersion)'
+              tags: '$(dockerTag)'
+
+          - task: Docker@2
+            displayName: 'Push Docker Image'
+            inputs:
+              command: push
+              containerRegistry: 'BilledTrain380 Docker Hub'
+              repository: 'billedtrain380/psa'
+              tags: '$(dockerTag)'
+
