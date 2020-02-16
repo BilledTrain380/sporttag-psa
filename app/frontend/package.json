@@ -9,7 +9,8 @@
     "extract-i18n": "ng xi18n --output-path src/locale",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "e2e:ci": "protractor e2e/protractor.lambdatest.conf.js"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +49,7 @@
     "@angular/cli": "~9.0.1",
     "@angular/compiler-cli": "~9.0.0",
     "@angular/language-service": "~9.0.0",
+    "@lambdatest/node-tunnel": "^1.0.9",
     "@ngrx/schematics": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
     "@types/jasmine": "~3.5.0",
