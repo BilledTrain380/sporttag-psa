@@ -14,6 +14,7 @@ COPY *.jar /opt/psa/
 WORKDIR /opt/psa/
 
 ENV server_port 8080
+ENV spring_profile_active prod
 ENV psa_version $PSA_VERSION
 
 ENTRYPOINT ["sh", "-c", "java -jar PSA-${psa_version}.jar --spring.datasource.url=jdbc:h2:./db/psa;USER=psa;PASSWORD=psa"]
