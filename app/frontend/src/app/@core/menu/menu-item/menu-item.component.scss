@@ -1,0 +1,9 @@
+@import "~bootstrap/scss/bootstrap";
+
+.nav-link {
+  color: var(--gray);
+
+  &.active {
+    color: var(--gray-dark);
+  }
+}

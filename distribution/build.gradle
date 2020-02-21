@@ -1,0 +1,8 @@
+// Prints commands for azure pipeline in order to get the versions as pipeline variables
+task setPipelineVariables {
+    doLast {
+        println "##vso[task.setVariable variable=version]$version".trim()
+        println "##vso[task.setVariable variable=fullVersion]$version+$commitHash".trim()
+        println "##vso[task.setVariable variable=dockerTag]$version-g$commitHash".trim()
+    }
+}

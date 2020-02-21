@@ -34,8 +34,10 @@
  *
  */
 rootProject.name = "PSA"
-include 'psa-kitten'
-include 'shared'
-include 'core'
-include 'dto'
+include ':app:psa-kitten'
+include ':app:starter'
+include ':app:shared'
+include ':app:core'
+include ':app:dto'
+include 'distribution'
 

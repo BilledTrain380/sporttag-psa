@@ -1,0 +1,12 @@
+dependencies {
+    implementation project(':app:core')
+    implementation project(':app:dto')
+
+    implementation "com.deliveredtechnologies:rulebook-core"
+
+    // Jasper dependencies
+    implementation "com.guigarage:flatter"
+    implementation "com.lowagie:itext"
+    implementation "org.olap4j:olap4j"
+    implementation "net.sf.jasperreports:jasperreports-functions"
+}

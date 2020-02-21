@@ -1,303 +1,45 @@
-buildscript {
-    ext {
-        kotlinVersion = '1.2.60'
-        springBootVersion = '2.0.2.RELEASE'
-        sporttagPSAVersion = '2.1.1'
-
-        jUnitPlatformVersion = "1.0.0"
-        parclVersion = "1.4.0"
-
-        defaultMainClass = 'ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt'
-        guiMainClass = 'ch.schulealtendorf.sporttagpsa.GUIApplicationKt'
-        springLauncherMainClass = "org.springframework.boot.loader.JarLauncher"
-
-        /*
-         * Returns the main class depending on the mode command line parameter.
-         *
-         * -Pmode=gui uses the JavaFX Application
-         * -Pmode=tui uses the Spring Application
-         *
-         * If the mode is not defined at all, 'tui' mode will be used.
-         */
-        getMainClass = {
-
-            def mode = project.hasProperty('mode') ? project.property('mode') : 'tui'
-
-            if (mode == 'gui') {
-                return guiMainClass
-            } else if (mode == 'tui') {
-                return defaultMainClass
-            }
-
-            throw new IllegalArgumentException('Parameter \'mode\' is invalid: value=' + mode)
-        }
-    }
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        mavenCentral()
-
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-
-        // Kotlin all open to make specific classes open when compiling e.g. spring's @Configuration classes
-        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
-
-        // JUnit Platform TestEngine for Spek
-        classpath "org.junit.platform:junit-platform-gradle-plugin:${jUnitPlatformVersion}"
-
-        // Packager for native bundles
-        classpath "org.mini2Dx:parcl:${parclVersion}"
-    }
+ext {
+    commitHash = "git rev-parse --short HEAD".execute().text.trim()
+    isReleaseBuild = version != null && !version.toString().toLowerCase().contains("snapshot")
 }
 
-apply plugin: 'idea'
-apply plugin: 'org.jetbrains.kotlin.jvm'
-apply plugin: 'kotlin-spring'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.junit.platform.gradle.plugin'
-apply plugin: 'application'
-apply plugin: 'org.mini2Dx.parcl'
+group = "ch.schulealtendorf.psa"
 
-mainClassName = defaultMainClass
-
-bootJar {
-    mainClassName = getMainClass()
-}
-
-junitPlatform {
-    filters {
-        engines {
-            include 'spek'
-        }
-    }
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-compileKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
-        jvmTarget = "1.8"
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
-        jvmTarget = "1.8"
-    }
-}
-
-version = "${sporttagPSAVersion}"
-
-configure([project(':core'), project(':shared'), project(':dto')]) {
-
-    apply plugin: 'idea'
-    apply plugin: 'org.jetbrains.kotlin.jvm'
-    apply plugin: 'org.junit.platform.gradle.plugin'
-
-    repositories {
-        mavenCentral()
-        maven { url "http://dl.bintray.com/jetbrains/spek" }
-    }
-
-    dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-
-        // common testing libraries
-        testCompile 'org.mockito:mockito-core:2.9.0'
-        // exclude mockito, because we need a different version
-        testCompile('com.nhaarman:mockito-kotlin:1.5.0') {
-            exclude group: 'org.mockito'
-        }
-        testCompile 'org.jetbrains.spek:spek-api:1.1.5'
-        testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
-        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
-    }
-
-    junitPlatform {
-        filters {
-            engines {
-                include 'spek'
-            }
-        }
-    }
-}
-
-project(':core') {
-    apply plugin: 'kotlin-spring'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-
+allprojects() {
+    group = project.rootProject.group
     repositories {
         mavenCentral()
     }
-
-    dependencies {
-        implementation('org.springframework.boot:spring-boot-starter-web')
-    }
-
-    bootJar {
-        enabled = false
-    }
-
-    jar {
-        enabled = true
-    }
 }
 
-project(':shared') {
-    apply plugin: 'kotlin-spring'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-
-    repositories {
-        mavenCentral()
+// Check if release files are ready
+task prepareRelease(type: Copy) {
+    if (!isReleaseBuild) {
+        return
     }
 
-    dependencies {
-        implementation project(':core')
-        implementation project(':dto')
+    def errors = []
 
-        compile('org.springframework.boot:spring-boot-starter-web')
+    // Check release notes
+    def releaseNotes = file("RelNotes/${version}.md")
+    if (!releaseNotes.exists()) {
+        errors.add("Release notes for version ${version} do not exist")
     }
 
-    bootJar {
-        enabled = false
-    }
-
-    jar {
-        enabled = true
-    }
-}
-
-repositories {
-    maven {
-        url "https://jaspersoft.artifactoryonline.com/jaspersoft/jr-ce-releases/"
-    }
-    maven { url "http://dl.bintray.com/jetbrains/spek" }
-    maven { url "https://dl.bintray.com/kotlin/kotlin-dev/" }
-    mavenCentral()
-}
-
-dependencies {
-
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-devtools")
-
-    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-    compile "joda-time:joda-time:2.9.9"
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
-
-    compile project(":core")
-    compile project(':shared')
-    compile project(':dto')
-
-    // database dependencies
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.flywaydb:flyway-core')
-    runtime('com.h2database:h2')
-
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-oauth2
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.0.0.RELEASE'
-
-    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt
-    compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.9.RELEASE'
-
-    // https://mvnrepository.com/artifact/org.passay/passay
-    compile group: 'org.passay', name: 'passay', version: '1.3.1'
-
-    // to enable thymeleaf legacy html5 mode
-    compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
-
-    // webjars
-    compile 'org.webjars:jquery:3.2.0'
-    compile 'org.webjars:bootstrap:4.1.3'
-    compile 'org.webjars:font-awesome:5.4.1'
-
-    // exclude mockito, because we need a different version
-    testCompile('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.mockito'
-    }
-
-    // common testing libraries
-    testCompile 'org.mockito:mockito-core:2.9.0'
-    // exclude mockito, because we need a different version
-    testCompile('com.nhaarman:mockito-kotlin:1.5.0') {
-        exclude group: 'org.mockito'
-    }
-    testCompile 'org.jetbrains.spek:spek-api:1.1.5'
-    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
-    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.50'
-}
-
-task processWebapp(type: Copy) {
-    dependsOn ':psa-kitten:build'
-    mustRunAfter "processResources"
-    from 'psa-kitten/dist'
-    into 'build/resources/main/public/app'
-}
-
-bootJar.dependsOn("processWebapp")
-
-parcl {
-
-    exe {
-        vmArgs = ["-Xmx1g"]
-        exeName = project.name
-        zipName = "${project.name}_Windows.zip"
-        withJre(System.getenv("JAVA_HOME"))
-    }
-
-    app {
-        vmArgs = ["-Xmx1g"]
-        appName = project.name
-        displayName = project.name
-        zipName = "${project.name}_macOS.zip"
-        icon = "src/main/deploy/package/macosx/PSA.icns"
-        identifier = "ch.schulealtendorf.psa"
-        applicationCategory = "public.app-category.sports"
-        copyright = "Copyright 2019 BilledTrain380"
-        withJre(System.getenv("JAVA_HOME"))
-    }
-}
-
-// Rename to just the project name in order to get it found by parcl.
-task renameBootDist {
-    doLast {
-        def dist = file("build/install/${project.name}")
-        if (dist.exists()) {
-            dist.delete()
+    // Check Changelog
+    def changelogError = "Changelog is missing release version ${version}"
+    errors.add(changelogError)
+    file("CHANGELOG.md").eachLine { line ->
+        if (line.matches("## \\[${version}] - \\d{4}-\\d{2}-\\d{2}")) {
+            errors.remove(changelogError)
         }
-        file("build/install/${project.name}-boot").renameTo(file("build/install/${project.name}"))
     }
-    mustRunAfter("installBootDist")
-}
 
-// Define tasks dependencies in order that parlc has the correct install available.
-bundleNative.dependsOn("installBootDist", "renameBootDist")
-
-// Define the Spring Launcher as main class, because parcl uses the repackaged Spring Boot Jar.
-bundleNative {
-    mainClassName = "${springLauncherMainClass}"
-}
-
-/*
- * Always skip this tasks because the output does not work when using spring boot.
- * parcl will use this task to get a build. We customize that step with installBootDist config above.
- */
-installDist {
-    onlyIf {
-        false
+    if (errors.size() > 0) {
+        errors.forEach { error -> println(error) }
+        throw new RuntimeException("Some release files are not correct. Check the log output for more information!")
     }
+
+    from file("RelNotes/${version}.md")
+    into file("app/starter/build/libs")
 }

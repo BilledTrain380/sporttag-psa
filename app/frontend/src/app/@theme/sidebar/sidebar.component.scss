@@ -1,0 +1,24 @@
+@import "~bootstrap/scss/bootstrap";
+
+:host {
+  background-color: $gray-200;
+  border-right: 1px solid $gray-400;
+}
+
+.nav-toggle-button {
+  justify-content: flex-end;
+}
+
+.nav-item.menu {
+  border-bottom: 1px solid $gray-400;
+  min-width: 180px;
+}
+
+.submenu-toggle {
+  cursor: pointer;
+  color: var(--gray) !important;
+
+  fa-icon.align-right {
+    float: right;
+  }
+}
