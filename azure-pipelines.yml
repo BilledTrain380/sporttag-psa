@@ -10,7 +10,6 @@ trigger:
   - develop
   - release/*
   - hotfix/*
-  - feature/*
 
 pr:
   - master
@@ -109,10 +108,12 @@ stages:
             displayName: 'Publish Jar'
             artifact: $(psaJavaArtifact)
 
-  - stage: e2e_tesing
-    displayName: 'e2e tests'
+  - stage: release
+    displayName: 'Release'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     jobs:
-      - job: e2e
+      - job: setup
+        displayName: 'Setup environment'
 
         pool:
           vmImage: $(ubuntu)
@@ -127,69 +128,19 @@ stages:
               jdkArchitecture: x64
               tasks: 'setPipelineVariables'
 
-          - download: current
-            artifact: $(psaJavaArtifact)
-            displayName: 'Download PSA Java'
-
-          - task: CopyFiles@2
-            displayName: 'Copy PSA Java to distributions'
-            inputs:
-              sourceFolder: $(Pipeline.Workspace)/$(psaJavaArtifact)
-              contents: '*.jar'
-              targetFolder: "distribution/docker/psa-test"
-
-          - task: Docker@2
-            displayName: 'Build e2e Docker Image'
-            inputs:
-              command: build
-              repository: 'billedtrain380/psa'
-              buildContext: distribution/docker/psa-test/
-              arguments: '--build-arg PSA_VERSION=$(fullVersion)'
-              tags: '$(dockerTag)'
-
-          - script: 'docker run -d --name psa-test -p 8080:8080 billedtrain380/psa:$(dockerTag)'
-            displayName: 'Run psa-test docker image'
-
-          - task: NodeTool@0
-            displayName: 'Setup environment'
-            inputs:
-              versionSpec: '10.x'
-
-          - script: npm ci
-            displayName: 'Install dependencies'
-            workingDirectory: $(frontendDir)
-
-          - script: npm run e2e:ci
-            displayName: 'Run e2e tests'
-            workingDirectory: $(frontendDir)
-            env:
-              LT_USERNAME: $(LT_USERNAME)
-              LT_ACCESS_KEY: $(LT_ACCESS_KEY)
-              FULL_VERSION: $(fullVersion)
-
-          - script: docker rm psa-test
-            displayName: 'Remove psa test docker image'
-
-  - stage: build_push_docker_image
-    displayName: 'Build / Push Docker Image'
-    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
-    jobs:
       - job: build_push_docker_image
         displayName: 'Build / Push Docker Image'
+        dependsOn: setup
 
         pool:
-          vmIMage: $(ubuntu)
+          vmImage: $(ubuntu)
+
+        variables:
+          version: $[ dependencies.setup.outputs['Versions.version'] ]
+          fullVersion: $[ dependencies.setup.outputs['Versions.fullVersion'] ]
+          dockerTag: $[ dependencies.setup.outputs['Versions.dockerTag'] ]
 
         steps:
-          - task: Gradle@2
-            displayName: 'Setup Environment'
-            name: Versions
-            inputs:
-              javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.8
-              jdkArchitecture: x64
-              tasks: 'setPipelineVariables'
-
           - script: printenv
           - script: |
               echo "PSA version: $(version)"
@@ -232,3 +183,43 @@ stages:
               repository: 'billedtrain380/psa'
               tags: '$(dockerTag)'
 
+      - job: github_release
+        displayName: 'Github Release'
+        dependsOn: setup
+
+        pool:
+          vmImage: $(ubuntu)
+
+        variables:
+          version: $[ dependencies.setup.outputs['Versions.version'] ]
+          fullVersion: $[ dependencies.setup.outputs['Versions.fullVersion'] ]
+          dockerTag: $[ dependencies.setup.outputs['Versions.dockerTag'] ]
+
+        steps:
+          - script: printenv
+          - script: |
+              echo "PSA version: $(version)"
+              echo "PSA full version: $(fullVersion)"
+              echo "PSA docker tag: $(dockerTag)"
+            displayName: Print Versions
+
+          - download: current
+            artifact: $(psaJavaArtifact)
+            displayName: 'Download PSA Java'
+
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: $(Pipeline.Workspace)/$(psaJavaArtifact)
+              includeRootFolder: false
+              archiveFile: $(Build.ArtifactStagingDirectory)/PSA_Java-$(versionFull).zip
+
+          - task: GitHubRelease@1
+            inputs:
+              gitHubConnection: 'BilledTrain380'
+              action: 'create'
+              tagSource: 'manual'
+              tag: $(version)
+              title: PSA $(version)
+              releaseNotsFile: $(System.DefaultWorkingDirectory)/RelNotes/$(version).md
+              assets: $(Build.ArtifactStagingDirectory)/PSA_Java-$(versionFull).zip
+              addChangeLog: false
