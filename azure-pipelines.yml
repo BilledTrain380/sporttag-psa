@@ -156,6 +156,7 @@ stages:
               versionSpec: '10.x'
           - script: printenv
           - script: 'npm run e2e:ci'
+            workingDirectory: $(frontendDir)
 
           - script: 'docker stop psa-test && docker rm psa-test'
 
