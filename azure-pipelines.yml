@@ -47,7 +47,7 @@ stages:
 
         steps:
           - task: NodeTool@0
-            displayName: 'Setup environment'
+            displayName: 'Setup NodeJS'
             inputs:
               versionSpec: '10.x'
           - script: printenv
@@ -82,7 +82,7 @@ stages:
 
         steps:
           - task: Gradle@2
-            displayName: 'Setup Environment'
+            displayName: 'Setup Gradle'
             inputs:
               javaHomeOptions: JDKVersion
               jdkVersionOption: 1.8
@@ -107,6 +107,57 @@ stages:
           - publish: $(System.DefaultWorkingDirectory)/app/starter/build/libs
             displayName: 'Publish Jar'
             artifact: $(psaJavaArtifact)
+
+  - stage: e2e_tests
+    displayName: 'e2e tests'
+    jobs:
+      - job: psa
+        displayName: 'PSA'
+
+        pool:
+          vmImage: $(ubuntu)
+
+        steps:
+          - task: Gradle@2
+            displayName: 'Setup Environment'
+            name: Versions
+            inputs:
+              javaHomeOptions: JDKVersion
+              jdkVersionOption: 1.8
+              jdkArchitecture: x64
+              tasks: 'setPipelineVariables'
+
+          - download: current
+            artifact: $(psaJavaArtifact)
+            displayName: 'Download PSA Java'
+
+          - task: CopyFiles@2
+            displayName: 'Copy PSA Java to distributions'
+            inputs:
+              sourceFolder: $(Pipeline.Workspace)/$(psaJavaArtifact)
+              contents: '*.jar'
+              targetFolder: "distribution/docker/psa-test"
+
+          - task: Docker@2
+              displayName: 'Build Docker Image'
+              inputs:
+                command: build
+                repository: 'billedtrain380/psa'
+                buildContext: distribution/docker/psa-test/
+                arguments: '--build-arg PSA_VERSION=$(fullVersion)'
+                tags: '$(dockerTag)'
+
+          - script: 'docker run -d --name psa-test -p 8080:8080 billedtrain380/psa:$(dockerTag)'
+            displayName: 'Run docker psa-test'
+
+          - task: NodeTool@0
+            displayName: 'Setup NodeJS'
+            inputs:
+              versionSpec: '10.x'
+          - script: printenv
+          - script: 'npm run e2e:ci'
+
+          - script: 'docker stop psa-test && docker rm psa-test'
 
   - stage: release
     displayName: 'Release'
