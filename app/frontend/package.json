@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "e2e:ci": "protractor e2e/protractor.lambdatest.conf.js"
+    "e2e:ci": "protractor e2e/protractor.browserstack.conf.js"
   },
   "private": true,
   "dependencies": {
@@ -49,13 +49,13 @@
     "@angular/cli": "~9.0.1",
     "@angular/compiler-cli": "~9.0.0",
     "@angular/language-service": "~9.0.0",
-    "@lambdatest/node-tunnel": "^1.0.9",
     "@ngrx/schematics": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^12.11.1",
+    "browserstack-local": "^1.4.5",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
