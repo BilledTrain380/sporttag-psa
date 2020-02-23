@@ -155,6 +155,11 @@ stages:
             inputs:
               versionSpec: '10.x'
           - script: printenv
+
+          - script: npm ci
+            displayName: 'Install dependencies'
+            workingDirectory: $(frontendDir)
+
           - script: 'npm run e2e:ci'
             workingDirectory: $(frontendDir)
 
