@@ -138,14 +138,9 @@ stages:
               contents: '*.jar'
               targetFolder: "distribution/docker/psa-test"
 
-          - task: Docker@2
-            displayName: 'Build Docker Image'
-            inputs:
-              command: build
-              repository: 'billedtrain380/psa'
-              buildContext: distribution/docker/psa-test/
-              arguments: '--build-arg PSA_VERSION=$(fullVersion)'
-              tags: '$(dockerTag)'
+          - script: 'docker build -t billedtrain380/psa:$(dockerTag) --build-arg PSA_VERSION=$(fullVersion) .'
+            displayName: 'Build Test Docker Image'
+            workingDirectory: distribution/docker/psa-test/
 
           - script: 'docker run -d --name psa-test -p 8080:8080 billedtrain380/psa:$(dockerTag)'
             displayName: 'Run docker psa-test'
