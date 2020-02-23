@@ -162,6 +162,10 @@ stages:
 
           - script: 'npm run e2e:ci'
             workingDirectory: $(frontendDir)
+            env:
+              BROWSERSTACK_USER: $(BROWSERSTACK_USER)
+              BROWSERSTACK_KEY: $(BROWSERSTACK_KEY)
+              FULL_VERSION: $(fullVersion)
 
           - script: 'docker stop psa-test && docker rm psa-test'
 
