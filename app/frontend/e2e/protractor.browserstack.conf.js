@@ -52,33 +52,32 @@ exports.config = {
     await browser.waitForAngularEnabled(false);
 
     return new Promise(((resolve, reject) => {
-
       const attempts = 3;
       let attemptCount = 0;
 
       const intervalId = setInterval(async () => {
-        attemptCount++;
-        console.log("Attempt to wait for psa health check: attempt", attemptCount);
-
-        const http = new HttpClient("http://localhost:8080");
-        http.failOnHttpError = true;
-
-        const response = http.get("/actuator/health");
-        const body = await response.jsonBody.get("status");
-
         try {
+          attemptCount++;
+          console.log("Attempt to wait for psa health check: attempt", attemptCount);
+
+          const http = new HttpClient("http://localhost:8080");
+          http.failOnHttpError = true;
+
+          const response = http.get("/actuator/health");
+          const body = await response.jsonBody.get("status");
+
           if (body === "UP") {
             console.log("PSA is ready");
             resolve();
           }
         } catch (e) {
-          console.log("Failed to parse health check", body);
-        }
-
-        if (attemptCount === attempts) {
-          clearInterval(intervalId);
-          console.log("Failed to load psa health check");
-          reject();
+          console.log("Failed to parse health check");
+        } finally {
+          if (attemptCount === attempts) {
+            clearInterval(intervalId);
+            console.log("Failed to load psa health check");
+            reject();
+          }
         }
       }, 10000);
     })).then(() => baseConfig.onPrepare());
