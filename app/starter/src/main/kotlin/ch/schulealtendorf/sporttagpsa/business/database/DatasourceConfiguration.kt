@@ -51,7 +51,7 @@ import javax.sql.DataSource
  * @version 1.0.0
  */
 @Configuration
-@Profile("prod")
+@Profile("standalone")
 class DatasourceConfiguration(
         private val fileSystem: FileSystem
 ) {
