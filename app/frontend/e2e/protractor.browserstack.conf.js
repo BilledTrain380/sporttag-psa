@@ -72,7 +72,7 @@ exports.config = {
             resolve();
           }
         } catch (e) {
-          console.log("Failed to parse health check");
+          console.log("Failed to parse health check", e);
         } finally {
           if (attemptCount === attempts) {
             clearInterval(intervalId);
