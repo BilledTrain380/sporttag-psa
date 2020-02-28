@@ -64,7 +64,6 @@ exports.config = {
           http.failOnHttpError = true;
 
           const response = http.get("/actuator/health");
-          console.log(await response.stringBody);
           const body = await response.jsonBody.get("status");
 
           if (body === "UP") {

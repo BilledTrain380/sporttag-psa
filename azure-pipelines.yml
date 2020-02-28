@@ -156,6 +156,7 @@ stages:
             workingDirectory: $(frontendDir)
 
           - script: 'npm run e2e:ci'
+            displayName: 'Run e2e tests'
             workingDirectory: $(frontendDir)
             env:
               BROWSERSTACK_USER: $(BROWSERSTACK_USER)

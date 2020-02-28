@@ -39,11 +39,12 @@ exports.config = {
 
     jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
 
-    // Perform Login
     await browser.waitForAngularEnabled(false);
 
+    console.log("Load base url: ", browser.baseUrl);
     await browser.driver.get(browser.baseUrl);
 
+    console.log("Perform login");
     await browser.findElement(by.id("username")).sendKeys(browser.params.username);
     await browser.findElement(by.id("password")).sendKeys(browser.params.password);
     await browser.findElement(by.buttonText("Sign In")).click();
