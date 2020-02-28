@@ -57,7 +57,7 @@ exports.config = {
     await browser.waitForAngularEnabled(true);
 
     console.log("Load psa application");
-    await browser.get(browser.baseUrl);
+    await browser.driver.get(browser.baseUrl);
 
   }
 };
