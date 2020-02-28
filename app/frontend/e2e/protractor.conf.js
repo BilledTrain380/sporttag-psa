@@ -42,8 +42,8 @@ exports.config = {
 
     await browser.waitForAngularEnabled(false);
 
-    console.log("Load login page: ", browser.baseUrl);
-    await browser.driver.get(browser.baseUrl);
+    console.log("Load login page: ", browser.params.psaLoginUrl);
+    await browser.driver.get(browser.params.psaLoginUrl);
 
     browser.driver.sleep(500);
 
@@ -56,8 +56,8 @@ exports.config = {
 
     await browser.waitForAngularEnabled(true);
 
-    // console.log("Load psa application");
-    // await browser.get(browser.baseUrl);
+    console.log("Load psa application");
+    await browser.get(browser.baseUrl);
 
   }
 };
