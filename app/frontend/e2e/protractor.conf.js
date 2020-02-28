@@ -42,8 +42,10 @@ exports.config = {
 
     await browser.waitForAngularEnabled(false);
 
-    console.log("Load login page: ", browser.params.psaLoginUrl);
-    await browser.driver.get(browser.params.psaLoginUrl);
+    console.log("Load login page: ", browser.baseUrl);
+    await browser.driver.get(browser.baseUrl);
+
+    browser.driver.sleep(500);
 
     console.log("Perform login");
     await browser.findElement(by.id("username")).sendKeys(browser.params.username);
@@ -52,9 +54,10 @@ exports.config = {
 
     browser.driver.sleep(500);
 
-    console.log("Load psa application");
-    await browser.get(browser.baseUrl);
-
     await browser.waitForAngularEnabled(true);
+
+    // console.log("Load psa application");
+    // await browser.get(browser.baseUrl);
+
   }
 };
