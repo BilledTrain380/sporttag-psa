@@ -1,6 +1,8 @@
 FROM openjdk:8-jdk-alpine
 LABEL maintainer="BiledTrain380@gamil.com"
 
+ARG PSA_VERSION
+
 RUN mkdir -p /opt/psa/db
 
 EXPOSE 8080/tcp
