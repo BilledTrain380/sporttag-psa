@@ -16,7 +16,7 @@ eg. `2.2.0-g77f415a`
 ## Examples
 ### Simplest docker run example
 ```
-docker run -d -p 8080:8080 billedtrain380/psa/<tag>
+docker run -d -p 8080:8080 billedtrain380/psa:<tag>
 ```
 
 ### Sharing the database from your computer
@@ -26,7 +26,7 @@ docker run -d -p 8080:8080 -v /host/db:/opt/psa/db billedtrain380:<tag>
 ```
 
 ### Override the database username and password
-Let's override our own username and password for the database:
+Let's override the username and password for the database:
 ```
 docker run -d -p 8080:8080 -v /host/db:/opt/psa/db -e spring_datasource_username=foo -e spring_datasource_password=bar billedtrain380:<tag>
 ```

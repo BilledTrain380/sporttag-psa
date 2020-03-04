@@ -28,7 +28,7 @@ exports.config = {
 
   beforeLaunch: () => {
     console.log("Connecting browserstack local");
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const bsLocalOptions = {
         key: exports.config.capabilities["browserstack.key"],
         localIdentifier: exports.config.capabilities["browserstack.localIdentifier"],
@@ -42,7 +42,7 @@ exports.config = {
         console.log("Connected. Now testing...");
         resolve();
       })
-    }));
+    });
   },
 
   onPrepare: async () => {
