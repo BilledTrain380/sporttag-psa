@@ -16,4 +16,4 @@ ENV server_port 8080
 ENV spring_profiles_active prod,test
 ENV psa_version $PSA_VERSION
 
-ENTRYPOINT ["sh", "-c", "java -jar PSA-${psa_version}.jar --spring.datasource.url=jdbc:h2:./db/psa;USER=psa;PASSWORD=psa"]
+ENTRYPOINT ["sh", "-c", "java -jar PSA-${psa_version}.jar"]

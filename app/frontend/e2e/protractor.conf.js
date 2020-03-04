@@ -10,19 +10,20 @@ const {SpecReporter} = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './src/**/*.e2e-spec.ts'
+    "./src/**/*.e2e-spec.ts"
   ],
   capabilities: {
-    browserName: 'chrome'
+    browserName: "chrome"
   },
 
   directConnect: true,
 
-  baseUrl: 'http://localhost:4200/',
+  baseUrl: "http://localhost:4200/",
 
   params: {
     username: "admin",
     password: "admin",
+    psaLoginUrl: "http://localhost:8080/login",
   },
 
   framework: 'jasmine',
@@ -39,17 +40,24 @@ exports.config = {
 
     jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
 
-    // Perform Login
     await browser.waitForAngularEnabled(false);
 
-    await browser.driver.get(browser.baseUrl);
+    console.log("Load login page: ", browser.params.psaLoginUrl);
+    await browser.driver.get(browser.params.psaLoginUrl);
 
+    browser.driver.sleep(500);
+
+    console.log("Perform login");
     await browser.findElement(by.id("username")).sendKeys(browser.params.username);
     await browser.findElement(by.id("password")).sendKeys(browser.params.password);
     await browser.findElement(by.buttonText("Sign In")).click();
 
-    browser.driver.sleep(250);
+    browser.driver.sleep(500);
 
+    await browser.waitForAngularEnabled(true);
+
+    console.log("Load psa application");
+    await browser.driver.get(browser.baseUrl);
     await browser.waitForAngularEnabled(true);
   }
 };
