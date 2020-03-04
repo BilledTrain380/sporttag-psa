@@ -20,10 +20,9 @@ exports.config = {
     "browserstack.user": process.env.BROWSERSTACK_USER,
     "browserstack.key": process.env.BROWSERSTACK_KEY,
     "browserstack.local": true,
-    "os": "OS X",
-    "os_version": "Catalina",
-    "browserName": "Safari",
-    "browser_version": "13.0",
+    "os": "Windows",
+    "os_version": "10",
+    "browserName": "Chrome",
     "resolution": "1600x1200",
   },
 
@@ -51,36 +50,37 @@ exports.config = {
 
     await browser.waitForAngularEnabled(false);
 
-    return new Promise(((resolve, reject) => {
-      const attempts = 3;
-      let attemptCount = 0;
+    const attempts = 3;
+    let attemptCount = 0;
+    let healthCheckSuccessful = false;
 
-      const intervalId = setInterval(async () => {
-        try {
-          attemptCount++;
-          console.log("Attempt to wait for psa health check: attempt", attemptCount);
+    const checkHealth = async () => {
+      try {
+        attemptCount++;
+        console.log("Attempt to wait for psa health check: attempt", attemptCount);
 
-          const http = new HttpClient("http://localhost:8080");
-          http.failOnHttpError = true;
+        const http = new HttpClient("http://localhost:8080");
+        http.failOnHttpError = true;
 
-          const response = http.get("/actuator/health");
-          const body = await response.jsonBody.get("status");
+        const response = http.get("/actuator/health");
+        const body = await response.jsonBody.get("status");
 
-          if (body === "UP") {
-            console.log("PSA is ready");
-            resolve();
-          }
-        } catch (e) {
-          console.log("Failed to parse health check", e);
-        } finally {
-          if (attemptCount === attempts) {
-            clearInterval(intervalId);
-            console.log("Failed to load psa health check");
-            reject();
-          }
+        if (body === "UP") {
+          console.log("PSA is ready");
+          healthCheckSuccessful = true;
         }
-      }, 10000);
-    })).then(() => baseConfig.onPrepare());
+      } catch (e) {
+        console.log("Failed to parse health check", e);
+      } finally {
+        if (attemptCount === attempts) {
+          console.log("Failed to load psa health check");
+        } else if (!healthCheckSuccessful) {
+          await checkHealth();
+        }
+      }
+    };
+
+    return checkHealth().then(() => baseConfig.onPrepare());
   },
 
   afterLaunch: () => {
