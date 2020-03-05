@@ -5,6 +5,7 @@ import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { AgGridModule } from "ag-grid-angular";
 import { OAuthModule } from "angular-oauth2-oidc";
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
 
@@ -29,6 +30,7 @@ import { TokenInterceptor } from "./@core/auth/http-interceptor";
     ThemeModule,
     FontAwesomeModule,
     HttpClientModule,
+    AgGridModule.withComponents([]),
     OAuthModule.forRoot(),
     LoggerModule.forRoot({
       level: NgxLoggerLevel.INFO,
