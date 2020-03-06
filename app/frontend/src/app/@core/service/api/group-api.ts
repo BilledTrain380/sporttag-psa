@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable, InjectionToken } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { NGXLogger } from "ngx-logger";
 import { Observable } from "rxjs";
 
-export const GROUP_API = new InjectionToken("Group Api implementation");
+import { API_ENDPOINT } from "./pas-api";
 
 export interface GroupDto {
   readonly name: string;
@@ -20,7 +20,7 @@ export class GroupApi {
   ) {
   }
 
-  getGroups(options: {
+  getGroups(options?: {
     readonly competitive?: boolean;
     readonly pendingParticipation?: boolean;
   }): Observable<ReadonlyArray<GroupDto>> {
@@ -36,12 +36,12 @@ export class GroupApi {
       params.append("pendingParticipation", `${options.pendingParticipation}`);
     }
 
-    return this.http.get<ReadonlyArray<GroupDto>>("/groups", {params});
+    return this.http.get<ReadonlyArray<GroupDto>>(`${API_ENDPOINT}/groups`, {params});
   }
 
   getGroup(groupName: string): Observable<GroupDto> {
     this.log.info(`Get group: name=${groupName}`);
 
-    return this.http.get<GroupDto>(`/group/${groupName}`);
+    return this.http.get<GroupDto>(`${API_ENDPOINT}/group/${groupName}`);
   }
 }
