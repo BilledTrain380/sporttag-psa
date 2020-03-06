@@ -39,13 +39,14 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.group
 import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Rest controller for {@link Group}.
@@ -54,11 +55,18 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api/rest")
+@RequestMapping("/api")
+@Tag(name = "group", description = "The group api")
 class GroupController(
     private val groupManager: GroupManager
 ) {
 
+    @Operation(summary = "Find groups by name", tags = ["group"])
+    @ApiResponse(
+            responseCode = "200",
+            description = "Found group",
+            content = [Content(schema = Schema(implementation = GroupDto::class))]
+    )
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroup(@PathVariable("group_name") name: String): GroupDto {

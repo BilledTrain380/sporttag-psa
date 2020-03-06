@@ -42,7 +42,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer
@@ -131,9 +130,5 @@ class AuthorizationServerConfig(
             setTokenStore(tokenStore())
             setSupportRefreshToken(true)
         }
-    }
-
-    private fun <B : ClientDetailsServiceBuilder<B>> ClientDetailsServiceBuilder<B>.ClientBuilder.scopes(vararg values: PSAScope): ClientDetailsServiceBuilder<B>.ClientBuilder {
-        return scopes(*values.map { it.value }.toTypedArray())
     }
 }
