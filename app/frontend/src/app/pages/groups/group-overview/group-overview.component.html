@@ -1,4 +1,7 @@
-<app-simple-page pageTitle="Groups" title="Overview">
+<app-simple-page pageTitle="Groups"
+                 i18n-pageTitle
+                 cardTitle="Overview"
+                 i18n-cardTitle>
   <app-layout-buttons>
     <button type="button" class="btn btn-primary btn-sm">
       <fa-icon [icon]="faUpload"></fa-icon>
@@ -6,5 +9,5 @@
     </button>
   </app-layout-buttons>
 
-  <p>it works</p>
+  <div *ngFor="let group of (groups$ | async)">{{group.name}}</div>
 </app-simple-page>

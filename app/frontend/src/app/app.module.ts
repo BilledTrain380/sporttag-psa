@@ -17,6 +17,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { metaReducers, reducers } from "./store";
 import { TokenInterceptor } from "./@core/auth/http-interceptor";
+import { EffectsModule } from "@ngrx/effects";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { TokenInterceptor } from "./@core/auth/http-interceptor";
         strictActionImmutability: true,
       },
     }),
+    EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
