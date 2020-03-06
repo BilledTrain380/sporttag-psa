@@ -42,10 +42,10 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -53,36 +53,37 @@ import java.io.InputStream
  */
 @Component
 class JasperEventSheetApi(
-        private val reportManager: ReportManager,
-        private val filesystem: FileSystem
+    private val reportManager: ReportManager,
+    private val filesystem: FileSystem
 ) : EventSheetApi {
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
 
         val competitors: List<EventSheetDataSet> = data
-                .filterNot { it.absent }
-                .map { competitor ->
+            .filterNot { it.absent }
+            .map { competitor ->
 
-            if (config.discipline.hasDistance.not()) {
-                return@map EventSheetDataSet from competitor
-            }
+                if (config.discipline.hasDistance.not()) {
+                    return@map EventSheetDataSet from competitor
+                }
 
-            val distance = competitor.resultByDiscipline(config.discipline).map { it.distance }
+                val distance = competitor.resultByDiscipline(config.discipline).map { it.distance }
                     .orElseThrow { NoSuchElementException("Could not find a result for discipline: discipline=${config.discipline.name}") }
 
-            return@map EventSheetDataSet.from(competitor, distance ?: "")
-        }.sortedBy { it.startnumber }
+                return@map EventSheetDataSet.from(competitor, distance ?: "")
+            }.sortedBy { it.startnumber }
 
         val template = object : Template {
             override val source: InputStream
                 get() = JasperParticipantListApi::class.java.getResourceAsStream("/reporting/jasper-templates/event-sheet.jrxml")
             override val parameters = hashMapOf(
-                    "discipline" to config.discipline.name,
-                    "gender" to config.gender.text,
-                    "group" to config.group.name,
-                    "multipleTrials" to config.discipline.hasTrials,
-                    "withDistance" to config.discipline.hasDistance,
-                    "competitors" to JRBeanCollectionDataSource(competitors))
+                "discipline" to config.discipline.name,
+                "gender" to config.gender.text,
+                "group" to config.group.name,
+                "multipleTrials" to config.discipline.hasTrials,
+                "withDistance" to config.discipline.hasDistance,
+                "competitors" to JRBeanCollectionDataSource(competitors)
+            )
         }
 
         val reportInputStream = reportManager.exportToPdf(template)

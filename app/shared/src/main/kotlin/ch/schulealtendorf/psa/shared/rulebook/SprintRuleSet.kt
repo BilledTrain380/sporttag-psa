@@ -54,19 +54,21 @@ class SprintRuleSet : RuleSet<FormulaModel, Int>() {
     init {
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { if (it > 13.83) 1 else (19.742424 * (((1417 - (it * 100)) / 100) pow 2.1)).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int =
+                    { if (it > 13.83) 1 else (19.742424 * (((1417 - (it * 100)) / 100) pow 2.1)).toInt() }
 
-                    override var whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "60m" }
-                }
+                override var whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "60m" }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { if (it > 13.61) 1 else (17.686955 * (((1397 - (it * 100)) / 100) pow 2.1)).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int =
+                    { if (it > 13.61) 1 else (17.686955 * (((1397 - (it * 100)) / 100) pow 2.1)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "60m" }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "60m" }
+            }
         )
     }
 }

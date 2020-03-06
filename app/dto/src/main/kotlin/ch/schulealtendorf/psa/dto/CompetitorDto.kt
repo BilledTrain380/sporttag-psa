@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.dto
 
-import java.util.*
+import java.util.Optional
 
 /**
  * Data class representing a competitor.
@@ -45,17 +45,17 @@ import java.util.*
  * @since 2.0.0
  */
 data class CompetitorDto(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: GenderDto,
-        val birthday: BirthdayDto,
-        val absent: Boolean,
-        val address: String,
-        val town: TownDto,
-        val group: GroupDto,
-        val results: List<ResultDto>
+    val id: Int,
+    val startNumber: Int,
+    val surname: String,
+    val prename: String,
+    val gender: GenderDto,
+    val birthday: BirthdayDto,
+    val absent: Boolean,
+    val address: String,
+    val town: TownDto,
+    val group: GroupDto,
+    val results: List<ResultDto>
 ) {
     companion object
 

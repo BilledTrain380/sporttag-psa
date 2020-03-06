@@ -54,19 +54,19 @@ class BallThrowingRuleSet : RuleSet<FormulaModel, Int>() {
     init {
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { (22 * ((((it * 100) - 500) / 100) pow 0.9)).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int = { (22 * ((((it * 100) - 500) / 100) pow 0.9)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { (18 * ((((it * 100) - 800) / 100) pow 0.9)).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int = { (18 * ((((it * 100) - 800) / 100) pow 0.9)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
+            }
         )
     }
 }

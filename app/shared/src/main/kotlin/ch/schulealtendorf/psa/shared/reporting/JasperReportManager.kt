@@ -38,15 +38,15 @@ package ch.schulealtendorf.psa.shared.reporting
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.InputStream
 import net.sf.jasperreports.engine.JREmptyDataSource
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperExportManager
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
 import org.springframework.stereotype.Component
-import java.io.ByteArrayInputStream
-import java.io.File
-import java.io.InputStream
 
 /**
  * Report manager with jasper reports.
@@ -56,7 +56,7 @@ import java.io.InputStream
  */
 @Component
 class JasperReportManager(
-        private val filesystem: FileSystem
+    private val filesystem: FileSystem
 ) : ReportManager {
 
     private val logoPath = "${filesystem.getApplicationDir()}/reporting/gemeinde-altendorf.jpg"
@@ -78,7 +78,7 @@ class JasperReportManager(
 
     private fun copyResources() {
 
-        if (File(logoPath).exists())return
+        if (File(logoPath).exists()) return
 
         val altendorfLogo = JasperReportManager::class.java.getResourceAsStream("/img/gemeinde-altendorf.jpg")
 

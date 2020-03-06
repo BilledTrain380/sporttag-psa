@@ -55,30 +55,33 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 @RequestMapping("/api/web")
 class RankingController(
-        private val exportManager: ExportManager,
-        private val disciplineManager: DisciplineManager,
-        private val fileSystem: FileSystem
+    private val exportManager: ExportManager,
+    private val disciplineManager: DisciplineManager,
+    private val fileSystem: FileSystem
 ) {
 
     @PreAuthorize("#oauth2.hasScope('ranking')")
-    @PostMapping("/ranking", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(
+        "/ranking",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     @ResponseBody
     fun createRanking(@RequestBody data: RankingData): FileQualifier {
-
 
         val disciplineExports = data.discipline.map {
 
             val discipline = disciplineManager.getDiscipline(it.discipline)
-                    .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }
+                .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }
 
             DisciplineExport(discipline, it.gender)
         }
 
         val rankingExport = RankingExport(
-                disciplineExports,
-                data.disciplineGroup,
-                data.total,
-                data.ubsCup
+            disciplineExports,
+            data.disciplineGroup,
+            data.total,
+            data.ubsCup
         )
 
         val zip = exportManager.generateArchive(rankingExport)

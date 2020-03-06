@@ -67,14 +67,15 @@ import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
+import java.util.NoSuchElementException
+import java.util.Optional
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 object ParticipationManagerImplSpec : Spek({
 
@@ -87,84 +88,89 @@ object ParticipationManagerImplSpec : Spek({
         val mockDisciplineRepository: DisciplineRepository = mock()
 
         val manager = ParticipationManagerImpl(
-                mockParticipantRepository,
-                mockParticipationRepository,
-                mockCompetitorRepository,
-                mockCategoryBook,
-                mockDisciplineRepository,
-                mock()
+            mockParticipantRepository,
+            mockParticipationRepository,
+            mockCompetitorRepository,
+            mockCategoryBook,
+            mockDisciplineRepository,
+            mock()
         )
 
         beforeEachTest {
             reset(
-                    mockParticipantRepository,
-                    mockParticipationRepository,
-                    mockCompetitorRepository,
-                    mockCategoryBook,
-                    mockDisciplineRepository
+                mockParticipantRepository,
+                mockParticipationRepository,
+                mockCompetitorRepository,
+                mockCategoryBook,
+                mockDisciplineRepository
             )
         }
 
         val townEntity = TownEntity(
-                id = 1,
-                zip = "3000",
-                name = "Bern"
+            id = 1,
+            zip = "3000",
+            name = "Bern"
         )
 
         val town = TownDto(
-                zip = "3000",
-                name = "Bern"
+            zip = "3000",
+            name = "Bern"
         )
 
         val groupEntity = GroupEntity(
-                name = "2a",
-                coach = CoachEntity(
-                        id = 1,
-                        name = "Willi"
-                )
+            name = "2a",
+            coach = CoachEntity(
+                id = 1,
+                name = "Willi"
+            )
         )
 
         val group = GroupDto(
-                name = "2a",
-                coach = CoachDto(
-                        id = 1,
-                        name = "Willi"
-                )
+            name = "2a",
+            coach = CoachDto(
+                id = 1,
+                name = "Willi"
+            )
         )
 
         val participantEntity = ParticipantEntity(
-                id = 1,
-                surname = "Muster",
-                prename = "Max",
-                gender = GenderDto.MALE,
-                birthday = 0,
-                address = "Musterstrasse 8",
-                town = townEntity,
-                group = groupEntity
+            id = 1,
+            surname = "Muster",
+            prename = "Max",
+            gender = GenderDto.MALE,
+            birthday = 0,
+            address = "Musterstrasse 8",
+            town = townEntity,
+            group = groupEntity
         )
 
         val participantModel = ParticipantDto(
-                1,
-                "Muster",
-                "Max",
-                GenderDto.MALE,
-                BirthdayDto(0),
-                false,
-                "Musterstrasse 8",
-                town,
-                group
+            1,
+            "Muster",
+            "Max",
+            GenderDto.MALE,
+            BirthdayDto(0),
+            false,
+            "Musterstrasse 8",
+            town,
+            group
         )
 
         context("participate") {
 
             on("open participation") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "OPEN")))
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "OPEN"
+                        )
+                    )
+                )
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
 
-
                 manager.participate(participantModel, SportDto("athletics"))
-
 
                 it("should set the sport to the participant") {
                     val expected = participantEntity.copy(sport = SportEntity("athletics"))
@@ -174,9 +180,15 @@ object ParticipationManagerImplSpec : Spek({
 
             on("participant could not be found") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "OPEN")))
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "OPEN"
+                        )
+                    )
+                )
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.empty())
-
 
                 it("should throw a no such element exception, indicating that the participant does not exist") {
                     val exception = assertFailsWith<NoSuchElementException> {
@@ -188,14 +200,23 @@ object ParticipationManagerImplSpec : Spek({
 
             on("closed participation") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "CLOSE")))
-
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "CLOSE"
+                        )
+                    )
+                )
 
                 it("should throw an illegal state exception, indicating that this operation can not be performed") {
                     val exception = assertFailsWith<IllegalStateException> {
                         manager.participate(participantModel, SportDto(""))
                     }
-                    assertEquals("Participation already closed. Use ParticipationManager#reParticipate instead", exception.message)
+                    assertEquals(
+                        "Participation already closed. Use ParticipationManager#reParticipate instead",
+                        exception.message
+                    )
                 }
             }
         }
@@ -204,30 +225,36 @@ object ParticipationManagerImplSpec : Spek({
 
             on("changing sport from any other to athletics") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "CLOSE")))
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "CLOSE"
+                        )
+                    )
+                )
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
 
                 val disciplines = listOf(
-                        DisciplineEntity("soccer", UnitEntity("m")),
-                        DisciplineEntity("running", UnitEntity("sec")),
-                        DisciplineEntity("long-jump", UnitEntity("m"))
+                    DisciplineEntity("soccer", UnitEntity("m")),
+                    DisciplineEntity("running", UnitEntity("sec")),
+                    DisciplineEntity("long-jump", UnitEntity("m"))
                 )
                 whenever(mockDisciplineRepository.findAll()).thenReturn(disciplines)
 
                 whenever(mockCategoryBook.getDistance(any())).thenReturn(null)
                 val competitor = CompetitorEntity(
-                        participant = participantEntity.copy()
+                    participant = participantEntity.copy()
                 )
                 whenever(mockCompetitorRepository.save(any<CompetitorEntity>())).thenReturn(competitor)
 
-
                 manager.reParticipate(participantModel, SportDto(ATHLETICS))
-
 
                 it("should save the participant as competitor with default results") {
                     verify(mockCompetitorRepository, times(1)).save(competitor)
                     verify(mockCompetitorRepository, times(1)).save(competitor.apply {
-                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor } }.toSet()
+                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor } }
+                            .toSet()
                     })
                 }
 
@@ -243,18 +270,24 @@ object ParticipationManagerImplSpec : Spek({
 
             on("changing sport from athletics to any other") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "CLOSE")))
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "CLOSE"
+                        )
+                    )
+                )
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
 
-                val competitor = CompetitorEntity( // we only set some sample values, a real competitor would have results
+                val competitor =
+                    CompetitorEntity( // we only set some sample values, a real competitor would have results
                         1,
                         participantEntity.copy()
-                )
+                    )
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitor))
 
-
                 manager.reParticipate(participantModel, SportDto("bike"))
-
 
                 it("should remove the competitor entry") {
                     verify(mockCompetitorRepository, times(1)).delete(competitor)
@@ -268,27 +301,49 @@ object ParticipationManagerImplSpec : Spek({
 
             on("open participation") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "OPEN")))
-
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "OPEN"
+                        )
+                    )
+                )
 
                 it("should throw an illegal state exception, indicating that this operation can not be performed") {
                     val exception = assertFailsWith<IllegalStateException> {
                         manager.reParticipate(participantModel, SportDto(""))
                     }
-                    assertEquals("Participation is open. Use ParticipationManager#participate instead", exception.message)
+                    assertEquals(
+                        "Participation is open. Use ParticipationManager#participate instead",
+                        exception.message
+                    )
                 }
             }
 
             on("same sport as the participant already has") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "CLOSE")))
-                whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy(sport = SportEntity("running"))))
-
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "CLOSE"
+                        )
+                    )
+                )
+                whenever(mockParticipantRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        participantEntity.copy(
+                            sport = SportEntity(
+                                "running"
+                            )
+                        )
+                    )
+                )
 
                 val sport = SportDto("running")
                 val participant = participantModel.copy(sport = sport)
                 manager.reParticipate(participant, sport)
-
 
                 it("should not update or create any data") {
                     verify(mockParticipantRepository, times(1)).findById(any())
@@ -299,13 +354,18 @@ object ParticipationManagerImplSpec : Spek({
 
             on("changing sport from athletics to any other, but the participant is not a competitor") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "CLOSE")))
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "CLOSE"
+                        )
+                    )
+                )
                 whenever(mockParticipantRepository.findById(any())).thenReturn(Optional.of(participantEntity.copy()))
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
 
-
                 manager.reParticipate(participantModel, SportDto("running"))
-
 
                 it("should not remove any competitor") {
                     verify(mockCompetitorRepository, times(1)).findByParticipantId(any())
@@ -318,32 +378,45 @@ object ParticipationManagerImplSpec : Spek({
 
             on("open participation") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "OPEN")))
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "OPEN"
+                        )
+                    )
+                )
 
                 val participant1 = participantEntity.copy(sport = SportEntity(ATHLETICS))
-                val participant2 = participantEntity.copy(id = 2, sport = SportEntity(ATHLETICS)) // we just change the id, that is enough
+                val participant2 = participantEntity.copy(
+                    id = 2,
+                    sport = SportEntity(ATHLETICS)
+                ) // we just change the id, that is enough
 
-                whenever(mockParticipantRepository.findBySportName(ATHLETICS)).thenReturn(listOf(participant1, participant2))
+                whenever(mockParticipantRepository.findBySportName(ATHLETICS)).thenReturn(
+                    listOf(
+                        participant1,
+                        participant2
+                    )
+                )
 
                 val disciplines = listOf(
-                        DisciplineEntity("soccer", UnitEntity("m")),
-                        DisciplineEntity("running", UnitEntity("sec")),
-                        DisciplineEntity("long-jump", UnitEntity("m"))
+                    DisciplineEntity("soccer", UnitEntity("m")),
+                    DisciplineEntity("running", UnitEntity("sec")),
+                    DisciplineEntity("long-jump", UnitEntity("m"))
                 )
                 whenever(mockDisciplineRepository.findAll()).thenReturn(disciplines)
 
                 val competitor1 = CompetitorEntity(
-                        participant = participant1.copy()
+                    participant = participant1.copy()
                 )
                 val competitor2 = CompetitorEntity(
-                        participant = participant2.copy()
+                    participant = participant2.copy()
                 )
                 whenever(mockCompetitorRepository.save(competitor1)).thenReturn(competitor1.copy())
                 whenever(mockCompetitorRepository.save(competitor2)).thenReturn(competitor2.copy())
 
-
                 manager.closeParticipation()
-
 
                 it("should create competitors with default results for each participant with sport athletics") {
                     /*
@@ -354,12 +427,14 @@ object ParticipationManagerImplSpec : Spek({
 
                     verify(mockCompetitorRepository, times(1)).save(competitor1)
                     verify(mockCompetitorRepository, times(1)).save(competitor1.apply {
-                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor1 } }.toSet()
+                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor1 } }
+                            .toSet()
                     })
 
                     verify(mockCompetitorRepository, times(1)).save(competitor2)
                     verify(mockCompetitorRepository, times(1)).save(competitor2.apply {
-                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor2 } }.toSet()
+                        results = disciplines.map { ResultEntity(discipline = it).also { it.competitor = competitor2 } }
+                            .toSet()
                     })
                 }
 
@@ -370,11 +445,16 @@ object ParticipationManagerImplSpec : Spek({
 
             on("already closed participation") {
 
-                whenever(mockParticipationRepository.findById(any())).thenReturn(Optional.of(ParticipationEntity("main", "CLOSE")))
-
+                whenever(mockParticipationRepository.findById(any())).thenReturn(
+                    Optional.of(
+                        ParticipationEntity(
+                            "main",
+                            "CLOSE"
+                        )
+                    )
+                )
 
                 manager.closeParticipation()
-
 
                 it("should not perform any interactions") {
                     verify(mockParticipationRepository, times(1)).findById(MAIN_PARTICIPATION)

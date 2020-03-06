@@ -42,8 +42,8 @@ import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetConfig
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -51,8 +51,8 @@ import java.io.File
  */
 @Component
 class EventSheetReporterImpl(
-        private val competitorRepository: CompetitorRepository,
-        private val eventSheetApi: EventSheetApi
+    private val competitorRepository: CompetitorRepository,
+    private val eventSheetApi: EventSheetApi
 ) : EventSheetReporter {
     override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
 
@@ -60,13 +60,16 @@ class EventSheetReporterImpl(
 
             data.map { export ->
 
-                val competitors = competitorRepository.findByParticipantGenderAndParticipantGroupName(export.gender, export.group.name)
-                        .map { CompetitorDto from it }
+                val competitors = competitorRepository.findByParticipantGenderAndParticipantGroupName(
+                    export.gender,
+                    export.group.name
+                )
+                    .map { CompetitorDto from it }
 
                 val config = EventSheetConfig(
-                        export.discipline,
-                        export.gender,
-                        export.group
+                    export.discipline,
+                    export.gender,
+                    export.group
                 )
 
                 eventSheetApi.createPdfReport(competitors, config)

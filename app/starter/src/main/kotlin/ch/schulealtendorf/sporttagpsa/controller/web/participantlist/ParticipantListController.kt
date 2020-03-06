@@ -53,12 +53,16 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 @RequestMapping("/api/web")
 class ParticipantListController(
-        private val exportManager: ExportManager,
-        private val fileSystem: FileSystem
+    private val exportManager: ExportManager,
+    private val fileSystem: FileSystem
 ) {
 
     @PreAuthorize("#oauth2.hasScope('participant_list')")
-    @PostMapping("/participant-list", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(
+        "/participant-list",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     @ResponseBody
     fun createParticipantList(@RequestBody data: List<SportDto>): FileQualifier {
 

@@ -36,13 +36,13 @@
 
 package ch.schulealtendorf.psa.core.io
 
+import java.io.File
+import java.io.InputStream
 import net.harawata.appdirs.AppDirs
 import net.lingala.zip4j.core.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.util.Zip4jConstants
 import org.springframework.stereotype.Component
-import java.io.File
-import java.io.InputStream
 
 /**
  * The file system considers the special directory of the platform.
@@ -53,7 +53,7 @@ import java.io.InputStream
  */
 @Component
 class PlatformFileSystem(
-        appDirs: AppDirs
+    appDirs: AppDirs
 ) : FileSystem {
 
     private val applicationDir = File(appDirs.getUserDataDir("PSA", "", ""))

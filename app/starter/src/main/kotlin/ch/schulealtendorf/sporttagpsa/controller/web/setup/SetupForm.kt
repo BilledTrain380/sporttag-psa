@@ -45,6 +45,6 @@ import javax.validation.constraints.NotNull
  * @since 2.0.0
  */
 data class SetupForm(
-        @NotNull
-        val password: String
+    @NotNull
+    val password: String
 )

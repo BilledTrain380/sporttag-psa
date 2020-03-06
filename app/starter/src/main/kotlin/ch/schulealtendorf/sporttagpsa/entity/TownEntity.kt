@@ -52,16 +52,16 @@ import javax.validation.constraints.Size
 @Table(name = "TOWN")
 data class TownEntity(
 
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
 
-        @NotNull
-        @Size(min = 4, max = 4)
-        var zip: String = "",
+    @NotNull
+    @Size(min = 4, max = 4)
+    var zip: String = "",
 
-        @NotNull
-        @Size(min = 1, max = 50)
-        var name: String = ""
+    @NotNull
+    @Size(min = 1, max = 50)
+    var name: String = ""
 )

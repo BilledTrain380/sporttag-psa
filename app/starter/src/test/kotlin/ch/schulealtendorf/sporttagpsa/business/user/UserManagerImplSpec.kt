@@ -49,15 +49,15 @@ import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import java.util.Optional
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 object UserManagerImplSpec : Spek({
 
@@ -72,7 +72,12 @@ object UserManagerImplSpec : Spek({
             reset(mockUserRepository, mockPasswordValidator)
         }
 
-        val userEntity = UserEntity(username = "user", password = "secret".encode(), enabled = true, authorities = listOf(AuthorityEntity("ROLE_USER")))
+        val userEntity = UserEntity(
+            username = "user",
+            password = "secret".encode(),
+            enabled = true,
+            authorities = listOf(AuthorityEntity("ROLE_USER"))
+        )
 
         context("a user to save") {
 
@@ -81,7 +86,6 @@ object UserManagerImplSpec : Spek({
                 whenever(mockUserRepository.findById(any())).thenReturn(Optional.empty())
                 whenever(mockUserRepository.save(any<UserEntity>())).thenReturn(userEntity.copy(id = 1)) // the saved user has a id now
                 whenever(mockPasswordValidator.validate(any())).thenReturn(ValidationResult(true))
-
 
                 val user = UserDto(0, "user", listOf("ROLE_USER"), password = "secret")
                 val result = userManager.save(user)
@@ -94,10 +98,10 @@ object UserManagerImplSpec : Spek({
                     val expected = userEntity.copy()
                     verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
                         expected.id == it.id &&
-                                expected.username == it.username &&
-                                BCryptPasswordEncoder(4).matches("secret", it.password) &&
-                                expected.enabled == it.enabled &&
-                                expected.authorities == it.authorities
+                            expected.username == it.username &&
+                            BCryptPasswordEncoder(4).matches("secret", it.password) &&
+                            expected.enabled == it.enabled &&
+                            expected.authorities == it.authorities
                     })
                 }
 
@@ -111,22 +115,31 @@ object UserManagerImplSpec : Spek({
 
                 whenever(mockUserRepository.findById(any())).thenReturn(Optional.of(userEntity.copy(id = 1)))
 
-                val updatedEntity = userEntity.copy(id = 1, username = "user1", authorities = listOf(AuthorityEntity("ROLE_USER"), AuthorityEntity("ROLE_ADMIN")), enabled = false)
+                val updatedEntity = userEntity.copy(
+                    id = 1,
+                    username = "user1",
+                    authorities = listOf(AuthorityEntity("ROLE_USER"), AuthorityEntity("ROLE_ADMIN")),
+                    enabled = false
+                )
                 whenever(mockUserRepository.save(any<UserEntity>())).thenReturn(updatedEntity.copy())
 
-
-                val user = UserDto(1, "user1", listOf("ROLE_USER", "ROLE_ADMIN"), password = "should not be considered", enabled = false)
+                val user = UserDto(
+                    1,
+                    "user1",
+                    listOf("ROLE_USER", "ROLE_ADMIN"),
+                    password = "should not be considered",
+                    enabled = false
+                )
                 val result = userManager.save(user)
-
 
                 it("should not update the password property") {
                     val expected = updatedEntity.copy()
                     verify(mockUserRepository, times(1)).save(argWhere<UserEntity> {
                         expected.id == it.id &&
-                                expected.username == it.username &&
-                                BCryptPasswordEncoder(4).matches("secret", it.password) && // password is not changed
-                                expected.enabled == it.enabled &&
-                                expected.authorities == it.authorities
+                            expected.username == it.username &&
+                            BCryptPasswordEncoder(4).matches("secret", it.password) && // password is not changed
+                            expected.enabled == it.enabled &&
+                            expected.authorities == it.authorities
                     })
                 }
 
@@ -144,10 +157,8 @@ object UserManagerImplSpec : Spek({
                 whenever(mockUserRepository.findById(any())).thenReturn(Optional.of(userEntity.copy(id = 1)))
                 whenever(mockPasswordValidator.validate(any())).thenReturn(ValidationResult(true))
 
-
                 val user = UserDto(1, "username", listOf())
                 userManager.changePassword(user, "newPassword")
-
 
                 it("should validate the password") {
                     verify(mockPasswordValidator, times(1)).validate("newPassword")
@@ -164,9 +175,7 @@ object UserManagerImplSpec : Spek({
 
                 whenever(mockUserRepository.findById(any())).thenReturn(Optional.empty())
 
-
                 val user = UserDto(1, "username", listOf())
-
 
                 it("should throw a user not found exception, indicating that the user could not be found") {
                     val exception = assertFailsWith<UserNotFoundException> {

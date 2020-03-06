@@ -37,8 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.repository
 
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
+import java.util.Optional
 import org.springframework.data.repository.CrudRepository
-import java.util.*
 
 /**
  * Describes a CRUD repository for a user.

@@ -42,11 +42,11 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -54,16 +54,16 @@ import java.time.Year
  */
 @Component
 class JasperDisciplineRankingApi(
-        private val reportManager: ReportManager,
-        private val filesystem: FileSystem
+    private val reportManager: ReportManager,
+    private val filesystem: FileSystem
 ) : DisciplineRankingApi {
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineRankingConfig): File {
 
         val competitors = data
-                .filter { it.gender == config.gender }
-                .filter { it.birthday.year == config.year }
-                .filterNot { it.absent }
+            .filter { it.gender == config.gender }
+            .filter { it.birthday.year == config.year }
+            .filterNot { it.absent }
 
         val rankingDataSet = RankingFactory.disciplineRankingOf(competitors, config.discipline)
 
@@ -71,11 +71,12 @@ class JasperDisciplineRankingApi(
             override val source: InputStream
                 get() = JasperDisciplineRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-ranking.jrxml")
             override val parameters = hashMapOf(
-                    "discipline" to config.discipline.name,
-                    "gender" to config.gender.text,
-                    "age" to Year.now().value - config.year.value,
-                    "year" to config.year.value,
-                    "competitors" to JRBeanCollectionDataSource(rankingDataSet))
+                "discipline" to config.discipline.name,
+                "gender" to config.gender.text,
+                "age" to Year.now().value - config.year.value,
+                "year" to config.year.value,
+                "competitors" to JRBeanCollectionDataSource(rankingDataSet)
+            )
         }
 
         val reportInputStream = reportManager.exportToPdf(template)

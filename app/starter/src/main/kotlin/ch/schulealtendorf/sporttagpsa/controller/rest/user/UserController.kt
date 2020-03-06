@@ -45,6 +45,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.ForbiddenException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestUser
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import java.security.Principal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -54,7 +55,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
 
 /**
  * Rest controller for user domain.
@@ -65,7 +65,7 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/rest")
 class UserController(
-        private val userManager: UserManager
+    private val userManager: UserManager
 ) {
 
     @GetMapping("/users")
@@ -94,7 +94,7 @@ class UserController(
             throw ForbiddenException("The current user is not authorized to perform this operation.")
 
         userManager.save(
-                user.copy(username = updateUser.username, enabled = updateUser.enabled)
+            user.copy(username = updateUser.username, enabled = updateUser.enabled)
         )
     }
 
@@ -109,7 +109,6 @@ class UserController(
                 throw ForbiddenException("The current user is not authorized to perform this operation.")
 
             userManager.changePassword(user, wrapper.password)
-
         } catch (ex: InvalidPasswordException) {
             throw BadRequestException(ex.message, ex)
         }
@@ -122,7 +121,7 @@ class UserController(
 
     private fun UserManager.findOne(id: Int): UserDto {
         return getOne(id)
-                .orElseThrow { NotFoundException("Could not find user: user_id=$id") }
+            .orElseThrow { NotFoundException("Could not find user: user_id=$id") }
     }
 
     private fun Principal.isAuthorized(user: UserDto) = (name == USER_ADMIN || name == user.username)

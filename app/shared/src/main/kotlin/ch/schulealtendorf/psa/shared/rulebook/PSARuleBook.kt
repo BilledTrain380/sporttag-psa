@@ -47,8 +47,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class PSARuleBook : BasicRuleBook<FormulaModel, Int>(
-        FormulaModel::class,
-        Int::class
+    FormulaModel::class,
+    Int::class
 ), ResultRuleBook {
 
     init {

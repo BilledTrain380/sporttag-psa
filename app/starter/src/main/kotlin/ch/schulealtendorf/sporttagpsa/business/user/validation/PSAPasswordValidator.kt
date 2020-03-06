@@ -52,13 +52,13 @@ import org.springframework.stereotype.Component
 class PSAPasswordValidator : PasswordValidator {
 
     private val validator = org.passay.PasswordValidator(
-            LengthRule(8, 64),
-            CharacterRule(EnglishCharacterData.Digit),
-            CharacterRule(EnglishCharacterData.LowerCase),
-            CharacterRule(EnglishCharacterData.UpperCase),
-            CharacterRule(EnglishCharacterData.Alphabetical),
-            CharacterRule(EnglishCharacterData.Special),
-            WhitespaceRule()
+        LengthRule(8, 64),
+        CharacterRule(EnglishCharacterData.Digit),
+        CharacterRule(EnglishCharacterData.LowerCase),
+        CharacterRule(EnglishCharacterData.UpperCase),
+        CharacterRule(EnglishCharacterData.Alphabetical),
+        CharacterRule(EnglishCharacterData.Special),
+        WhitespaceRule()
     )
 
     override fun isValid(password: String): Boolean {

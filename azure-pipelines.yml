@@ -34,12 +34,12 @@ stages:
         steps:
           - script: printenv
           - task: Gradle@2
-            displayName: 'Test backend'
+            displayName: 'Analyze / Test backend'
             inputs:
               javaHomeOption: JDKVersion
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
-              tasks: 'junitPlatformTest'
+              tasks: 'ktlintCheck junitPlatformTest'
 
       - job: Frontend
         pool:

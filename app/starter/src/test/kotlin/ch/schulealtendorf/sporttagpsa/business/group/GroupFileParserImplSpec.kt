@@ -39,6 +39,13 @@ package ch.schulealtendorf.sporttagpsa.business.group
 import ch.schulealtendorf.psa.dto.BirthdayDto
 import ch.schulealtendorf.psa.dto.GenderDto
 import com.nhaarman.mockito_kotlin.whenever
+import java.io.InputStream
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
@@ -47,12 +54,6 @@ import org.jetbrains.spek.api.dsl.on
 import org.mockito.Mockito
 import org.mockito.Mockito.reset
 import org.springframework.web.multipart.MultipartFile
-import java.io.InputStream
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 /**
  * @author nmaerchy
@@ -72,7 +73,6 @@ object GroupFileParserImplSpec : Spek({
 
         val parser = GroupFileParserImpl()
 
-
         val mockFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
 
         beforeEachTest {
@@ -83,20 +83,39 @@ object GroupFileParserImplSpec : Spek({
 
             on("parsing a csv") {
 
-                val testInputStream: InputStream = GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import.csv")
+                val testInputStream: InputStream =
+                    GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import.csv")
 
                 whenever(mockFile.contentType).thenReturn("text/csv")
                 whenever(mockFile.isEmpty).thenReturn(false)
                 whenever(mockFile.inputStream).thenReturn(testInputStream)
 
-
                 val result = parser.parseCSV(mockFile)
-
 
                 it("should return list of csv participants") {
                     val expected = listOf(
-                            FlatParticipant("Muster", "Hans", GenderDto.MALE, BirthdayDto(convertDate("07.09.2017")), "Musterstrasse 1a", "8000", "Musterhausen", "1a", "Marry Müller"),
-                            FlatParticipant("Wirbelwind", "Will", GenderDto.FEMALE, BirthdayDto(convertDate("08.12.2015")), "Wirbelstrasse 16", "4000", "Willhausen", "1a", "Hans Müller")
+                        FlatParticipant(
+                            "Muster",
+                            "Hans",
+                            GenderDto.MALE,
+                            BirthdayDto(convertDate("07.09.2017")),
+                            "Musterstrasse 1a",
+                            "8000",
+                            "Musterhausen",
+                            "1a",
+                            "Marry Müller"
+                        ),
+                        FlatParticipant(
+                            "Wirbelwind",
+                            "Will",
+                            GenderDto.FEMALE,
+                            BirthdayDto(convertDate("08.12.2015")),
+                            "Wirbelstrasse 16",
+                            "4000",
+                            "Willhausen",
+                            "1a",
+                            "Hans Müller"
+                        )
                     )
                     assertEquals(expected, result)
                 }
@@ -106,7 +125,6 @@ object GroupFileParserImplSpec : Spek({
 
                 whenever(mockFile.contentType).thenReturn("text/csv")
                 whenever(mockFile.isEmpty).thenReturn(true)
-
 
                 it("should throw an illegal argument exception, indicating that an empty file can not be parsed") {
                     val exception = assertFailsWith<IllegalArgumentException> {
@@ -118,12 +136,12 @@ object GroupFileParserImplSpec : Spek({
 
             on("invalid date format") {
 
-                val testInputStream: InputStream = GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-date.csv")
+                val testInputStream: InputStream =
+                    GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-date.csv")
 
                 whenever(mockFile.contentType).thenReturn("text/csv")
                 whenever(mockFile.isEmpty).thenReturn(false)
                 whenever(mockFile.inputStream).thenReturn(testInputStream)
-
 
                 it("should throw a csv parse exception exception, indicating that the date format is invalid") {
                     val exception = assertFailsWith<CSVParsingException> {
@@ -137,12 +155,12 @@ object GroupFileParserImplSpec : Spek({
 
             on("invalid gender value") {
 
-                val testInputStream: InputStream = GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-gender.csv")
+                val testInputStream: InputStream =
+                    GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-gender.csv")
 
                 whenever(mockFile.contentType).thenReturn("text/csv")
                 whenever(mockFile.isEmpty).thenReturn(false)
                 whenever(mockFile.inputStream).thenReturn(testInputStream)
-
 
                 it("should throw a csv parse exception, indicating that the gender value is invalid") {
                     val exception = assertFailsWith<CSVParsingException> {
@@ -157,7 +175,6 @@ object GroupFileParserImplSpec : Spek({
             on("non csv file") {
 
                 whenever(mockFile.contentType).thenReturn("application/pdf")
-
 
                 it("should throw an illegal argument exception, indicating that the file type is invalid") {
                     val exception = assertFailsWith<IllegalArgumentException> {
@@ -174,7 +191,6 @@ object GroupFileParserImplSpec : Spek({
                 whenever(mockFile.contentType).thenReturn("text/csv")
                 whenever(mockFile.isEmpty).thenReturn(false)
                 whenever(mockFile.inputStream).thenReturn(testInputStream)
-
 
                 it("should throw a csv parse exception") {
                     val exception = assertFailsWith<CSVParsingException> {

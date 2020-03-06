@@ -37,8 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.controller.web.files
 
 data class FileQualifier(
-        val value: String,
-        val name: String
+    val value: String,
+    val name: String
 )
 
 fun fileQualifierOf(path: String): FileQualifier {

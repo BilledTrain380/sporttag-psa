@@ -43,22 +43,22 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
  * @since 2.1.0
  */
 data class StartListDataSet(
-        val startnumber: Int,
-        val prename: String,
-        val surname: String,
-        val gender: String,
-        val group: String,
-        val coach: String
+    val startnumber: Int,
+    val prename: String,
+    val surname: String,
+    val gender: String,
+    val group: String,
+    val coach: String
 ) {
     companion object {
         infix fun from(competitor: CompetitorDto): StartListDataSet {
             return StartListDataSet(
-                    competitor.startNumber,
-                    competitor.prename,
-                    competitor.surname,
-                    competitor.gender.text,
-                    competitor.group.name,
-                    competitor.group.coach.name
+                competitor.startNumber,
+                competitor.prename,
+                competitor.surname,
+                competitor.gender.text,
+                competitor.group.name,
+                competitor.group.coach.name
             )
         }
     }

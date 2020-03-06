@@ -64,46 +64,46 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Configuration
 @EnableAuthorizationServer
 class AuthorizationServerConfig(
-        @Qualifier("security-config")
-        private val authenticationManager: AuthenticationManager,
-        private val setupManager: SetupManager,
-        @Qualifier("psa")
-        private val tokenEnhancer: TokenEnhancer
+    @Qualifier("security-config")
+    private val authenticationManager: AuthenticationManager,
+    private val setupManager: SetupManager,
+    @Qualifier("psa")
+    private val tokenEnhancer: TokenEnhancer
 ) : AuthorizationServerConfigurerAdapter() {
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
 
         security
-                ?.tokenKeyAccess("permitAll()")
-                ?.checkTokenAccess("isAuthenticated()")
+            ?.tokenKeyAccess("permitAll()")
+            ?.checkTokenAccess("isAuthenticated()")
     }
 
     override fun configure(clients: ClientDetailsServiceConfigurer?) {
 
         clients
-                ?.inMemory()
+            ?.inMemory()
 
-                ?.withClient("psa-kitten")
-                ?.autoApprove(true)
-                ?.authorities("ADMIN", "USER")
-                ?.authorizedGrantTypes("implicit")
-                ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
-                ?.scopes(
-                        PSAScope.USER,
-                        PSAScope.GROUP_READ,
-                        PSAScope.GROUP_WRITE,
-                        PSAScope.SPORT_READ,
-                        PSAScope.DISCIPLINE_READ,
-                        PSAScope.COMPETITOR_READ,
-                        PSAScope.COMPETITOR_WRITE,
-                        PSAScope.PARTICIPANT_READ,
-                        PSAScope.PARTICIPANT_WRITE,
-                        PSAScope.PARTICIPATION,
-                        PSAScope.FILES,
-                        PSAScope.RANKING,
-                        PSAScope.EVENT_SHEETS,
-                        PSAScope.PARTICIPANT_LIST
-                )
+            ?.withClient("psa-kitten")
+            ?.autoApprove(true)
+            ?.authorities("ADMIN", "USER")
+            ?.authorizedGrantTypes("implicit")
+            ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
+            ?.scopes(
+                PSAScope.USER,
+                PSAScope.GROUP_READ,
+                PSAScope.GROUP_WRITE,
+                PSAScope.SPORT_READ,
+                PSAScope.DISCIPLINE_READ,
+                PSAScope.COMPETITOR_READ,
+                PSAScope.COMPETITOR_WRITE,
+                PSAScope.PARTICIPANT_READ,
+                PSAScope.PARTICIPANT_WRITE,
+                PSAScope.PARTICIPATION,
+                PSAScope.FILES,
+                PSAScope.RANKING,
+                PSAScope.EVENT_SHEETS,
+                PSAScope.PARTICIPANT_LIST
+            )
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {
@@ -113,9 +113,9 @@ class AuthorizationServerConfig(
         }
 
         endpoints
-                ?.tokenStore(tokenStore())
-                ?.tokenEnhancer(tokenEnhancerChain)
-                ?.authenticationManager(authenticationManager)
+            ?.tokenStore(tokenStore())
+            ?.tokenEnhancer(tokenEnhancerChain)
+            ?.authenticationManager(authenticationManager)
     }
 
     @Bean

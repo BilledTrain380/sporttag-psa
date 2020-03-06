@@ -54,19 +54,21 @@ class BroadJumpRuleSet : RuleSet<FormulaModel, Int>() {
     init {
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { if (it < 1.81) 1 else ((220.628792 * (((it * 100) - 180) / 100)) pow 1.0).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int =
+                    { if (it < 1.81) 1 else ((220.628792 * (((it * 100) - 180) / 100)) pow 1.0).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { if (it < 1.91) 1 else ((180.85908 * (((it * 100) - 190) / 100)) pow 1.0).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int =
+                    { if (it < 1.91) 1 else ((180.85908 * (((it * 100) - 190) / 100)) pow 1.0).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
+            }
         )
     }
 }

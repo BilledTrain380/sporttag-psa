@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.DisciplineDto
-import java.util.*
+import java.util.Optional
 
 /**
  * Manager for a {@link Discipline} domain model.

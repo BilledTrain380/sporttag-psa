@@ -37,8 +37,8 @@
 package ch.schulealtendorf.psa.core.io
 
 class ApplicationFile(
-        first: String,
-        vararg more: String
+    first: String,
+    vararg more: String
 ) {
     val path: String = first + "/" + more.joinToString("/")
     val pathSegments: List<String> = listOf(first, *more)

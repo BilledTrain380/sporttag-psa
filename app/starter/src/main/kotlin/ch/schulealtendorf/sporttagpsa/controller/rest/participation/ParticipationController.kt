@@ -56,7 +56,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/rest")
 class ParticipationController(
-        private val participationManager: ParticipationManager
+    private val participationManager: ParticipationManager
 ) {
 
     @PreAuthorize("#oauth2.hasScope('participation')")
@@ -72,8 +72,8 @@ class ParticipationController(
 
         when (participation.status) {
             ParticipationStatusDto.OPEN -> throw ForbiddenException("Participation can not be set to OPEN. Use RESET to reopen a participation")
-            ParticipationStatusDto.CLOSE   -> participationManager.closeParticipation()
-            ParticipationStatusDto.RESET   -> participationManager.resetParticipation()
+            ParticipationStatusDto.CLOSE -> participationManager.closeParticipation()
+            ParticipationStatusDto.RESET -> participationManager.resetParticipation()
         }
     }
 }

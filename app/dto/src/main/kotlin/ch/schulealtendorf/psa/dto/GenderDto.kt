@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.dto
 
-import java.util.*
+import java.util.ResourceBundle
 
 /**
  * Enum representing a gender.

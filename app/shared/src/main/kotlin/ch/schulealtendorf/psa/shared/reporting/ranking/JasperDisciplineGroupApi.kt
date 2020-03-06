@@ -44,12 +44,12 @@ import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.csvNameOf
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
-import java.util.*
+import java.util.ResourceBundle
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -57,8 +57,8 @@ import java.util.*
  */
 @Component
 class JasperDisciplineGroupApi(
-        private val reportManager: ReportManager,
-        private val filesystem: FileSystem
+    private val reportManager: ReportManager,
+    private val filesystem: FileSystem
 ) : DisciplineGroupRankingApi {
 
     private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
@@ -68,21 +68,21 @@ class JasperDisciplineGroupApi(
         val competitors = data filterByConfig config
 
         val lines = listOf(resourceBundle.getString("ranking.csv.header-line"))
-                .plus(competitors.map {
-                    listOf(
-                            it.startNumber.toString(),
-                            it.surname,
-                            it.prename,
-                            it.address,
-                            it.town.zip,
-                            it.town.name,
-                            it.birthday.format(),
-                            "Primarschule Altendorf / KTV",
-                            it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
-                            it.resultByDiscipline("Weitsprung").orElse(ResultDto.empty()).relValue,
-                            it.resultByDiscipline("Ballwurf").orElse(ResultDto.empty()).relValue
-                    ).joinToString(",") { it }
-                })
+            .plus(competitors.map {
+                listOf(
+                    it.startNumber.toString(),
+                    it.surname,
+                    it.prename,
+                    it.address,
+                    it.town.zip,
+                    it.town.name,
+                    it.birthday.format(),
+                    "Primarschule Altendorf / KTV",
+                    it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
+                    it.resultByDiscipline("Weitsprung").orElse(ResultDto.empty()).relValue,
+                    it.resultByDiscipline("Ballwurf").orElse(ResultDto.empty()).relValue
+                ).joinToString(",") { it }
+            })
 
         val file = ApplicationFile("reporting", csvNameOf(config))
 
@@ -99,10 +99,11 @@ class JasperDisciplineGroupApi(
             override val source: InputStream
                 get() = JasperDisciplineGroupApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-group-ranking.jrxml")
             override val parameters: Map<String, Any> = hashMapOf(
-                    "gender" to config.gender.text,
-                    "year" to config.year.value,
-                    "age" to Year.now().value - config.year.value,
-                    "competitors" to JRBeanCollectionDataSource(rankingDataSet))
+                "gender" to config.gender.text,
+                "year" to config.year.value,
+                "age" to Year.now().value - config.year.value,
+                "competitors" to JRBeanCollectionDataSource(rankingDataSet)
+            )
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
@@ -113,8 +114,8 @@ class JasperDisciplineGroupApi(
 
     private infix fun Collection<CompetitorDto>.filterByConfig(config: DisciplineGroupConfig): List<CompetitorDto> {
         return this
-                .filter { it.gender == config.gender }
-                .filter { it.birthday.year == config.year }
-                .filterNot { it.absent }
+            .filter { it.gender == config.gender }
+            .filter { it.birthday.year == config.year }
+            .filterNot { it.absent }
     }
 }

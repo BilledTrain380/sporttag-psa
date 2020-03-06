@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/rest")
 class SportController(
-        private val sportManager: SportManager
+    private val sportManager: SportManager
 ) {
 
     @PreAuthorize("#oauth2.hasScope('sport_read')")

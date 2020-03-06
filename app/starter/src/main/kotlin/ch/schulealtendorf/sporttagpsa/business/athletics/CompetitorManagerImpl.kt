@@ -42,9 +42,8 @@ import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import java.util.Optional
 import org.springframework.stereotype.Component
-import java.util.*
-import kotlin.NoSuchElementException
 
 /**
  * {@link CompetitorManager} implementation which uses the repository classes.
@@ -54,8 +53,8 @@ import kotlin.NoSuchElementException
  */
 @Component
 class CompetitorManagerImpl(
-        private val competitorRepository: CompetitorRepository,
-        private val disciplineRepository: DisciplineRepository
+    private val competitorRepository: CompetitorRepository,
+    private val disciplineRepository: DisciplineRepository
 ) : CompetitorManager {
 
     /**
@@ -72,30 +71,31 @@ class CompetitorManagerImpl(
      *
      * @return an Optional containing the resulting competitor
      */
-    override fun getCompetitor(id: Int): Optional<CompetitorDto> = competitorRepository.findByParticipantId(id).map { CompetitorDto from it }
+    override fun getCompetitor(id: Int): Optional<CompetitorDto> =
+        competitorRepository.findByParticipantId(id).map { CompetitorDto from it }
 
     override fun saveCompetitorResults(competitor: CompetitorDto) {
 
         val competitorEntity = competitorRepository.findByParticipantId(competitor.id)
-                .orElseThrow { NoSuchElementException("Could not find competitor: id=${competitor.id}") }
+            .orElseThrow { NoSuchElementException("Could not find competitor: id=${competitor.id}") }
 
         val results = competitor.results
-                .map {
+            .map {
 
-                    competitorEntity.results.findById(it.id).orElseGet {
+                competitorEntity.results.findById(it.id).orElseGet {
 
-                        val discipline = disciplineRepository.findById(it.discipline.name)
-                                .orElseThrow { NoSuchElementException("Could not find discipline: name=${it.discipline.name}") }
+                    val discipline = disciplineRepository.findById(it.discipline.name)
+                        .orElseThrow { NoSuchElementException("Could not find discipline: name=${it.discipline.name}") }
 
-                        ResultEntity(
-                                distance = it.distance,
-                                discipline = discipline
-                        )
-                    }.apply {
-                        value = it.value
-                        points = it.points
-                    }
-                }.toSet()
+                    ResultEntity(
+                        distance = it.distance,
+                        discipline = discipline
+                    )
+                }.apply {
+                    value = it.value
+                    points = it.points
+                }
+            }.toSet()
 
         competitorEntity.results = results
         competitorRepository.save(competitorEntity)
@@ -104,10 +104,9 @@ class CompetitorManagerImpl(
     override fun mergeResults(competitor: CompetitorDto, results: Iterable<ResultDto>): CompetitorDto {
 
         val mergedResults = competitor.results
-                .map {
-                    if (it.existsIn(results)) results take it else it
-                }.plus(results.notIn(competitor.results))
-
+            .map {
+                if (it.existsIn(results)) results take it else it
+            }.plus(results.notIn(competitor.results))
 
         return competitor.copy(results = mergedResults)
     }

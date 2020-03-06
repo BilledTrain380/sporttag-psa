@@ -43,9 +43,9 @@ import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
+import java.util.Optional
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * Default implementation for managing a user.
@@ -55,17 +55,17 @@ import java.util.*
  */
 @Component
 class UserManagerImpl(
-        private val userRepository: UserRepository,
-        private val passwordValidator: PasswordValidator
+    private val userRepository: UserRepository,
+    private val passwordValidator: PasswordValidator
 ) : UserManager {
 
     override fun save(user: UserDto): UserDto {
 
         val userEntity = userRepository.findById(user.id)
-                .orElseGet {
-                    user.password.validate()
-                    UserEntity(password = user.password.encode())
-                }
+            .orElseGet {
+                user.password.validate()
+                UserEntity(password = user.password.encode())
+            }
 
         userEntity.apply {
             username = user.username
@@ -79,7 +79,7 @@ class UserManagerImpl(
     override fun changePassword(user: UserDto, password: String) {
 
         val userEntity = userRepository.findById(user.id)
-                .orElseThrow { UserNotFoundException("The user could not be found: user=$user") }
+            .orElseThrow { UserNotFoundException("The user could not be found: user=$user") }
 
         password.validate()
         userEntity.password = password.encode()
@@ -91,7 +91,8 @@ class UserManagerImpl(
 
     override fun getOne(userId: Int): Optional<UserDto> = userRepository.findById(userId).map { UserDto from it }
 
-    override fun getOne(username: String): Optional<UserDto> = userRepository.findByUsername(username).map { UserDto from it }
+    override fun getOne(username: String): Optional<UserDto> =
+        userRepository.findByUsername(username).map { UserDto from it }
 
     override fun delete(userId: Int) {
 

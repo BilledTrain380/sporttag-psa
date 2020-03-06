@@ -47,11 +47,11 @@ import javax.validation.constraints.Size
 @Table(name = "AUTHORITY")
 data class AuthorityEntity(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 20)
-        var role: String = "ROLE_USER",
+    @Id
+    @NotNull
+    @Size(min = 1, max = 20)
+    var role: String = "ROLE_USER",
 
-        @ManyToMany(mappedBy = "authorities")
-        var users: Set<UserEntity> = setOf()
+    @ManyToMany(mappedBy = "authorities")
+    var users: Set<UserEntity> = setOf()
 )

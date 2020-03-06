@@ -50,64 +50,64 @@ import ch.schulealtendorf.psa.dto.UserDto
 // Data classes representing the JSON object, where the model class itself does not fit.
 
 data class RestParticipant @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: GenderDto,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: TownDto,
-        val group: GroupDto,
-        val sport: SportDto? = null
+    val id: Int,
+    val surname: String,
+    val prename: String,
+    val gender: GenderDto,
+    val birthday: Long,
+    val absent: Boolean,
+    val address: String,
+    val town: TownDto,
+    val group: GroupDto,
+    val sport: SportDto? = null
 )
 
 data class RestParticipationStatus(
-        val status: ParticipationStatusDto
+    val status: ParticipationStatusDto
 )
 
 data class RestCompetitor(
-        val id: Int,
-        val startNumber: Int,
-        val surname: String,
-        val prename: String,
-        val gender: GenderDto,
-        val birthday: Long,
-        val absent: Boolean,
-        val address: String,
-        val town: TownDto,
-        val group: GroupDto,
-        val results: List<RestResult>
+    val id: Int,
+    val startNumber: Int,
+    val surname: String,
+    val prename: String,
+    val gender: GenderDto,
+    val birthday: Long,
+    val absent: Boolean,
+    val address: String,
+    val town: TownDto,
+    val group: GroupDto,
+    val results: List<RestResult>
 )
 
 data class RestResult(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val distance: String?,
-        val discipline: DisciplineDto
+    val id: Int,
+    val value: Long,
+    val points: Int,
+    val distance: String?,
+    val discipline: DisciplineDto
 )
 
 data class RestUser(
-        val id: Int,
-        val username: String,
-        val enabled: Boolean
+    val id: Int,
+    val username: String,
+    val enabled: Boolean
 )
 
 // Factory functions to create a data class representing the the JSON object of the given parameter.
 
 fun json(participant: ParticipantDto): RestParticipant {
     return RestParticipant(
-            participant.id,
-            participant.surname,
-            participant.prename,
-            participant.gender,
-            participant.birthday.milliseconds,
-            participant.absent,
-            participant.address,
-            participant.town,
-            participant.group,
-            participant.sport
+        participant.id,
+        participant.surname,
+        participant.prename,
+        participant.gender,
+        participant.birthday.milliseconds,
+        participant.absent,
+        participant.address,
+        participant.town,
+        participant.group,
+        participant.sport
     )
 }
 
@@ -117,34 +117,34 @@ fun json(participationStatus: ParticipationStatusDto): RestParticipationStatus {
 
 fun json(competitor: CompetitorDto): RestCompetitor {
     return RestCompetitor(
-            competitor.id,
-            competitor.startNumber,
-            competitor.surname,
-            competitor.prename,
-            competitor.gender,
-            competitor.birthday.milliseconds,
-            competitor.absent,
-            competitor.address,
-            competitor.town,
-            competitor.group,
-            competitor.results.map { json(it) }
+        competitor.id,
+        competitor.startNumber,
+        competitor.surname,
+        competitor.prename,
+        competitor.gender,
+        competitor.birthday.milliseconds,
+        competitor.absent,
+        competitor.address,
+        competitor.town,
+        competitor.group,
+        competitor.results.map { json(it) }
     )
 }
 
 fun json(result: ResultDto): RestResult {
     return RestResult(
-            result.id,
-            result.value,
-            result.points,
-            result.distance,
-            result.discipline
+        result.id,
+        result.value,
+        result.points,
+        result.distance,
+        result.discipline
     )
 }
 
 fun json(user: UserDto): RestUser {
     return RestUser(
-            user.id,
-            user.username,
-            user.enabled
+        user.id,
+        user.username,
+        user.enabled
     )
 }

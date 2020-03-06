@@ -52,27 +52,27 @@ import javax.validation.constraints.Size
 @Table(name = "USER")
 data class UserEntity(
 
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
 
-        @NotNull
-        @Size(min = 1, max = 50)
-        var username: String = "",
+    @NotNull
+    @Size(min = 1, max = 50)
+    var username: String = "",
 
-        @NotNull
-        @Size(min = 1, max = 128)
-        var password: String = "",
+    @NotNull
+    @Size(min = 1, max = 128)
+    var password: String = "",
 
-        @NotNull
-        var enabled: Boolean = false,
+    @NotNull
+    var enabled: Boolean = false,
 
-        @ManyToMany(fetch = FetchType.EAGER)
-        @JoinTable(
-                name = "USER_AUTHORITY",
-                joinColumns = [(JoinColumn(name = "user_id", referencedColumnName = "id"))],
-                inverseJoinColumns = [(JoinColumn(name = "authority", referencedColumnName = "role"))]
-        )
-        var authorities: List<AuthorityEntity> = listOf()
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "USER_AUTHORITY",
+        joinColumns = [(JoinColumn(name = "user_id", referencedColumnName = "id"))],
+        inverseJoinColumns = [(JoinColumn(name = "authority", referencedColumnName = "role"))]
+    )
+    var authorities: List<AuthorityEntity> = listOf()
 )

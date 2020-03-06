@@ -38,14 +38,16 @@ package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.psa.dto.BirthdayDto
 import ch.schulealtendorf.psa.dto.GenderDto
-import org.springframework.stereotype.Component
-import org.springframework.web.multipart.MultipartFile
 import java.nio.charset.Charset
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.Optional
 import java.util.stream.Stream
 import kotlin.streams.toList
+import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * An implementation of a FileReader for a competitor input file.
@@ -76,47 +78,53 @@ class GroupFileParserImpl : GroupFileParser {
         file.inputStream.bufferedReader(Charset.forName("UTF-8")).use {
 
             return it.lines()
-                    .mapIndexed { index, line ->
+                .mapIndexed { index, line ->
 
-                        val parts = line.split(',')
+                    val parts = line.split(',')
 
-                        if (parts.size != 9) {
-                            throw CSVParsingException("Can not parse line: Missing values.", index, 0)
+                    if (parts.size != 9) {
+                        throw CSVParsingException("Can not parse line: Missing values.", index, 0)
+                    }
+
+                    val group: String = parts[0].trim()
+                    val surname: String = parts[1].trim()
+                    val prename: String = parts[2].trim()
+
+                    val genderValue: String = parts[3].trim()
+
+                    if (!(genderValue == "w" || genderValue == "m")) {
+                        throw CSVParsingException("Can not parse gender: value=$genderValue", index, parts.column(3))
+                    }
+                    val gender = if (genderValue == "m") GenderDto.MALE else GenderDto.FEMALE
+
+                    val address: String = parts[4]
+                    val zipCode: String = parts[5]
+                    val town: String = parts[6]
+
+                    val birthdayValue: String = parts[7]
+                    val birthday = birthdayValue.toDate()
+                        .orElseThrow {
+                            CSVParsingException(
+                                "Can not parse birthday: value=$birthdayValue",
+                                index,
+                                parts.column(7)
+                            )
                         }
 
-                        val group: String = parts[0].trim()
-                        val surname: String = parts[1].trim()
-                        val prename: String = parts[2].trim()
+                    val coach: String = parts[8]
 
-                        val genderValue: String = parts[3].trim()
-
-                        if (!(genderValue == "w" || genderValue == "m")) {
-                            throw CSVParsingException("Can not parse gender: value=$genderValue", index, parts.column(3))
-                        }
-                        val gender = if (genderValue == "m") GenderDto.MALE else GenderDto.FEMALE
-
-                        val address: String = parts[4]
-                        val zipCode: String = parts[5]
-                        val town: String = parts[6]
-
-                        val birthdayValue: String = parts[7]
-                        val birthday = birthdayValue.toDate()
-                                .orElseThrow { CSVParsingException("Can not parse birthday: value=$birthdayValue", index, parts.column(7)) }
-
-                        val coach: String = parts[8]
-
-                        FlatParticipant(
-                                surname,
-                                prename,
-                                gender,
-                                BirthdayDto(birthday.time),
-                                address,
-                                zipCode,
-                                town,
-                                group,
-                                coach
-                        )
-                    }.toList()
+                    FlatParticipant(
+                        surname,
+                        prename,
+                        gender,
+                        BirthdayDto(birthday.time),
+                        address,
+                        zipCode,
+                        town,
+                        group,
+                        coach
+                    )
+                }.toList()
         }
     }
 

@@ -42,27 +42,27 @@ import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.psa.dto.SportDto
 
 data class RankingExport(
-        val disciplines: Iterable<DisciplineExport>,
-        val disciplineGroup: Iterable<GenderDto>,
-        val total: Iterable<GenderDto>,
-        val ubsCup: Iterable<GenderDto>
+    val disciplines: Iterable<DisciplineExport>,
+    val disciplineGroup: Iterable<GenderDto>,
+    val total: Iterable<GenderDto>,
+    val ubsCup: Iterable<GenderDto>
 )
 
 data class EventSheetExport(
-        val disciplines: Iterable<EventSheetDisciplineExport>
+    val disciplines: Iterable<EventSheetDisciplineExport>
 )
 
 data class ParticipantExport(
-        val sports: Iterable<SportDto>
+    val sports: Iterable<SportDto>
 )
 
 data class DisciplineExport(
-        val discipline: DisciplineDto,
-        val gender: GenderDto
+    val discipline: DisciplineDto,
+    val gender: GenderDto
 )
 
 data class EventSheetDisciplineExport(
-        val discipline: DisciplineDto,
-        val group: GroupDto,
-        val gender: GenderDto
+    val discipline: DisciplineDto,
+    val group: GroupDto,
+    val gender: GenderDto
 )

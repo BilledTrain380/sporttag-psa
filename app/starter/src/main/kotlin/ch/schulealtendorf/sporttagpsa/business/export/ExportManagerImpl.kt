@@ -43,9 +43,9 @@ import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineRankingRe
 import ch.schulealtendorf.sporttagpsa.business.export.report.EventSheetReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.ParticipantListReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.TotalRankingReporter
-import org.springframework.stereotype.Component
 import java.io.File
-import java.util.*
+import java.util.ResourceBundle
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy
@@ -53,12 +53,12 @@ import java.util.*
  */
 @Component
 class ExportManagerImpl(
-        private val fileSystem: FileSystem,
-        private val eventSheetReporter: EventSheetReporter,
-        private val participantListReporter: ParticipantListReporter,
-        private val totalRankingReporter: TotalRankingReporter,
-        private val disciplineGroupRankingReporter: DisciplineGroupRankingReporter,
-        private val disciplineRankingReporter: DisciplineRankingReporter
+    private val fileSystem: FileSystem,
+    private val eventSheetReporter: EventSheetReporter,
+    private val participantListReporter: ParticipantListReporter,
+    private val totalRankingReporter: TotalRankingReporter,
+    private val disciplineGroupRankingReporter: DisciplineGroupRankingReporter,
+    private val disciplineRankingReporter: DisciplineRankingReporter
 ) : ExportManager {
 
     private val resourceBundle = ResourceBundle.getBundle("i18n.archives")
@@ -78,7 +78,6 @@ class ExportManagerImpl(
 
             val file = ApplicationFile("export", resourceBundle.getString("name.event-sheets"))
             return fileSystem.createArchive(file, reports)
-
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
         }
@@ -96,15 +95,14 @@ class ExportManagerImpl(
         try {
 
             val reports = setOf(
-                    totalRankingReporter.generateReport(data.total),
-                    disciplineGroupRankingReporter.generateReport(data.disciplineGroup),
-                    disciplineRankingReporter.generateReport(data.disciplines),
-                    disciplineGroupRankingReporter.generateCSV(data.ubsCup)
+                totalRankingReporter.generateReport(data.total),
+                disciplineGroupRankingReporter.generateReport(data.disciplineGroup),
+                disciplineRankingReporter.generateReport(data.disciplines),
+                disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
 
             val file = ApplicationFile("export", resourceBundle.getString("name.ranking"))
             return fileSystem.createArchive(file, reports)
-
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
         }
@@ -125,7 +123,6 @@ class ExportManagerImpl(
 
             val file = ApplicationFile("export", resourceBundle.getString("name.participant-list"))
             return fileSystem.createArchive(file, reports)
-
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
         }

@@ -37,16 +37,16 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.user
 
 data class NewUser(
-        val username: String,
-        val enabled: Boolean,
-        val password: String
+    val username: String,
+    val enabled: Boolean,
+    val password: String
 )
 
 data class UpdateUser(
-        val username: String,
-        val enabled: Boolean
+    val username: String,
+    val enabled: Boolean
 )
 
 data class PasswordWrapper(
-        val password: String
+    val password: String
 )

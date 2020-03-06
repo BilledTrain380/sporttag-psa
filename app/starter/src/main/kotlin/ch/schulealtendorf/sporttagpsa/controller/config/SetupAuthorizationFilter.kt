@@ -37,11 +37,11 @@
 package ch.schulealtendorf.sporttagpsa.controller.config
 
 import ch.schulealtendorf.sporttagpsa.business.setup.SetupManager
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest
-import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest
+import org.springframework.web.filter.OncePerRequestFilter
 
 /**
  * Request filter to redirect, deny or allow the request to the setup page.
@@ -54,7 +54,7 @@ import javax.servlet.http.HttpServletResponse
  * @since 2.0.0
  */
 class SetupAuthorizationFilter(
-        private val setupManager: SetupManager
+    private val setupManager: SetupManager
 ) : OncePerRequestFilter() {
 
     /**
@@ -63,7 +63,11 @@ class SetupAuthorizationFilter(
      * Common static resource locations are always allowed to access.
      * The common static resource locations are defined by {@link PathRequest#toStaticResources#atCommonLocations}.
      */
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
 
         if (request.servletPath == "/setup" && setupManager.isInitialized.not()) {
             filterChain.doFilter(request, response)

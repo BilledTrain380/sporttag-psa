@@ -41,10 +41,10 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
  * @since 2.1.0
  */
 data class DisciplineRankingDataSet(
-        val rank: Int,
-        val prename: String,
-        val surname: String,
-        val group: String,
-        val result: String,
-        val points: Int
+    val rank: Int,
+    val prename: String,
+    val surname: String,
+    val group: String,
+    val result: String,
+    val points: Int
 )

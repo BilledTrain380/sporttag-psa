@@ -43,16 +43,16 @@ package ch.schulealtendorf.psa.dto
  * @since 2.0.0
  */
 data class ParticipantDto @JvmOverloads constructor(
-        val id: Int,
-        val surname: String,
-        val prename: String,
-        val gender: GenderDto,
-        val birthday: BirthdayDto,
-        val absent: Boolean,
-        val address: String,
-        val town: TownDto,
-        val group: GroupDto,
-        val sport: SportDto? = null
+    val id: Int,
+    val surname: String,
+    val prename: String,
+    val gender: GenderDto,
+    val birthday: BirthdayDto,
+    val absent: Boolean,
+    val address: String,
+    val town: TownDto,
+    val group: GroupDto,
+    val sport: SportDto? = null
 ) {
     companion object
 }

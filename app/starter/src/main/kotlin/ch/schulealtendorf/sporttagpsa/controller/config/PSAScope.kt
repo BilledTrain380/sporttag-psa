@@ -41,7 +41,7 @@ package ch.schulealtendorf.sporttagpsa.controller.config
  * @since 0.0.1
  */
 enum class PSAScope(
-        val value: String
+    val value: String
 ) {
     USER("user"),
     GROUP_READ("group_read"),

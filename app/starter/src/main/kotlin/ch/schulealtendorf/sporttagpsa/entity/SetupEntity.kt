@@ -49,16 +49,16 @@ const val DEFAULT_SETUP: String = "default"
 @Table(name = "SETUP")
 data class SetupEntity(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 10)
-        var name: String = DEFAULT_SETUP,
+    @Id
+    @NotNull
+    @Size(min = 1, max = 10)
+    var name: String = DEFAULT_SETUP,
 
-        @NotNull
-        var initialized: Boolean = false,
+    @NotNull
+    var initialized: Boolean = false,
 
-        @NotNull
-        @Size(min = 8, max = 32)
-        @Column(name = "jwt_secret")
-        var jwtSecret: String = ""
+    @NotNull
+    @Size(min = 8, max = 32)
+    @Column(name = "jwt_secret")
+    var jwtSecret: String = ""
 )

@@ -46,6 +46,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipant
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import javax.validation.Valid
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -58,7 +59,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.Valid
 
 /**
  * Rest controller for the participants.
@@ -69,9 +69,9 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/api/rest")
 class ParticipantController(
-        private val participantManager: ParticipantManager,
-        private val participationManager: ParticipationManager,
-        private val groupManager: GroupManager
+    private val participantManager: ParticipantManager,
+    private val participationManager: ParticipationManager,
+    private val groupManager: GroupManager
 ) {
 
     companion object {
@@ -83,27 +83,33 @@ class ParticipantController(
     fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
 
         return participantManager.getParticipants()
-                .filter { (groupName == null) || it.group.name == groupName }
-                .map { json(it) }
+            .filter { (groupName == null) || it.group.name == groupName }
+            .map { json(it) }
     }
 
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PostMapping("/participants")
-    fun createParticipant(@RequestParam("group", required = true) groupName: String, @Valid @RequestBody participant: CreateParticipant) {
+    fun createParticipant(
+        @RequestParam(
+            "group",
+            required = true
+        ) groupName: String,
+        @Valid @RequestBody participant: CreateParticipant
+    ) {
 
         val group = groupManager.getGroup(groupName)
-                .orElseThrow { BadRequestException("Could not find group: name=$groupName") }
+            .orElseThrow { BadRequestException("Could not find group: name=$groupName") }
 
         var newParticipant = ParticipantDto(
-                0,
-                participant.surname,
-                participant.prename,
-                participant.gender,
-                BirthdayDto(participant.birthday),
-                false,
-                participant.address,
-                participant.town,
-                group
+            0,
+            participant.surname,
+            participant.prename,
+            participant.gender,
+            BirthdayDto(participant.birthday),
+            false,
+            participant.address,
+            participant.town,
+            group
         )
 
         newParticipant = participantManager.saveParticipant(newParticipant)
@@ -133,11 +139,11 @@ class ParticipantController(
         var participant = participantManager.getParticipantById(id)
 
         participant = participant
-                .copy(surname = patchParticipant.surname ?: participant.surname)
-                .copy(prename = patchParticipant.prename ?: participant.prename)
-                .copy(gender = patchParticipant.gender ?: participant.gender)
-                .copy(birthday = patchParticipant.birthday.toBirthday() ?: participant.birthday)
-                .copy(address = patchParticipant.address ?: participant.address)
+            .copy(surname = patchParticipant.surname ?: participant.surname)
+            .copy(prename = patchParticipant.prename ?: participant.prename)
+            .copy(gender = patchParticipant.gender ?: participant.gender)
+            .copy(birthday = patchParticipant.birthday.toBirthday() ?: participant.birthday)
+            .copy(address = patchParticipant.address ?: participant.address)
 
         participant = participantManager.saveParticipant(participant)
 
@@ -155,7 +161,7 @@ class ParticipantController(
         var participant = participantManager.getParticipantById(id)
 
         participant = participant
-                .copy(town = patchParticipant.town ?: participant.town)
+            .copy(town = patchParticipant.town ?: participant.town)
 
         participant = participantManager.saveParticipant(participant)
 
@@ -185,7 +191,7 @@ class ParticipantController(
 
     private fun ParticipantManager.getParticipantById(id: Int): ParticipantDto {
         return getParticipant(id)
-                .orElseThrow { NotFoundException("Could not found participant: id=$id") }
+            .orElseThrow { NotFoundException("Could not found participant: id=$id") }
     }
 
     private fun Long?.toBirthday() = if (this == null) null else BirthdayDto(this)

@@ -54,19 +54,19 @@ class SkippingRuleSet : RuleSet<FormulaModel, Int>() {
     init {
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { (1 * ((it - 0) pow 1.245)).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int = { (1 * ((it - 0) pow 1.245)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
-                    override val formula: (Double) -> Int = { (1.4 * ((it - 0) pow 1.18)).toInt() }
+            object : FormulaRule() {
+                override val formula: (Double) -> Int = { (1.4 * ((it - 0) pow 1.18)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
+            }
         )
     }
 }

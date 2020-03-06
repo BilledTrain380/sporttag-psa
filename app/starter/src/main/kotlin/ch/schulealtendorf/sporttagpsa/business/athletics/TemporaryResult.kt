@@ -38,7 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.DisciplineDto
 import ch.schulealtendorf.psa.dto.GenderDto
-import java.util.*
+import java.util.Optional
 
 /**
  * Data class representing a result which has no
@@ -48,9 +48,9 @@ import java.util.*
  * @since 2.0.0
  */
 data class TemporaryResult @JvmOverloads constructor(
-        val id: Int,
-        val gender: GenderDto,
-        val value: Long,
-        val discipline: DisciplineDto,
-        val distance: Optional<String> = Optional.empty()
+    val id: Int,
+    val gender: GenderDto,
+    val value: Long,
+    val discipline: DisciplineDto,
+    val distance: Optional<String> = Optional.empty()
 )

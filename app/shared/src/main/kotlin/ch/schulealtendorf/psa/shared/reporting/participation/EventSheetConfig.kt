@@ -47,7 +47,7 @@ import ch.schulealtendorf.psa.dto.GroupDto
  * @since 2.1.0
  */
 data class EventSheetConfig(
-        val discipline: DisciplineDto,
-        val gender: GenderDto,
-        val group: GroupDto
+    val discipline: DisciplineDto,
+    val gender: GenderDto,
+    val group: GroupDto
 )

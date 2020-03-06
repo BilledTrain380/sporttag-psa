@@ -42,11 +42,11 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -54,26 +54,27 @@ import java.time.Year
  */
 @Component
 class JasperTotalRankingApi(
-        private val reportManager: ReportManager,
-        private val filesystem: FileSystem
+    private val reportManager: ReportManager,
+    private val filesystem: FileSystem
 ) : TotalRankingApi {
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
 
         val competitors = data
-                .filter { it.gender == config.gender }
-                .filter { it.birthday.year == config.year }
-                .filterNot { it.absent }
+            .filter { it.gender == config.gender }
+            .filter { it.birthday.year == config.year }
+            .filterNot { it.absent }
 
         val rankedCompetitors = RankingFactory.totalRankingOf(competitors)
 
         val parameters: Map<String, Any> = hashMapOf(
-                "age" to Year.now().value - config.year.value,
-                "gender" to config.gender.text,
-                "year" to config.year.value,
-                "ballzielWurfDistance" to config.targetThrowingDistance,
-                "korbeinwurfDistance" to config.ballThrowingDistance,
-                "competitors" to JRBeanCollectionDataSource(rankedCompetitors))
+            "age" to Year.now().value - config.year.value,
+            "gender" to config.gender.text,
+            "year" to config.year.value,
+            "ballzielWurfDistance" to config.targetThrowingDistance,
+            "korbeinwurfDistance" to config.ballThrowingDistance,
+            "competitors" to JRBeanCollectionDataSource(rankedCompetitors)
+        )
 
         val template = object : Template {
             override val source: InputStream

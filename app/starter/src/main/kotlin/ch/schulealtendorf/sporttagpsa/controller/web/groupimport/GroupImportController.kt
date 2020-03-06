@@ -56,8 +56,8 @@ import org.springframework.web.multipart.MultipartFile
 @Controller
 @RequestMapping("/api/web")
 class GroupImportController(
-        private val fileParser: GroupFileParser,
-        private val groupManager: GroupManager
+    private val fileParser: GroupFileParser,
+    private val groupManager: GroupManager
 ) {
 
     @PreAuthorize("#oauth2.hasScope('group_write')")
@@ -70,7 +70,6 @@ class GroupImportController(
             val participants = fileParser.parseCSV(file)
 
             participants.forEach(groupManager::import)
-
         } catch (exception: CSVParsingException) {
             // we increment the line, so its not zero based line number for the user
             throw BadRequestException("${exception.message} (at line ${exception.line + 1}:${exception.column})")

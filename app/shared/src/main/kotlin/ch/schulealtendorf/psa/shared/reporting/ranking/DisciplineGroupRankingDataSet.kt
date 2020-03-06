@@ -41,15 +41,15 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
  * @since 2.1.0
  */
 data class DisciplineGroupRankingDataSet(
-        val rank: Int,
-        val prename: String,
-        val surname: String,
-        val group: String,
-        val total: Int,
-        val schnelllaufResult: String,
-        val schnelllaufPoints: Int,
-        val weitsprungResult: String,
-        val weitsprungPoints: Int,
-        val ballwurfResult: String,
-        val ballwurfPoints: Int
+    val rank: Int,
+    val prename: String,
+    val surname: String,
+    val group: String,
+    val total: Int,
+    val schnelllaufResult: String,
+    val schnelllaufPoints: Int,
+    val weitsprungResult: String,
+    val weitsprungPoints: Int,
+    val ballwurfResult: String,
+    val ballwurfPoints: Int
 )

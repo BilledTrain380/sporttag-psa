@@ -40,8 +40,8 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.participation.StartListApi
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -49,8 +49,8 @@ import java.io.File
  */
 @Component
 class StartlistReporterImpl(
-        private val competitorRepository: CompetitorRepository,
-        private val startListApi: StartListApi
+    private val competitorRepository: CompetitorRepository,
+    private val startListApi: StartListApi
 ) : StartlistReporter {
     override fun generateReport(data: Void): Set<File> {
         return setOf(generateReport())

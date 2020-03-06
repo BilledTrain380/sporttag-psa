@@ -50,25 +50,26 @@ import org.springframework.stereotype.Component
  */
 @Component
 class RuleBookResultCalculator(
-        private val resultRuleBook: ResultRuleBook
+    private val resultRuleBook: ResultRuleBook
 ) : ResultCalculator {
 
     override fun calculate(result: TemporaryResult): ResultDto {
 
         val formulaModel = FormulaModel(
-                result.discipline.name,
-                result.distance.orElseGet { null },
-                result.value.toDouble() / result.discipline.unit.factor,
-                (result.gender == GenderDto.MALE))
+            result.discipline.name,
+            result.distance.orElseGet { null },
+            result.value.toDouble() / result.discipline.unit.factor,
+            (result.gender == GenderDto.MALE)
+        )
 
         val points = resultRuleBook.calc(formulaModel)
 
         return ResultDto(
-                result.id,
-                result.value,
-                points,
-                result.discipline,
-                result.distance.orElseGet { null }
+            result.id,
+            result.value,
+            points,
+            result.discipline,
+            result.distance.orElseGet { null }
         )
     }
 }

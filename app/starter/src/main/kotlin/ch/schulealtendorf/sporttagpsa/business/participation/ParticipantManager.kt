@@ -37,7 +37,8 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.psa.dto.ParticipantDto
-import java.util.*
+import java.util.NoSuchElementException
+import java.util.Optional
 
 /**
  * A manager for the participants of PSA.

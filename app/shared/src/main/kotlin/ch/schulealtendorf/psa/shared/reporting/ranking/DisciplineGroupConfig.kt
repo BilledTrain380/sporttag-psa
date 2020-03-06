@@ -44,6 +44,6 @@ import java.time.Year
  * @since 2.1.0
  */
 data class DisciplineGroupConfig(
-        val gender: GenderDto,
-        val year: Year
+    val gender: GenderDto,
+    val year: Year
 )

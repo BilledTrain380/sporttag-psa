@@ -50,23 +50,23 @@ import kotlin.reflect.KClass
  * @version 1.0.1
  */
 open class BasicRuleBook<T : Any, K : Any>(
-        private val fact: KClass<T>,
-        private val result: KClass<K>
+    private val fact: KClass<T>,
+    private val result: KClass<K>
 ) {
 
     private val ruleBook: RuleBook<K> = RuleBookBuilder.create()
-            .withResultType(result.java)
-            .withDefaultResult(null)
-            .build()
+        .withResultType(result.java)
+        .withDefaultResult(null)
+        .build()
 
     fun addRule(rule: Rule<T, K>) {
 
         val ruleModel: com.deliveredtechnologies.rulebook.model.Rule<T, K> = RuleBuilder.create()
-                .withFactType(fact.java)
-                .withResultType(result.java)
-                .`when` { rule.wheneverMod(it.getValue("input")) }
-                .then { facts, result -> result.value = rule.then(facts.getValue("input")) }
-                .build()
+            .withFactType(fact.java)
+            .withResultType(result.java)
+            .`when` { rule.wheneverMod(it.getValue("input")) }
+            .then { facts, result -> result.value = rule.then(facts.getValue("input")) }
+            .build()
 
         ruleBook.addRule(ruleModel)
     }

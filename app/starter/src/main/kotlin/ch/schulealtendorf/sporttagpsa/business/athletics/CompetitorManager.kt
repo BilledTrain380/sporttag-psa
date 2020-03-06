@@ -38,7 +38,8 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.dto.ResultDto
-import java.util.*
+import java.util.NoSuchElementException
+import java.util.Optional
 
 /**
  * A manager to handle {@link Competitor} data.

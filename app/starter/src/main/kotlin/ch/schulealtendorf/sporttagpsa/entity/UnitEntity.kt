@@ -50,11 +50,11 @@ import javax.validation.constraints.Size
 @Table(name = "UNIT")
 data class UnitEntity(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 45)
-        var name: String = "",
+    @Id
+    @NotNull
+    @Size(min = 1, max = 45)
+    var name: String = "",
 
-        @NotNull
-        var factor: Int = 1
+    @NotNull
+    var factor: Int = 1
 )

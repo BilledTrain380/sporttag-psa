@@ -54,13 +54,13 @@ import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import java.util.Optional
+import kotlin.test.assertEquals
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import java.util.*
-import kotlin.test.assertEquals
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -87,15 +87,19 @@ object ParticipantControllerSpec : Spek({
         val g2a = GroupDto("2a", CoachDto(1, "Müller"))
         val g3a = GroupDto("3a", CoachDto(2, "Meyer"))
 
-        val mmuster = ParticipantDto(1, "Muster", "Max", GenderDto.MALE,
-                BirthdayDto(0), false, "",
-                TownDto("", ""),
-                g2a)
+        val mmuster = ParticipantDto(
+            1, "Muster", "Max", GenderDto.MALE,
+            BirthdayDto(0), false, "",
+            TownDto("", ""),
+            g2a
+        )
 
-        val wwirbelwind = ParticipantDto(2, "Wirbelwind", "Willi", GenderDto.MALE,
-                BirthdayDto(0), false, "",
-                TownDto("", ""),
-                g3a)
+        val wwirbelwind = ParticipantDto(
+            2, "Wirbelwind", "Willi", GenderDto.MALE,
+            BirthdayDto(0), false, "",
+            TownDto("", ""),
+            g3a
+        )
 
         context("participant list request") {
 
@@ -103,9 +107,7 @@ object ParticipantControllerSpec : Spek({
 
                 whenever(mockParticipantManager.getParticipants()).thenReturn(listOf(mmuster, wwirbelwind))
 
-
                 val result = controller.getParticipants(null)
-
 
                 it("should return all participants") {
                     assertEquals(listOf(json(mmuster), json(wwirbelwind)), result)
@@ -117,9 +119,7 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockGroupManager.getGroup("2a")).thenReturn(Optional.of(g2a))
                 whenever(mockParticipantManager.getParticipants()).thenReturn(listOf(mmuster))
 
-
                 val result = controller.getParticipants("2a")
-
 
                 it("should return only participants related to the group") {
                     assertEquals(listOf(json(mmuster)), result)
@@ -135,10 +135,16 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
                 whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.OPEN)
 
-
-                val newParticipant = CreateParticipant(mmuster.surname, mmuster.prename, mmuster.gender, mmuster.birthday.milliseconds, mmuster.address, mmuster.town, SportDto("athletics"))
+                val newParticipant = CreateParticipant(
+                    mmuster.surname,
+                    mmuster.prename,
+                    mmuster.gender,
+                    mmuster.birthday.milliseconds,
+                    mmuster.address,
+                    mmuster.town,
+                    SportDto("athletics")
+                )
                 controller.createParticipant("2a", newParticipant)
-
 
                 it("should create the new participant") {
                     verify(mockParticipantManager, times(1)).saveParticipant(mmuster.copy(id = 0))
@@ -155,10 +161,16 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
                 whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.CLOSE)
 
-
-                val newParticipant = CreateParticipant(mmuster.surname, mmuster.prename, mmuster.gender, mmuster.birthday.milliseconds, mmuster.address, mmuster.town, SportDto("athletics"))
+                val newParticipant = CreateParticipant(
+                    mmuster.surname,
+                    mmuster.prename,
+                    mmuster.gender,
+                    mmuster.birthday.milliseconds,
+                    mmuster.address,
+                    mmuster.town,
+                    SportDto("athletics")
+                )
                 controller.createParticipant("2a", newParticipant)
-
 
                 it("should create the new participant") {
                     verify(mockParticipantManager, times(1)).saveParticipant(mmuster.copy(id = 0))
@@ -177,10 +189,8 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.getParticipant(1)).thenReturn(Optional.of(mmuster))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
 
-
                 val updateParticipant = UpdateParticipant(prename = "Hans")
                 controller.patchParticipant(1, updateParticipant)
-
 
                 it("should only update non null values") {
                     verify(mockParticipantManager, times(1)).saveParticipant(mmuster.copy(prename = "Hans"))
@@ -192,10 +202,8 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.getParticipant(1)).thenReturn(Optional.of(mmuster))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
 
-
                 val updateParticipant = UpdateParticipant(absent = true)
                 controller.patchParticipant(1, updateParticipant)
-
 
                 it("should mark the participant as absent") {
                     verify(mockParticipationManager, times(1)).markAsAbsent(mmuster)
@@ -207,10 +215,8 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.getParticipant(1)).thenReturn(Optional.of(mmuster))
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
 
-
                 val updateParticipant = UpdateParticipant(absent = false)
                 controller.patchParticipant(1, updateParticipant)
-
 
                 it("should mark the participant as present") {
                     verify(mockParticipationManager, times(1)).markAsPresent(mmuster)
@@ -226,12 +232,10 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
                 whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.OPEN)
 
-
                 val town = TownDto("8000", "Zürich")
                 val sport = SportDto("athletics")
                 val updateParticipant = UpdateParticipant(town = town, sport = sport)
                 controller.putParticipantTown(1, updateParticipant)
-
 
                 it("should update the town") {
                     verify(mockParticipantManager, times(1)).saveParticipant(mmuster.copy(town = town))
@@ -248,11 +252,9 @@ object ParticipantControllerSpec : Spek({
                 whenever(mockParticipantManager.saveParticipant(any())).thenReturn(mmuster)
                 whenever(mockParticipationManager.getParticipationStatus()).thenReturn(ParticipationStatusDto.CLOSE)
 
-
                 val sport = SportDto("athletics")
                 val updateParticipant = UpdateParticipant(sport = sport)
                 controller.putParticipantTown(1, updateParticipant)
-
 
                 it("should re-participate the participant on the given sport") {
                     verify(mockParticipationManager, times(1)).reParticipate(mmuster, sport)

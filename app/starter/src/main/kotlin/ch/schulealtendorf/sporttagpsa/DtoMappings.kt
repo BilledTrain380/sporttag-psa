@@ -81,16 +81,17 @@ infix fun SportDto.Companion.from(entity: SportEntity?): SportDto? {
 
 infix fun ParticipantDto.Companion.from(entity: ParticipantEntity): ParticipantDto {
     return ParticipantDto(
-            entity.id ?: 0,
-            entity.surname,
-            entity.prename,
-            entity.gender,
-            BirthdayDto(entity.birthday),
-            entity.absent,
-            entity.address,
-            TownDto from entity.town,
-            GroupDto from entity.group,
-            SportDto from entity.sport)
+        entity.id ?: 0,
+        entity.surname,
+        entity.prename,
+        entity.gender,
+        BirthdayDto(entity.birthday),
+        entity.absent,
+        entity.address,
+        TownDto from entity.town,
+        GroupDto from entity.group,
+        SportDto from entity.sport
+    )
 }
 
 infix fun UnitDto.Companion.from(entity: UnitEntity): UnitDto {
@@ -103,24 +104,25 @@ infix fun DisciplineDto.Companion.from(entity: DisciplineEntity): DisciplineDto 
 
 infix fun ResultDto.Companion.from(entity: ResultEntity): ResultDto {
     return ResultDto(
-            entity.id ?: 0,
-            entity.value,
-            entity.points,
-            DisciplineDto from entity.discipline,
-            entity.distance)
+        entity.id ?: 0,
+        entity.value,
+        entity.points,
+        DisciplineDto from entity.discipline,
+        entity.distance
+    )
 }
 
 infix fun CompetitorDto.Companion.from(entity: CompetitorEntity): CompetitorDto {
     return CompetitorDto(
-            entity.participant.id ?: 0,
-            entity.startnumber!!,
-            entity.participant.surname,
-            entity.participant.prename,
-            entity.participant.gender,
-            BirthdayDto(entity.participant.birthday),
-            entity.participant.absent,
-            entity.participant.address,
-            TownDto from entity.participant.town,
-            GroupDto from entity.participant.group,
-            entity.results.map { ResultDto from it })
+        entity.participant.id ?: 0,
+        entity.startnumber!!,
+        entity.participant.surname,
+        entity.participant.prename,
+        entity.participant.gender,
+        BirthdayDto(entity.participant.birthday),
+        entity.participant.absent,
+        entity.participant.address,
+        TownDto from entity.participant.town,
+        GroupDto from entity.participant.group,
+        entity.results.map { ResultDto from it })
 }

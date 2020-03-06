@@ -37,13 +37,13 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
 data class CategoryModel(
-        val age: Int,
-        val discipline: String
+    val age: Int,
+    val discipline: String
 )
 
 data class FormulaModel(
-        val discipline: String,
-        val distance: String?,
-        val result: Double,
-        val gender: Boolean
+    val discipline: String,
+    val distance: String?,
+    val result: Double,
+    val gender: Boolean
 )

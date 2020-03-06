@@ -21,6 +21,7 @@ plugins {
     id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
     id "org.jetbrains.kotlin.plugin.spring" version "1.3.61" apply false
     id "org.jetbrains.kotlin.jvm" version "1.3.61" apply false
+    id "org.jlleitschuh.gradle.ktlint" version "9.2.1" apply false
 }
 
 project(":app:starter") {
@@ -43,6 +44,7 @@ configure([
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.junit.platform.gradle.plugin'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

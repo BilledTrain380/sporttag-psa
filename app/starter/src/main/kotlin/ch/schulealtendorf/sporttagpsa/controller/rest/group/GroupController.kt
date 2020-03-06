@@ -56,40 +56,40 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/rest")
 class GroupController(
-        private val groupManager: GroupManager
+    private val groupManager: GroupManager
 ) {
 
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroup(@PathVariable("group_name") name: String): GroupDto {
         return groupManager.getGroup(name)
-                .orElseThrow { NotFoundException("Could not find group: name=$name") }
+            .orElseThrow { NotFoundException("Could not find group: name=$name") }
     }
 
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/groups", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getGroups(
-            @RequestParam("competitive", required = false) competitive: Boolean?,
-            @RequestParam("pendingParticipation", required = false) pendingParticipation: Boolean?
+        @RequestParam("competitive", required = false) competitive: Boolean?,
+        @RequestParam("pendingParticipation", required = false) pendingParticipation: Boolean?
     ): List<GroupDto> {
 
         return groupManager.getGroups()
-                .filter(competitive, pendingParticipation)
+            .filter(competitive, pendingParticipation)
     }
 
     private fun Iterable<GroupDto>.filter(competitive: Boolean?, pendingParticipation: Boolean?): List<GroupDto> {
 
         return this
-                .filter {
-                    (competitive == null) ||
-                            competitive && it.isCompetitive() ||
-                            !competitive && !it.isCompetitive()
-                }
-                .filter {
-                    (pendingParticipation == null) ||
-                            pendingParticipation && it.hasPendingParticipation() ||
-                            !pendingParticipation && !it.hasPendingParticipation()
-                }
+            .filter {
+                (competitive == null) ||
+                    competitive && it.isCompetitive() ||
+                    !competitive && !it.isCompetitive()
+            }
+            .filter {
+                (pendingParticipation == null) ||
+                    pendingParticipation && it.hasPendingParticipation() ||
+                    !pendingParticipation && !it.hasPendingParticipation()
+            }
     }
 
     private fun GroupDto.isCompetitive() = groupManager.isCompetitive(this)

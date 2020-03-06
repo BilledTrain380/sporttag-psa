@@ -45,11 +45,11 @@ package ch.schulealtendorf.psa.dto
  * @since 2.0.0
  */
 data class UserDto @JvmOverloads constructor(
-        val id: Int,
-        val username: String,
-        val authorities: List<String>,
-        val enabled: Boolean = true,
-        val password: String = "protected"
+    val id: Int,
+    val username: String,
+    val authorities: List<String>,
+    val enabled: Boolean = true,
+    val password: String = "protected"
 ) {
     companion object
 }
