@@ -39,5 +39,5 @@ package ch.schulealtendorf.sporttagpsa.controller.rest.competitor
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
 
 data class ResultWrapper(
-        val results: List<RestResult>
+    val results: List<RestResult>
 )

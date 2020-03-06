@@ -52,19 +52,19 @@ import javax.validation.constraints.Size
 @Table(name = "DISCIPLINE")
 data class DisciplineEntity(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 45)
-        var name: String = "",
+    @Id
+    @NotNull
+    @Size(min = 1, max = 45)
+    var name: String = "",
 
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_UNIT_name", referencedColumnName = "name")
-        var unit: UnitEntity = UnitEntity(),
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_UNIT_name", referencedColumnName = "name")
+    var unit: UnitEntity = UnitEntity(),
 
-        @NotNull
-        var hasTrials: Boolean = false,
+    @NotNull
+    var hasTrials: Boolean = false,
 
-        @NotNull
-        var hasDistance: Boolean = false
+    @NotNull
+    var hasDistance: Boolean = false
 )

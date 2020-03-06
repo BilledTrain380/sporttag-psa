@@ -45,20 +45,20 @@ import ch.schulealtendorf.psa.dto.ParticipantDto
  * @since 2.1.0
  */
 internal data class ParticipantDataSet(
-        val prename: String,
-        val surname: String,
-        val gender: String,
-        val group: String,
-        val coach: String
+    val prename: String,
+    val surname: String,
+    val gender: String,
+    val group: String,
+    val coach: String
 ) {
     companion object {
         infix fun from(participant: ParticipantDto): ParticipantDataSet {
             return ParticipantDataSet(
-                    participant.prename,
-                    participant.surname,
-                    participant.gender.text,
-                    participant.group.name,
-                    participant.group.coach.name
+                participant.prename,
+                participant.surname,
+                participant.gender.text,
+                participant.group.name,
+                participant.group.coach.name
             )
         }
     }

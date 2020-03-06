@@ -43,29 +43,29 @@ import ch.schulealtendorf.psa.dto.CompetitorDto
  * @since 2.1.0
  */
 data class EventSheetDataSet @JvmOverloads constructor(
-        val startnumber: Int,
-        val prename: String,
-        val surname: String,
-        val group: String,
-        val distance: String = ""
+    val startnumber: Int,
+    val prename: String,
+    val surname: String,
+    val group: String,
+    val distance: String = ""
 ) {
     companion object {
         infix fun from(competitor: CompetitorDto): EventSheetDataSet {
             return EventSheetDataSet(
-                    competitor.startNumber,
-                    competitor.prename,
-                    competitor.surname,
-                    competitor.group.name
+                competitor.startNumber,
+                competitor.prename,
+                competitor.surname,
+                competitor.group.name
             )
         }
 
         fun from(competitor: CompetitorDto, distance: String): EventSheetDataSet {
             return EventSheetDataSet(
-                    competitor.startNumber,
-                    competitor.prename,
-                    competitor.surname,
-                    competitor.group.name,
-                    distance
+                competitor.startNumber,
+                competitor.prename,
+                competitor.surname,
+                competitor.group.name,
+                distance
             )
         }
     }

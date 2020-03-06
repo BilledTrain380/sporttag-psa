@@ -61,12 +61,12 @@ import org.springframework.stereotype.Component
  */
 @Component
 class ParticipationManagerImpl(
-        private val participantRepository: ParticipantRepository,
-        private val participationRepository: ParticipationRepository,
-        private val competitorRepository: CompetitorRepository,
-        private val categoryRuleBook: CategoryRuleBook,
-        private val disciplineRepository: DisciplineRepository,
-        private val databaseReset: DatabaseReset
+    private val participantRepository: ParticipantRepository,
+    private val participationRepository: ParticipationRepository,
+    private val competitorRepository: CompetitorRepository,
+    private val categoryRuleBook: CategoryRuleBook,
+    private val disciplineRepository: DisciplineRepository,
+    private val databaseReset: DatabaseReset
 ) : ParticipationManager {
 
     /**
@@ -79,7 +79,7 @@ class ParticipationManagerImpl(
     override fun markAsAbsent(participant: ParticipantDto) {
 
         val participantEntity = participantRepository.findById(participant.id)
-                .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
+            .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
 
         participantEntity.absent = true
 
@@ -96,7 +96,7 @@ class ParticipationManagerImpl(
     override fun markAsPresent(participant: ParticipantDto) {
 
         val participantEntity = participantRepository.findById(participant.id)
-                .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
+            .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
 
         participantEntity.absent = false
 
@@ -122,7 +122,7 @@ class ParticipationManagerImpl(
         }
 
         val participantEntity = participantRepository.findById(participant.id)
-                .orElseThrow { NoSuchElementException("Could not find participant: id=${participant.id}") }
+            .orElseThrow { NoSuchElementException("Could not find participant: id=${participant.id}") }
 
         participantEntity.sport = SportEntity(sport.name)
 
@@ -158,7 +158,7 @@ class ParticipationManagerImpl(
         }
 
         val participantEntity = participantRepository.findById(participant.id)
-                .orElseThrow { NoSuchElementException("Could not find participant: id=${participant.id}") }
+            .orElseThrow { NoSuchElementException("Could not find participant: id=${participant.id}") }
 
         // only perform further if any changes are made
         if (participantEntity.sport != null && participantEntity.sport?.name == sport.name) {
@@ -224,7 +224,7 @@ class ParticipationManagerImpl(
     override fun getParticipationStatus(): ParticipationStatusDto {
 
         val participation = participationRepository.findById(MAIN_PARTICIPATION)
-                .orElseThrow { IllegalStateException("No participation status could be found. There MUST be a status. Check your database.") }
+            .orElseThrow { IllegalStateException("No participation status could be found. There MUST be a status. Check your database.") }
 
         return ParticipationStatusDto.valueOf(participation.status)
     }
@@ -241,9 +241,9 @@ class ParticipationManagerImpl(
 
         this.results = disciplines.map {
             ResultEntity(
-                    distance = categoryRuleBook.getDistance(CategoryModel(this.age(), it.name)),
-                    discipline = it,
-                    value = 1.toLong() * it.unit.factor
+                distance = categoryRuleBook.getDistance(CategoryModel(this.age(), it.name)),
+                discipline = it,
+                value = 1.toLong() * it.unit.factor
             ).also {
                 it.competitor = this
             }

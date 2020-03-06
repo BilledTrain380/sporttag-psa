@@ -43,9 +43,8 @@ import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import java.util.Optional
 import org.springframework.stereotype.Component
-import java.util.*
-import kotlin.NoSuchElementException
 
 /**
  * Default implementation of a {@link ParticipantManager} which uses the repository classes.
@@ -55,25 +54,26 @@ import kotlin.NoSuchElementException
  */
 @Component
 class ParticipantManagerImpl(
-        private val participantRepository: ParticipantRepository,
-        private val townRepository: TownRepository,
-        private val groupRepository: GroupRepository
+    private val participantRepository: ParticipantRepository,
+    private val townRepository: TownRepository,
+    private val groupRepository: GroupRepository
 ) : ParticipantManager {
 
     override fun getParticipants() = participantRepository.findAll().map { ParticipantDto from it }
 
-    override fun getParticipant(id: Int): Optional<ParticipantDto> = participantRepository.findById(id).map { ParticipantDto from it }
+    override fun getParticipant(id: Int): Optional<ParticipantDto> =
+        participantRepository.findById(id).map { ParticipantDto from it }
 
     override fun saveParticipant(participant: ParticipantDto): ParticipantDto {
 
         val participantEntity: ParticipantEntity = participantRepository.findById(participant.id)
-                .orElseGet { ParticipantEntity() }
+            .orElseGet { ParticipantEntity() }
 
         val townEntity = townRepository.findByZipAndName(participant.town.zip, participant.town.name)
-                .orElseGet { TownEntity(zip = participant.town.zip, name = participant.town.name) }
+            .orElseGet { TownEntity(zip = participant.town.zip, name = participant.town.name) }
 
         val groupEntity = groupRepository.findById(participant.group.name)
-                .orElseThrow { NoSuchElementException("Participant group does not exist: name=${participant.group.name}") }
+            .orElseThrow { NoSuchElementException("Participant group does not exist: name=${participant.group.name}") }
 
         participantEntity.apply {
             surname = participant.surname

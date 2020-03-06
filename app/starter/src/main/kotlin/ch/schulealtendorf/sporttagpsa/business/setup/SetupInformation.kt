@@ -41,5 +41,5 @@ package ch.schulealtendorf.sporttagpsa.business.setup
  * @since 0.0.1
  */
 data class SetupInformation(
-        val adminPassword: String
+    val adminPassword: String
 )

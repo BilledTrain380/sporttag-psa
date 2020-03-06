@@ -54,8 +54,8 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 @RequestMapping("/api/web")
 class StartlistController(
-        private val startlistReporter: StartlistReporter,
-        private val fileSystem: FileSystem
+    private val startlistReporter: StartlistReporter,
+    private val fileSystem: FileSystem
 ) {
 
     @PreAuthorize("#oauth2.hasScope('participant_list')")
@@ -63,7 +63,7 @@ class StartlistController(
     @ResponseBody
     fun createStartlist(): FileQualifier {
 
-        val file = startlistReporter.generateReport();
+        val file = startlistReporter.generateReport()
 
         return fileQualifierOf(file.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }

@@ -49,10 +49,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 class DatabaseResetImpl(
-        private val competitorRepository: ParticipantRepository,
-        private val starterRepository: ParticipantRepository,
-        private val clazzRepository: GroupRepository,
-        private val participationRepository: ParticipationRepository
+    private val competitorRepository: ParticipantRepository,
+    private val starterRepository: ParticipantRepository,
+    private val clazzRepository: GroupRepository,
+    private val participationRepository: ParticipationRepository
 ) : DatabaseReset {
 
     /**
@@ -68,7 +68,7 @@ class DatabaseResetImpl(
         competitorRepository.deleteAll()
         clazzRepository.deleteAll()
         participationRepository.save(
-                participationRepository.findAll().first()
+            participationRepository.findAll().first()
         )
     }
 }

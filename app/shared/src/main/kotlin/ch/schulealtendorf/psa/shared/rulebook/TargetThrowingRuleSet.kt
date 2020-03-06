@@ -54,39 +54,39 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
     init {
 
         addRule(
-                object : FormulaRule() {
+            object : FormulaRule() {
 
-                    override val formula: (Double) -> Int = { (4.4 * ((it - 0) pow 1.27)).toInt() }
+                override val formula: (Double) -> Int = { (4.4 * ((it - 0) pow 1.27)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "4m" }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "4m" }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
+            object : FormulaRule() {
 
-                    override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.27)).toInt() }
+                override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.27)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "5m" }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "5m" }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
+            object : FormulaRule() {
 
-                    override val formula: (Double) -> Int = { (4.3 * ((it - 0) pow 1.25)).toInt() }
+                override val formula: (Double) -> Int = { (4.3 * ((it - 0) pow 1.25)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "4m" }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "4m" }
+            }
         )
 
         addRule(
-                object : FormulaRule() {
+            object : FormulaRule() {
 
-                    override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.25)).toInt() }
+                override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.25)).toInt() }
 
-                    override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "5m" }
-                }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "5m" }
+            }
         )
     }
 }

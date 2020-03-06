@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller.web.eventsheets
 import ch.schulealtendorf.psa.dto.GenderDto
 
 data class EventSheetData(
-        val discipline: String,
-        val group: String,
-        val gender: GenderDto
+    val discipline: String,
+    val group: String,
+    val gender: GenderDto
 )

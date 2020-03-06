@@ -42,8 +42,8 @@ import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingApi
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingConfig
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -51,8 +51,8 @@ import java.io.File
  */
 @Component
 class TotalRankingReporterImpl(
-        private val competitorRepository: CompetitorRepository,
-        private val totalRankingApi: TotalRankingApi
+    private val competitorRepository: CompetitorRepository,
+    private val totalRankingApi: TotalRankingApi
 ) : TotalRankingReporter {
     override fun generateReport(data: Iterable<GenderDto>): Set<File> {
 
@@ -61,15 +61,18 @@ class TotalRankingReporterImpl(
             data.map { gender ->
 
                 competitorRepository.findByParticipantGender(gender)
-                        .map { CompetitorDto from it }
-                        .groupBy { it.birthday.year }
-                        .map {
-                            totalRankingApi.createPdfReport(it.value, TotalRankingConfig(
-                                    gender,
-                                    it.key,
-                                    it.value.ballThrowingDistance(),
-                                    it.value.targetThrowingDistance()))
-                        }
+                    .map { CompetitorDto from it }
+                    .groupBy { it.birthday.year }
+                    .map {
+                        totalRankingApi.createPdfReport(
+                            it.value, TotalRankingConfig(
+                                gender,
+                                it.key,
+                                it.value.ballThrowingDistance(),
+                                it.value.targetThrowingDistance()
+                            )
+                        )
+                    }
             }.flatten().toSet()
         } catch (exception: Exception) {
             throw ReportGenerationException("Could not generate total ranking", exception)

@@ -55,16 +55,16 @@ import javax.validation.constraints.NotNull
 @Table(name = "COMPETITOR")
 data class CompetitorEntity(
 
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var startnumber: Int? = null,
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var startnumber: Int? = null,
 
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_PARTICIPANT_id", referencedColumnName = "id")
-        var participant: ParticipantEntity = ParticipantEntity(),
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_PARTICIPANT_id", referencedColumnName = "id")
+    var participant: ParticipantEntity = ParticipantEntity(),
 
-        @OneToMany(cascade = [CascadeType.ALL], mappedBy = "competitor")
-        var results: Set<ResultEntity> = setOf()
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "competitor")
+    var results: Set<ResultEntity> = setOf()
 )

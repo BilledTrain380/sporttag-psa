@@ -58,43 +58,43 @@ import javax.validation.constraints.Size
 @Table(name = "PARTICIPANT")
 data class ParticipantEntity(
 
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
 
-        @NotNull
-        @Size(min = 1, max = 30)
-        var surname: String = "",
+    @NotNull
+    @Size(min = 1, max = 30)
+    var surname: String = "",
 
-        @NotNull
-        @Size(min = 1, max = 30)
-        var prename: String = "",
+    @NotNull
+    @Size(min = 1, max = 30)
+    var prename: String = "",
 
-        @Enumerated(EnumType.STRING)
-        @NotNull
-        @Size(min = 1, max = 6)
-        var gender: GenderDto = GenderDto.MALE,
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Size(min = 1, max = 6)
+    var gender: GenderDto = GenderDto.MALE,
 
-        @NotNull
-        var birthday: Long = 0,
+    @NotNull
+    var birthday: Long = 0,
 
-        @NotNull
-        var absent: Boolean = false,
+    @NotNull
+    var absent: Boolean = false,
 
-        @NotNull
-        @Size(min = 1, max = 80)
-        var address: String = "",
+    @NotNull
+    @Size(min = 1, max = 80)
+    var address: String = "",
 
-        @ManyToOne(cascade = [CascadeType.PERSIST])
-        @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
-        var town: TownEntity = TownEntity(),
+    @ManyToOne(cascade = [CascadeType.PERSIST])
+    @JoinColumn(name = "FK_TOWN_id", referencedColumnName = "id")
+    var town: TownEntity = TownEntity(),
 
-        @ManyToOne(cascade = [CascadeType.PERSIST])
-        @JoinColumn(name = "FK_GROUP_name", referencedColumnName = "name")
-        var group: GroupEntity = GroupEntity(),
+    @ManyToOne(cascade = [CascadeType.PERSIST])
+    @JoinColumn(name = "FK_GROUP_name", referencedColumnName = "name")
+    var group: GroupEntity = GroupEntity(),
 
-        @ManyToOne
-        @JoinColumn(name = "FK_SPORT_name", referencedColumnName = "name")
-        var sport: SportEntity? = null
+    @ManyToOne
+    @JoinColumn(name = "FK_SPORT_name", referencedColumnName = "name")
+    var sport: SportEntity? = null
 )

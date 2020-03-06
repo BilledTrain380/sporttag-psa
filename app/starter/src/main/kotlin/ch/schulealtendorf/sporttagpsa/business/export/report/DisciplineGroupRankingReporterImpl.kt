@@ -42,8 +42,8 @@ import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineGroupConfig
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineGroupRankingApi
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -51,8 +51,8 @@ import java.io.File
  */
 @Component
 class DisciplineGroupRankingReporterImpl(
-        private val competitorRepository: CompetitorRepository,
-        private val disciplineGroupRankingApi: DisciplineGroupRankingApi
+    private val competitorRepository: CompetitorRepository,
+    private val disciplineGroupRankingApi: DisciplineGroupRankingApi
 ) : DisciplineGroupRankingReporter {
     override fun generateCSV(genders: Iterable<GenderDto>): Set<File> {
 
@@ -77,8 +77,8 @@ class DisciplineGroupRankingReporterImpl(
         return this.map { gender ->
 
             competitorRepository.findByParticipantGender(gender).map { CompetitorDto from it }
-                    .groupBy { it.birthday.year }
-                    .map { createReport(it.value, DisciplineGroupConfig(gender, it.key)) }
+                .groupBy { it.birthday.year }
+                .map { createReport(it.value, DisciplineGroupConfig(gender, it.key)) }
         }.flatten().toSet()
     }
 }

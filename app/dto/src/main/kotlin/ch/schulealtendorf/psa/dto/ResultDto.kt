@@ -43,28 +43,29 @@ package ch.schulealtendorf.psa.dto
  * @since 2.0.0
  */
 data class ResultDto @JvmOverloads constructor(
-        val id: Int,
-        val value: Long,
-        val points: Int,
-        val discipline: DisciplineDto,
-        val distance: String? = null
+    val id: Int,
+    val value: Long,
+    val points: Int,
+    val discipline: DisciplineDto,
+    val distance: String? = null
 ) {
     companion object {
         fun empty(): ResultDto {
             return ResultDto(
-                    0,
-                    0,
-                    0,
-                    DisciplineDto("", UnitDto("", 0), false, false)
+                0,
+                0,
+                0,
+                DisciplineDto("", UnitDto("", 0), false, false)
             )
         }
     }
 
-    val relValue: String get() {
+    val relValue: String
+        get() {
 
-        if (discipline.unit.factor == 1)
-            return value.toString()
+            if (discipline.unit.factor == 1)
+                return value.toString()
 
-        return (value.toDouble() / discipline.unit.factor).toString()
-    }
+            return (value.toDouble() / discipline.unit.factor).toString()
+        }
 }

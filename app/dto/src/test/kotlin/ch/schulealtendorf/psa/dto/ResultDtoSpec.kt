@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.psa.dto
 
+import kotlin.test.assertEquals
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
-import kotlin.test.assertEquals
 
 object ResultDtoSpec : Spek({
 
@@ -51,17 +51,17 @@ object ResultDtoSpec : Spek({
             it("should return an integer as string when the factor is 1") {
 
                 val discipline = DisciplineDto(
-                        "",
-                        UnitDto("", 1),
-                        false,
-                        false
+                    "",
+                    UnitDto("", 1),
+                    false,
+                    false
                 )
 
                 val result = ResultDto(
-                        1,
-                        20,
-                        20,
-                        discipline
+                    1,
+                    20,
+                    20,
+                    discipline
                 )
 
                 assertEquals("20", result.relValue)
@@ -70,17 +70,17 @@ object ResultDtoSpec : Spek({
             it("should return a double as string when factor is not 1") {
 
                 val discipline = DisciplineDto(
-                        "",
-                        UnitDto("", 100),
-                        false,
-                        false
+                    "",
+                    UnitDto("", 100),
+                    false,
+                    false
                 )
 
                 val result = ResultDto(
-                        1,
-                        2045,
-                        20,
-                        discipline
+                    1,
+                    2045,
+                    20,
+                    discipline
                 )
 
                 assertEquals("20.45", result.relValue)

@@ -43,6 +43,6 @@ package ch.schulealtendorf.sporttagpsa.business.user.validation
  * @since 1.0.0
  */
 data class ValidationResult @JvmOverloads constructor(
-        val isValid: Boolean,
-        val messages: List<String> = listOf()
+    val isValid: Boolean,
+    val messages: List<String> = listOf()
 )

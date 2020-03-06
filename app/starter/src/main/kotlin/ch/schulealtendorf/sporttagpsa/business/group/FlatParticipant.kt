@@ -47,13 +47,13 @@ import ch.schulealtendorf.psa.dto.GenderDto
  * @since 1.0.0
  */
 data class FlatParticipant(
-        val surname: String,
-        val prename: String,
-        val gender: GenderDto,
-        val birthday: BirthdayDto,
-        val address: String,
-        val zipCode: String,
-        val town: String,
-        val group: String,
-        val coach: String
+    val surname: String,
+    val prename: String,
+    val gender: GenderDto,
+    val birthday: BirthdayDto,
+    val address: String,
+    val zipCode: String,
+    val town: String,
+    val group: String,
+    val coach: String
 )

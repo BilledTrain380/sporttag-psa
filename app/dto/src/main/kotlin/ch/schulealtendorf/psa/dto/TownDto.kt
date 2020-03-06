@@ -43,8 +43,8 @@ package ch.schulealtendorf.psa.dto
  * @since 2.0.0
  */
 data class TownDto(
-        val zip: String,
-        val name: String
+    val zip: String,
+    val name: String
 ) {
     companion object
 }

@@ -50,24 +50,24 @@ import javax.validation.constraints.Size
 @Table(name = "RESULT")
 data class ResultEntity(
 
-        @Id
-        @NotNull
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
 
-        @Size(max = 5)
-        var distance: String? = null,
+    @Size(max = 5)
+    var distance: String? = null,
 
-        @NotNull
-        var value: Long = 1,
+    @NotNull
+    var value: Long = 1,
 
-        @NotNull
-        var points: Int = 1,
+    @NotNull
+    var points: Int = 1,
 
-        @NotNull
-        @ManyToOne
-        @JoinColumn(name = "fk_DISCIPLINE", referencedColumnName = "name")
-        var discipline: DisciplineEntity = DisciplineEntity()
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_DISCIPLINE", referencedColumnName = "name")
+    var discipline: DisciplineEntity = DisciplineEntity()
 ) {
 
     // We have to exclude this property from the toString, hashcode and equals methods, because circular mapping

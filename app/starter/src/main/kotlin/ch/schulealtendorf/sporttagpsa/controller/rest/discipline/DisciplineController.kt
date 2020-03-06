@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/rest")
 class DisciplineController(
-        private val disciplineManager: DisciplineManager
+    private val disciplineManager: DisciplineManager
 ) {
 
     @PreAuthorize("#oauth2.hasScope('discipline_read')")

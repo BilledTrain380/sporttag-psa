@@ -42,8 +42,8 @@ import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineRankingConfig
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -51,8 +51,8 @@ import java.io.File
  */
 @Component
 class DisciplineRankingReporterImpl(
-        private val competitorRepository: CompetitorRepository,
-        private val disciplineRankingApi: DisciplineRankingApi
+    private val competitorRepository: CompetitorRepository,
+    private val disciplineRankingApi: DisciplineRankingApi
 ) : DisciplineRankingReporter {
     override fun generateReport(data: Iterable<DisciplineExport>): Set<File> {
 
@@ -60,17 +60,19 @@ class DisciplineRankingReporterImpl(
 
             data.map { disciplineExport ->
                 competitorRepository.findByParticipantGender(disciplineExport.gender)
-                        .map { CompetitorDto from it }
-                        .groupBy { it.birthday.year }
-                        .map {
+                    .map { CompetitorDto from it }
+                    .groupBy { it.birthday.year }
+                    .map {
 
-                            disciplineRankingApi.createPdfReport(
-                                    it.value,
-                                    DisciplineRankingConfig(
-                                            disciplineExport.discipline,
-                                            disciplineExport.gender,
-                                            it.key))
-                        }
+                        disciplineRankingApi.createPdfReport(
+                            it.value,
+                            DisciplineRankingConfig(
+                                disciplineExport.discipline,
+                                disciplineExport.gender,
+                                it.key
+                            )
+                        )
+                    }
             }.flatten().toSet()
         } catch (exception: Exception) {
             throw ReportGenerationException("Could not generate discipline ranking", exception)

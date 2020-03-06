@@ -38,6 +38,8 @@ package ch.schulealtendorf.sporttagpsa.controller.web.files
 
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
+import java.io.File
+import java.io.FileInputStream
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -48,8 +50,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import java.io.File
-import java.io.FileInputStream
 
 /**
  * Controller to resolve files from the application dir.
@@ -60,7 +60,7 @@ import java.io.FileInputStream
 @Controller
 @RequestMapping("/api/web/file")
 class FileController(
-        private val fileSystem: FileSystem
+    private val fileSystem: FileSystem
 ) {
 
     @PreAuthorize("#oauth2.hasScope('files')")

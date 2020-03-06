@@ -43,10 +43,10 @@ import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -54,24 +54,25 @@ import java.io.InputStream
  */
 @Component
 class JasperParticipantListApi(
-        private val reportManager: ReportManager,
-        private val filesystem: FileSystem
+    private val reportManager: ReportManager,
+    private val filesystem: FileSystem
 ) : ParticipantListApi {
 
     override fun createPdfReport(data: Collection<ParticipantDto>, config: SportDto): File {
 
         val participants = data
-                .filterNot { it.absent }
-                .filter { it.sport == config }
-                .map { ParticipantDataSet from it }
-                .sortedBy { it.group }
+            .filterNot { it.absent }
+            .filter { it.sport == config }
+            .map { ParticipantDataSet from it }
+            .sortedBy { it.group }
 
         val template = object : Template {
             override val source: InputStream
                 get() = JasperParticipantListApi::class.java.getResourceAsStream("/reporting/jasper-templates/participant-list.jrxml")
             override val parameters = hashMapOf(
-                    "sport" to config.name,
-                    "participants" to JRBeanCollectionDataSource(participants))
+                "sport" to config.name,
+                "participants" to JRBeanCollectionDataSource(participants)
+            )
         }
 
         val reportInputStream = reportManager.exportToPdf(template)

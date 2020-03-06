@@ -36,13 +36,15 @@
 
 package ch.schulealtendorf.psa.dto
 
-import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.time.Year
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.ResourceBundle
+import org.joda.time.DateTime
 
 data class BirthdayDto(
-        val milliseconds: Long
+    val milliseconds: Long
 ) {
 
     private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")

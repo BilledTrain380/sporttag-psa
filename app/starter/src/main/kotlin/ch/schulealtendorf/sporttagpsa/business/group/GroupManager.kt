@@ -38,7 +38,7 @@ package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.psa.dto.CoachDto
 import ch.schulealtendorf.psa.dto.GroupDto
-import java.util.*
+import java.util.Optional
 
 /**
  * Describes a manager for domain classes related to a {@link Group}.

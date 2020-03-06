@@ -41,11 +41,11 @@ import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
-import java.util.*
+import java.util.ResourceBundle
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -53,8 +53,8 @@ import java.util.*
  */
 @Component
 class JasperStartListApi(
-        private val reportManager: ReportManager,
-        private val filesystem: FileSystem
+    private val reportManager: ReportManager,
+    private val filesystem: FileSystem
 ) : StartListApi {
 
     private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
@@ -62,15 +62,16 @@ class JasperStartListApi(
     override fun createReport(data: Collection<CompetitorDto>): File {
 
         val competitors = data
-                .filterNot { it.absent }
-                .map { StartListDataSet from it }
-                .sortedBy { it.startnumber }
+            .filterNot { it.absent }
+            .map { StartListDataSet from it }
+            .sortedBy { it.startnumber }
 
         val template = object : Template {
             override val source: InputStream
                 get() = JasperParticipantListApi::class.java.getResourceAsStream("/reporting/jasper-templates/startlist.jrxml")
             override val parameters = hashMapOf(
-                    "competitors" to JRBeanCollectionDataSource(competitors))
+                "competitors" to JRBeanCollectionDataSource(competitors)
+            )
         }
 
         val reportInputStream = reportManager.exportToPdf(template)

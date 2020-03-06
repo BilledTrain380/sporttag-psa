@@ -48,8 +48,8 @@ import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
+import java.util.Optional
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * A {@link GroupManager} which uses repositories to process its data.
@@ -59,10 +59,10 @@ import java.util.*
  */
 @Component
 class GroupManagerImpl(
-        private val groupRepository: GroupRepository,
-        private val participantRepository: ParticipantRepository,
-        private val coachRepository: CoachRepository,
-        private val townRepository: TownRepository
+    private val groupRepository: GroupRepository,
+    private val participantRepository: ParticipantRepository,
+    private val coachRepository: CoachRepository,
+    private val townRepository: TownRepository
 ) : GroupManager {
 
     /**
@@ -80,7 +80,7 @@ class GroupManagerImpl(
      */
     override fun getGroups(): List<GroupDto> {
         return groupRepository.findAll()
-                .map { GroupDto from it }
+            .map { GroupDto from it }
     }
 
     override fun isCompetitive(group: GroupDto): Boolean {
@@ -120,22 +120,22 @@ class GroupManagerImpl(
     override fun import(participant: FlatParticipant) {
 
         val town = townRepository.findByZipAndName(participant.zipCode, participant.town)
-                .orElseGet { TownEntity(zip = participant.zipCode, name = participant.town) }
+            .orElseGet { TownEntity(zip = participant.zipCode, name = participant.town) }
 
         val coach = coachRepository.findByName(participant.coach)
-                .orElseGet { CoachEntity(name = participant.coach) }
+            .orElseGet { CoachEntity(name = participant.coach) }
 
         val group = groupRepository.findByName(participant.group)
-                .orElseGet { GroupEntity(participant.group, coach) }
+            .orElseGet { GroupEntity(participant.group, coach) }
 
         val participantEntity = ParticipantEntity(
-                surname = participant.surname,
-                prename = participant.prename,
-                gender = participant.gender,
-                birthday = participant.birthday.milliseconds,
-                address = participant.address,
-                town = town,
-                group = group
+            surname = participant.surname,
+            prename = participant.prename,
+            gender = participant.gender,
+            birthday = participant.birthday.milliseconds,
+            address = participant.address,
+            town = town,
+            group = group
         )
 
         participantRepository.save(participantEntity)

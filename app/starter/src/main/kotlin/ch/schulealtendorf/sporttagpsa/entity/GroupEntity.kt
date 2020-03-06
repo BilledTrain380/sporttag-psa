@@ -53,13 +53,13 @@ import javax.validation.constraints.Size
 @Table(name = "PARTICIPANT_GROUP")
 data class GroupEntity(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 20)
-        var name: String = "",
+    @Id
+    @NotNull
+    @Size(min = 1, max = 20)
+    var name: String = "",
 
-        @NotNull
-        @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
-        @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")
-        var coach: CoachEntity = CoachEntity()
+    @NotNull
+    @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
+    @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")
+    var coach: CoachEntity = CoachEntity()
 )

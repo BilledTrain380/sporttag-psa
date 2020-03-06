@@ -38,8 +38,8 @@ package ch.schulealtendorf.sporttagpsa.repository
 
 import ch.schulealtendorf.psa.dto.GenderDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
+import java.util.Optional
 import org.springframework.data.repository.CrudRepository
-import java.util.*
 
 /**
  * Describes a CRUD repository for the {@link StarterEntity}.

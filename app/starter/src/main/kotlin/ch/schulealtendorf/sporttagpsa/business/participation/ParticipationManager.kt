@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 import ch.schulealtendorf.psa.dto.ParticipantDto
 import ch.schulealtendorf.psa.dto.ParticipationStatusDto
 import ch.schulealtendorf.psa.dto.SportDto
-import java.util.*
+import java.util.NoSuchElementException
 
 /**
  * Describes a manager for the participation.

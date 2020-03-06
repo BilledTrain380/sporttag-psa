@@ -50,11 +50,11 @@ import javax.persistence.Table
 @Table(name = "ABSENT_PARTICIPANT")
 data class AbsentParticipantEntity(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "FK_PARTICIPANT_id", referencedColumnName = "id")
-        var participant: ParticipantEntity = ParticipantEntity()
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_PARTICIPANT_id", referencedColumnName = "id")
+    var participant: ParticipantEntity = ParticipantEntity()
 )

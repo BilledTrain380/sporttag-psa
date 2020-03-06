@@ -47,16 +47,16 @@ import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import java.util.Optional
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
 object StatefulSetupManagerSpec : Spek({
 
@@ -80,11 +80,9 @@ object StatefulSetupManagerSpec : Spek({
 
                 whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy()))
 
-
                 val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
                 val setup = SetupInformation("admin")
                 manager.initialize(setup)
-
 
                 it("should set the admin's password") {
                     val expected = "admin"
@@ -110,7 +108,6 @@ object StatefulSetupManagerSpec : Spek({
                 whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy(initialized = true)))
 
                 val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
-
 
                 it("should throw an illegal state exception, indicating that the setup is already initialized") {
                     val exception = assertFailsWith<IllegalStateException> {

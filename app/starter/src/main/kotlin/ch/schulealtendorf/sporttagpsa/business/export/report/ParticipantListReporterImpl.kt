@@ -41,8 +41,8 @@ import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.participation.ParticipantListApi
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
-import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -50,8 +50,8 @@ import java.io.File
  */
 @Component
 class ParticipantListReporterImpl(
-        private val participantRepository: ParticipantRepository,
-        private val participantListApi: ParticipantListApi
+    private val participantRepository: ParticipantRepository,
+    private val participantListApi: ParticipantListApi
 ) : ParticipantListReporter {
     override fun generateReport(data: Iterable<SportDto>): Set<File> {
 

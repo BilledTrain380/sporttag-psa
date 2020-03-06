@@ -38,12 +38,12 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook
 
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.TargetThrowingRuleSet
+import kotlin.test.assertEquals
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import kotlin.test.assertEquals
 
 /**
  * Specification for a target throwing rule set.

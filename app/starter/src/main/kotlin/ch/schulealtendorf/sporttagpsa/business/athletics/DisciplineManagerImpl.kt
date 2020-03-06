@@ -39,8 +39,8 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 import ch.schulealtendorf.psa.dto.DisciplineDto
 import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import java.util.Optional
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * Default implementation for a {@link DisciplineManager} which uses repositories to get its data.
@@ -50,7 +50,7 @@ import java.util.*
  */
 @Component
 class DisciplineManagerImpl(
-        private val disciplineRepository: DisciplineRepository
+    private val disciplineRepository: DisciplineRepository
 ) : DisciplineManager {
 
     override fun getDisciplineList(): List<DisciplineDto> {

@@ -54,7 +54,7 @@ import org.springframework.stereotype.Component
 @Component
 @Qualifier("psa")
 class PSATokenEnhancer(
-        private val userManager: UserManager
+    private val userManager: UserManager
 ) : TokenEnhancer {
 
     override fun enhance(accessToken: OAuth2AccessToken?, authentication: OAuth2Authentication?): OAuth2AccessToken {

@@ -56,14 +56,15 @@ import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import java.util.NoSuchElementException
+import java.util.Optional
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import java.util.*
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 object CompetitorManagerImplSpec : Spek({
 
@@ -80,17 +81,18 @@ object CompetitorManagerImplSpec : Spek({
 
         // just a test instance which we copy for the specs
         val competitor = CompetitorDto(
-                1,
-                1,
-                "",
-                "",
-                GenderDto.MALE,
-                BirthdayDto(0),
-                false,
-                "",
-                TownDto("", ""),
-                GroupDto("", CoachDto(1, "")),
-                listOf())
+            1,
+            1,
+            "",
+            "",
+            GenderDto.MALE,
+            BirthdayDto(0),
+            false,
+            "",
+            TownDto("", ""),
+            GroupDto("", CoachDto(1, "")),
+            listOf()
+        )
 
         context("results to merge") {
 
@@ -98,14 +100,12 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
-                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false)),
-                        ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1), false, false))
+                    ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
+                    ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false)),
+                    ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1), false, false))
                 )
 
-
                 val result = manager.mergeResults(competitor, results)
-
 
                 it("should add the new results") {
                     val expected = competitor.copy(results = results)
@@ -117,18 +117,16 @@ object CompetitorManagerImplSpec : Spek({
 
                 // discipline does not matter here, we only verify that the results are merged
                 val results = listOf(
-                        ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
-                        ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false))
+                    ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
+                    ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false))
                 )
-
 
                 val existingResults = listOf(
-                        ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1), false, false)),
-                        ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1), false, false)),
-                        ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1), false, false))
+                    ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1), false, false)),
+                    ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1), false, false)),
+                    ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1), false, false))
                 )
                 val result = manager.mergeResults(competitor.copy(results = existingResults), results)
-
 
                 it("should update the existing results") {
                     val expected = competitor.copy(results = results.plus(existingResults[2]))
@@ -146,14 +144,12 @@ object CompetitorManagerImplSpec : Spek({
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
                 whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.of(DisciplineEntity("test")))
 
-
                 val results = listOf(
-                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
-                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false)),
-                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
+                    ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
+                    ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false)),
+                    ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
-
 
                 it("should get the disciplines of the new results") {
                     verify(mockDisciplineRepository, times(3)).findById("test")
@@ -161,9 +157,9 @@ object CompetitorManagerImplSpec : Spek({
 
                 it("should create the new results") {
                     val expected = setOf(
-                            ResultEntity(value = 20, points = 122, discipline = DisciplineEntity("test")),
-                            ResultEntity(value = 21, points = 158, discipline = DisciplineEntity("test")),
-                            ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
+                        ResultEntity(value = 20, points = 122, discipline = DisciplineEntity("test")),
+                        ResultEntity(value = 21, points = 158, discipline = DisciplineEntity("test")),
+                        ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
                     )
                     verify(mockCompetitorRepository, times(1)).save(competitorEntity.copy(results = expected))
                 }
@@ -172,26 +168,30 @@ object CompetitorManagerImplSpec : Spek({
             on("existing results") {
 
                 val existingResults = setOf(
-                        ResultEntity(id = 1, value = 20, points = 122, discipline = DisciplineEntity("test")),
-                        ResultEntity(id = 2, value = 21, points = 158, discipline = DisciplineEntity("test"))
+                    ResultEntity(id = 1, value = 20, points = 122, discipline = DisciplineEntity("test")),
+                    ResultEntity(id = 2, value = 21, points = 158, discipline = DisciplineEntity("test"))
                 )
-                whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity.copy(results = existingResults)))
+                whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(
+                    Optional.of(
+                        competitorEntity.copy(
+                            results = existingResults
+                        )
+                    )
+                )
                 whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.of(DisciplineEntity("test")))
 
-
                 val results = listOf(
-                        ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1), false, false)),
-                        ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1), false, false)),
-                        ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
+                    ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1), false, false)),
+                    ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1), false, false)),
+                    ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
                 )
                 manager.saveCompetitorResults(competitor.copy(results = results))
 
-
                 it("should update the existing results") {
                     val expected = setOf(
-                            ResultEntity(id = 1, value = 25, points = 133, discipline = DisciplineEntity("test")),
-                            ResultEntity(id = 2, value = 12, points = 102, discipline = DisciplineEntity("test")),
-                            ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
+                        ResultEntity(id = 1, value = 25, points = 133, discipline = DisciplineEntity("test")),
+                        ResultEntity(id = 2, value = 12, points = 102, discipline = DisciplineEntity("test")),
+                        ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
                     )
                     verify(mockCompetitorRepository, times(1)).save(competitorEntity.copy(results = expected))
                 }
@@ -200,7 +200,6 @@ object CompetitorManagerImplSpec : Spek({
             on("competitor not found") {
 
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
-
 
                 it("should throw a no such element exception, indicating that the competitor does not exist") {
                     val exception = assertFailsWith<NoSuchElementException> {
@@ -215,12 +214,10 @@ object CompetitorManagerImplSpec : Spek({
                 whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
                 whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.empty())
 
-
                 val results = listOf(
-                        ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
-                        ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false))
+                    ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
+                    ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false))
                 )
-
 
                 it("should throw a no such element exception, indicating that the discipline does not exist") {
                     val exception = assertFailsWith<NoSuchElementException> {

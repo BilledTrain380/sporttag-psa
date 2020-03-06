@@ -60,9 +60,9 @@ class WebConfig : WebMvcConfigurer {
      */
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
-                .allowedOrigins("*")
-                .allowedHeaders("*")
+            .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
+            .allowedOrigins("*")
+            .allowedHeaders("*")
     }
 
     override fun addViewControllers(registry: ViewControllerRegistry) {

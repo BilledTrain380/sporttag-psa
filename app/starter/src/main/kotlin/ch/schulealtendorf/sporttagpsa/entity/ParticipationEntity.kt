@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.Size
+import org.jetbrains.annotations.NotNull
 
 const val MAIN_PARTICIPATION = "main"
 
@@ -52,12 +52,12 @@ const val MAIN_PARTICIPATION = "main"
 @Table(name = "PARTICIPATION")
 data class ParticipationEntity @JvmOverloads constructor(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 10)
-        var name: String = MAIN_PARTICIPATION,
+    @Id
+    @NotNull
+    @Size(min = 1, max = 10)
+    var name: String = MAIN_PARTICIPATION,
 
-        @NotNull
-        @Size(min = 1, max = 10)
-        var status: String = "OPEN"
+    @NotNull
+    @Size(min = 1, max = 10)
+    var status: String = "OPEN"
 )

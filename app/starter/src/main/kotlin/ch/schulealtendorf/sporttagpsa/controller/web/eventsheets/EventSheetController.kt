@@ -56,24 +56,28 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 @RequestMapping("/api/web")
 class EventSheetController(
-        private val exportManager: ExportManager,
-        private val disciplineManager: DisciplineManager,
-        private val groupManager: GroupManager,
-        private val fileSystem: FileSystem
+    private val exportManager: ExportManager,
+    private val disciplineManager: DisciplineManager,
+    private val groupManager: GroupManager,
+    private val fileSystem: FileSystem
 ) {
 
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
-    @PostMapping("/event-sheets", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(
+        "/event-sheets",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     @ResponseBody
     fun createEventSheets(@RequestBody data: List<EventSheetData>): FileQualifier {
 
         val exportData = EventSheetExport(data.map {
 
             val discipline = disciplineManager.getDiscipline(it.discipline)
-                    .orElseThrow { BadRequestException("The discipline does not exist: name=${it.discipline}") }
+                .orElseThrow { BadRequestException("The discipline does not exist: name=${it.discipline}") }
 
             val group = groupManager.getGroup(it.group)
-                    .orElseThrow { BadRequestException("The group does not exist: name=${it.group}") }
+                .orElseThrow { BadRequestException("The group does not exist: name=${it.group}") }
 
             EventSheetDisciplineExport(discipline, group, it.gender)
         })

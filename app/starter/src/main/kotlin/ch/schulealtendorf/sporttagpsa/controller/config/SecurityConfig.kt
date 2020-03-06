@@ -61,9 +61,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-        @Qualifier("psa-user-service")
-        private val userDetailsService: UserDetailsService,
-        private val setupManager: SetupManager
+    @Qualifier("psa-user-service")
+    private val userDetailsService: UserDetailsService,
+    private val setupManager: SetupManager
 ) : WebSecurityConfigurerAdapter() {
 
     @Autowired
@@ -74,29 +74,30 @@ class SecurityConfig(
     override fun configure(http: HttpSecurity?) {
 
         http
-                ?.authorizeRequests()
-                ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
-                ?.antMatchers(
-                        "/login",
-                        "/webjars/**",
-                        "/setup",
-                        "/",
-                        "/index",
-                        "/app/**",
-                        "/actuator/health")
-                ?.permitAll()
-                ?.anyRequest()?.authenticated()
+            ?.authorizeRequests()
+            ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()
+            ?.antMatchers(
+                "/login",
+                "/webjars/**",
+                "/setup",
+                "/",
+                "/index",
+                "/app/**",
+                "/actuator/health"
+            )
+            ?.permitAll()
+            ?.anyRequest()?.authenticated()
 
-                ?.and()
-                ?.formLogin()?.loginPage("/login")?.permitAll()
-                ?.and()
-                ?.logout()?.logoutSuccessUrl("/")?.permitAll()
-                ?.clearAuthentication(true)
+            ?.and()
+            ?.formLogin()?.loginPage("/login")?.permitAll()
+            ?.and()
+            ?.logout()?.logoutSuccessUrl("/")?.permitAll()
+            ?.clearAuthentication(true)
 
-                ?.and()
-                ?.csrf()?.disable()
+            ?.and()
+            ?.csrf()?.disable()
 
-                ?.addFilterBefore(SetupAuthorizationFilter(setupManager), BasicAuthenticationFilter::class.java)
+            ?.addFilterBefore(SetupAuthorizationFilter(setupManager), BasicAuthenticationFilter::class.java)
     }
 
     @Bean

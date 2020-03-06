@@ -45,7 +45,7 @@ import java.time.Year
  * @since 2.1.0
  */
 data class DisciplineRankingConfig(
-        val discipline: DisciplineDto,
-        val gender: GenderDto,
-        val year: Year
+    val discipline: DisciplineDto,
+    val gender: GenderDto,
+    val year: Year
 )

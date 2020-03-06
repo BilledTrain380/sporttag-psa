@@ -45,6 +45,7 @@ import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestCompetitor
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import java.util.Optional
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -53,7 +54,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -62,28 +62,28 @@ import java.util.*
 @RestController
 @RequestMapping("/api/rest")
 class CompetitorController(
-        private val competitorManager: CompetitorManager,
-        private val resultCalculator: ResultCalculator
+    private val competitorManager: CompetitorManager,
+    private val resultCalculator: ResultCalculator
 ) {
 
     @PreAuthorize("#oauth2.hasScope('competitor_read')")
     @GetMapping("/competitors")
     fun getCompetitors(
-            @RequestParam("group", required = false) groupName: String?,
-            @RequestParam("gender", required = false) gender: GenderDto?,
-            @RequestParam("absent", required = false) absent: Boolean?
+        @RequestParam("group", required = false) groupName: String?,
+        @RequestParam("gender", required = false) gender: GenderDto?,
+        @RequestParam("absent", required = false) absent: Boolean?
     ): List<RestCompetitor> {
 
         return competitorManager.getCompetitorList()
-                .filter(groupName, gender, absent)
-                .map { json(it) }
+            .filter(groupName, gender, absent)
+            .map { json(it) }
     }
 
     @PreAuthorize("#oauth2.hasScope('competitor_read')")
     @GetMapping("/competitor/{competitor_id}")
     fun getCompetitor(@PathVariable("competitor_id") id: Int): RestCompetitor {
         return competitorManager.getCompetitor(id).map { json(it) }
-                .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
+            .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
     }
 
     @PreAuthorize("#oauth2.hasScope('competitor_write')")
@@ -91,21 +91,21 @@ class CompetitorController(
     fun updateResults(@PathVariable("competitor_id") id: Int, @RequestBody resultsWrapper: ResultWrapper): List<RestResult> {
 
         var competitor = competitorManager.getCompetitor(id)
-                .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
+            .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
 
         val results = resultsWrapper.results
-                .map {
+            .map {
 
-                    val tempResult = TemporaryResult(
-                            it.id,
-                            competitor.gender,
-                            it.value,
-                            it.discipline,
-                            Optional.ofNullable(it.distance)
-                    )
+                val tempResult = TemporaryResult(
+                    it.id,
+                    competitor.gender,
+                    it.value,
+                    it.discipline,
+                    Optional.ofNullable(it.distance)
+                )
 
-                    resultCalculator.calculate(tempResult)
-                }
+                resultCalculator.calculate(tempResult)
+            }
 
         competitor = competitorManager.mergeResults(competitor, results)
         competitorManager.saveCompetitorResults(competitor)
@@ -113,11 +113,15 @@ class CompetitorController(
         return results.map { json(it) }
     }
 
-    private fun Iterable<CompetitorDto>.filter(group: String? = null, gender: GenderDto? = null, absent: Boolean? = null): List<CompetitorDto> {
+    private fun Iterable<CompetitorDto>.filter(
+        group: String? = null,
+        gender: GenderDto? = null,
+        absent: Boolean? = null
+    ): List<CompetitorDto> {
 
         return this
-                .filter { group == null || it.group.name == group }
-                .filter { gender == null || it.gender == gender }
-                .filter { absent == null || it.absent == absent }
+            .filter { group == null || it.group.name == group }
+            .filter { gender == null || it.gender == gender }
+            .filter { absent == null || it.absent == absent }
     }
 }

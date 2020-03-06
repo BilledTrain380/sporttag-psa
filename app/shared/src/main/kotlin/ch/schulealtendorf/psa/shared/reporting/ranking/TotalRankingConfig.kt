@@ -44,8 +44,8 @@ import java.time.Year
  * @since 2.1.0
  */
 data class TotalRankingConfig(
-        val gender: GenderDto,
-        val year: Year,
-        val ballThrowingDistance: String,
-        val targetThrowingDistance: String
+    val gender: GenderDto,
+    val year: Year,
+    val ballThrowingDistance: String,
+    val targetThrowingDistance: String
 )

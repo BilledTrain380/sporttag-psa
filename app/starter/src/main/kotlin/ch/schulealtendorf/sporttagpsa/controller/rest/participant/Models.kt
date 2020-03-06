@@ -42,36 +42,36 @@ import ch.schulealtendorf.psa.dto.TownDto
 import javax.validation.constraints.NotNull
 
 data class UpdateParticipant(
-        val surname: String? = null,
-        val prename: String? = null,
-        val gender: GenderDto? = null,
-        val birthday: Long? = null,
-        val address: String? = null,
-        val absent: Boolean? = null,
-        val town: TownDto? = null,
-        val sport: SportDto? = null
+    val surname: String? = null,
+    val prename: String? = null,
+    val gender: GenderDto? = null,
+    val birthday: Long? = null,
+    val address: String? = null,
+    val absent: Boolean? = null,
+    val town: TownDto? = null,
+    val sport: SportDto? = null
 )
 
 data class CreateParticipant(
 
-        @NotNull
-        val surname: String,
+    @NotNull
+    val surname: String,
 
-        @NotNull
-        val prename: String,
+    @NotNull
+    val prename: String,
 
-        @NotNull
-        val gender: GenderDto,
+    @NotNull
+    val gender: GenderDto,
 
-        @NotNull
-        val birthday: Long,
+    @NotNull
+    val birthday: Long,
 
-        @NotNull
-        val address: String,
+    @NotNull
+    val address: String,
 
-        @NotNull
-        val town: TownDto,
+    @NotNull
+    val town: TownDto,
 
-        @NotNull
-        val sport: SportDto
+    @NotNull
+    val sport: SportDto
 )

@@ -50,8 +50,8 @@ import javax.validation.constraints.Size
 @Table(name = "SPORT")
 data class SportEntity(
 
-        @Id
-        @NotNull
-        @Size(min = 1, max = 45)
-        var name: String = ""
+    @Id
+    @NotNull
+    @Size(min = 1, max = 45)
+    var name: String = ""
 )
