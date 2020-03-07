@@ -88,12 +88,12 @@ internal class GroupManagerImplTest {
 
         val infoEntry = group2a?.status?.entries?.find { it.severity == StatusSeverity.INFO }
         assertThat(infoEntry).isNotNull
-        assertThat(infoEntry?.type?.text).isEqualTo(GroupStatusType.FUN.name)
+        assertThat(infoEntry?.type?.text).isEqualTo(GroupStatusType.GROUP_TYPE_FUN.name)
     }
 
     @Test
     internal fun getOverviewByFilter() {
-        val overviewList = groupManager.getOverviewBy(GroupStatusType.COMPETITIVE)
+        val overviewList = groupManager.getOverviewBy(GroupStatusType.GROUP_TYPE_COMPETITIVE)
 
         assertThat(overviewList).hasSize(1)
 
@@ -106,6 +106,6 @@ internal class GroupManagerImplTest {
 
         val status = overview2b.status.entries[0]
         assertThat(status.severity).isEqualTo(StatusSeverity.INFO)
-        assertThat(status.type.text).isEqualTo(GroupStatusType.COMPETITIVE.name)
+        assertThat(status.type.text).isEqualTo(GroupStatusType.GROUP_TYPE_COMPETITIVE.name)
     }
 }

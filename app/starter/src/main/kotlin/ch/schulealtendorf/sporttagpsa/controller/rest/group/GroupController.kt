@@ -36,17 +36,29 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.group
 
-import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.group.GroupStatusType
+import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 /**
  * Rest controller for {@link Group}.
@@ -56,51 +68,106 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/api")
-@Tag(name = "group", description = "The group api")
+@Tag(name = "Group", description = "Manage groups")
 class GroupController(
     private val groupManager: GroupManager
 ) {
-
-    @Operation(summary = "Find groups by name", tags = ["group"])
-    @ApiResponse(
-            responseCode = "200",
-            description = "Found group",
-            content = [Content(schema = Schema(implementation = GroupDto::class))]
+    @Operation(
+        summary = "Find groups by name",
+        tags = ["Group"],
+        parameters = [
+            Parameter(
+                name = "group_name",
+                description = "The group name to find"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found group",
+                content = [Content(schema = Schema(implementation = SimpleGroupDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Group not found",
+                content = [Content()]
+            )
+        ]
     )
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/group/{group_name}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getGroup(@PathVariable("group_name") name: String): GroupDto {
+    fun getGroup(@PathVariable("group_name") name: String): SimpleGroupDto {
         return groupManager.getGroup(name)
             .orElseThrow { NotFoundException("Could not find group: name=$name") }
     }
 
+    @Operation(
+        summary = "List groups",
+        tags = ["Group"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Group list",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = SimpleGroupDto::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/groups", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getGroups(
-        @RequestParam("competitive", required = false) competitive: Boolean?,
-        @RequestParam("pendingParticipation", required = false) pendingParticipation: Boolean?
-    ): List<GroupDto> {
-
+    fun getGroups(): List<SimpleGroupDto> {
         return groupManager.getGroups()
-            .filter(competitive, pendingParticipation)
     }
 
-    private fun Iterable<GroupDto>.filter(competitive: Boolean?, pendingParticipation: Boolean?): List<GroupDto> {
+    @Operation(
+        summary = "List group overview",
+        tags = ["Group"],
+        parameters = [
+            Parameter(
+                name = "status_type",
+                description = "The status type to filter"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Group list",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = OverviewGroupDto::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('group_read')")
+    @GetMapping("/groups/overview", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getGroups(
+        @RequestParam("status_type", required = false) statusType: GroupStatusType?
+    ): List<OverviewGroupDto> {
+        if (statusType == null) {
+            return groupManager.getOverview()
+        }
 
-        return this
-            .filter {
-                (competitive == null) ||
-                    competitive && it.isCompetitive() ||
-                    !competitive && !it.isCompetitive()
-            }
-            .filter {
-                (pendingParticipation == null) ||
-                    pendingParticipation && it.hasPendingParticipation() ||
-                    !pendingParticipation && !it.hasPendingParticipation()
-            }
+        return groupManager.getOverviewBy(statusType)
     }
-
-    private fun GroupDto.isCompetitive() = groupManager.isCompetitive(this)
-
-    private fun GroupDto.hasPendingParticipation() = groupManager.hasPendingParticipation(this)
 }

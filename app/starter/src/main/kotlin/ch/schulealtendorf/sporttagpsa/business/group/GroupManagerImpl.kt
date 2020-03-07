@@ -152,7 +152,7 @@ class GroupManagerImpl(
         statusList.add(
             StatusEntry(
                 StatusSeverity.INFO,
-                if (isCompetitive(name)) GroupStatusType.COMPETITIVE else GroupStatusType.FUN
+                if (isCompetitive(name)) GroupStatusType.GROUP_TYPE_COMPETITIVE else GroupStatusType.GROUP_TYPE_FUN
             )
         )
 
