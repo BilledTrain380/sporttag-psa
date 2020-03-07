@@ -55,4 +55,70 @@ data class ParticipantDto @JvmOverloads constructor(
     val sport: SportDto? = null
 ) {
     companion object
+
+    fun toBuilder() = Builder(this)
+
+    class Builder internal constructor(
+        private val dto: ParticipantDto
+    ) {
+        private var surname = dto.surname
+        private var prename = dto.prename
+        private var gender = dto.gender
+        private var birthday = dto.birthday
+        private var isAbsent = dto.absent
+        private var address = dto.address
+        private var town = dto.town
+        private var sport = dto.sport
+
+        fun setSurname(surname: String): Builder {
+            this.surname = surname
+            return this
+        }
+
+        fun setPrename(prename: String): Builder {
+            this.prename = prename
+            return this
+        }
+
+        fun setGender(gender: GenderDto): Builder {
+            this.gender = gender
+            return this
+        }
+
+        fun setBirthday(birthday: BirthdayDto): Builder {
+            this.birthday = birthday
+            return this
+        }
+
+        fun setAbsent(isAbsent: Boolean): Builder {
+            this.isAbsent = isAbsent
+            return this
+        }
+
+        fun setAddress(address: String): Builder {
+            this.address = address
+            return this
+        }
+
+        fun setTown(town: TownDto): Builder {
+            this.town = town
+            return this
+        }
+
+        fun setSport(sport: SportDto?): Builder {
+            this.sport = sport
+            return this
+        }
+
+        fun build() = dto.copy(
+            surname = surname,
+            prename = prename,
+            gender = gender,
+            birthday = birthday,
+            absent = isAbsent,
+            address = address,
+            town = town,
+            sport = sport
+        )
+    }
 }

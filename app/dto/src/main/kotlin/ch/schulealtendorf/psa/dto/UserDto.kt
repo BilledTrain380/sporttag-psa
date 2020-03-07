@@ -52,4 +52,25 @@ data class UserDto @JvmOverloads constructor(
     val password: String = "protected"
 ) {
     companion object
+
+    fun toBuilder() = Builder(this)
+
+    class Builder internal constructor(
+        private val dto: UserDto
+    ) {
+        private var username = dto.username
+        private var isEnabled = dto.enabled
+
+        fun setUsername(username: String): Builder {
+            this.username = username
+            return this
+        }
+
+        fun setEnabled(isEnabled: Boolean): Builder {
+            this.isEnabled = isEnabled
+            return this
+        }
+
+        fun build() = dto.copy(username = username, enabled = isEnabled)
+    }
 }

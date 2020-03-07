@@ -47,4 +47,19 @@ data class CoachDto(
     val name: String
 ) {
     companion object
+
+    fun toBuilder() = Builder(this)
+
+    class Builder internal constructor(
+        private val dto: CoachDto
+    ) {
+        private var name = dto.name
+
+        fun setName(name: String): Builder {
+            this.name = name
+            return this
+        }
+
+        fun build() = dto.copy(name = name)
+    }
 }

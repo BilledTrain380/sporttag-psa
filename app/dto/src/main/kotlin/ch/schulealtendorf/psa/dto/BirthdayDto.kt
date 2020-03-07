@@ -37,23 +37,34 @@
 package ch.schulealtendorf.psa.dto
 
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.Year
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoField
 import java.util.Date
 import java.util.Locale
 import java.util.ResourceBundle
-import org.joda.time.DateTime
 
 data class BirthdayDto(
-    val milliseconds: Long
+    val time: Instant
 ) {
-
     private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
 
-    val date: Date = Date(milliseconds)
-    val age: Int = DateTime.now().minusMillis(milliseconds.toInt()).year
-    val year: Year = Year.of(DateTime(date).year)
+    val date: Date = Date(time.toEpochMilli())
+    val age: Int = Instant.now()[ChronoField.YEAR] - time[ChronoField.YEAR]
+    val year: Year = Year.of(time[ChronoField.YEAR])
 
+    companion object {
+        fun parse(text: String) = BirthdayDto(ZonedDateTime.parse(text).toInstant())
+
+        fun ofMillis(milliSeconds: Long) = BirthdayDto(Instant.ofEpochMilli(milliSeconds))
+    }
+
+    @Deprecated("Use instant overload")
     constructor(date: Date) : this(date.time)
+
+    @Deprecated("Use factory method ofMillis")
+    constructor(milliSeconds: Long) : this(Instant.ofEpochMilli(milliSeconds))
 
     /**
      * Formats this Birthday by the given {@code pattern}.
@@ -69,4 +80,24 @@ data class BirthdayDto(
      * @see Locale.getDefault
      */
     fun format() = format(resourceBundle.getString("birthday.format"))
+
+    fun toBuilder() = Builder(this)
+
+    class Builder internal constructor(
+        dto: BirthdayDto
+    ) {
+        private var time = dto.time
+
+        fun setMilliseconds(milliseconds: Long): Builder {
+            this.time = Instant.ofEpochMilli(milliseconds)
+            return this
+        }
+
+        fun setTime(time: Instant): Builder {
+            this.time = time
+            return this
+        }
+
+        fun build() = BirthdayDto(time)
+    }
 }

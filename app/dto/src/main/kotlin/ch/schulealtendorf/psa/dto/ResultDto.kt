@@ -55,7 +55,7 @@ data class ResultDto @JvmOverloads constructor(
                 0,
                 0,
                 0,
-                DisciplineDto("", UnitDto("", 0), false, false)
+                DisciplineDto("", UnitDto("", 0), hasTrials = false, hasDistance = false)
             )
         }
     }
@@ -68,4 +68,25 @@ data class ResultDto @JvmOverloads constructor(
 
             return (value.toDouble() / discipline.unit.factor).toString()
         }
+
+    fun toBuilder() = Builder(this)
+
+    class Builder internal constructor(
+        private val dto: ResultDto
+    ) {
+        private var value = dto.value
+        private var points = dto.points
+
+        fun setValue(value: Long): Builder {
+            this.value = value
+            return this
+        }
+
+        fun setPoints(points: Int): Builder {
+            this.points = points
+            return this
+        }
+
+        fun build() = dto.copy(value = value, points = points)
+    }
 }
