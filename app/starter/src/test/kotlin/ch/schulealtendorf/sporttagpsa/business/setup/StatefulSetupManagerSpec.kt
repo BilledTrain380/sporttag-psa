@@ -47,75 +47,66 @@ import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
 import java.util.Optional
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.context
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 
 object StatefulSetupManagerSpec : Spek({
+    val mockSetupRepository: SetupRepository = mock()
+    val mockUserManager: UserManager = mock()
 
-    describe("a stateful setup manager") {
+    beforeEachTest {
+        reset(mockSetupRepository, mockUserManager)
+    }
 
-        val mockSetupRepository: SetupRepository = mock()
-        val mockUserManager: UserManager = mock()
+    val defaultSetup = SetupEntity(jwtSecret = "my_secret")
 
-        beforeEachTest {
-            reset(mockSetupRepository, mockUserManager)
-        }
+    Feature("initialize the setup") {
+        Scenario("successful initialization") {
+            val admin = UserDto(1, USER_ADMIN, listOf())
+            whenever(mockUserManager.getOne(USER_ADMIN)).thenReturn(Optional.of(admin))
 
-        val defaultSetup = SetupEntity(jwtSecret = "my_secret")
+            whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy()))
 
-        context("initialize the setup") {
+            val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
+            val setup = SetupInformation("admin")
+            manager.initialize(setup)
 
-            on("successful initialization") {
-
-                val admin = UserDto(1, USER_ADMIN, listOf())
-                whenever(mockUserManager.getOne(USER_ADMIN)).thenReturn(Optional.of(admin))
-
-                whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy()))
-
-                val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
-                val setup = SetupInformation("admin")
-                manager.initialize(setup)
-
-                it("should set the admin's password") {
-                    val expected = "admin"
-                    verify(mockUserManager, times(1)).changePassword(admin.copy(), expected)
-                }
-
-                it("should save a generated JWT secret") {
-                    // because the JWT secret is random, we can not assert its value
-                    verify(mockSetupRepository, times(1)).save(any<SetupEntity>())
-                }
-
-                it("should update the JWT secret") {
-                    assertNotEquals(manager.jwtSecret, defaultSetup.jwtSecret)
-                }
-
-                it("should update the initialized property") {
-                    assertTrue(manager.isInitialized)
-                }
+            Then("should set the admin's password") {
+                val expected = "admin"
+                verify(mockUserManager, times(1)).changePassword(admin.copy(), expected)
             }
 
-            on("already initialized setup") {
+            Then("should save a generated JWT secret") {
+                // because the JWT secret is random, we can not assert its value
+                verify(mockSetupRepository, times(1)).save(any<SetupEntity>())
+            }
 
-                whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy(initialized = true)))
+            Then("should update the JWT secret") {
+                assertNotEquals(manager.jwtSecret, defaultSetup.jwtSecret)
+            }
 
-                val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
+            Then("should update the initialized property") {
+                assertTrue(manager.isInitialized)
+            }
+        }
 
-                it("should throw an illegal state exception, indicating that the setup is already initialized") {
-                    val exception = assertFailsWith<IllegalStateException> {
-                        val setup = SetupInformation("admin")
-                        manager.initialize(setup)
-                    }
-                    assertEquals("Setup is already initialized", exception.message)
+        Scenario("already initialized setup") {
+            whenever(mockSetupRepository.findById(any())).thenReturn(Optional.of(defaultSetup.copy(initialized = true)))
+
+            val manager = StatefulSetupManager(mockSetupRepository, mockUserManager)
+
+            Then("should throw an illegal state exception, indicating that the setup is already initialized") {
+                val exception = assertFailsWith<IllegalStateException> {
+                    val setup = SetupInformation("admin")
+                    manager.initialize(setup)
                 }
+
+                assertEquals("Setup is already initialized", exception.message)
             }
         }
     }

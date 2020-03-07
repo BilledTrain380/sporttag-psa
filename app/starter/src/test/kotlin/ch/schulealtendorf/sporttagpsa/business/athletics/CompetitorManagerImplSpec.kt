@@ -56,175 +56,161 @@ import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
 import java.util.NoSuchElementException
 import java.util.Optional
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.context
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 
 object CompetitorManagerImplSpec : Spek({
+    val mockCompetitorRepository: CompetitorRepository = mock()
+    val mockDisciplineRepository: DisciplineRepository = mock()
 
-    describe("a competitor manager") {
+    val manager = CompetitorManagerImpl(mockCompetitorRepository, mockDisciplineRepository)
 
-        val mockCompetitorRepository: CompetitorRepository = mock()
-        val mockDisciplineRepository: DisciplineRepository = mock()
+    beforeEachTest {
+        reset(mockCompetitorRepository, mockDisciplineRepository)
+    }
 
-        val manager = CompetitorManagerImpl(mockCompetitorRepository, mockDisciplineRepository)
+    // just a test instance which we copy for the specs
+    val competitor = CompetitorDto(
+        1,
+        1,
+        "",
+        "",
+        GenderDto.MALE,
+        BirthdayDto(0),
+        false,
+        "",
+        TownDto("", ""),
+        GroupDto("", CoachDto(1, "")),
+        listOf()
+    )
 
-        beforeEachTest {
-            reset(mockCompetitorRepository, mockDisciplineRepository)
-        }
+    Feature("results to merge") {
+        Scenario("new results") {
 
-        // just a test instance which we copy for the specs
-        val competitor = CompetitorDto(
-            1,
-            1,
-            "",
-            "",
-            GenderDto.MALE,
-            BirthdayDto(0),
-            false,
-            "",
-            TownDto("", ""),
-            GroupDto("", CoachDto(1, "")),
-            listOf()
-        )
+            // discipline does not matter here, we only verify that the results are merged
+            val results = listOf(
+                ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false))
+            )
 
-        context("results to merge") {
+            val result = manager.mergeResults(competitor, results)
 
-            on("new results") {
-
-                // discipline does not matter here, we only verify that the results are merged
-                val results = listOf(
-                    ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
-                    ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false)),
-                    ResultDto(3, 45, 846, DisciplineDto("", UnitDto("", 1), false, false))
-                )
-
-                val result = manager.mergeResults(competitor, results)
-
-                it("should add the new results") {
-                    val expected = competitor.copy(results = results)
-                    assertEquals(expected, result)
-                }
-            }
-
-            on("existing results") {
-
-                // discipline does not matter here, we only verify that the results are merged
-                val results = listOf(
-                    ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), false, false)),
-                    ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), false, false))
-                )
-
-                val existingResults = listOf(
-                    ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1), false, false)),
-                    ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1), false, false)),
-                    ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1), false, false))
-                )
-                val result = manager.mergeResults(competitor.copy(results = existingResults), results)
-
-                it("should update the existing results") {
-                    val expected = competitor.copy(results = results.plus(existingResults[2]))
-                    assertEquals(expected, result)
-                }
+            Then("should add the new results") {
+                val expected = competitor.copy(results = results)
+                assertEquals(expected, result)
             }
         }
 
-        context("results to update") {
+        Scenario("existing results") {
+            // discipline does not matter here, we only verify that the results are merged
+            val results = listOf(
+                ResultDto(1, 50, 800, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(2, 49, 795, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false))
+            )
 
-            val competitorEntity = CompetitorEntity()
+            val existingResults = listOf(
+                ResultDto(1, 20, 122, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(2, 21, 158, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(3, 45, 456, DisciplineDto("", UnitDto("", 1), hasTrials = false, hasDistance = false))
+            )
+            val result = manager.mergeResults(competitor.copy(results = existingResults), results)
 
-            on("new results") {
+            Then("should update the existing results") {
+                val expected = competitor.copy(results = results.plus(existingResults[2]))
+                assertEquals(expected, result)
+            }
+        }
+    }
 
-                whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
-                whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.of(DisciplineEntity("test")))
+    Feature("results to update") {
+        val competitorEntity = CompetitorEntity()
 
-                val results = listOf(
-                    ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
-                    ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false)),
-                    ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
-                )
-                manager.saveCompetitorResults(competitor.copy(results = results))
+        Scenario("new results") {
+            whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
+            whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.of(DisciplineEntity("test")))
 
-                it("should get the disciplines of the new results") {
-                    verify(mockDisciplineRepository, times(3)).findById("test")
-                }
+            val results = listOf(
+                ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false))
+            )
+            manager.saveCompetitorResults(competitor.copy(results = results))
 
-                it("should create the new results") {
-                    val expected = setOf(
-                        ResultEntity(value = 20, points = 122, discipline = DisciplineEntity("test")),
-                        ResultEntity(value = 21, points = 158, discipline = DisciplineEntity("test")),
-                        ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
-                    )
-                    verify(mockCompetitorRepository, times(1)).save(competitorEntity.copy(results = expected))
-                }
+            Then("should get the disciplines of the new results") {
+                verify(mockDisciplineRepository, times(3)).findById("test")
             }
 
-            on("existing results") {
-
-                val existingResults = setOf(
-                    ResultEntity(id = 1, value = 20, points = 122, discipline = DisciplineEntity("test")),
-                    ResultEntity(id = 2, value = 21, points = 158, discipline = DisciplineEntity("test"))
+            Then("should create the new results") {
+                val expected = setOf(
+                    ResultEntity(value = 20, points = 122, discipline = DisciplineEntity("test")),
+                    ResultEntity(value = 21, points = 158, discipline = DisciplineEntity("test")),
+                    ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
                 )
-                whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(
-                    Optional.of(
-                        competitorEntity.copy(
-                            results = existingResults
-                        )
+                verify(mockCompetitorRepository, times(1)).save(competitorEntity.copy(results = expected))
+            }
+        }
+
+        Scenario("existing results") {
+            val existingResults = setOf(
+                ResultEntity(id = 1, value = 20, points = 122, discipline = DisciplineEntity("test")),
+                ResultEntity(id = 2, value = 21, points = 158, discipline = DisciplineEntity("test"))
+            )
+            whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(
+                Optional.of(
+                    competitorEntity.copy(
+                        results = existingResults
                     )
                 )
-                whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.of(DisciplineEntity("test")))
+            )
+            whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.of(DisciplineEntity("test")))
 
-                val results = listOf(
-                    ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1), false, false)),
-                    ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1), false, false)),
-                    ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), false, false))
+            val results = listOf(
+                ResultDto(1, 25, 133, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(2, 12, 102, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(0, 45, 456, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false))
+            )
+            manager.saveCompetitorResults(competitor.copy(results = results))
+
+            Then("should update the existing results") {
+                val expected = setOf(
+                    ResultEntity(id = 1, value = 25, points = 133, discipline = DisciplineEntity("test")),
+                    ResultEntity(id = 2, value = 12, points = 102, discipline = DisciplineEntity("test")),
+                    ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
                 )
-                manager.saveCompetitorResults(competitor.copy(results = results))
-
-                it("should update the existing results") {
-                    val expected = setOf(
-                        ResultEntity(id = 1, value = 25, points = 133, discipline = DisciplineEntity("test")),
-                        ResultEntity(id = 2, value = 12, points = 102, discipline = DisciplineEntity("test")),
-                        ResultEntity(value = 45, points = 456, discipline = DisciplineEntity("test"))
-                    )
-                    verify(mockCompetitorRepository, times(1)).save(competitorEntity.copy(results = expected))
-                }
+                verify(mockCompetitorRepository, times(1)).save(competitorEntity.copy(results = expected))
             }
+        }
 
-            on("competitor not found") {
+        Scenario("competitor not found") {
+            whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
 
-                whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.empty())
-
-                it("should throw a no such element exception, indicating that the competitor does not exist") {
-                    val exception = assertFailsWith<NoSuchElementException> {
-                        manager.saveCompetitorResults(competitor)
-                    }
-                    assertEquals("Could not find competitor: id=1", exception.message)
+            Then("should throw a no such element exception, indicating that the competitor does not exist") {
+                val exception = assertFailsWith<NoSuchElementException> {
+                    manager.saveCompetitorResults(competitor)
                 }
+                assertEquals("Could not find competitor: id=1", exception.message)
             }
+        }
 
-            on("disciplineDto not found") {
+        Scenario("disciplineDto not found") {
+            whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
+            whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.empty())
 
-                whenever(mockCompetitorRepository.findByParticipantId(any())).thenReturn(Optional.of(competitorEntity))
-                whenever(mockDisciplineRepository.findById("test")).thenReturn(Optional.empty())
+            val results = listOf(
+                ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false)),
+                ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), hasTrials = false, hasDistance = false))
+            )
 
-                val results = listOf(
-                    ResultDto(0, 20, 122, DisciplineDto("test", UnitDto("", 1), false, false)),
-                    ResultDto(0, 21, 158, DisciplineDto("test", UnitDto("", 1), false, false))
-                )
-
-                it("should throw a no such element exception, indicating that the discipline does not exist") {
-                    val exception = assertFailsWith<NoSuchElementException> {
-                        manager.saveCompetitorResults(competitor.copy(results = results))
-                    }
-                    assertEquals("Could not find discipline: name=test", exception.message)
+            Then("should throw a no such element exception, indicating that the discipline does not exist") {
+                val exception = assertFailsWith<NoSuchElementException> {
+                    manager.saveCompetitorResults(competitor.copy(results = results))
                 }
+                assertEquals("Could not find discipline: name=test", exception.message)
             }
         }
     }

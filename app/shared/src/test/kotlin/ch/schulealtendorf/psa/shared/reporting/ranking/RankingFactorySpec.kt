@@ -45,260 +45,247 @@ import ch.schulealtendorf.psa.dto.GroupDto
 import ch.schulealtendorf.psa.dto.ResultDto
 import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.psa.dto.UnitDto
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
 import kotlin.test.assertEquals
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
 
 object RankingFactorySpec : Spek({
-
-    describe("RankingFactory") {
-
-        describe("discipline group ranking") {
-
-            given("a competitor list") {
-
-                val competitors = listOf(
-                    competitorDtoOf(
-                        surname = "3. rank", results = listOf(
-                            resultDtoOf(points = 100, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 100, discipline = "Ballwurf"),
-                            resultDtoOf(points = 100, discipline = "Weitsprung")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 300, discipline = "Ballwurf"),
-                            resultDtoOf(points = 300, discipline = "Weitsprung")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "2. rank", results = listOf(
-                            resultDtoOf(points = 200, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 200, discipline = "Ballwurf"),
-                            resultDtoOf(points = 200, discipline = "Weitsprung")
-                        )
+    Feature("discipline group ranking") {
+        Scenario("a competitor list") {
+            val competitors = listOf(
+                competitorDtoOf(
+                    surname = "3. rank", results = listOf(
+                        resultDtoOf(points = 100, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 100, discipline = "Ballwurf"),
+                        resultDtoOf(points = 100, discipline = "Weitsprung")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 300, discipline = "Ballwurf"),
+                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "2. rank", results = listOf(
+                        resultDtoOf(points = 200, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 200, discipline = "Ballwurf"),
+                        resultDtoOf(points = 200, discipline = "Weitsprung")
                     )
                 )
+            )
 
-                val ranking = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
+            val ranking = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
 
-                it("should order by the rank") {
-                    val expected = listOf("1. rank", "2. rank", "3. rank")
-                    assertEquals(expected, ranking.map { it.surname })
-                }
-            }
-
-            given("a competitor list when competitors have the same points") {
-
-                val competitors = listOf(
-                    competitorDtoOf(
-                        surname = "3. rank", results = listOf(
-                            resultDtoOf(points = 100, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 100, discipline = "Ballwurf"),
-                            resultDtoOf(points = 100, discipline = "Weitsprung")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 300, discipline = "Ballwurf"),
-                            resultDtoOf(points = 300, discipline = "Weitsprung")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 300, discipline = "Ballwurf"),
-                            resultDtoOf(points = 300, discipline = "Weitsprung")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                            resultDtoOf(points = 300, discipline = "Ballwurf"),
-                            resultDtoOf(points = 300, discipline = "Weitsprung")
-                        )
-                    )
-                )
-
-                val ranking = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
-
-                it("should give them the same rank") {
-                    assertEquals(ranking[0].rank, 1)
-                    assertEquals(ranking[1].rank, 1)
-                    assertEquals(ranking[2].rank, 1)
-                }
-
-                it("should skip the next rank") {
-                    assertEquals(ranking[3].rank, 4)
-                }
+            Then("should order by the rank") {
+                val expected = listOf("1. rank", "2. rank", "3. rank")
+                assertEquals(expected, ranking.map { it.surname })
             }
         }
 
-        describe("discipline ranking") {
-
-            given("a competitor list") {
-
-                val competitors = listOf(
-                    competitorDtoOf(
-                        surname = "3. rank", results = listOf(
-                            resultDtoOf(points = 100, discipline = "Ballzielwurf")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 300, discipline = "Ballzielwurf")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "2. rank", results = listOf(
-                            resultDtoOf(points = 200, discipline = "Ballzielwurf")
-                        )
+        Scenario("a competitor list when competitors have the same points") {
+            val competitors = listOf(
+                competitorDtoOf(
+                    surname = "3. rank", results = listOf(
+                        resultDtoOf(points = 100, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 100, discipline = "Ballwurf"),
+                        resultDtoOf(points = 100, discipline = "Weitsprung")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 300, discipline = "Ballwurf"),
+                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 300, discipline = "Ballwurf"),
+                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
+                        resultDtoOf(points = 300, discipline = "Ballwurf"),
+                        resultDtoOf(points = 300, discipline = "Weitsprung")
                     )
                 )
+            )
 
-                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0), false, false)
-                val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
+            val ranking = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
 
-                it("should order by the rank") {
-                    val expected = listOf("1. rank", "2. rank", "3. rank")
-                    assertEquals(expected, ranking.map { it.surname })
-                }
+            Then("should give them the same rank") {
+                assertEquals(ranking[0].rank, 1)
+                assertEquals(ranking[1].rank, 1)
+                assertEquals(ranking[2].rank, 1)
             }
 
-            given("a competitor list when competitors have the same points") {
-
-                val competitors = listOf(
-                    competitorDtoOf(
-                        surname = "3. Rank", results = listOf(
-                            resultDtoOf(points = 50, discipline = "Ballzielwurf")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 100, discipline = "Ballzielwurf")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 100, discipline = "Ballzielwurf")
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 100, discipline = "Ballzielwurf")
-                        )
-                    )
-                )
-
-                val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0), false, false)
-                val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
-
-                it("should give them the same rank") {
-                    assertEquals(ranking[0].rank, 1)
-                    assertEquals(ranking[1].rank, 1)
-                    assertEquals(ranking[2].rank, 1)
-                }
-
-                it("should skip the next rank") {
-                    assertEquals(ranking[3].rank, 4)
-                }
-            }
-        }
-
-        describe("total ranking") {
-            given("a competitor list") {
-
-                val competitors = listOf(
-                    competitorDtoOf(
-                        surname = "3. rank", results = listOf(
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 100)
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 200),
-                            resultDtoOf(points = 300)
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "2. rank", results = listOf(
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 150),
-                            resultDtoOf(points = 300)
-                        )
-                    )
-                )
-
-                val ranking = RankingFactory.totalRankingOf(competitors)
-
-                it("should not count the weakest result to the total points") {
-                    assertEquals(500, ranking[0].total)
-                }
-
-                it("should set the weakest result as deleted result") {
-                    assertEquals(100, ranking[0].deletedResult)
-                }
-
-                it("should order by the rank") {
-                    val expected = listOf("1. rank", "2. rank", "3. rank")
-                    assertEquals(expected, ranking.map { it.surname })
-                }
-            }
-
-            given("a competitor list where competitors have the same total points") {
-
-                val competitors = listOf(
-                    competitorDtoOf(
-                        surname = "3. rank", results = listOf(
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 100)
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 200),
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 300)
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 200),
-                            resultDtoOf(points = 300)
-                        )
-                    ),
-                    competitorDtoOf(
-                        surname = "1. rank", results = listOf(
-                            resultDtoOf(points = 100),
-                            resultDtoOf(points = 200),
-                            resultDtoOf(points = 300)
-                        )
-                    )
-                )
-
-                val ranking = RankingFactory.totalRankingOf(competitors)
-
-                it("should give them the same rank") {
-                    assertEquals(ranking[0].rank, 1)
-                    assertEquals(ranking[1].rank, 1)
-                    assertEquals(ranking[2].rank, 1)
-                }
-
-                it("should skip the next rank") {
-                    assertEquals(ranking[3].rank, 4)
-                }
+            Then("should skip the next rank") {
+                assertEquals(ranking[3].rank, 4)
             }
         }
     }
+
+    Feature("discipline ranking") {
+        Scenario("a competitor list") {
+            val competitors = listOf(
+                competitorDtoOf(
+                    surname = "3. rank", results = listOf(
+                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 300, discipline = "Ballzielwurf")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "2. rank", results = listOf(
+                        resultDtoOf(points = 200, discipline = "Ballzielwurf")
+                    )
+                )
+            )
+
+            val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0), false, false)
+            val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
+
+            Then("should order by the rank") {
+                val expected = listOf("1. rank", "2. rank", "3. rank")
+                assertEquals(expected, ranking.map { it.surname })
+            }
+        }
+
+        Scenario("a competitor list when competitors have the same points") {
+            val competitors = listOf(
+                competitorDtoOf(
+                    surname = "3. Rank", results = listOf(
+                        resultDtoOf(points = 50, discipline = "Ballzielwurf")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                    )
+                )
+            )
+
+            val discipline = DisciplineDto("Ballzielwurf", UnitDto("", 0), false, false)
+            val ranking = RankingFactory.disciplineRankingOf(competitors, discipline)
+
+            Then("should give them the same rank") {
+                assertEquals(ranking[0].rank, 1)
+                assertEquals(ranking[1].rank, 1)
+                assertEquals(ranking[2].rank, 1)
+            }
+
+            Then("should skip the next rank") {
+                assertEquals(ranking[3].rank, 4)
+            }
+        }
+    }
+
+    Feature("total ranking") {
+        Scenario("a competitor list") {
+            val competitors = listOf(
+                competitorDtoOf(
+                    surname = "3. rank", results = listOf(
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 100)
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 200),
+                        resultDtoOf(points = 300)
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "2. rank", results = listOf(
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 150),
+                        resultDtoOf(points = 300)
+                    )
+                )
+            )
+
+            val ranking = RankingFactory.totalRankingOf(competitors)
+
+            Then("should not count the weakest result to the total points") {
+                assertEquals(500, ranking[0].total)
+            }
+
+            Then("should set the weakest result as deleted result") {
+                assertEquals(100, ranking[0].deletedResult)
+            }
+
+            Then("should order by the rank") {
+                val expected = listOf("1. rank", "2. rank", "3. rank")
+                assertEquals(expected, ranking.map { it.surname })
+            }
+        }
+
+        Scenario("a competitor list where competitors have the same total points") {
+            val competitors = listOf(
+                competitorDtoOf(
+                    surname = "3. rank", results = listOf(
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 100)
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 200),
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 300)
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 200),
+                        resultDtoOf(points = 300)
+                    )
+                ),
+                competitorDtoOf(
+                    surname = "1. rank", results = listOf(
+                        resultDtoOf(points = 100),
+                        resultDtoOf(points = 200),
+                        resultDtoOf(points = 300)
+                    )
+                )
+            )
+
+            val ranking = RankingFactory.totalRankingOf(competitors)
+
+            Then("should give them the same rank") {
+                assertEquals(ranking[0].rank, 1)
+                assertEquals(ranking[1].rank, 1)
+                assertEquals(ranking[2].rank, 1)
+            }
+
+            Then("should skip the next rank") {
+                assertEquals(ranking[3].rank, 4)
+            }
+        }
+    }
+
 })
 
 internal fun competitorDtoOf(

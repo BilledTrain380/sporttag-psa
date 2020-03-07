@@ -38,12 +38,9 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook
 
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.SprintRuleSet
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
 import kotlin.test.assertEquals
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 
 /**
  * Specification for a sprint rule set.
@@ -52,36 +49,29 @@ import org.jetbrains.spek.api.dsl.on
  * @version 1.0.0
  */
 object SprintRuleSetSpec : Spek({
+    val male = true
+    val female = false
 
-    describe("a sprint rule set") {
+    val ruleSet = SprintRuleSet()
 
-        val male = true
-        val female = false
+    Feature("a formula model") {
+        Scenario("girls 60m") {
+            val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
+            val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
-        val ruleSet = SprintRuleSet()
-
-        given("a formula model") {
-
-            on("girls 60m") {
-
-                val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 224
-                    assertEquals(expected, points)
-                }
+            Then("should return the resulting points") {
+                val expected = 224
+                assertEquals(expected, points)
             }
+        }
 
-            on("boys 60m") {
+        Scenario("boys 60m") {
+            val model = FormulaModel("Schnelllauf", "60m", 11.4, male)
+            val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
-                val model = FormulaModel("Schnelllauf", "60m", 11.4, male)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 128
-                    assertEquals(expected, points)
-                }
+            Then("should return the resulting points") {
+                val expected = 128
+                assertEquals(expected, points)
             }
         }
     }

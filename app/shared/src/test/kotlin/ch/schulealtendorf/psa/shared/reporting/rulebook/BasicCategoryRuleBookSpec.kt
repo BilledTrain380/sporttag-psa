@@ -38,12 +38,9 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook
 
 import ch.schulealtendorf.psa.shared.rulebook.BasicCategoryRuleBook
 import ch.schulealtendorf.psa.shared.rulebook.CategoryModel
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
 import kotlin.test.assertEquals
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 
 /**
  * Specification for {@link CategoryRuleBook}.
@@ -52,95 +49,68 @@ import org.jetbrains.spek.api.dsl.on
  * @version 1.0.0
  */
 object BasicCategoryRuleBookSpec : Spek({
+    val ruleBook = BasicCategoryRuleBook()
 
-    describe("a category rule book") {
+    Feature("a target throwing discipline") {
+        Scenario("age under 12") {
+            val categoryModel = CategoryModel(11, "Ballzielwurf")
 
-        val ruleBook = BasicCategoryRuleBook()
+            val distance = ruleBook.run(categoryModel)
 
-        given("a target throwing discipline") {
-
-            on("age under 12") {
-
-                // Arrange
-                val categoryModel = CategoryModel(11, "Ballzielwurf")
-
-                // Act
-                val distance = ruleBook.run(categoryModel)
-
-                // Assert
-                it("should return 4m") {
-                    val expected = "4m"
-                    assertEquals(expected, distance)
-                }
-            }
-
-            on("age higher than 11") {
-
-                // Arrange
-                val categoryModel = CategoryModel(12, "Ballzielwurf")
-
-                // Act
-                val distance = ruleBook.run(categoryModel)
-
-                // Assert
-                it("should return 5m") {
-                    val expected = "5m"
-                    assertEquals(expected, distance)
-                }
+            Then("should return 4m") {
+                val expected = "4m"
+                assertEquals(expected, distance)
             }
         }
 
-        given("a basket throwing discipline") {
+        Scenario("age higher than 11") {
+            val categoryModel = CategoryModel(12, "Ballzielwurf")
 
-            on("age under 12") {
+            val distance = ruleBook.run(categoryModel)
 
-                // Arrange
-                val categoryModel = CategoryModel(11, "Korbeinwurf")
-
-                // Act
-                val distance = ruleBook.run(categoryModel)
-
-                // Assert
-                it("should return 2m") {
-                    val expected = "2m"
-                    assertEquals(expected, distance)
-                }
+            Then("should return 5m") {
+                val expected = "5m"
+                assertEquals(expected, distance)
             }
+        }
+    }
 
-            on("age higher than 11") {
+    Feature("a basket throwing discipline") {
+        Scenario("age under 12") {
+            val categoryModel = CategoryModel(11, "Korbeinwurf")
 
-                // Arrange
-                val categoryModel = CategoryModel(12, "Korbeinwurf")
+            val distance = ruleBook.run(categoryModel)
 
-                // Act
-                val distance = ruleBook.run(categoryModel)
-
-                // Assert
-                it("should return 2.5m") {
-                    val expected = "2.5m"
-                    assertEquals(expected, distance)
-                }
+            Then("should return 2m") {
+                val expected = "2m"
+                assertEquals(expected, distance)
             }
         }
 
-        given("a skipping discipline") {
+        Scenario("age higher than 11") {
+            val categoryModel = CategoryModel(12, "Korbeinwurf")
 
-            on("running after an applied rule") {
+            val distance = ruleBook.run(categoryModel)
 
-                // Arrange
-                val ballThrowing = CategoryModel(12, "Korbeinwurf")
-                val skipping = CategoryModel(12, "Seilspringen")
+            Then("should return 2.5m") {
+                val expected = "2.5m"
+                assertEquals(expected, distance)
+            }
+        }
+    }
 
-                ruleBook.run(ballThrowing)
+    Feature("a skipping discipline") {
+        Scenario("running after an applied rule") {
+            val ballThrowing = CategoryModel(12, "Korbeinwurf")
+            val skipping = CategoryModel(12, "Seilspringen")
 
-                // Act
-                val distance = ruleBook.run(skipping)
+            ruleBook.run(ballThrowing)
 
-                // Assert
-                it("should return null") {
-                    val expected = null
-                    assertEquals(expected, distance)
-                }
+            val distance = ruleBook.run(skipping)
+
+            Then("should return null") {
+                val expected = null
+                assertEquals(expected, distance)
             }
         }
     }

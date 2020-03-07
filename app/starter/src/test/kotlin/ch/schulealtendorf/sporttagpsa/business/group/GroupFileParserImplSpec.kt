@@ -39,6 +39,11 @@ package ch.schulealtendorf.sporttagpsa.business.group
 import ch.schulealtendorf.psa.dto.BirthdayDto
 import ch.schulealtendorf.psa.dto.GenderDto
 import com.nhaarman.mockito_kotlin.whenever
+import org.mockito.Mockito
+import org.mockito.Mockito.reset
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
+import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -46,14 +51,6 @@ import java.util.Date
 import java.util.Locale
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
-import org.mockito.Mockito
-import org.mockito.Mockito.reset
-import org.springframework.web.multipart.MultipartFile
 
 /**
  * @author nmaerchy
@@ -62,144 +59,132 @@ import org.springframework.web.multipart.MultipartFile
  * @since 1.0.0
  */
 object GroupFileParserImplSpec : Spek({
-
     fun convertDate(date: String): Date {
-
         val format: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
         return format.parse(date)
     }
 
-    describe("a group file parser impl") {
+    val parser = GroupFileParserImpl()
 
-        val parser = GroupFileParserImpl()
+    val mockFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
 
-        val mockFile: MultipartFile = Mockito.mock(MultipartFile::class.java)
+    beforeEachTest {
+        reset(mockFile)
+    }
 
-        beforeEachTest {
-            reset(mockFile)
+    Feature("a multipart csv file to parse") {
+        Scenario("parsing a csv") {
+            val testInputStream: InputStream =
+                GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import.csv")
+
+            whenever(mockFile.contentType).thenReturn("text/csv")
+            whenever(mockFile.isEmpty).thenReturn(false)
+            whenever(mockFile.inputStream).thenReturn(testInputStream)
+
+            val result = parser.parseCSV(mockFile)
+
+            Then("should return list of csv participants") {
+                val expected = listOf(
+                    FlatParticipant(
+                        "Muster",
+                        "Hans",
+                        GenderDto.MALE,
+                        BirthdayDto(convertDate("07.09.2017")),
+                        "Musterstrasse 1a",
+                        "8000",
+                        "Musterhausen",
+                        "1a",
+                        "Marry Müller"
+                    ),
+                    FlatParticipant(
+                        "Wirbelwind",
+                        "Will",
+                        GenderDto.FEMALE,
+                        BirthdayDto(convertDate("08.12.2015")),
+                        "Wirbelstrasse 16",
+                        "4000",
+                        "Willhausen",
+                        "1a",
+                        "Hans Müller"
+                    )
+                )
+                assertEquals(expected, result)
+            }
         }
 
-        given("a multipart csv file to parse") {
+        Scenario("an empty file") {
+            whenever(mockFile.contentType).thenReturn("text/csv")
+            whenever(mockFile.isEmpty).thenReturn(true)
 
-            on("parsing a csv") {
-
-                val testInputStream: InputStream =
-                    GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import.csv")
-
-                whenever(mockFile.contentType).thenReturn("text/csv")
-                whenever(mockFile.isEmpty).thenReturn(false)
-                whenever(mockFile.inputStream).thenReturn(testInputStream)
-
-                val result = parser.parseCSV(mockFile)
-
-                it("should return list of csv participants") {
-                    val expected = listOf(
-                        FlatParticipant(
-                            "Muster",
-                            "Hans",
-                            GenderDto.MALE,
-                            BirthdayDto(convertDate("07.09.2017")),
-                            "Musterstrasse 1a",
-                            "8000",
-                            "Musterhausen",
-                            "1a",
-                            "Marry Müller"
-                        ),
-                        FlatParticipant(
-                            "Wirbelwind",
-                            "Will",
-                            GenderDto.FEMALE,
-                            BirthdayDto(convertDate("08.12.2015")),
-                            "Wirbelstrasse 16",
-                            "4000",
-                            "Willhausen",
-                            "1a",
-                            "Hans Müller"
-                        )
-                    )
-                    assertEquals(expected, result)
+            Then("should throw an illegal argument exception, indicating that an empty file can not be parsed") {
+                val exception = assertFailsWith<IllegalArgumentException> {
+                    parser.parseCSV(mockFile)
                 }
+                assertEquals("Can not parse empty file", exception.message)
             }
+        }
 
-            on("an empty file") {
+        Scenario("invalid date format") {
+            val testInputStream: InputStream =
+                GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-date.csv")
 
-                whenever(mockFile.contentType).thenReturn("text/csv")
-                whenever(mockFile.isEmpty).thenReturn(true)
+            whenever(mockFile.contentType).thenReturn("text/csv")
+            whenever(mockFile.isEmpty).thenReturn(false)
+            whenever(mockFile.inputStream).thenReturn(testInputStream)
 
-                it("should throw an illegal argument exception, indicating that an empty file can not be parsed") {
-                    val exception = assertFailsWith<IllegalArgumentException> {
-                        parser.parseCSV(mockFile)
-                    }
-                    assertEquals("Can not parse empty file", exception.message)
+            Then("should throw a csv parse exception exception, indicating that the date format is invalid") {
+                val exception = assertFailsWith<CSVParsingException> {
+                    parser.parseCSV(mockFile)
                 }
+                assertEquals("Can not parse birthday: value=08. Juni 2015", exception.message)
+                assertEquals(1, exception.line)
+                assertEquals(54, exception.column)
             }
+        }
 
-            on("invalid date format") {
+        Scenario("invalid gender value") {
+            val testInputStream: InputStream =
+                GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-gender.csv")
 
-                val testInputStream: InputStream =
-                    GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-date.csv")
+            whenever(mockFile.contentType).thenReturn("text/csv")
+            whenever(mockFile.isEmpty).thenReturn(false)
+            whenever(mockFile.inputStream).thenReturn(testInputStream)
 
-                whenever(mockFile.contentType).thenReturn("text/csv")
-                whenever(mockFile.isEmpty).thenReturn(false)
-                whenever(mockFile.inputStream).thenReturn(testInputStream)
-
-                it("should throw a csv parse exception exception, indicating that the date format is invalid") {
-                    val exception = assertFailsWith<CSVParsingException> {
-                        parser.parseCSV(mockFile)
-                    }
-                    assertEquals("Can not parse birthday: value=08. Juni 2015", exception.message)
-                    assertEquals(1, exception.line)
-                    assertEquals(54, exception.column)
+            Then("should throw a csv parse exception, indicating that the gender value is invalid") {
+                val exception = assertFailsWith<CSVParsingException> {
+                    parser.parseCSV(mockFile)
                 }
+                assertEquals("Can not parse gender: value=r", exception.message)
+                assertEquals(0, exception.line)
+                assertEquals(15, exception.column)
             }
+        }
 
-            on("invalid gender value") {
+        Scenario("non csv file") {
+            whenever(mockFile.contentType).thenReturn("application/pdf")
 
-                val testInputStream: InputStream =
-                    GroupFileParserImplSpec.javaClass.getResourceAsStream("/parsing/test-group-import-invalid-gender.csv")
-
-                whenever(mockFile.contentType).thenReturn("text/csv")
-                whenever(mockFile.isEmpty).thenReturn(false)
-                whenever(mockFile.inputStream).thenReturn(testInputStream)
-
-                it("should throw a csv parse exception, indicating that the gender value is invalid") {
-                    val exception = assertFailsWith<CSVParsingException> {
-                        parser.parseCSV(mockFile)
-                    }
-                    assertEquals("Can not parse gender: value=r", exception.message)
-                    assertEquals(0, exception.line)
-                    assertEquals(15, exception.column)
+            Then("should throw an illegal argument exception, indicating that the file type is invalid") {
+                val exception = assertFailsWith<IllegalArgumentException> {
+                    parser.parseCSV(mockFile)
                 }
+                assertEquals("Invalid file type: type=application/pdf", exception.message)
             }
+        }
 
-            on("non csv file") {
+        Scenario("wrong line") {
+            val testInputStream: InputStream = "not,enough,values".byteInputStream()
 
-                whenever(mockFile.contentType).thenReturn("application/pdf")
+            whenever(mockFile.contentType).thenReturn("text/csv")
+            whenever(mockFile.isEmpty).thenReturn(false)
+            whenever(mockFile.inputStream).thenReturn(testInputStream)
 
-                it("should throw an illegal argument exception, indicating that the file type is invalid") {
-                    val exception = assertFailsWith<IllegalArgumentException> {
-                        parser.parseCSV(mockFile)
-                    }
-                    assertEquals("Invalid file type: type=application/pdf", exception.message)
+            Then("should throw a csv parse exception") {
+                val exception = assertFailsWith<CSVParsingException> {
+                    parser.parseCSV(mockFile)
                 }
-            }
-
-            on("wrong line") {
-
-                val testInputStream: InputStream = "not,enough,values".byteInputStream()
-
-                whenever(mockFile.contentType).thenReturn("text/csv")
-                whenever(mockFile.isEmpty).thenReturn(false)
-                whenever(mockFile.inputStream).thenReturn(testInputStream)
-
-                it("should throw a csv parse exception") {
-                    val exception = assertFailsWith<CSVParsingException> {
-                        parser.parseCSV(mockFile)
-                    }
-                    assertEquals("Can not parse line: Missing values.", exception.message)
-                    assertEquals(0, exception.line)
-                    assertEquals(0, exception.column)
-                }
+                assertEquals("Can not parse line: Missing values.", exception.message)
+                assertEquals(0, exception.line)
+                assertEquals(0, exception.column)
             }
         }
     }

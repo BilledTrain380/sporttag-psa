@@ -38,12 +38,9 @@ package ch.schulealtendorf.psa.shared.reporting.rulebook
 
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.TargetThrowingRuleSet
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.gherkin.Feature
 import kotlin.test.assertEquals
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 
 /**
  * Specification for a target throwing rule set.
@@ -52,58 +49,50 @@ import org.jetbrains.spek.api.dsl.on
  * @version 1.0.0
  */
 object TargetThrowingRuleSetSpec : Spek({
+    val male = true
+    val female = false
 
-    describe("a target throwing rule set") {
+    val ruleSet = TargetThrowingRuleSet()
 
-        val male = true
-        val female = false
+    Feature("a formula model") {
+        Scenario("girls 4m") {
 
-        val ruleSet = TargetThrowingRuleSet()
+            val model = FormulaModel("Ballzielwurf", "4m", 17.0, female)
+            val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
-        given("a formula model") {
-
-            on("girls 4m") {
-
-                val model = FormulaModel("Ballzielwurf", "4m", 17.0, female)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 160
-                    assertEquals(expected, points)
-                }
+            Then("should return the resulting points") {
+                val expected = 160
+                assertEquals(expected, points)
             }
+        }
 
-            on("girls 5m") {
+        Scenario("girls 5m") {
+            val model = FormulaModel("Ballzielwurf", "5m", 34.0, female)
+            val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
-                val model = FormulaModel("Ballzielwurf", "5m", 34.0, female)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 466
-                    assertEquals(expected, points)
-                }
+            Then("should return the resulting points") {
+                val expected = 466
+                assertEquals(expected, points)
             }
+        }
 
-            on("boys 4m") {
+        Scenario("boys 4m") {
+            val model = FormulaModel("Ballzielwurf", "4m", 20.0, male)
+            val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
-                val model = FormulaModel("Ballzielwurf", "4m", 20.0, male)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 181
-                    assertEquals(expected, points)
-                }
+            Then("should return the resulting points") {
+                val expected = 181
+                assertEquals(expected, points)
             }
+        }
 
-            on("boys 5m") {
+        Scenario("boys 5m") {
+            val model = FormulaModel("Ballzielwurf", "5m", 30.0, male)
+            val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
-                val model = FormulaModel("Ballzielwurf", "5m", 30.0, male)
-                val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
-
-                it("should return the resulting points") {
-                    val expected = 372
-                    assertEquals(expected, points)
-                }
+            Then("should return the resulting points") {
+                val expected = 372
+                assertEquals(expected, points)
             }
         }
     }

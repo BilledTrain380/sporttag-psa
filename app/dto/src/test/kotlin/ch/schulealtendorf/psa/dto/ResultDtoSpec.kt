@@ -36,55 +36,48 @@
 
 package ch.schulealtendorf.psa.dto
 
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
 
 object ResultDtoSpec : Spek({
+    describe("relative points") {
+        it("should return an integer as string when the factor is 1") {
 
-    describe("a ResultDto") {
+            val discipline = DisciplineDto(
+                "",
+                UnitDto("", 1),
+                hasTrials = false,
+                hasDistance = false
+            )
 
-        given("relative points") {
+            val result = ResultDto(
+                1,
+                20,
+                20,
+                discipline
+            )
 
-            it("should return an integer as string when the factor is 1") {
+            assertEquals("20", result.relValue)
+        }
 
-                val discipline = DisciplineDto(
-                    "",
-                    UnitDto("", 1),
-                    false,
-                    false
-                )
+        it("should return a double as string when factor is not 1") {
 
-                val result = ResultDto(
-                    1,
-                    20,
-                    20,
-                    discipline
-                )
+            val discipline = DisciplineDto(
+                "",
+                UnitDto("", 100),
+                hasTrials = false,
+                hasDistance = false
+            )
 
-                assertEquals("20", result.relValue)
-            }
+            val result = ResultDto(
+                1,
+                2045,
+                20,
+                discipline
+            )
 
-            it("should return a double as string when factor is not 1") {
-
-                val discipline = DisciplineDto(
-                    "",
-                    UnitDto("", 100),
-                    false,
-                    false
-                )
-
-                val result = ResultDto(
-                    1,
-                    2045,
-                    20,
-                    discipline
-                )
-
-                assertEquals("20.45", result.relValue)
-            }
+            assertEquals("20.45", result.relValue)
         }
     }
 })
