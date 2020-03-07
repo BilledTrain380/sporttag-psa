@@ -82,9 +82,10 @@ configure([
 
             // Testing libraries
             dependency "com.nhaarman:mockito-kotlin:1.6.0"
-            dependency "org.jetbrains.spek:spek-api:1.1.5"
-            dependency "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+            dependency "org.spekframework.spek2:spek-dsl-jvm:2.0.9"
+            dependency "org.spekframework.spek2:spek-runner-junit5:2.0.9"
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+            dependency "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
         }
     }
 
@@ -106,16 +107,16 @@ configure([
 
         // common testing libraries
         testImplementation "com.nhaarman:mockito-kotlin"
-        testImplementation "org.jetbrains.spek:spek-api"
-        testImplementation "org.jetbrains.spek:spek-junit-platform-engine"
+        testImplementation "org.spekframework.spek2:spek-dsl-jvm"
+        testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5"
+        testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect"
         testImplementation "org.jetbrains.kotlin:kotlin-test"
+
     }
 
-    junitPlatform {
-        filters {
-            engines {
-                include 'spek'
-            }
+    test {
+        useJUnitPlatform {
+            includeEngines 'spek2'
         }
     }
 }
