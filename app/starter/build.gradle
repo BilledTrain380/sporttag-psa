@@ -51,4 +51,5 @@ dependencies {
     implementation "org.webjars:font-awesome"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test"
 }
