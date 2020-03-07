@@ -42,11 +42,21 @@ import ch.schulealtendorf.psa.dto.ParticipationStatusDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipant
 import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import javax.validation.Valid
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -59,6 +69,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 /**
  * Rest controller for the participants.
@@ -67,7 +78,8 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api/rest")
+@RequestMapping("/api")
+@Tag(name = "participant", description = "Manage participants")
 class ParticipantController(
     private val participantManager: ParticipantManager,
     private val participationManager: ParticipationManager,
@@ -78,6 +90,31 @@ class ParticipantController(
         const val PARTICIPANT: String = "/participant/{participant_id}"
     }
 
+    @Operation(
+        summary = "List participants",
+        tags = ["participant"],
+        parameters = [
+            Parameter(
+                name = "group",
+                description = "Only include participants related to a group"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "List participants",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = RestParticipant::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participant_read')")
     @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
@@ -87,6 +124,32 @@ class ParticipantController(
             .map { json(it) }
     }
 
+    @Operation(
+        summary = "Add new participants",
+        tags = ["participant"],
+        parameters = [
+            Parameter(
+                name = "group"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Participant created"
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized"
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Group does not exist"
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PostMapping("/participants")
     fun createParticipant(
@@ -105,7 +168,7 @@ class ParticipantController(
             participant.surname,
             participant.prename,
             participant.gender,
-            BirthdayDto(participant.birthday),
+            BirthdayDto.ofMillis(participant.birthday),
             false,
             participant.address,
             participant.town,
@@ -194,5 +257,5 @@ class ParticipantController(
             .orElseThrow { NotFoundException("Could not found participant: id=$id") }
     }
 
-    private fun Long?.toBirthday() = if (this == null) null else BirthdayDto(this)
+    private fun Long?.toBirthday() = if (this == null) null else BirthdayDto.ofMillis(this)
 }

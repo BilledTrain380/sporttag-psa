@@ -117,7 +117,7 @@ class GroupFileParserImpl : GroupFileParser {
                         surname,
                         prename,
                         gender,
-                        BirthdayDto(birthday.time),
+                        BirthdayDto.ofMillis(birthday.time),
                         address,
                         zipCode,
                         town,

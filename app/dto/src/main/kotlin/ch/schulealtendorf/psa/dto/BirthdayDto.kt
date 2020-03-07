@@ -39,9 +39,8 @@ package ch.schulealtendorf.psa.dto
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.Year
+import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoField
-import java.util.Date
 import java.util.Locale
 import java.util.ResourceBundle
 
@@ -50,21 +49,14 @@ data class BirthdayDto(
 ) {
     private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
 
-    val date: Date = Date(time.toEpochMilli())
-    val age: Int = Instant.now()[ChronoField.YEAR] - time[ChronoField.YEAR]
-    val year: Year = Year.of(time[ChronoField.YEAR])
+    val age: Int = ZonedDateTime.now().year - time.atZone(ZoneId.systemDefault()).year
+    val year: Year = Year.of(time.atZone(ZoneId.systemDefault()).year)
 
     companion object {
         fun parse(text: String) = BirthdayDto(ZonedDateTime.parse(text).toInstant())
 
         fun ofMillis(milliSeconds: Long) = BirthdayDto(Instant.ofEpochMilli(milliSeconds))
     }
-
-    @Deprecated("Use instant overload")
-    constructor(date: Date) : this(date.time)
-
-    @Deprecated("Use factory method ofMillis")
-    constructor(milliSeconds: Long) : this(Instant.ofEpochMilli(milliSeconds))
 
     /**
      * Formats this Birthday by the given {@code pattern}.
@@ -73,7 +65,7 @@ data class BirthdayDto(
      *
      * @param pattern the format pattern of the date
      */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(this.date)
+    fun format(pattern: String): String = SimpleDateFormat(pattern).format(time.atZone(ZoneId.systemDefault()))
 
     /**
      * Formats the birthday based on the default locale.

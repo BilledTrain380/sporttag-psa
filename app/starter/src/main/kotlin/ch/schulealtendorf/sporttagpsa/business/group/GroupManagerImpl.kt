@@ -132,7 +132,7 @@ class GroupManagerImpl(
             surname = participant.surname,
             prename = participant.prename,
             gender = participant.gender,
-            birthday = participant.birthday.milliseconds,
+            birthday = participant.birthday.time.toEpochMilli(),
             address = participant.address,
             town = town,
             group = group

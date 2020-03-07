@@ -294,7 +294,7 @@ internal fun competitorDtoOf(
     surname: String = "",
     prename: String = "",
     gender: GenderDto = GenderDto.MALE,
-    birthday: BirthdayDto = BirthdayDto(0),
+    birthday: BirthdayDto = BirthdayDto.ofMillis(0),
     absent: Boolean = false,
     address: String = "",
     zip: String = "",
