@@ -51,11 +51,8 @@ data class ParticipantDto @JvmOverloads constructor(
     val absent: Boolean,
     val address: String,
     val town: TownDto,
-    val group: GroupDto,
     val sport: SportDto? = null
 ) {
-    companion object
-
     fun toBuilder() = Builder(this)
 
     class Builder internal constructor(
