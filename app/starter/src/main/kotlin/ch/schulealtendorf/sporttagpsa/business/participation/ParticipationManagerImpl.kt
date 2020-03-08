@@ -48,6 +48,7 @@ import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity.Companion.MAIN_PARTICIPATION
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
+import ch.schulealtendorf.sporttagpsa.lib.ageOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -161,7 +162,7 @@ class ParticipationManagerImpl(
 
         this.results = disciplines.map { discipline ->
             ResultEntity(
-                distance = categoryRuleBook.getDistance(CategoryModel(this.age(), discipline.name)),
+                distance = categoryRuleBook.getDistance(CategoryModel(ageOf(this), discipline.name)),
                 discipline = discipline,
                 value = 1.toLong() * discipline.unit.factor
             ).also {
