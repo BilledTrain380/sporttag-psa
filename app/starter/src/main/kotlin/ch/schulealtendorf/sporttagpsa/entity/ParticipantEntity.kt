@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
+import ch.schulealtendorf.psa.dto.BirthdayDto
 import ch.schulealtendorf.psa.dto.GenderDto
 import javax.persistence.CascadeType
 import javax.persistence.Entity
@@ -97,4 +98,8 @@ data class ParticipantEntity(
     @ManyToOne
     @JoinColumn(name = "FK_SPORT_name", referencedColumnName = "name")
     var sport: SportEntity? = null
-)
+) {
+    fun age(): Int {
+        return BirthdayDto.ofMillis(birthday).age
+    }
+}

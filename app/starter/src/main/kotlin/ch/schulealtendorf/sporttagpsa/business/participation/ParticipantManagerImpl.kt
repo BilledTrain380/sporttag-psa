@@ -36,15 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.TownDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.from
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
-import java.util.Optional
 import org.springframework.stereotype.Component
+import java.util.Optional
 
 /**
  * Default implementation of a {@link ParticipantManager} which uses the repository classes.
@@ -59,43 +60,58 @@ class ParticipantManagerImpl(
     private val groupRepository: GroupRepository
 ) : ParticipantManager {
 
-    override fun getParticipants() = participantRepository.findAll().map { ParticipantDto from it }
+    override fun getParticipants(): List<ParticipantDto> = participantRepository.findAll().map { it.toDto() }
+
+    override fun getParticipantsByGroup(groupName: String): List<ParticipantDto> =
+        participantRepository.findByGroupName(groupName).map { it.toDto() }
 
     override fun getParticipant(id: Int): Optional<ParticipantDto> =
-        participantRepository.findById(id).map { ParticipantDto from it }
+        participantRepository.findById(id).map { it.toDto() }
 
     override fun saveParticipant(participant: ParticipantDto): ParticipantDto {
-
-        val participantEntity: ParticipantEntity = participantRepository.findById(participant.id)
+        val participantEntity = participantRepository.findById(participant.id)
             .orElseGet { ParticipantEntity() }
 
         val townEntity = townRepository.findByZipAndName(participant.town.zip, participant.town.name)
             .orElseGet { TownEntity(zip = participant.town.zip, name = participant.town.name) }
 
-        val groupEntity = groupRepository.findById(participant.group.name)
-            .orElseThrow { NoSuchElementException("Participant group does not exist: name=${participant.group.name}") }
+        val groupEntity = groupRepository.findById(participant.group)
+            .orElseThrow { NoSuchElementException("Participant group does not exist: name=${participant.group}") }
 
         participantEntity.apply {
             surname = participant.surname
             prename = participant.prename
             gender = participant.gender
-            birthday = participant.birthday.milliseconds
+            birthday = participant.birthday.time.toEpochMilli()
             address = participant.address
             town = townEntity
             group = groupEntity
+            absent = participant.isAbsent
         }
 
         return participantRepository.save(participantEntity).toDto()
     }
 
-    override fun deleteParticipant(participant: ParticipantDto) {
-
-        val participantEntity = participantRepository.findById(participant.id)
+    override fun deleteParticipantById(id: Int) {
+        val participantEntity = participantRepository.findById(id)
 
         participantEntity.ifPresent {
             participantRepository.delete(it)
         }
     }
 
-    private fun ParticipantEntity.toDto() = ParticipantDto from this
+    private fun ParticipantEntity.toDto(): ParticipantDto {
+        return ParticipantDto(
+            id = id!!,
+            surname = surname,
+            prename = prename,
+            gender = gender,
+            birthday = BirthdayDto.ofMillis(birthday),
+            isAbsent = absent,
+            address = address,
+            town = TownDto(town.zip, town.name),
+            group = group.name,
+            sport = sport?.name
+        )
+    }
 }

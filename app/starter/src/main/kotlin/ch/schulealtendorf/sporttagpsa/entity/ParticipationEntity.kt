@@ -36,13 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
+import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.validation.constraints.Size
-import org.jetbrains.annotations.NotNull
-
-const val MAIN_PARTICIPATION = "main"
 
 /**
  * @author nmaerchy
@@ -51,7 +50,6 @@ const val MAIN_PARTICIPATION = "main"
 @Entity
 @Table(name = "PARTICIPATION")
 data class ParticipationEntity @JvmOverloads constructor(
-
     @Id
     @NotNull
     @Size(min = 1, max = 10)
@@ -59,5 +57,9 @@ data class ParticipationEntity @JvmOverloads constructor(
 
     @NotNull
     @Size(min = 1, max = 10)
-    var status: String = "OPEN"
-)
+    var status: ParticipationStatusType = ParticipationStatusType.OPEN
+) {
+    companion object {
+        const val MAIN_PARTICIPATION = "main"
+    }
+}

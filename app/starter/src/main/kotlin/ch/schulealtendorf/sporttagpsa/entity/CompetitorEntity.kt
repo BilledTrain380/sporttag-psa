@@ -67,4 +67,6 @@ data class CompetitorEntity(
 
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "competitor")
     var results: Set<ResultEntity> = setOf()
-)
+) {
+    fun age() = participant.age()
+}

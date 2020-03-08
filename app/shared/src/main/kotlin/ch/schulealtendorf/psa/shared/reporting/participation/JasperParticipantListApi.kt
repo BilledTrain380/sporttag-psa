@@ -38,7 +38,7 @@ package ch.schulealtendorf.psa.shared.reporting.participation
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
@@ -61,7 +61,7 @@ class JasperParticipantListApi(
     override fun createPdfReport(data: Collection<ParticipantDto>, config: SportDto): File {
 
         val participants = data
-            .filterNot { it.absent }
+            .filterNot { it.isAbsent }
             .filter { it.sport == config }
             .map { ParticipantDataSet from it }
             .sortedBy { it.group }

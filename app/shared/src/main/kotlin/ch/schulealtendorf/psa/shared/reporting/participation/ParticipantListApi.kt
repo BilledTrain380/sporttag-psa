@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.ReportApi
 

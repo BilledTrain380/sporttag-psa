@@ -34,7 +34,11 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.participation
+
+import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.TownDto
 
 /**
  * Data class representing a participant.
@@ -48,10 +52,11 @@ data class ParticipantDto @JvmOverloads constructor(
     val prename: String,
     val gender: GenderDto,
     val birthday: BirthdayDto,
-    val absent: Boolean,
+    val isAbsent: Boolean,
     val address: String,
     val town: TownDto,
-    val sport: SportDto? = null
+    val group: String,
+    val sport: String? = null
 ) {
     fun toBuilder() = Builder(this)
 
@@ -62,10 +67,9 @@ data class ParticipantDto @JvmOverloads constructor(
         private var prename = dto.prename
         private var gender = dto.gender
         private var birthday = dto.birthday
-        private var isAbsent = dto.absent
         private var address = dto.address
         private var town = dto.town
-        private var sport = dto.sport
+        private var isAbsent = dto.isAbsent
 
         fun setSurname(surname: String): Builder {
             this.surname = surname
@@ -87,11 +91,6 @@ data class ParticipantDto @JvmOverloads constructor(
             return this
         }
 
-        fun setAbsent(isAbsent: Boolean): Builder {
-            this.isAbsent = isAbsent
-            return this
-        }
-
         fun setAddress(address: String): Builder {
             this.address = address
             return this
@@ -102,8 +101,8 @@ data class ParticipantDto @JvmOverloads constructor(
             return this
         }
 
-        fun setSport(sport: SportDto?): Builder {
-            this.sport = sport
+        fun setAbsent(isAbsent: Boolean): Builder {
+            this.isAbsent = isAbsent
             return this
         }
 
@@ -112,10 +111,9 @@ data class ParticipantDto @JvmOverloads constructor(
             prename = prename,
             gender = gender,
             birthday = birthday,
-            absent = isAbsent,
             address = address,
             town = town,
-            sport = sport
+            isAbsent = isAbsent
         )
     }
 }

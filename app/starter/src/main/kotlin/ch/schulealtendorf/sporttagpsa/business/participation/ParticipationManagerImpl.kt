@@ -36,23 +36,23 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
-import ch.schulealtendorf.psa.dto.ParticipationStatusDto
-import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.SportConstant.ATHLETICS
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.shared.rulebook.CategoryModel
 import ch.schulealtendorf.psa.shared.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.MAIN_PARTICIPATION
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity
+import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity.Companion.MAIN_PARTICIPATION
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
-import org.joda.time.DateTime
+import ch.schulealtendorf.sporttagpsa.repository.SportRepository
 import org.springframework.stereotype.Component
 
 /**
@@ -65,113 +65,41 @@ class ParticipationManagerImpl(
     private val participationRepository: ParticipationRepository,
     private val competitorRepository: CompetitorRepository,
     private val categoryRuleBook: CategoryRuleBook,
+    private val sportRepository: SportRepository,
     private val disciplineRepository: DisciplineRepository,
     private val databaseReset: DatabaseReset
 ) : ParticipationManager {
-
-    /**
-     * Marks the given {@code participant} as absent.
-     *
-     * @param participant the participant to mark as absent
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     */
-    override fun markAsAbsent(participant: ParticipantDto) {
-
-        val participantEntity = participantRepository.findById(participant.id)
-            .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
-
-        participantEntity.absent = true
-
-        participantRepository.save(participantEntity)
-    }
-
-    /**
-     * Marks the given {@code participant} as present.
-     *
-     * @param participant the participant to mark as absent
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     */
-    override fun markAsPresent(participant: ParticipantDto) {
-
-        val participantEntity = participantRepository.findById(participant.id)
-            .orElseThrow { NoSuchElementException("Could not found participant: id=${participant.id}") }
-
-        participantEntity.absent = false
-
-        participantRepository.save(participantEntity)
-    }
-
-    /**
-     * Sets the given {@code sport} to the given {@code participant}.
-     *
-     * This operation can not be performed, if the {@link ParticipationManager#getParticipationStatus}equals {@link ParticipationStatus#CLOSE}.
-     * In order to change the sport of a participant, use the {@link ParticipationManager#reParticipate} method.
-     *
-     * @param participant the participant to set the sport on
-     * @param sport the sport to set on the participant
-     *
-     * @throws NoSuchElementException if the given participant or sport could not be found
-     * @throws IllegalStateException if the participation is already closed
-     */
-    override fun participate(participant: ParticipantDto, sport: SportDto) {
-
-        if (getParticipationStatus() == ParticipationStatusDto.CLOSE) {
+    override fun participate(participant: ParticipantDto, sport: String) {
+        if (getParticipationStatus() == ParticipationStatusType.CLOSED) {
             throw IllegalStateException("Participation already closed. Use ParticipationManager#reParticipate instead")
         }
 
-        val participantEntity = participantRepository.findById(participant.id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=${participant.id}") }
+        val participantEntity = getParticipantOrFail(participant.id)
+        val sportEntity = getSportOrFail(sport)
 
-        participantEntity.sport = SportEntity(sport.name)
+        participantEntity.sport = sportEntity
 
         participantRepository.save(participantEntity)
     }
 
-    /**
-     * Sets the given {@code sport} to the given {@code participant}.
-     *
-     * In contrast to the {@link ParticipationManager#participate} method, this operation will
-     * consider the participation status.
-     *
-     * If the {@link ParticipationManager#getParticipationStatus} equals {@link ParticipationStatus#CLOSE},
-     * and the given {@code sport} equals athletics, the participant will be saved as a competitor.
-     *
-     * If the {@link ParticipationManager#getParticipationStatus} equals {@link ParticipationStatus#CLOSE},
-     * and the given {@code participant} is already a competitor, but the given {@code sport} is not athletics,
-     * the competitor will be removed.
-     *
-     * The {@link ParticipationManager#getParticipationStatus} must be equal to {@link ParticipationStatus#CLOSE}
-     * in order to perform this operation. Otherwise use the {@link ParticipationManager#participate} method.
-     *
-     * @param participant the participant to set the sport on
-     * @param sport the sport to set on the participant
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     * @throws IllegalStateException if the participation status is not CLOSE.
-     */
-    override fun reParticipate(participant: ParticipantDto, sport: SportDto) {
-
-        if (getParticipationStatus() != ParticipationStatusDto.CLOSE) {
-            throw IllegalStateException("Participation is open. Use ParticipationManager#participate instead")
+    override fun reParticipate(participant: ParticipantDto, sport: String) {
+        if (getParticipationStatus() != ParticipationStatusType.CLOSED) {
+            throw IllegalStateException("Participation is not closed. Use ParticipationManager#participate instead")
         }
 
-        val participantEntity = participantRepository.findById(participant.id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=${participant.id}") }
+        val participantEntity = getParticipantOrFail(participant.id)
 
-        // only perform further if any changes are made
-        if (participantEntity.sport != null && participantEntity.sport?.name == sport.name) {
+        // only perform further if sport differs from existing
+        if (participantEntity.sport != null && participantEntity.sport?.name == sport) {
             return
         }
 
-        participantEntity.sport = SportEntity(sport.name)
+        participantEntity.sport = SportEntity(sport)
         participantRepository.save(participantEntity)
 
-        if (sport.name == ATHLETICS) {
+        if (sport == ATHLETICS) {
             participantEntity.saveAsCompetitor()
         } else {
-
             val competitor = competitorRepository.findByParticipantId(participant.id)
 
             competitor.ifPresent {
@@ -180,53 +108,46 @@ class ParticipationManagerImpl(
         }
     }
 
-    /**
-     * Closes the participation. {@link ParticipationManager#getParticipationStatus} will always
-     * return {@link ParticipationStatus#CLOSE} until {@link ParticipationManager#resetParticipation}
-     * will be invoked.
-     *
-     * This operation looks up all participant who participates in the sport athletics
-     * and saves them as {@link Competitor} with default results of all available disciplines.
-     *
-     * If the participation is already closed, this method performs not any further.
-     */
     override fun closeParticipation() {
-
-        if (getParticipationStatus() == ParticipationStatusDto.CLOSE) {
+        if (getParticipationStatus() == ParticipationStatusType.CLOSED) {
             return
         }
 
         val participants = participantRepository.findBySportName(ATHLETICS)
-
         participants.forEach { it.saveAsCompetitor() }
 
-        val participation = ParticipationEntity(MAIN_PARTICIPATION, ParticipationStatusDto.CLOSE.name)
+        val participation = getParticipationOrFail().apply {
+            status = ParticipationStatusType.CLOSED
+        }
+
         participationRepository.save(participation)
     }
 
-    /**
-     * Resets the participation. All recorded data will be DELETED.
-     *
-     * {@link ParticipationManager#getParticipationStatus} will always return {@link ParticipationStatus#OPEN}
-     * until {@link ParticipationManager#closeParticipation} will be invoked.
-     */
     override fun resetParticipation() {
-
         databaseReset.run()
-        val participation = ParticipationEntity(MAIN_PARTICIPATION, ParticipationStatusDto.OPEN.name)
+
+        val participation = getParticipationOrFail().apply {
+            status = ParticipationStatusType.OPEN
+        }
+
         participationRepository.save(participation)
     }
 
-    /**
-     * @return the participation status
-     * @throws IllegalStateException if no participation status could be found
-     */
-    override fun getParticipationStatus(): ParticipationStatusDto {
+    override fun getParticipationStatus(): ParticipationStatusType = getParticipationOrFail().status
 
-        val participation = participationRepository.findById(MAIN_PARTICIPATION)
+    private fun getParticipantOrFail(id: Int): ParticipantEntity {
+        return participantRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
+    }
+
+    private fun getSportOrFail(sport: String): SportEntity {
+        return sportRepository.findById(sport)
+            .orElseThrow { NoSuchElementException("Could not find sport: name=$sport") }
+    }
+
+    private fun getParticipationOrFail(): ParticipationEntity {
+        return participationRepository.findById(MAIN_PARTICIPATION)
             .orElseThrow { IllegalStateException("No participation status could be found. There MUST be a status. Check your database.") }
-
-        return ParticipationStatusDto.valueOf(participation.status)
     }
 
     private fun ParticipantEntity.saveAsCompetitor() {
@@ -236,21 +157,16 @@ class ParticipationManagerImpl(
     }
 
     private fun CompetitorEntity.createDefaultResults() {
-
         val disciplines = disciplineRepository.findAll()
 
-        this.results = disciplines.map {
+        this.results = disciplines.map { discipline ->
             ResultEntity(
-                distance = categoryRuleBook.getDistance(CategoryModel(this.age(), it.name)),
-                discipline = it,
-                value = 1.toLong() * it.unit.factor
+                distance = categoryRuleBook.getDistance(CategoryModel(this.age(), discipline.name)),
+                discipline = discipline,
+                value = 1.toLong() * discipline.unit.factor
             ).also {
                 it.competitor = this
             }
         }.toSet()
-    }
-
-    private fun CompetitorEntity.age(): Int {
-        return DateTime.now().year - DateTime(participant.birthday).year
     }
 }
