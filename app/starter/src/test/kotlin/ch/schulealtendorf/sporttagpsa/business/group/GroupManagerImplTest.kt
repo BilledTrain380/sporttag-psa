@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 internal class GroupManagerImplTest {
 
     @Autowired
-    lateinit var groupManager: GroupManagerImpl
+    private lateinit var groupManager: GroupManagerImpl
 
     @Test
     internal fun hasPendingParticipation() {
