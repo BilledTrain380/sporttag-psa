@@ -14,7 +14,7 @@ INSERT INTO PARTICIPANT_GROUP (name, FK_COACH_id) VALUES
 INSERT INTO TOWN (zip, name) VALUES
 ('3000', 'Bern');
 
-INSERT INTO PARTICIPANT (surname, prename, gender, birthday, address, FK_TOWN_id, FK_GROUP_name, FK_SPORT_name) VALUES
+INSERT INTO PARTICIPANT (prename, surname, gender, birthday, address, FK_TOWN_id, FK_GROUP_name, FK_SPORT_name) VALUES
 ('Emily', 'Hill', 'FEMALE', 1298419200000, 'Hanover Street 45', (SELECT t.id FROM TOWN AS t WHERE t.zip = '3000'), (SELECT g.name FROM PARTICIPANT_GROUP AS g WHERE g.name = '2a'), 'Schatzsuche'),
 ('Betty', 'Robertson', 'MALE', 1305158400000, 'Lighthouse Drive 354', (SELECT t.id FROM TOWN AS t WHERE t.zip = '3000'), (SELECT g.name FROM PARTICIPANT_GROUP AS g WHERE g.name = '2a'), null),
 ('Howard', 'Jordan', 'MALE', 1313107200000, 'Neville Street 21', (SELECT t.id FROM TOWN AS t WHERE t.zip = '3000'), (SELECT g.name FROM PARTICIPANT_GROUP AS g WHERE g.name = '2a'), 'Brennball'),

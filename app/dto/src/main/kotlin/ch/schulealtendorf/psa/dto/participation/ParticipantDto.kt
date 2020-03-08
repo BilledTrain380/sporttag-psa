@@ -47,12 +47,12 @@ import ch.schulealtendorf.psa.dto.TownDto
  * @since 2.0.0
  */
 data class ParticipantDto @JvmOverloads constructor(
-    val id: Int,
+    val id: Int = 0,
     val surname: String,
     val prename: String,
     val gender: GenderDto,
     val birthday: BirthdayDto,
-    val isAbsent: Boolean,
+    val isAbsent: Boolean = false,
     val address: String,
     val town: TownDto,
     val group: String,
