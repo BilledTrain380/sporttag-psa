@@ -292,7 +292,7 @@ class ParticipantController(
     fun updateParticipant(@PathVariable("participant_id") id: Int, @RequestBody dto: ParticipantRelation) {
         val participant = participantManager.getParticipantOrElseFail(id)
 
-        dto.sport.ifNotNull {
+        dto.sportType.ifNotNull {
             val participationStatus = participationManager.getParticipationStatus()
 
             if (participationStatus == ParticipationStatusType.OPEN) {

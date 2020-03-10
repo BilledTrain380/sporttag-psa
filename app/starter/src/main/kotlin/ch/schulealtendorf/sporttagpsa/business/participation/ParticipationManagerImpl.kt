@@ -75,8 +75,8 @@ class ParticipationManagerImpl(
             throw IllegalStateException("Participation already closed. Use ParticipationManager#reParticipate instead")
         }
 
-        val participantEntity = getParticipantOrFail(participant.id)
-        val sportEntity = getSportOrFail(sport)
+        val participantEntity = participantRepository.getParticipantOrFail(participant.id)
+        val sportEntity = sportRepository.getSportOrFail(sport)
 
         participantEntity.sport = sportEntity
 
@@ -88,14 +88,14 @@ class ParticipationManagerImpl(
             throw IllegalStateException("Participation is not closed. Use ParticipationManager#participate instead")
         }
 
-        val participantEntity = getParticipantOrFail(participant.id)
+        val participantEntity = participantRepository.getParticipantOrFail(participant.id)
 
         // only perform further if sport differs from existing
         if (participantEntity.sport != null && participantEntity.sport?.name == sport) {
             return
         }
 
-        participantEntity.sport = SportEntity(sport)
+        participantEntity.sport = sportRepository.getSportOrFail(sport)
         participantRepository.save(participantEntity)
 
         if (sport == ATHLETICS) {
@@ -117,7 +117,7 @@ class ParticipationManagerImpl(
         val participants = participantRepository.findBySportName(ATHLETICS)
         participants.forEach { it.saveAsCompetitor() }
 
-        val participation = getParticipationOrFail().apply {
+        val participation = participationRepository.getParticipationOrFail().apply {
             status = ParticipationStatusType.CLOSED.name
         }
 
@@ -128,27 +128,32 @@ class ParticipationManagerImpl(
         participantRepository.deleteAll()
         groupRepository.deleteAll()
 
-        val participation = getParticipationOrFail().apply {
+        val participation = participationRepository.getParticipationOrFail().apply {
             status = ParticipationStatusType.OPEN.name
         }
 
         participationRepository.save(participation)
     }
 
-    override fun getParticipationStatus(): ParticipationStatusType = getParticipationOrFail().statusType
+    override fun getParticipationStatus(): ParticipationStatusType =
+        participationRepository.getParticipationOrFail().statusType
 
-    private fun getParticipantOrFail(id: Int): ParticipantEntity {
-        return participantRepository.findById(id)
+    override fun getSportTypes(): List<String> {
+        return sportRepository.findAll().map { it.name }
+    }
+
+    private fun ParticipantRepository.getParticipantOrFail(id: Int): ParticipantEntity {
+        return this.findById(id)
             .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
     }
 
-    private fun getSportOrFail(sport: String): SportEntity {
-        return sportRepository.findById(sport)
+    private fun SportRepository.getSportOrFail(sport: String): SportEntity {
+        return this.findById(sport)
             .orElseThrow { NoSuchElementException("Could not find sport: name=$sport") }
     }
 
-    private fun getParticipationOrFail(): ParticipationEntity {
-        return participationRepository.findById(MAIN_PARTICIPATION)
+    private fun ParticipationRepository.getParticipationOrFail(): ParticipationEntity {
+        return this.findById(MAIN_PARTICIPATION)
             .orElseThrow { IllegalStateException("No participation status could be found. There MUST be a status. Check your database.") }
     }
 

@@ -110,4 +110,9 @@ interface ParticipationManager {
      * @return the participation status
      */
     fun getParticipationStatus(): ParticipationStatusType
+
+    /**
+     * @return a list of all sport types
+     */
+    fun getSportTypes(): List<String>
 }

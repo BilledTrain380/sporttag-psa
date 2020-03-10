@@ -44,6 +44,7 @@ import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManage
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -127,5 +128,30 @@ class ParticipationController(
             ParticipationCommand.CLOSE -> participationManager.closeParticipation()
             ParticipationCommand.RESET -> participationManager.resetParticipation()
         }
+    }
+
+    @Operation(
+        summary = "List all sport types",
+        tags = ["Participation"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.SPORT_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "All sport types",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = String::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('sport_read')")
+    @GetMapping("/sports", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getSportTypes(): List<String> {
+        return participationManager.getSportTypes()
     }
 }

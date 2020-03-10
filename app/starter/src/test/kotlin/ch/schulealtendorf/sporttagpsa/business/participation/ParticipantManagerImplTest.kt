@@ -73,7 +73,7 @@ internal class ParticipantManagerImplTest {
         assertThat(participant.town.zip).isEqualTo("3000")
         assertThat(participant.town.name).isEqualTo("Bern")
         assertThat(participant.group).isEqualTo("2a")
-        assertThat(participant.sport).isEqualTo("Schatzsuche")
+        assertThat(participant.sportType).isEqualTo("Schatzsuche")
     }
 
     @Test

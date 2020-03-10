@@ -53,7 +53,7 @@ internal class ParticipationManagerImplTest {
         participationManager.participate(participant, ATHLETICS)
 
         val savedParticipant = participantManager.getParticipant(1).get()
-        assertThat(savedParticipant.sport).isEqualTo(ATHLETICS)
+        assertThat(savedParticipant.sportType).isEqualTo(ATHLETICS)
     }
 
     @Test
@@ -112,7 +112,7 @@ internal class ParticipationManagerImplTest {
         assertThat(competitor).isEmpty
 
         val updatedParticipant = participantManager.getParticipant(7)
-        assertThat(updatedParticipant.get().sport).isEqualTo("Schatzsuche")
+        assertThat(updatedParticipant.get().sportType).isEqualTo("Schatzsuche")
     }
 
     @Test
@@ -191,5 +191,18 @@ internal class ParticipationManagerImplTest {
 
         val groups = groupRepository.findAll()
         assertThat(groups).isEmpty()
+    }
+
+    @Test
+    internal fun getSportTypes() {
+
+        val sportTypes = participationManager.getSportTypes()
+
+        assertThat(sportTypes).hasSize(4)
+        assertThat(sportTypes)
+            .contains("Schatzsuche")
+            .contains(ATHLETICS)
+            .contains("Brennball")
+            .contains("Velo- Rollerblades")
     }
 }

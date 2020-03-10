@@ -56,7 +56,7 @@ data class ParticipantDto @JvmOverloads constructor(
     val address: String,
     val town: TownDto,
     val group: String,
-    val sport: String? = null
+    val sportType: String? = null
 ) {
     fun toBuilder() = Builder(this)
 
