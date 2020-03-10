@@ -36,49 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.dto.DisciplineDto
-import ch.schulealtendorf.psa.dto.GenderDto
-import ch.schulealtendorf.psa.dto.GroupDto
-import ch.schulealtendorf.psa.dto.ParticipantDto
-import ch.schulealtendorf.psa.dto.ParticipationStatusDto
-import ch.schulealtendorf.psa.dto.ResultDto
-import ch.schulealtendorf.psa.dto.SportDto
-import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.psa.dto.UserDto
 
 // Data classes representing the JSON object, where the model class itself does not fit.
-
-data class RestParticipant @JvmOverloads constructor(
-    val id: Int,
-    val surname: String,
-    val prename: String,
-    val gender: GenderDto,
-    val birthday: Long,
-    val absent: Boolean,
-    val address: String,
-    val town: TownDto,
-    val group: GroupDto,
-    val sport: SportDto? = null
-)
-
-data class RestParticipationStatus(
-    val status: ParticipationStatusDto
-)
-
-data class RestCompetitor(
-    val id: Int,
-    val startNumber: Int,
-    val surname: String,
-    val prename: String,
-    val gender: GenderDto,
-    val birthday: Long,
-    val absent: Boolean,
-    val address: String,
-    val town: TownDto,
-    val group: GroupDto,
-    val results: List<RestResult>
-)
 
 data class RestResult(
     val id: Int,
@@ -95,51 +56,6 @@ data class RestUser(
 )
 
 // Factory functions to create a data class representing the the JSON object of the given parameter.
-
-fun json(participant: ParticipantDto): RestParticipant {
-    return RestParticipant(
-        participant.id,
-        participant.surname,
-        participant.prename,
-        participant.gender,
-        participant.birthday.time.toEpochMilli(),
-        participant.absent,
-        participant.address,
-        participant.town,
-        participant.group,
-        participant.sport
-    )
-}
-
-fun json(participationStatus: ParticipationStatusDto): RestParticipationStatus {
-    return RestParticipationStatus(participationStatus)
-}
-
-fun json(competitor: CompetitorDto): RestCompetitor {
-    return RestCompetitor(
-        competitor.id,
-        competitor.startNumber,
-        competitor.surname,
-        competitor.prename,
-        competitor.gender,
-        competitor.birthday.time.toEpochMilli(),
-        competitor.absent,
-        competitor.address,
-        competitor.town,
-        competitor.group,
-        competitor.results.map { json(it) }
-    )
-}
-
-fun json(result: ResultDto): RestResult {
-    return RestResult(
-        result.id,
-        result.value,
-        result.points,
-        result.distance,
-        result.discipline
-    )
-}
 
 fun json(user: UserDto): RestUser {
     return RestUser(
