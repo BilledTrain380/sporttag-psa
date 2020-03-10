@@ -36,18 +36,18 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participant
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.ParticipantDto
-import ch.schulealtendorf.psa.dto.ParticipationStatusDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantElement
+import ch.schulealtendorf.psa.dto.participation.ParticipantInput
+import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
-import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipant
-import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import ch.schulealtendorf.sporttagpsa.lib.ifNotNull
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -69,7 +69,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.Valid
 
 /**
  * Rest controller for the participants.
@@ -79,20 +78,19 @@ import javax.validation.Valid
  */
 @RestController
 @RequestMapping("/api")
-@Tag(name = "participant", description = "Manage participants")
+@Tag(name = "Participant", description = "Manage participants")
 class ParticipantController(
     private val participantManager: ParticipantManager,
     private val participationManager: ParticipationManager,
     private val groupManager: GroupManager
 ) {
-
     companion object {
         const val PARTICIPANT: String = "/participant/{participant_id}"
     }
 
     @Operation(
         summary = "List participants",
-        tags = ["participant"],
+        tags = ["Participant"],
         parameters = [
             Parameter(
                 name = "group",
@@ -106,7 +104,7 @@ class ParticipantController(
             ApiResponse(
                 responseCode = "200",
                 description = "List participants",
-                content = [Content(array = ArraySchema(schema = Schema(implementation = RestParticipant::class)))]
+                content = [Content(array = ArraySchema(schema = Schema(implementation = ParticipantDto::class)))]
             ),
             ApiResponse(
                 responseCode = "401",
@@ -117,21 +115,53 @@ class ParticipantController(
     )
     @PreAuthorize("#oauth2.hasScope('participant_read')")
     @GetMapping("/participants", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<RestParticipant> {
+    fun getParticipants(@RequestParam("group", required = false) groupName: String?): List<ParticipantDto> {
+        if (groupName == null) {
+            return participantManager.getParticipants()
+        }
 
-        return participantManager.getParticipants()
-            .filter { (groupName == null) || it.group.name == groupName }
-            .map { json(it) }
+        return participantManager.getParticipantsByGroup(groupName)
     }
 
     @Operation(
-        summary = "Add new participants",
-        tags = ["participant"],
+        summary = "Get a participant",
+        tags = ["Participant"],
         parameters = [
             Parameter(
-                name = "group"
+                name = "participant_id",
+                description = "The id of the participant to find"
             )
         ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found participant",
+                content = [Content(schema = Schema(implementation = ParticipantDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Participant not found",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('participant_read')")
+    @GetMapping(PARTICIPANT, produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getParticipant(@PathVariable("participant_id") id: Int): ParticipantDto {
+        return participantManager.getParticipantOrElseFail(id)
+    }
+
+    @Operation(
+        summary = "Add a new participant",
+        tags = ["Participant"],
         security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
     )
     @ApiResponses(
@@ -152,110 +182,158 @@ class ParticipantController(
     )
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PostMapping("/participants")
-    fun createParticipant(
-        @RequestParam(
-            "group",
-            required = true
-        ) groupName: String,
-        @Valid @RequestBody participant: CreateParticipant
-    ) {
-
-        val group = groupManager.getGroup(groupName)
-            .orElseThrow { BadRequestException("Could not find group: name=$groupName") }
-
-        var newParticipant = ParticipantDto(
-            0,
-            participant.surname,
-            participant.prename,
-            participant.gender,
-            BirthdayDto.ofMillis(participant.birthday),
-            false,
-            participant.address,
-            participant.town,
-            group
+    fun createParticipant(@RequestBody input: ParticipantInput) {
+        val participant = ParticipantDto(
+            surname = input.surname,
+            prename = input.prename,
+            gender = input.gender,
+            birthday = input.birthday,
+            address = input.address,
+            town = input.town,
+            isAbsent = false,
+            group = input.group
         )
 
-        newParticipant = participantManager.saveParticipant(newParticipant)
-
-        val participationStatus = participationManager.getParticipationStatus()
-
-        if (participationStatus == ParticipationStatusDto.OPEN) {
-            participationManager.participate(newParticipant, participant.sport)
-        } else if (participationStatus == ParticipationStatusDto.CLOSE) {
-            participationManager.reParticipate(newParticipant, participant.sport)
-        }
+        participantManager.saveParticipant(participant)
     }
 
-    @PreAuthorize("#oauth2.hasScope('participant_read')")
-    @GetMapping(PARTICIPANT, produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getParticipant(@PathVariable("participant_id") id: Int): RestParticipant {
-
-        val participant = participantManager.getParticipantById(id)
-
-        return json(participant)
-    }
-
+    @Operation(
+        summary = "Update participant properties",
+        tags = ["Participant"],
+        parameters = [
+            Parameter(
+                name = "participant_id",
+                description = "The id of the participant to update"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Updated participant"
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Participant not found"
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PatchMapping(PARTICIPANT)
-    fun patchParticipant(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: UpdateParticipant) {
+    fun updateParticipant(@PathVariable("participant_id") id: Int, @RequestBody dto: ParticipantElement) {
+        val builder = participantManager.getParticipantOrElseFail(id).toBuilder()
 
-        var participant = participantManager.getParticipantById(id)
-
-        participant = participant
-            .copy(surname = patchParticipant.surname ?: participant.surname)
-            .copy(prename = patchParticipant.prename ?: participant.prename)
-            .copy(gender = patchParticipant.gender ?: participant.gender)
-            .copy(birthday = patchParticipant.birthday.toBirthday() ?: participant.birthday)
-            .copy(address = patchParticipant.address ?: participant.address)
-
-        participant = participantManager.saveParticipant(participant)
-
-        if (patchParticipant.absent == true) {
-            participationManager.markAsAbsent(participant)
-        } else if (patchParticipant.absent == false) {
-            participationManager.markAsPresent(participant)
+        dto.prename.ifNotNull {
+            builder.setPrename(it)
         }
+
+        dto.surname.ifNotNull {
+            builder.setSurname(it)
+        }
+
+        dto.address.ifNotNull {
+            builder.setAddress(it)
+        }
+
+        dto.birthday.ifNotNull {
+            builder.setBirthday(it)
+        }
+
+        dto.gender.ifNotNull {
+            builder.setGender(it)
+        }
+
+        dto.town.ifNotNull {
+            builder.setTown(it)
+        }
+
+        dto.isAbsent.ifNotNull {
+            builder.setAbsent(it)
+        }
+
+        participantManager.saveParticipant(builder.build())
     }
 
+    @Operation(
+        summary = "Update participant relations",
+        tags = ["Participant"],
+        parameters = [
+            Parameter(
+                name = "participant_id",
+                description = "The id of the participant to update"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Updated participant"
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized"
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Participant not found"
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PutMapping(PARTICIPANT)
-    fun putParticipantTown(@PathVariable("participant_id") id: Int, @RequestBody patchParticipant: UpdateParticipant) {
+    fun updateParticipant(@PathVariable("participant_id") id: Int, @RequestBody dto: ParticipantRelation) {
+        val participant = participantManager.getParticipantOrElseFail(id)
 
-        var participant = participantManager.getParticipantById(id)
+        dto.sport.ifNotNull {
+            val participationStatus = participationManager.getParticipationStatus()
 
-        participant = participant
-            .copy(town = patchParticipant.town ?: participant.town)
-
-        participant = participantManager.saveParticipant(participant)
-
-        if (patchParticipant.sport == null) {
-            return
-        }
-
-        val participationStatus = participationManager.getParticipationStatus()
-
-        if (participationStatus == ParticipationStatusDto.OPEN) {
-            participationManager.participate(participant, patchParticipant.sport)
-        } else if (participationStatus == ParticipationStatusDto.CLOSE) {
-            participationManager.reParticipate(participant, patchParticipant.sport)
+            if (participationStatus == ParticipationStatusType.OPEN) {
+                participationManager.participate(participant, it)
+            } else if (participationStatus == ParticipationStatusType.CLOSED) {
+                participationManager.reParticipate(participant, it)
+            }
         }
     }
 
+    @Operation(
+        summary = "Delete a participant",
+        tags = ["Participant"],
+        parameters = [
+            Parameter(
+                name = "participant_id",
+                description = "The id of the participant to delete"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Deleted the participant"
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized"
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @DeleteMapping(PARTICIPANT)
     fun deleteParticipant(@PathVariable("participant_id") id: Int) {
-
-        val paritcipant = participantManager.getParticipant(id)
-
-        paritcipant.ifPresent {
-            participantManager.deleteParticipant(it)
-        }
+        participantManager.deleteParticipantById(id)
     }
 
-    private fun ParticipantManager.getParticipantById(id: Int): ParticipantDto {
+    private fun ParticipantManager.getParticipantOrElseFail(id: Int): ParticipantDto {
         return getParticipant(id)
             .orElseThrow { NotFoundException("Could not found participant: id=$id") }
     }
-
-    private fun Long?.toBirthday() = if (this == null) null else BirthdayDto.ofMillis(this)
 }

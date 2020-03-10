@@ -36,11 +36,20 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 
-import ch.schulealtendorf.psa.dto.ParticipationStatusDto
+import ch.schulealtendorf.psa.dto.participation.ParticipationCommand
+import ch.schulealtendorf.psa.dto.status.StatusDto
+import ch.schulealtendorf.psa.dto.status.StatusEntry
+import ch.schulealtendorf.psa.dto.status.StatusSeverity
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.controller.rest.ForbiddenException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestParticipationStatus
-import ch.schulealtendorf.sporttagpsa.controller.rest.json
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -54,26 +63,69 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api/rest")
+@RequestMapping("/api")
+@Tag(name = "Participation", description = "Manage the participation")
 class ParticipationController(
     private val participationManager: ParticipationManager
 ) {
-
+    @Operation(
+        summary = "Get the participation status",
+        tags = ["Participation"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPATION])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Participation status",
+                content = [Content(schema = Schema(implementation = StatusDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participation')")
     @GetMapping("/participation", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getParticipation(): RestParticipationStatus {
+    fun getParticipation(): StatusDto {
         val status = participationManager.getParticipationStatus()
-        return json(status)
+
+        return StatusDto(
+            StatusSeverity.OK,
+            listOf(
+                StatusEntry(
+                    StatusSeverity.INFO,
+                    status
+                )
+            )
+        )
     }
 
+    @Operation(
+        summary = "Close or reset the participation",
+        tags = ["Participation"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPATION])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Closed or reset the participation"
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized"
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('participation') and hasRole('ADMIN')")
     @PatchMapping("/participation")
-    fun updateParticipation(@RequestBody participation: RestParticipationStatus) {
-
-        when (participation.status) {
-            ParticipationStatusDto.OPEN -> throw ForbiddenException("Participation can not be set to OPEN. Use RESET to reopen a participation")
-            ParticipationStatusDto.CLOSE -> participationManager.closeParticipation()
-            ParticipationStatusDto.RESET -> participationManager.resetParticipation()
+    fun updateParticipation(@RequestBody command: ParticipationCommand) {
+        when (command) {
+            ParticipationCommand.CLOSE -> participationManager.closeParticipation()
+            ParticipationCommand.RESET -> participationManager.resetParticipation()
         }
     }
 }
