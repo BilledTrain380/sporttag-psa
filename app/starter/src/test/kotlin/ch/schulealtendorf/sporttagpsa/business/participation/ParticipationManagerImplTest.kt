@@ -2,7 +2,7 @@ package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.psa.dto.BirthdayDto
 import ch.schulealtendorf.psa.dto.GenderDto
-import ch.schulealtendorf.psa.dto.SportConstant.ATHLETICS
+import ch.schulealtendorf.psa.dto.SportTypeConstant.ATHLETICS
 import ch.schulealtendorf.psa.dto.TownDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType

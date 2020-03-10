@@ -1,5 +1,5 @@
 package ch.schulealtendorf.psa.dto
 
-object SportConstant {
+object SportTypeConstant {
     const val ATHLETICS = "Athletics"
 }
