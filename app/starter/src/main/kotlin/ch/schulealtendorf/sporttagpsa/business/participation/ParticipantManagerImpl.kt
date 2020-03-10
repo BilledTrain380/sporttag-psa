@@ -111,7 +111,7 @@ class ParticipantManagerImpl(
             address = address,
             town = TownDto(town.zip, town.name),
             group = group.name,
-            sport = sport?.name
+            sportType = sport?.name
         )
     }
 }

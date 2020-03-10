@@ -74,7 +74,7 @@ interface ParticipantManager {
      *
      * If the [ParticipantDto.town] does not exist, it will be created
      *
-     * The property [ParticipantDto.sport] will be ignored.
+     * The property [ParticipantDto.sportType] will be ignored.
      * To update this use [ParticipationManager.participate] or [ParticipationManager#reParticipate].
      *
      * @param participant the participant to save
