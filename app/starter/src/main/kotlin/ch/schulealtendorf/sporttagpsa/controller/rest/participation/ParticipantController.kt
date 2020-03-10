@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest.participant
+package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement

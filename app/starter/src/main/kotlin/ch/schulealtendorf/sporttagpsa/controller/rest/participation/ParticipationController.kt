@@ -36,10 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 
+import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.participation.ParticipationCommand
+import ch.schulealtendorf.psa.dto.participation.ParticipationDto
 import ch.schulealtendorf.psa.dto.status.StatusDto
 import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity
+import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
@@ -67,7 +70,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 @Tag(name = "Participation", description = "Manage the participation")
 class ParticipationController(
-    private val participationManager: ParticipationManager
+    private val participationManager: ParticipationManager,
+    private val groupManager: GroupManager
 ) {
     @Operation(
         summary = "Get the participation status",
@@ -79,7 +83,7 @@ class ParticipationController(
             ApiResponse(
                 responseCode = "200",
                 description = "Participation status",
-                content = [Content(schema = Schema(implementation = StatusDto::class))]
+                content = [Content(schema = Schema(implementation = ParticipationDto::class))]
             ),
             ApiResponse(
                 responseCode = "401",
@@ -90,10 +94,10 @@ class ParticipationController(
     )
     @PreAuthorize("#oauth2.hasScope('participation')")
     @GetMapping("/participation", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getParticipation(): StatusDto {
+    fun getParticipation(): ParticipationDto {
         val status = participationManager.getParticipationStatus()
 
-        return StatusDto(
+        val statusDto = StatusDto(
             StatusSeverity.OK,
             listOf(
                 StatusEntry(
@@ -101,6 +105,13 @@ class ParticipationController(
                     status
                 )
             )
+        )
+
+        val unfinishedGroups = groupManager.getGroupsBy(GroupStatusType.UNFINISHED_PARTICIPANTS)
+
+        return ParticipationDto(
+            status = statusDto,
+            unfinishedGroups = unfinishedGroups
         )
     }
 
