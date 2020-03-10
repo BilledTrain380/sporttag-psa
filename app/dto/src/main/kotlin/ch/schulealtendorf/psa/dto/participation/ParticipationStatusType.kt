@@ -6,8 +6,7 @@ enum class ParticipationStatusType(
     code: Int
 ) : StatusType {
     OPEN(0),
-    CLOSED(1),
-    RESET(2);
+    CLOSED(1);
 
     private val range = 2000
 
