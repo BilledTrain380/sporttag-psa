@@ -41,7 +41,6 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.shared.rulebook.CategoryModel
 import ch.schulealtendorf.psa.shared.rulebook.CategoryRuleBook
-import ch.schulealtendorf.sporttagpsa.business.database.DatabaseReset
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipationEntity
@@ -51,6 +50,7 @@ import ch.schulealtendorf.sporttagpsa.entity.SportEntity
 import ch.schulealtendorf.sporttagpsa.lib.ageOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipationRepository
 import ch.schulealtendorf.sporttagpsa.repository.SportRepository
@@ -68,7 +68,7 @@ class ParticipationManagerImpl(
     private val categoryRuleBook: CategoryRuleBook,
     private val sportRepository: SportRepository,
     private val disciplineRepository: DisciplineRepository,
-    private val databaseReset: DatabaseReset
+    private val groupRepository: GroupRepository
 ) : ParticipationManager {
     override fun participate(participant: ParticipantDto, sport: String) {
         if (getParticipationStatus() == ParticipationStatusType.CLOSED) {
@@ -118,23 +118,24 @@ class ParticipationManagerImpl(
         participants.forEach { it.saveAsCompetitor() }
 
         val participation = getParticipationOrFail().apply {
-            status = ParticipationStatusType.CLOSED
+            status = ParticipationStatusType.CLOSED.name
         }
 
         participationRepository.save(participation)
     }
 
     override fun resetParticipation() {
-        databaseReset.run()
+        participantRepository.deleteAll()
+        groupRepository.deleteAll()
 
         val participation = getParticipationOrFail().apply {
-            status = ParticipationStatusType.OPEN
+            status = ParticipationStatusType.OPEN.name
         }
 
         participationRepository.save(participation)
     }
 
-    override fun getParticipationStatus(): ParticipationStatusType = getParticipationOrFail().status
+    override fun getParticipationStatus(): ParticipationStatusType = getParticipationOrFail().statusType
 
     private fun getParticipantOrFail(id: Int): ParticipantEntity {
         return participantRepository.findById(id)

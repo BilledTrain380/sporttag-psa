@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.Transient
 import javax.validation.constraints.Size
 
 /**
@@ -57,8 +58,11 @@ data class ParticipationEntity @JvmOverloads constructor(
 
     @NotNull
     @Size(min = 1, max = 10)
-    var status: ParticipationStatusType = ParticipationStatusType.OPEN
+    var status: String = ParticipationStatusType.OPEN.name
 ) {
+    val statusType: ParticipationStatusType
+        get() = ParticipationStatusType.valueOf(status)
+
     companion object {
         const val MAIN_PARTICIPATION = "main"
     }
