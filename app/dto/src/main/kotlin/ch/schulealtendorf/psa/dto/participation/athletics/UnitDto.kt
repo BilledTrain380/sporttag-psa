@@ -34,19 +34,13 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.athletics
 
 /**
- * Data class representing a discipline.
- *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class DisciplineDto(
+data class UnitDto(
     val name: String,
-    val unit: UnitDto,
-    val hasTrials: Boolean,
-    val hasDistance: Boolean
-) {
-    companion object
-}
+    val factor: Int
+)

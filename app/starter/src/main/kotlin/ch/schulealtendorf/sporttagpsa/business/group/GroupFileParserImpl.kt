@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.business.group
 
 import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import java.nio.charset.Charset
 import java.text.DateFormat
 import java.text.SimpleDateFormat

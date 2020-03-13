@@ -34,15 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.participation
 
 /**
- * @author nmaerchy <billedtrain380@gmail.com>
+ * Data class representing a town.
+ *
+ * @author nmaerchy
  * @since 2.0.0
  */
-data class UnitDto(
-    val name: String,
-    val factor: Int
+data class TownDto(
+    val zip: String,
+    val name: String
 ) {
     companion object
 }

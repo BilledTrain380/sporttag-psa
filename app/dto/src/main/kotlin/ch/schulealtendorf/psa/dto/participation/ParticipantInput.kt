@@ -1,8 +1,6 @@
 package ch.schulealtendorf.psa.dto.participation
 
 import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.GenderDto
-import ch.schulealtendorf.psa.dto.TownDto
 
 data class ParticipantInput(
     val surname: String,

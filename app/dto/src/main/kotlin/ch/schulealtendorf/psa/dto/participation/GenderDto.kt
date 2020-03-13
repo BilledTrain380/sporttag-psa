@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.participation
 
 import java.util.ResourceBundle
 

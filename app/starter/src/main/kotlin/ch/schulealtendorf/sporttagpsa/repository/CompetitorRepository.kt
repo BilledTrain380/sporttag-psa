@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.repository
 
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import java.util.Optional
 import org.springframework.data.repository.CrudRepository

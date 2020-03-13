@@ -34,17 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.athletics
 
 /**
- * Data class representing a town.
+ * Data class representing a discipline.
  *
- * @author nmaerchy
+ * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-data class TownDto(
-    val zip: String,
-    val name: String
-) {
-    companion object
-}
+data class DisciplineDto(
+    val name: String,
+    val unit: UnitDto,
+    val hasTrials: Boolean,
+    val hasDistance: Boolean
+)

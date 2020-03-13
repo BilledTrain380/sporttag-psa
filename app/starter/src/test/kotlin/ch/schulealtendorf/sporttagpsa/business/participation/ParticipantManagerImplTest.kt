@@ -1,8 +1,8 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.GenderDto
-import ch.schulealtendorf.psa.dto.TownDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.TownDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import org.assertj.core.api.Assertions.assertThat
 import org.flywaydb.test.annotation.FlywayTest
