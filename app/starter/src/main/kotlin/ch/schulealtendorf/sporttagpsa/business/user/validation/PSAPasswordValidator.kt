@@ -44,13 +44,8 @@ import org.passay.RuleResult
 import org.passay.WhitespaceRule
 import org.springframework.stereotype.Component
 
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 0.0.1
- */
 @Component
 class PSAPasswordValidator : PasswordValidator {
-
     private val validator = org.passay.PasswordValidator(
         LengthRule(8, 64),
         CharacterRule(EnglishCharacterData.Digit),
@@ -62,15 +57,12 @@ class PSAPasswordValidator : PasswordValidator {
     )
 
     override fun isValid(password: String): Boolean {
-        return validator.validate(passwordDataOf(password)).isValid
+        return validator.validate(PasswordData(password)).isValid
     }
 
     override fun validate(password: String): ValidationResult {
-
-        val result: RuleResult = validator.validate(passwordDataOf(password))
+        val result: RuleResult = validator.validate(PasswordData(password))
 
         return ValidationResult(result.isValid, validator.getMessages(result))
     }
-
-    private fun passwordDataOf(password: String) = PasswordData(password)
 }
