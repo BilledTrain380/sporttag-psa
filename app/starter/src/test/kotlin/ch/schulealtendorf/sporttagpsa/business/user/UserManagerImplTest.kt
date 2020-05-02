@@ -1,6 +1,7 @@
 package ch.schulealtendorf.sporttagpsa.business.user
 
 import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.business.user.validation.PSAPasswordValidator
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -20,7 +21,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ActiveProfiles("test")
 @Tag("db-test")
 @ExtendWith(SpringExtension::class)
-@Import(UserManagerImpl::class, PSAPasswordValidator::class)
+@Import(
+    UserManagerImpl::class,
+    PSAPasswordValidator::class
+)
 @DataJpaTest
 @FlywayTest
 internal class UserManagerImplTest {
@@ -37,6 +41,7 @@ internal class UserManagerImplTest {
     private val encoder = BCryptPasswordEncoder(4)
 
     @Test
+    @FlywayTest
     internal fun saveNewUser() {
         val user = UserDto(
             id = 0,
@@ -58,6 +63,22 @@ internal class UserManagerImplTest {
 
         val isPasswordMatch = encoder.matches(user.password, userEntity.get().password)
         assertThat(isPasswordMatch).isTrue()
+    }
+
+    @Test
+    @FlywayTest
+    internal fun saveNewUserWithInvalidPassword() {
+        val user = UserDto(
+            id = 0,
+            username = "hmüller",
+            enabled = true,
+            authorities = listOf("ROLE_USER"),
+            password = "simplepass"
+        )
+
+        assertThrows<InvalidPasswordException> {
+            userManager.save(user)
+        }
     }
 
     @Test
@@ -109,6 +130,17 @@ internal class UserManagerImplTest {
             userManager.changePassword(user, "newSecret1245$")
         }
         assertThat(exception).hasMessage("Could not find user: username=${user.username}")
+    }
+
+    @Test
+    @Sql("/db/user/add-user.sql")
+    internal fun changeInvalidPassword() {
+        val userOptional = userManager.getOne(WWIRBELWIND)
+        assertThat(userOptional).isNotEmpty
+
+        assertThrows<InvalidPasswordException> {
+            userManager.changePassword(userOptional.get(), "simplepass")
+        }
     }
 
     @Test
