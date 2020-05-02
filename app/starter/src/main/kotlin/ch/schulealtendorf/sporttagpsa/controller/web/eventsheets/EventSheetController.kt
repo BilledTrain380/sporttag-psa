@@ -61,7 +61,6 @@ class EventSheetController(
     private val groupManager: GroupManager,
     private val fileSystem: FileSystem
 ) {
-
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @PostMapping(
         "/event-sheets",
@@ -70,9 +69,7 @@ class EventSheetController(
     )
     @ResponseBody
     fun createEventSheets(@RequestBody data: List<EventSheetData>): FileQualifier {
-
-        val exportData = EventSheetExport(data.map {
-
+        val exports = data.map {
             val discipline = disciplineManager.getDiscipline(it.discipline)
                 .orElseThrow { BadRequestException("The discipline does not exist: name=${it.discipline}") }
 
@@ -80,10 +77,11 @@ class EventSheetController(
                 .orElseThrow { BadRequestException("The group does not exist: name=${it.group}") }
 
             EventSheetDisciplineExport(discipline, group, it.gender)
-        })
+        }
+
+        val exportData = EventSheetExport(exports)
 
         val zip = exportManager.generateArchive(exportData)
-
         return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

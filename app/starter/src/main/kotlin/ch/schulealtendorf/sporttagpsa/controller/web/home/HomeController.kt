@@ -44,10 +44,8 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class HomeController {
-
     @GetMapping("/", "/index")
     fun index(model: Model, authentication: Authentication?): String {
-
         if (authentication != null) {
             model.addAttribute("username", (authentication.principal as UserDetails).username)
             model.addAttribute("isAuthenticated", authentication.isAuthenticated)

@@ -59,7 +59,6 @@ class RankingController(
     private val disciplineManager: DisciplineManager,
     private val fileSystem: FileSystem
 ) {
-
     @PreAuthorize("#oauth2.hasScope('ranking')")
     @PostMapping(
         "/ranking",
@@ -68,9 +67,7 @@ class RankingController(
     )
     @ResponseBody
     fun createRanking(@RequestBody data: RankingData): FileQualifier {
-
         val disciplineExports = data.discipline.map {
-
             val discipline = disciplineManager.getDiscipline(it.discipline)
                 .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }
 
@@ -85,7 +82,6 @@ class RankingController(
         )
 
         val zip = exportManager.generateArchive(rankingExport)
-
         return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

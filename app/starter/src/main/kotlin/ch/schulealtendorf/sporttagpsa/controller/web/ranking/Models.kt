@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.web.ranking
 
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 
 data class DisciplineRanking(
     val discipline: String,

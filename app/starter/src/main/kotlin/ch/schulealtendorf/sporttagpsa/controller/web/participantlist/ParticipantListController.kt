@@ -56,7 +56,6 @@ class ParticipantListController(
     private val exportManager: ExportManager,
     private val fileSystem: FileSystem
 ) {
-
     @PreAuthorize("#oauth2.hasScope('participant_list')")
     @PostMapping(
         "/participant-list",
@@ -65,11 +64,8 @@ class ParticipantListController(
     )
     @ResponseBody
     fun createParticipantList(@RequestBody data: List<SportDto>): FileQualifier {
-
         val exportData = ParticipantExport(data)
-
         val zip = exportManager.generateArchive(exportData)
-
         return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

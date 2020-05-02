@@ -57,14 +57,11 @@ class StartlistController(
     private val startlistReporter: StartlistReporter,
     private val fileSystem: FileSystem
 ) {
-
     @PreAuthorize("#oauth2.hasScope('participant_list')")
     @GetMapping("/startlist", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
     fun createStartlist(): FileQualifier {
-
         val file = startlistReporter.generateReport()
-
         return fileQualifierOf(file.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

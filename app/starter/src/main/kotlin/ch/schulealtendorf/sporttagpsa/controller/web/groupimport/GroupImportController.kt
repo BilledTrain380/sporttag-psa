@@ -59,16 +59,12 @@ class GroupImportController(
     private val fileParser: GroupFileParser,
     private val groupManager: GroupManager
 ) {
-
     @PreAuthorize("#oauth2.hasScope('group_write')")
     @PostMapping("/import-group", consumes = ["multipart/form-data"])
     @ResponseStatus(HttpStatus.OK)
     fun importGroup(@RequestParam("group-input") file: MultipartFile) {
-
         try {
-
             val participants = fileParser.parseCSV(file)
-
             participants.forEach(groupManager::import)
         } catch (exception: CSVParsingException) {
             // we increment the line, so its not zero based line number for the user
