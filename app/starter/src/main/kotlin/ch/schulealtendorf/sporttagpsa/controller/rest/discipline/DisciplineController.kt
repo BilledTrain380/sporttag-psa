@@ -36,10 +36,23 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.discipline
 
-import ch.schulealtendorf.psa.dto.DisciplineDto
+import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
+import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -48,14 +61,66 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api/rest")
+@RequestMapping("/api")
+@Tag(name = "discipline", description = "Manager disciplines")
 class DisciplineController(
     private val disciplineManager: DisciplineManager
 ) {
 
+    @Operation(
+        summary = "List disciplines",
+        tags = ["discipline"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.DISCIPLINE_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "List disciplines",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = DisciplineDto::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('discipline_read')")
     @GetMapping("/disciplines")
     fun getDisciplines(): List<DisciplineDto> {
-        return disciplineManager.getDisciplineList()
+        return disciplineManager.getDisciplines()
+    }
+
+    @Operation(
+        summary = "Get a single disciplines",
+        tags = ["discipline"],
+        parameters = [
+            Parameter(
+                name = "discipline_name",
+                description = "The competitor id to find"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.DISCIPLINE_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "A single discipline",
+                content = [Content(schema = Schema(implementation = DisciplineDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('discipline_read')")
+    @GetMapping("/discipline/{discipline_name}")
+    fun getDiscipline(@PathVariable("discipline_name") name: String): DisciplineDto {
+        return disciplineManager.getDiscipline(name)
+            .orElseThrow { NotFoundException("Could not find discipline: name=$name") }
     }
 }
