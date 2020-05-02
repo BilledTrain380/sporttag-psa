@@ -39,12 +39,12 @@ package ch.schulealtendorf.sporttagpsa.business.user
 import java.io.IOException
 
 /**
- * Indicates that a user exists already.
+ * Indicates that the operation with a user is not allowed
  *
  * @author nmaerchy
  * @version 1.0.0
  */
-class UserAlreadyExistsException : IOException {
+class IllegalUserOperationException : IOException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)

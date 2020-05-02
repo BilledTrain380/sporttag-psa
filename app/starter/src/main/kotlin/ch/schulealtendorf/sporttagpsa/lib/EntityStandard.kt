@@ -1,6 +1,7 @@
 package ch.schulealtendorf.sporttagpsa.lib
 
 import ch.schulealtendorf.psa.dto.BirthdayDto
+import ch.schulealtendorf.psa.dto.UserDto
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.TownDto
@@ -13,6 +14,7 @@ import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.entity.UnitEntity
+import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 
 fun ageOf(entity: ParticipantEntity): Int = BirthdayDto.ofMillis(entity.birthday).age
 
@@ -75,5 +77,14 @@ fun unitDtoOf(unitEntity: UnitEntity): UnitDto {
     return UnitDto(
         name = unitEntity.name,
         factor = unitEntity.factor
+    )
+}
+
+fun userDtoOf(userEntity: UserEntity): UserDto {
+    return UserDto(
+        id = userEntity.id!!,
+        username = userEntity.username,
+        authorities = userEntity.authorities.map { it.role },
+        enabled = userEntity.enabled
     )
 }
