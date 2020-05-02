@@ -54,4 +54,6 @@ interface CompetitorRepository : CrudRepository<CompetitorEntity, Int> {
     fun findByParticipantId(id: Int): Optional<CompetitorEntity>
 
     fun findByParticipantGenderAndParticipantGroupName(gender: GenderDto, group: String): List<CompetitorEntity>
+
+    fun findByParticipantGroupName(group: String): List<CompetitorEntity>
 }

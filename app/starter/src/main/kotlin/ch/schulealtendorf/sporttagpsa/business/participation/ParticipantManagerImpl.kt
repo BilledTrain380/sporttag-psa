@@ -36,11 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.participation.TownDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.lib.participantDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
@@ -100,18 +99,5 @@ class ParticipantManagerImpl(
         }
     }
 
-    private fun ParticipantEntity.toDto(): ParticipantDto {
-        return ParticipantDto(
-            id = id!!,
-            surname = surname,
-            prename = prename,
-            gender = gender,
-            birthday = BirthdayDto.ofMillis(birthday),
-            isAbsent = absent,
-            address = address,
-            town = TownDto(town.zip, town.name),
-            group = group.name,
-            sportType = sport?.name
-        )
-    }
+    private fun ParticipantEntity.toDto() = participantDtoOf(this)
 }

@@ -36,13 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
+import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import java.util.NoSuchElementException
 import java.util.Optional
 
 /**
- * A manager to handle {@link Competitor} data.
+ * A manager to handle [CompetitorDto] data.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
@@ -52,40 +53,39 @@ interface CompetitorManager {
     /**
      * @return a list of all competitors
      */
-    fun getCompetitorList(): List<CompetitorDto>
+    fun getCompetitors(): List<CompetitorDto>
 
     /**
-     * Get a competitor as a {@link Optional} matching the given {@code id}.
+     * @param filter the filters to apply
      *
-     * If no competitor can be found an empty Optional will be returned.
+     * @return a list of competitors filtered by the given [filter]
+     */
+    fun getCompetitors(filter: CompetitorFilter): List<CompetitorDto>
+
+    /**
+     * Get a competitor as a [Optional] matching the given [id].
+     *
+     * If no competitor can be found an empty [Optional] will be returned.
      *
      * @param id the ID of the competitor
      *
-     * @return an Optional containing the resulting competitor
+     * @return an [Optional] containing the resulting competitor
      */
     fun getCompetitor(id: Int): Optional<CompetitorDto>
 
     /**
-     * Saves the results of the given {@code competitor}.
+     * Updates the given [resultElement]. Before the result is saved,
+     * the points will be calculated.
      *
-     * If the result id equals 0, it will be created.
-     *
-     * @param competitor the competitor to save its results
-     *
-     * @throws NoSuchElementException if the competitor does not exist
+     * @return the updated result
+     * @throws NoSuchElementException if the result does not exist
      */
-    fun saveCompetitorResults(competitor: CompetitorDto)
+    fun updateResult(resultElement: ResultElement): ResultDto
 
     /**
-     * Merges the results of the given {@code competitor} with the given {@code results}
-     * based by the result id.
+     * Deletes a competitor by its [startNumber].
      *
-     * If a result does not exist in the competitor's result list, it will be added.
-     *
-     * @param competitor the competitor to merge the results in
-     * @param results the results to merge into the competitors results
-     *
-     * @return the competitor containing the merged results
+     * @param startNumber the start number of the competitor
      */
-    fun mergeResults(competitor: CompetitorDto, results: Iterable<ResultDto>): CompetitorDto
+    fun deleteCompetitor(startNumber: Int)
 }
