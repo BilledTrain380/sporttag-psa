@@ -43,8 +43,6 @@ import javax.persistence.Table
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-const val DEFAULT_SETUP: String = "default"
-
 @Entity
 @Table(name = "SETUP")
 data class SetupEntity(
@@ -61,4 +59,8 @@ data class SetupEntity(
     @Size(min = 8, max = 32)
     @Column(name = "jwt_secret")
     var jwtSecret: String = ""
-)
+) {
+    companion object {
+        const val DEFAULT_SETUP = "default"
+    }
+}

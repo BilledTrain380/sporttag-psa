@@ -38,10 +38,10 @@ package ch.schulealtendorf.sporttagpsa.business.setup
 
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
-import ch.schulealtendorf.sporttagpsa.entity.DEFAULT_SETUP
+import ch.schulealtendorf.sporttagpsa.entity.SetupEntity.Companion.DEFAULT_SETUP
 import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
-import java.util.Random
 import org.springframework.stereotype.Component
+import java.util.Random
 
 /**
  * A {@link SetupManager} which is stateful to reduce db access.
