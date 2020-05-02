@@ -116,21 +116,40 @@ internal class CompetitorManagerImplTest {
 
         // Schnelllauf to 11.25 seconds
         val resultElement = ResultElement(id = 1, value = 1125)
+        val resultAmend = CompetitorResultAmend(competitorId = 7, result = resultElement)
 
-        val result = competitorManager.updateResult(resultElement)
+        val result = competitorManager.updateResult(resultAmend)
 
         assertThat(result.value).isEqualTo(1125)
         assertThat(result.points).isEqualTo(144)
+
+        val savedResult = competitorRepository.findByParticipantId(resultAmend.competitorId)
+            .map { it.results.find { resultEntity -> resultEntity.id == resultElement.id } }
+        assertThat(savedResult).isNotEmpty
+        assertThat(savedResult.get().value).isEqualTo(1125)
+        assertThat(savedResult.get().points).isEqualTo(144)
     }
 
     @Test
     internal fun updateResultWhenIdNotFound() {
         val resultElement = ResultElement(id = 2000, value = 1125)
+        val resultAmend = CompetitorResultAmend(competitorId = 7, result = resultElement)
 
         val exception = assertThrows<NoSuchElementException> {
-            competitorManager.updateResult(resultElement)
+            competitorManager.updateResult(resultAmend)
         }
         assertThat(exception).hasMessage("Could not find result: id=${resultElement.id}")
+    }
+
+    @Test
+    internal fun updateResultWhenCompetitorIdNotFound() {
+        val resultElement = ResultElement(id = 1, value = 1125)
+        val resultAmend = CompetitorResultAmend(competitorId = 999, result = resultElement)
+
+        val exception = assertThrows<NoSuchElementException> {
+            competitorManager.updateResult(resultAmend)
+        }
+        assertThat(exception).hasMessage("Could not find competitor: id=${resultAmend.competitorId}")
     }
 
     @Test

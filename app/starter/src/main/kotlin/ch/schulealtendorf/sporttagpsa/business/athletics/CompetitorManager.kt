@@ -38,7 +38,6 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
-import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import java.util.NoSuchElementException
 import java.util.Optional
 
@@ -74,13 +73,13 @@ interface CompetitorManager {
     fun getCompetitor(id: Int): Optional<CompetitorDto>
 
     /**
-     * Updates the given [resultElement]. Before the result is saved,
+     * Updates the given [resultAmend]. Before the result is saved,
      * the points will be calculated.
      *
      * @return the updated result
      * @throws NoSuchElementException if the result does not exist
      */
-    fun updateResult(resultElement: ResultElement): ResultDto
+    fun updateResult(resultAmend: CompetitorResultAmend): ResultDto
 
     /**
      * Deletes a competitor by its [startNumber].

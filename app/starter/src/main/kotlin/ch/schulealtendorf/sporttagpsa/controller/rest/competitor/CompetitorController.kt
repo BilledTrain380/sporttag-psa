@@ -36,16 +36,25 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.competitor
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
+import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
+import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorFilter
 import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorManager
-import ch.schulealtendorf.sporttagpsa.business.athletics.ResultCalculator
-import ch.schulealtendorf.sporttagpsa.business.athletics.TemporaryResult
+import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorResultAmend
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestCompetitor
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestResult
-import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import java.util.Optional
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -60,68 +69,144 @@ import org.springframework.web.bind.annotation.RestController
  * @since 0.0.1
  */
 @RestController
-@RequestMapping("/api/rest")
+@RequestMapping("/api")
+@Tag(name = "competitor", description = "Manage competitors")
 class CompetitorController(
-    private val competitorManager: CompetitorManager,
-    private val resultCalculator: ResultCalculator
+    private val competitorManager: CompetitorManager
 ) {
 
+    @Operation(
+        summary = "List competitors",
+        tags = ["competitor"],
+        parameters = [
+            Parameter(
+                name = "group",
+                description = "Only include competitors related to a group"
+            ),
+            Parameter(
+                name = "gender",
+                description = "Only include competitors matching a gender"
+            ),
+            Parameter(
+                name = "absent",
+                description = "If true only absent competitors will be returned, otherwise only present competitors"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Competitor list",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = CompetitorDto::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('competitor_read')")
     @GetMapping("/competitors")
     fun getCompetitors(
         @RequestParam("group", required = false) groupName: String?,
         @RequestParam("gender", required = false) gender: GenderDto?,
         @RequestParam("absent", required = false) absent: Boolean?
-    ): List<RestCompetitor> {
+    ): List<CompetitorDto> {
+        val filter = CompetitorFilter(
+            group = groupName,
+            gender = gender,
+            isAbsent = absent
+        )
 
-        return competitorManager.getCompetitorList()
-            .filter(groupName, gender, absent)
-            .map { json(it) }
+        if (filter.hasAnyFilter()) {
+            return competitorManager.getCompetitors(filter)
+        }
+
+        return competitorManager.getCompetitors()
     }
 
+    @Operation(
+        summary = "Find a competitor by its id",
+        tags = ["competitor"],
+        parameters = [
+            Parameter(
+                name = "competitor_id",
+                description = "The competitor id to find"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_READ])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found competitor",
+                content = [Content(schema = Schema(implementation = CompetitorDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Not found",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('competitor_read')")
     @GetMapping("/competitor/{competitor_id}")
-    fun getCompetitor(@PathVariable("competitor_id") id: Int): RestCompetitor {
-        return competitorManager.getCompetitor(id).map { json(it) }
+    fun getCompetitor(@PathVariable("competitor_id") id: Int): CompetitorDto {
+        return competitorManager.getCompetitor(id)
             .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
     }
 
+    @Operation(
+        summary = "Update competitor result",
+        tags = ["competitor"],
+        parameters = [
+            Parameter(
+                name = "competitor_id",
+                description = "The id of the competitor to update its result"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_WRITE])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Updated the competitor results",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = ResultDto::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Competitor not found",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('competitor_write')")
     @PutMapping("/competitor/{competitor_id}")
-    fun updateResults(@PathVariable("competitor_id") id: Int, @RequestBody resultsWrapper: ResultWrapper): List<RestResult> {
+    fun updateResults(@PathVariable("competitor_id") id: Int, @RequestBody result: ResultElement): ResultDto {
+        try {
+            val resultAmend = CompetitorResultAmend(
+                competitorId = id,
+                result = result
+            )
 
-        var competitor = competitorManager.getCompetitor(id)
-            .orElseThrow { NotFoundException("Competitor does not exist: id=$id") }
-
-        val results = resultsWrapper.results
-            .map {
-
-                val tempResult = TemporaryResult(
-                    it.id,
-                    competitor.gender,
-                    it.value,
-                    it.discipline,
-                    Optional.ofNullable(it.distance)
-                )
-
-                resultCalculator.calculate(tempResult)
-            }
-
-        competitor = competitorManager.mergeResults(competitor, results)
-        competitorManager.saveCompetitorResults(competitor)
-
-        return results.map { json(it) }
-    }
-
-    private fun Iterable<CompetitorDto>.filter(
-        group: String? = null,
-        gender: GenderDto? = null,
-        absent: Boolean? = null
-    ): List<CompetitorDto> {
-
-        return this
-            .filter { group == null || it.group.name == group }
-            .filter { gender == null || it.gender == gender }
-            .filter { absent == null || it.absent == absent }
+            return competitorManager.updateResult(resultAmend)
+        } catch (exception: NoSuchElementException) {
+            throw NotFoundException("Could not update result: message=${exception.message}")
+        }
     }
 }

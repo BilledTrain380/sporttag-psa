@@ -38,15 +38,13 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
-import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.ResultRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
-import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
 import ch.schulealtendorf.sporttagpsa.lib.resultDtoOf
+import ch.schulealtendorf.sporttagpsa.lib.toOptional
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import ch.schulealtendorf.sporttagpsa.repository.ResultRepository
 import org.springframework.stereotype.Component
 import java.util.Optional
 
@@ -59,8 +57,7 @@ import java.util.Optional
 @Component
 class CompetitorManagerImpl(
     private val resultRuleBook: ResultRuleBook,
-    private val competitorRepository: CompetitorRepository,
-    private val resultRepository: ResultRepository
+    private val competitorRepository: CompetitorRepository
 ) : CompetitorManager {
     override fun getCompetitors(): List<CompetitorDto> {
         return competitorRepository.findAll().map { competitorDtoOf(it) }
@@ -86,28 +83,33 @@ class CompetitorManagerImpl(
         return competitorRepository.findByParticipantId(id).map { competitorDtoOf(it) }
     }
 
-    override fun updateResult(resultElement: ResultElement): ResultDto {
-        val result = resultRepository.findById(resultElement.id)
-            .orElseThrow { NoSuchElementException("Could not find result: id=${resultElement.id}") }
+    override fun updateResult(resultAmend: CompetitorResultAmend): ResultDto {
+        val competitor = competitorRepository.findByParticipantId(resultAmend.competitorId)
+            .orElseThrow { NoSuchElementException("Could not find competitor: id=${resultAmend.competitorId}") }
+
+        val result = competitor.results
+            .find { it.id == resultAmend.result.id }
+            .toOptional()
+            .orElseThrow { NoSuchElementException("Could not find result: id=${resultAmend.result.id}") }
 
         val formulaModel = FormulaModel(
             discipline = result.discipline.name,
             distance = result.distance,
-            result = resultElement.value.toDouble() / result.discipline.unit.factor,
+            result = resultAmend.result.value.toDouble() / result.discipline.unit.factor,
             gender = result.competitor.participant.gender
         )
 
         result.apply {
-            value = resultElement.value
+            value = resultAmend.result.value
             points = resultRuleBook.calc(formulaModel)
         }
 
-        return resultRepository.save(result).toDto()
+        competitorRepository.save(competitor)
+
+        return resultDtoOf(result)
     }
 
     override fun deleteCompetitor(startNumber: Int) {
         competitorRepository.deleteById(startNumber)
     }
-
-    private fun ResultEntity.toDto() = resultDtoOf(this)
 }
