@@ -57,6 +57,7 @@ import java.util.ResourceBundle
 @Component
 class JasperDisciplineGroupApi(
     private val reportManager: ReportManager,
+    private val rankingManager: RankingManager,
     private val filesystem: FileSystem
 ) : DisciplineGroupRankingApi {
     private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
@@ -94,10 +95,8 @@ class JasperDisciplineGroupApi(
     }
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
-
         val competitors = data filterByConfig config
-
-        val rankingDataSet = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
+        val rankingDataSet = rankingManager.createDisciplineGroupRanking(competitors)
 
         val template = object : Template {
             override val source: InputStream =

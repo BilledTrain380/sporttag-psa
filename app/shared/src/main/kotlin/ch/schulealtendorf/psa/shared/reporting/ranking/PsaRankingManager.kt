@@ -39,10 +39,11 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
+import org.springframework.stereotype.Component
 
-// TODO: Refactor to service class
-internal object RankingFactory {
-    fun disciplineRankingOf(
+@Component
+internal class PsaRankingManager : RankingManager {
+    override fun createDisciplineRanking(
         competitors: Collection<CompetitorDto>,
         discipline: DisciplineDto
     ): List<DisciplineRankingDataSet> {
@@ -63,7 +64,7 @@ internal object RankingFactory {
                 var value = "0"
                 var points = 1
 
-                if (result.isPresent.not()) {
+                if (result.isPresent) {
                     value = result.get().relativeValue
                     points = result.get().points
                 }
@@ -85,7 +86,7 @@ internal object RankingFactory {
             }
     }
 
-    fun disciplineGroupRankingFactoryOf(competitors: Collection<CompetitorDto>): List<DisciplineGroupRankingDataSet> {
+    override fun createDisciplineGroupRanking(competitors: Collection<CompetitorDto>): List<DisciplineGroupRankingDataSet> {
         var rank = 1
         var previousPoints = -1
 
@@ -121,7 +122,7 @@ internal object RankingFactory {
             }
     }
 
-    fun totalRankingOf(competitors: Collection<CompetitorDto>): List<TotalRankingDataSet> {
+    override fun createTotalRanking(competitors: Collection<CompetitorDto>): List<TotalRankingDataSet> {
         var rank = 1
         var previousPoints = -1
 

@@ -55,6 +55,7 @@ import java.time.Year
 @Component
 class JasperTotalRankingApi(
     private val reportManager: ReportManager,
+    private val rankingManager: RankingManager,
     private val filesystem: FileSystem
 ) : TotalRankingApi {
     override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
@@ -63,7 +64,7 @@ class JasperTotalRankingApi(
             .filter { it.participant.birthday.year == config.year }
             .filterNot { it.participant.isAbsent }
 
-        val rankedCompetitors = RankingFactory.totalRankingOf(competitors)
+        val rankedCompetitors = rankingManager.createTotalRanking(competitors)
 
         val parameters: Map<String, Any> = hashMapOf(
             "age" to Year.now().value - config.year.value,

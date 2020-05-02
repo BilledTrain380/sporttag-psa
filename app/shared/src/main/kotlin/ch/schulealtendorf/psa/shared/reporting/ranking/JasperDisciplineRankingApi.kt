@@ -55,6 +55,7 @@ import java.time.Year
 @Component
 class JasperDisciplineRankingApi(
     private val reportManager: ReportManager,
+    private val rankingManager: RankingManager,
     private val filesystem: FileSystem
 ) : DisciplineRankingApi {
 
@@ -64,7 +65,7 @@ class JasperDisciplineRankingApi(
             .filter { it.participant.birthday.year == config.year }
             .filterNot { it.participant.isAbsent }
 
-        val rankingDataSet = RankingFactory.disciplineRankingOf(competitors, config.discipline)
+        val rankingDataSet = rankingManager.createDisciplineRanking(competitors, config.discipline)
 
         val template = object : Template {
             override val source: InputStream =
