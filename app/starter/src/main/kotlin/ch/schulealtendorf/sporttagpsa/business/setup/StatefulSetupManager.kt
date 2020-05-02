@@ -59,7 +59,6 @@ class StatefulSetupManager(
     private var jwtSec = ""
 
     init {
-
         val setup = this.setupRepository.findById(DEFAULT_SETUP).get()
         isInit = setup.initialized
         jwtSec = setup.jwtSecret
@@ -69,8 +68,9 @@ class StatefulSetupManager(
     override val jwtSecret: String get() = jwtSec
 
     override fun initialize(setup: SetupInformation) {
-
-        if (isInitialized) throw IllegalStateException("Setup is already initialized")
+        if (isInitialized) {
+            throw IllegalStateException("Setup is already initialized")
+        }
 
         // set admin password
         val user = userManager.getOne(USER_ADMIN).get()
