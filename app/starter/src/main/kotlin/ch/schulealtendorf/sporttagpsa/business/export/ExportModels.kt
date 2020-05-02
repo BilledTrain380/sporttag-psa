@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
-import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 
 data class RankingExport(

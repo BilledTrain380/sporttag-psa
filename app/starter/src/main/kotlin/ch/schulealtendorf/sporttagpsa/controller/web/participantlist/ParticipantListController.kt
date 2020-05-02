@@ -37,7 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.web.participantlist
 
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
 import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier

@@ -36,8 +36,6 @@
 
 package ch.schulealtendorf.psa.dto.participation
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-
 /**
  * Data class representing a participant.
  *

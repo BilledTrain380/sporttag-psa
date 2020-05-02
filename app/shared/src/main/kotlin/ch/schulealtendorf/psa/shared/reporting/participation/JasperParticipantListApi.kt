@@ -38,8 +38,8 @@ package ch.schulealtendorf.psa.shared.reporting.participation
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf

@@ -34,43 +34,10 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.participation
 
-/**
- * Data class representing a user.
- * The {@code password} property should only be set
- * to create a new user.
- *
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-data class UserDto @JvmOverloads constructor(
-    val id: Int,
-    val username: String,
-    val authorities: List<String>,
-    val enabled: Boolean = true,
-    val password: String = "protected"
+data class SportDto(
+    val name: String
 ) {
     companion object
-
-    fun toBuilder() = Builder(this)
-
-    class Builder internal constructor(
-        private val dto: UserDto
-    ) {
-        private var username = dto.username
-        private var isEnabled = dto.enabled
-
-        fun setUsername(username: String): Builder {
-            this.username = username
-            return this
-        }
-
-        fun setEnabled(isEnabled: Boolean): Builder {
-            this.isEnabled = isEnabled
-            return this
-        }
-
-        fun build() = dto.copy(username = username, enabled = isEnabled)
-    }
 }

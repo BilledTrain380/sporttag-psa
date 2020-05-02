@@ -1,6 +1,6 @@
 package ch.schulealtendorf.sporttagpsa.business.user
 
-import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.business.user.validation.PSAPasswordValidator
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository

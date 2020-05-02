@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
-import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import java.util.Optional
 

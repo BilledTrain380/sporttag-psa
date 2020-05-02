@@ -1,13 +1,13 @@
 package ch.schulealtendorf.sporttagpsa.lib
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.TownDto
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
 import ch.schulealtendorf.psa.dto.participation.athletics.UnitDto
+import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
 import ch.schulealtendorf.sporttagpsa.entity.DisciplineEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity

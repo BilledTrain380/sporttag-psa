@@ -1,7 +1,5 @@
 package ch.schulealtendorf.psa.dto.participation
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-
 class ParticipantElement(
     val id: Int,
     val surname: String?,

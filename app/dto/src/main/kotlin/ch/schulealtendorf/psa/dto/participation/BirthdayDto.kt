@@ -34,32 +34,64 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.participation
 
-/**
- * Data class representing a coach of a class.
- *
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-data class CoachDto(
-    val id: Int,
-    val name: String
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.Year
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.util.Locale
+import java.util.ResourceBundle
+
+data class BirthdayDto(
+    val time: Instant
 ) {
-    companion object
+    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
+
+    val age: Int = ZonedDateTime.now().year - time.atZone(ZoneId.systemDefault()).year
+    val year: Year = Year.of(time.atZone(ZoneId.systemDefault()).year)
+
+    companion object {
+        fun parse(text: String) =
+            BirthdayDto(ZonedDateTime.parse(text).toInstant())
+
+        fun ofMillis(milliSeconds: Long) =
+            BirthdayDto(Instant.ofEpochMilli(milliSeconds))
+    }
+
+    /**
+     * Formats this Birthday by the given {@code pattern}.
+     *
+     * Valid values are the same used in the {@link SimpleDateFormat} class constructor.
+     *
+     * @param pattern the format pattern of the date
+     */
+    fun format(pattern: String): String = SimpleDateFormat(pattern).format(time.atZone(ZoneId.systemDefault()))
+
+    /**
+     * Formats the birthday based on the default locale.
+     * @see Locale.getDefault
+     */
+    fun format() = format(resourceBundle.getString("birthday.format"))
 
     fun toBuilder() = Builder(this)
 
     class Builder internal constructor(
-        private val dto: CoachDto
+        dto: BirthdayDto
     ) {
-        private var name = dto.name
+        private var time = dto.time
 
-        fun setName(name: String): Builder {
-            this.name = name
+        fun setMilliseconds(milliseconds: Long): Builder {
+            this.time = Instant.ofEpochMilli(milliseconds)
             return this
         }
 
-        fun build() = dto.copy(name = name)
+        fun setTime(time: Instant): Builder {
+            this.time = time
+            return this
+        }
+
+        fun build() = BirthdayDto(time)
     }
 }

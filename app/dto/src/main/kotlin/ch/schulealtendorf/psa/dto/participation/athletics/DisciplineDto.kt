@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto.athletics
+package ch.schulealtendorf.psa.dto.participation.athletics
 
 /**
  * Data class representing a discipline.

@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.shared.reporting.participation.ParticipantListApi
 import ch.schulealtendorf.sporttagpsa.lib.participantDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository

@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.user
 
-import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation

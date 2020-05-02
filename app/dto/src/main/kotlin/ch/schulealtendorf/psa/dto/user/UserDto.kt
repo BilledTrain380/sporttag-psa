@@ -34,62 +34,43 @@
  *
  */
 
-package ch.schulealtendorf.psa.dto
+package ch.schulealtendorf.psa.dto.user
 
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.Year
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.Locale
-import java.util.ResourceBundle
-
-data class BirthdayDto(
-    val time: Instant
+/**
+ * Data class representing a user.
+ * The {@code password} property should only be set
+ * to create a new user.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+data class UserDto @JvmOverloads constructor(
+    val id: Int,
+    val username: String,
+    val authorities: List<String>,
+    val enabled: Boolean = true,
+    val password: String = "protected"
 ) {
-    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
-
-    val age: Int = ZonedDateTime.now().year - time.atZone(ZoneId.systemDefault()).year
-    val year: Year = Year.of(time.atZone(ZoneId.systemDefault()).year)
-
-    companion object {
-        fun parse(text: String) = BirthdayDto(ZonedDateTime.parse(text).toInstant())
-
-        fun ofMillis(milliSeconds: Long) = BirthdayDto(Instant.ofEpochMilli(milliSeconds))
-    }
-
-    /**
-     * Formats this Birthday by the given {@code pattern}.
-     *
-     * Valid values are the same used in the {@link SimpleDateFormat} class constructor.
-     *
-     * @param pattern the format pattern of the date
-     */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(time.atZone(ZoneId.systemDefault()))
-
-    /**
-     * Formats the birthday based on the default locale.
-     * @see Locale.getDefault
-     */
-    fun format() = format(resourceBundle.getString("birthday.format"))
+    companion object
 
     fun toBuilder() = Builder(this)
 
     class Builder internal constructor(
-        dto: BirthdayDto
+        private val dto: UserDto
     ) {
-        private var time = dto.time
+        private var username = dto.username
+        private var isEnabled = dto.enabled
 
-        fun setMilliseconds(milliseconds: Long): Builder {
-            this.time = Instant.ofEpochMilli(milliseconds)
+        fun setUsername(username: String): Builder {
+            this.username = username
             return this
         }
 
-        fun setTime(time: Instant): Builder {
-            this.time = time
+        fun setEnabled(isEnabled: Boolean): Builder {
+            this.isEnabled = isEnabled
             return this
         }
 
-        fun build() = BirthdayDto(time)
+        fun build() = dto.copy(username = username, enabled = isEnabled)
     }
 }
