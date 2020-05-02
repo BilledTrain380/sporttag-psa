@@ -37,15 +37,27 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.user
 
 import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.user.UserElement
+import ch.schulealtendorf.psa.dto.user.UserInput
+import ch.schulealtendorf.psa.dto.user.UserRelation
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import ch.schulealtendorf.sporttagpsa.controller.rest.ForbiddenException
 import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.rest.RestUser
-import ch.schulealtendorf.sporttagpsa.controller.rest.json
-import java.security.Principal
+import ch.schulealtendorf.sporttagpsa.controller.rest.UnauthorizedException
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.ArraySchema
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -55,6 +67,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
 
 /**
  * Rest controller for user domain.
@@ -63,63 +76,216 @@ import org.springframework.web.bind.annotation.RestController
  * @since 2.0.0
  */
 @RestController
-@RequestMapping("/api/rest")
+@RequestMapping("/api")
+@Tag(name = "User", description = "Manage users")
 class UserController(
     private val userManager: UserManager
 ) {
 
+    @Operation(
+        summary = "List users",
+        tags = ["User"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "List users",
+                content = [Content(array = ArraySchema(schema = Schema(implementation = UserDto::class)))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('user')")
     @GetMapping("/users")
-    fun getUsers(): List<RestUser> {
-        return userManager.getAll().map { json(it) }
+    fun getUsers(): List<UserDto> {
+        return userManager.getAll()
     }
 
+    @Operation(
+        summary = "Create a new user",
+        tags = ["User"],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "The created user",
+                content = [Content(schema = Schema(implementation = UserDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('user')")
     @PostMapping("/users")
-    fun createUser(@RequestBody newUser: NewUser) {
-
-        val user = UserDto(0, newUser.username, listOf("ROLE_USER"), newUser.enabled, newUser.password)
-        userManager.save(user)
-    }
-
-    @GetMapping("/user/{user_id}")
-    fun getUser(@PathVariable("user_id") id: Int): RestUser {
-        return json(userManager.findOne(id))
-    }
-
-    @PatchMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody updateUser: UpdateUser, principal: Principal) {
-
-        val user = userManager.findOne(id)
-
-        if (principal.isAuthorized(user).not())
-            throw ForbiddenException("The current user is not authorized to perform this operation.")
-
-        userManager.save(
-            user.copy(username = updateUser.username, enabled = updateUser.enabled)
+    fun createUser(@RequestBody userInput: UserInput): UserDto {
+        val user = UserDto(
+            id = 0,
+            username = userInput.username,
+            authorities = listOf("ROLE_USER"),
+            enabled = userInput.enabled,
+            password = userInput.password
         )
+
+        return userManager.save(user)
     }
 
+    @Operation(
+        summary = "Get a single user",
+        tags = ["User"],
+        parameters = [
+            Parameter(
+                name = "user_id",
+                description = "The id of the user to get"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "The created user",
+                content = [Content(schema = Schema(implementation = UserDto::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('user')")
+    @GetMapping("/user/{user_id}")
+    fun getUser(@PathVariable("user_id") id: Int): UserDto {
+        return userManager.getOneOrFail(id)
+    }
+
+    @Operation(
+        summary = "Update a user",
+        tags = ["User"],
+        parameters = [
+            Parameter(
+                name = "user_id",
+                description = "The id of the user to update"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successful updated the user",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('user')")
+    @PatchMapping("/user/{user_id}")
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userElement: UserElement, principal: Principal) {
+        val user = userManager.getOneOrFail(id)
+
+        // Do not leak 403 Forbidden
+        if (principal.isAuthorized(user).not())
+            throw UnauthorizedException("You are not authorized to perform this operation.")
+
+        val updatedUser = user.toBuilder()
+            .setEnabled(userElement.enabled)
+            .setUsername(userElement.username)
+            .build()
+
+        userManager.save(updatedUser)
+    }
+
+    @Operation(
+        summary = "Update the password of a user",
+        tags = ["User"],
+        parameters = [
+            Parameter(
+                name = "user_id",
+                description = "The id of the user to update"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successful updated the user",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('user')")
     @PutMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody wrapper: PasswordWrapper, principal: Principal) {
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userRelation: UserRelation, principal: Principal) {
+        val user = userManager.getOneOrFail(id)
+
+        if (principal.isAuthorized(user).not()) {
+            throw UnauthorizedException("You are not authorized to perform this operation.")
+        }
 
         try {
-
-            val user = userManager.findOne(id)
-
-            if (principal.isAuthorized(user).not())
-                throw ForbiddenException("The current user is not authorized to perform this operation.")
-
-            userManager.changePassword(user, wrapper.password)
+            userManager.changePassword(user, userRelation.password)
         } catch (ex: InvalidPasswordException) {
             throw BadRequestException(ex.message, ex)
         }
     }
 
+    @Operation(
+        summary = "Delete a user",
+        tags = ["User"],
+        parameters = [
+            Parameter(
+                name = "user_id",
+                description = "The id of the user to delete"
+            )
+        ],
+        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successful deleted the user",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('user')")
     @DeleteMapping("/user/{user_id}")
     fun deleteUser(@PathVariable("user_id") id: Int) {
         userManager.delete(id)
     }
 
-    private fun UserManager.findOne(id: Int): UserDto {
+    private fun UserManager.getOneOrFail(id: Int): UserDto {
         return getOne(id)
             .orElseThrow { NotFoundException("Could not find user: user_id=$id") }
     }

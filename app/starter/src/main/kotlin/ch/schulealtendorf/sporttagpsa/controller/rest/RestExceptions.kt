@@ -80,13 +80,13 @@ class NotFoundException : RuntimeException {
 }
 
 /**
- * Exception for 403 Forbidden status code.
+ * Exception for 401 Unauthorized status code.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-@ResponseStatus(HttpStatus.FORBIDDEN)
-class ForbiddenException : RuntimeException {
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+class UnauthorizedException : RuntimeException {
     constructor() : super()
     constructor(message: String?) : super(message)
     constructor(message: String?, cause: Throwable?) : super(message, cause)
