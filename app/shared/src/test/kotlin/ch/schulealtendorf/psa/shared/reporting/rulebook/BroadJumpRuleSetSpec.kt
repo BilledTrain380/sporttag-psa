@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.BroadJumpRuleSet
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import org.spekframework.spek2.Spek
@@ -49,15 +50,12 @@ import kotlin.test.assertEquals
  * @version 1.0.0
  */
 object BroadJumpRuleSetSpec : Spek({
-    val male = true
-    val female = false
-
     val ruleSet = BroadJumpRuleSet()
 
     Feature("a formula model") {
         Scenario("girls") {
 
-            val model = FormulaModel("Weitsprung", null, 4.31, female)
+            val model = FormulaModel("Weitsprung", null, 4.31, GenderDto.FEMALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -67,7 +65,7 @@ object BroadJumpRuleSetSpec : Spek({
         }
 
         Scenario("boys") {
-            val model = FormulaModel("Weitsprung", null, 3.32, male)
+            val model = FormulaModel("Weitsprung", null, 3.32, GenderDto.MALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {

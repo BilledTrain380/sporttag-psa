@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.SprintRuleSet
 import org.spekframework.spek2.Spek
@@ -49,14 +50,11 @@ import kotlin.test.assertEquals
  * @version 1.0.0
  */
 object SprintRuleSetSpec : Spek({
-    val male = true
-    val female = false
-
     val ruleSet = SprintRuleSet()
 
     Feature("a formula model") {
         Scenario("girls 60m") {
-            val model = FormulaModel("Schnelllauf", "60m", 10.99, female)
+            val model = FormulaModel("Schnelllauf", "60m", 10.99, GenderDto.FEMALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -66,7 +64,7 @@ object SprintRuleSetSpec : Spek({
         }
 
         Scenario("boys 60m") {
-            val model = FormulaModel("Schnelllauf", "60m", 11.4, male)
+            val model = FormulaModel("Schnelllauf", "60m", 11.4, GenderDto.MALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {

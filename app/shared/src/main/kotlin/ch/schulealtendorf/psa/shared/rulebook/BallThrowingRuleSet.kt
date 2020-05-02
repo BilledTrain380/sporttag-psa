@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
@@ -57,7 +58,7 @@ class BallThrowingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (22 * ((((it * 100) - 500) / 100) pow 0.9)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender == GenderDto.FEMALE }
             }
         )
 
@@ -65,7 +66,7 @@ class BallThrowingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (18 * ((((it * 100) - 800) / 100) pow 0.9)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender == GenderDto.MALE }
             }
         )
     }

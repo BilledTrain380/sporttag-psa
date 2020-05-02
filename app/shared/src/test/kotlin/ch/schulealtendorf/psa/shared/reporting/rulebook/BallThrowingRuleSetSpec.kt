@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.BallThrowingRuleSet
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import org.spekframework.spek2.Spek
@@ -49,14 +50,11 @@ import kotlin.test.assertEquals
  * @version 1.0.0
  */
 object BallThrowingRuleSetSpec : Spek({
-    val male = true
-    val female = false
-
     val ruleSet = BallThrowingRuleSet()
 
     Feature("a formula model") {
         Scenario("girls") {
-            val model = FormulaModel("Ballwurf", "60m", 32.96, female)
+            val model = FormulaModel("Ballwurf", "60m", 32.96, GenderDto.FEMALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -66,7 +64,7 @@ object BallThrowingRuleSetSpec : Spek({
         }
 
         Scenario("boys") {
-            val model = FormulaModel("Ballwurf", "60m", 16.32, male)
+            val model = FormulaModel("Ballwurf", "60m", 16.32, GenderDto.MALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {

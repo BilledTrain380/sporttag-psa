@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
@@ -58,7 +59,7 @@ class BroadJumpRuleSet : RuleSet<FormulaModel, Int>() {
                 override val formula: (Double) -> Int =
                     { if (it < 1.81) 1 else ((220.628792 * (((it * 100) - 180) / 100)) pow 1.0).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender == GenderDto.FEMALE }
             }
         )
 
@@ -67,7 +68,7 @@ class BroadJumpRuleSet : RuleSet<FormulaModel, Int>() {
                 override val formula: (Double) -> Int =
                     { if (it < 1.91) 1 else ((180.85908 * (((it * 100) - 190) / 100)) pow 1.0).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender == GenderDto.MALE }
             }
         )
     }

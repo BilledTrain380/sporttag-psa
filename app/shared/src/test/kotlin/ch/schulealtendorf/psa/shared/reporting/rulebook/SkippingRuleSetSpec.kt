@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.SkippingRuleSet
 import org.spekframework.spek2.Spek
@@ -49,15 +50,12 @@ import kotlin.test.assertEquals
  * @version 1.0.0
  */
 object SkippingRuleSetSpec : Spek({
-    val male = true
-    val female = false
-
     val ruleSet = SkippingRuleSet()
 
     Feature("a formula model") {
         Scenario("girls") {
 
-            val model = FormulaModel("Seilspringen", null, 170.0, female)
+            val model = FormulaModel("Seilspringen", null, 170.0, GenderDto.FEMALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -67,7 +65,7 @@ object SkippingRuleSetSpec : Spek({
         }
 
         Scenario("boys") {
-            val model = FormulaModel("Seilspringen", null, 88.0, male)
+            val model = FormulaModel("Seilspringen", null, 88.0, GenderDto.MALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {

@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.BasketThrowingRuleSet
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import org.spekframework.spek2.Spek
@@ -49,14 +50,11 @@ import kotlin.test.assertEquals
  * @version 1.0.0
  */
 object BasketThrowingRuleSetSpec : Spek({
-    val male = true
-    val female = false
-
     val ruleSet = BasketThrowingRuleSet()
 
     Feature("a formula model") {
         Scenario("girls 2m") {
-            val model = FormulaModel("Korbeinwurf", "2m", 2.0, female)
+            val model = FormulaModel("Korbeinwurf", "2m", 2.0, GenderDto.FEMALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -66,7 +64,7 @@ object BasketThrowingRuleSetSpec : Spek({
         }
 
         Scenario("girls 2.5m") {
-            val model = FormulaModel("Korbeinwurf", "2.5m", 10.0, female)
+            val model = FormulaModel("Korbeinwurf", "2.5m", 10.0, GenderDto.FEMALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -76,7 +74,7 @@ object BasketThrowingRuleSetSpec : Spek({
         }
 
         Scenario("boys 2m") {
-            val model = FormulaModel("Korbeinwurf", "2m", 8.0, male)
+            val model = FormulaModel("Korbeinwurf", "2m", 8.0, GenderDto.MALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {
@@ -86,7 +84,7 @@ object BasketThrowingRuleSetSpec : Spek({
         }
 
         Scenario("boys 2.5m") {
-            val model = FormulaModel("Korbeinwurf", "2.5m", 8.0, male)
+            val model = FormulaModel("Korbeinwurf", "2.5m", 8.0, GenderDto.MALE)
             val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
             Then("should return the resulting points") {

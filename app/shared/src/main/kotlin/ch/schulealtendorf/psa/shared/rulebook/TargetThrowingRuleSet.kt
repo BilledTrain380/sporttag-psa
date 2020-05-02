@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
@@ -58,7 +59,8 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
 
                 override val formula: (Double) -> Int = { (4.4 * ((it - 0) pow 1.27)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "4m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.FEMALE && it.distance == "4m" }
             }
         )
 
@@ -67,7 +69,8 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
 
                 override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.27)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "5m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.FEMALE && it.distance == "5m" }
             }
         )
 
@@ -76,7 +79,8 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
 
                 override val formula: (Double) -> Int = { (4.3 * ((it - 0) pow 1.25)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "4m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.MALE && it.distance == "4m" }
             }
         )
 
@@ -85,7 +89,8 @@ class TargetThrowingRuleSet : RuleSet<FormulaModel, Int>() {
 
                 override val formula: (Double) -> Int = { (5.3 * ((it - 0) pow 1.25)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "5m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.MALE && it.distance == "5m" }
             }
         )
     }
