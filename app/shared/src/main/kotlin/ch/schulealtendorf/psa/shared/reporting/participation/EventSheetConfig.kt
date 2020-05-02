@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
-import ch.schulealtendorf.psa.dto.DisciplineDto
-import ch.schulealtendorf.psa.dto.GenderDto
-import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 
 /**
  * Config to create event sheets.
@@ -49,5 +49,5 @@ import ch.schulealtendorf.psa.dto.GroupDto
 data class EventSheetConfig(
     val discipline: DisciplineDto,
     val gender: GenderDto,
-    val group: GroupDto
+    val group: SimpleGroupDto
 )

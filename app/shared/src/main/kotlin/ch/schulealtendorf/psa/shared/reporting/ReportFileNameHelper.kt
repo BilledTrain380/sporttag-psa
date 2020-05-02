@@ -45,7 +45,9 @@ import java.util.ResourceBundle
 
 private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
 
-fun pdfNameOf(config: SportDto) = "${resourceBundle.getString("file.name.participant-list")} ${config.name}.pdf"
+fun pdfNameOf(config: SportDto) =
+    "${resourceBundle.getString("file.name.participant-list")} ${config.name}.pdf"
+
 fun pdfNameOf(config: EventSheetConfig) =
     "${resourceBundle.getString("file.name.event-sheets")} ${config.discipline.name} ${config.group.name} ${config.gender.text}.pdf"
 

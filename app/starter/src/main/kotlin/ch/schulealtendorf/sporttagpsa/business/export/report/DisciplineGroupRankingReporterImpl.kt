@@ -36,14 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineGroupConfig
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineGroupRankingApi
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import java.io.File
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -55,7 +55,6 @@ class DisciplineGroupRankingReporterImpl(
     private val disciplineGroupRankingApi: DisciplineGroupRankingApi
 ) : DisciplineGroupRankingReporter {
     override fun generateCSV(genders: Iterable<GenderDto>): Set<File> {
-
         return try {
             genders.generateReport(disciplineGroupRankingApi::createCsvReport)
         } catch (exception: Exception) {
@@ -64,7 +63,6 @@ class DisciplineGroupRankingReporterImpl(
     }
 
     override fun generateReport(data: Iterable<GenderDto>): Set<File> {
-
         return try {
             data.generateReport(disciplineGroupRankingApi::createPdfReport)
         } catch (exception: Exception) {
@@ -73,11 +71,9 @@ class DisciplineGroupRankingReporterImpl(
     }
 
     private inline fun Iterable<GenderDto>.generateReport(createReport: (Collection<CompetitorDto>, DisciplineGroupConfig) -> File): Set<File> {
-
         return this.map { gender ->
-
-            competitorRepository.findByParticipantGender(gender).map { CompetitorDto from it }
-                .groupBy { it.birthday.year }
+            competitorRepository.findByParticipantGender(gender).map { competitorDtoOf(it) }
+                .groupBy { it.participant.birthday.year }
                 .map { createReport(it.value, DisciplineGroupConfig(gender, it.key)) }
         }.flatten().toSet()
     }

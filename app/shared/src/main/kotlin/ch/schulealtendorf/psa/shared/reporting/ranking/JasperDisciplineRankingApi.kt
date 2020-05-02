@@ -38,15 +38,15 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -59,17 +59,16 @@ class JasperDisciplineRankingApi(
 ) : DisciplineRankingApi {
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineRankingConfig): File {
-
         val competitors = data
-            .filter { it.gender == config.gender }
-            .filter { it.birthday.year == config.year }
-            .filterNot { it.absent }
+            .filter { it.participant.gender == config.gender }
+            .filter { it.participant.birthday.year == config.year }
+            .filterNot { it.participant.isAbsent }
 
         val rankingDataSet = RankingFactory.disciplineRankingOf(competitors, config.discipline)
 
         val template = object : Template {
-            override val source: InputStream
-                get() = JasperDisciplineRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-ranking.jrxml")
+            override val source: InputStream =
+                JasperDisciplineRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-ranking.jrxml")
             override val parameters = hashMapOf(
                 "discipline" to config.discipline.name,
                 "gender" to config.gender.text,

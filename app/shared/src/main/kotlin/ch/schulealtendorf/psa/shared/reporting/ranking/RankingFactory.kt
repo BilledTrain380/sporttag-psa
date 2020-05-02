@@ -36,131 +36,142 @@
 
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.DisciplineDto
-import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
+import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
 
+// TODO: Refactor to service class
 internal object RankingFactory {
-
     fun disciplineRankingOf(
         competitors: Collection<CompetitorDto>,
         discipline: DisciplineDto
     ): List<DisciplineRankingDataSet> {
-
         var rank = 1
         var previousPoints = -1
 
         return competitors
-            .sortedBy { it.resultByDiscipline(discipline).orElse(ResultDto.empty()).points }
+            .sortedBy {
+                it.findResultByDiscipline(discipline.name)
+                    .map { value -> value.points }
+                    .orElse(1)
+            }
             .reversed() // Highest result first
             .mapIndexed { index, competitor ->
+                val result = competitor.findResultByDiscipline(discipline.name)
 
-                val result = competitor.resultByDiscipline(discipline).orElse(ResultDto.empty())
+                // Default values if result is not present
+                var value = "0"
+                var points = 1
 
-                if (result.points != previousPoints)
+                if (result.isPresent.not()) {
+                    value = result.get().relativeValue
+                    points = result.get().points
+                }
+
+                if (points != previousPoints) {
                     rank = index + 1
+                }
 
-                previousPoints = result.points
+                previousPoints = points
 
                 DisciplineRankingDataSet(
                     rank,
-                    competitor.prename,
-                    competitor.surname,
-                    competitor.group.name,
-                    result.relValue,
-                    result.points
+                    competitor.participant.prename,
+                    competitor.participant.surname,
+                    competitor.participant.group,
+                    value,
+                    points
                 )
             }
     }
 
     fun disciplineGroupRankingFactoryOf(competitors: Collection<CompetitorDto>): List<DisciplineGroupRankingDataSet> {
-
         var rank = 1
         var previousPoints = -1
 
         return competitors
-            .sortedBy { it.results.disciplineGroupTotal() }
+            .sortedBy { it.results.calculateDisciplineGroupTotal() }
             .reversed() // Highest result first
             .mapIndexed { index, competitor ->
+                val totalPoints = competitor.results.calculateDisciplineGroupTotal()
 
-                val totalPoints = competitor.results.disciplineGroupTotal()
-
-                if (totalPoints != previousPoints) // if total equals previous, the competitor gets the same rank
+                if (totalPoints != previousPoints) {
                     rank = index + 1
+                }
 
                 previousPoints = totalPoints
 
-                val schnelllauf = competitor.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty())
-                val ballwurf = competitor.resultByDiscipline("Ballwurf").orElse(ResultDto.empty())
-                val weitsprung = competitor.resultByDiscipline("Weitsprung").orElse(ResultDto.empty())
+                val schnelllauf = competitor.findResultByDiscipline("Schnelllauf")
+                val ballwurf = competitor.findResultByDiscipline("Ballwurf")
+                val weitsprung = competitor.findResultByDiscipline("Weitsprung")
 
                 DisciplineGroupRankingDataSet(
-                    rank,
-                    competitor.prename,
-                    competitor.surname,
-                    competitor.group.name,
-                    totalPoints,
-                    schnelllauf.relValue,
-                    schnelllauf.points,
-                    weitsprung.relValue,
-                    weitsprung.points,
-                    ballwurf.relValue,
-                    ballwurf.points
+                    rank = rank,
+                    prename = competitor.participant.prename,
+                    surname = competitor.participant.surname,
+                    group = competitor.participant.group,
+                    total = totalPoints,
+                    schnelllaufResult = schnelllauf.map { it.relativeValue }.orElse("0"),
+                    schnelllaufPoints = schnelllauf.map { it.points }.orElse(1),
+                    weitsprungResult = weitsprung.map { it.relativeValue }.orElse("0"),
+                    weitsprungPoints = weitsprung.map { it.points }.orElse(1),
+                    ballwurfResult = ballwurf.map { it.relativeValue }.orElse("0"),
+                    ballwurfPoints = ballwurf.map { it.points }.orElse(1)
                 )
             }
     }
 
     fun totalRankingOf(competitors: Collection<CompetitorDto>): List<TotalRankingDataSet> {
-
         var rank = 1
         var previousPoints = -1
 
         return competitors
-            .sortedBy { it.results.total() }
+            .sortedBy { it.results.calculateTotal() }
             .reversed() // Highest result first
             .mapIndexed { index, competitor ->
+                val totalPoints = competitor.results.calculateTotal()
 
-                val totalPoints = competitor.results.total()
-
-                if (totalPoints != previousPoints) // if total equals previous, the competitor gets the same rank
+                if (totalPoints != previousPoints) {
                     rank = index + 1
+                }
 
                 previousPoints = totalPoints
 
-                val schnelllauf = competitor.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty())
-                val ballwurf = competitor.resultByDiscipline("Ballwurf").orElse(ResultDto.empty())
-                val ballzielwurf = competitor.resultByDiscipline("Ballzielwurf").orElse(ResultDto.empty())
-                val korbeinwurf = competitor.resultByDiscipline("Korbeinwurf").orElse(ResultDto.empty())
-                val seilspringen = competitor.resultByDiscipline("Seilspringen").orElse(ResultDto.empty())
-                val weitsprung = competitor.resultByDiscipline("Weitsprung").orElse(ResultDto.empty())
+                val schnelllauf = competitor.findResultByDiscipline("Schnelllauf")
+                val ballwurf = competitor.findResultByDiscipline("Ballwurf")
+                val ballzielwurf = competitor.findResultByDiscipline("Ballzielwurf")
+                val korbeinwurf = competitor.findResultByDiscipline("Korbeinwurf")
+                val seilspringen = competitor.findResultByDiscipline("Seilspringen")
+                val weitsprung = competitor.findResultByDiscipline("Weitsprung")
 
                 TotalRankingDataSet(
-                    rank,
-                    competitor.prename,
-                    competitor.surname,
-                    competitor.group.name,
-                    totalPoints,
-                    competitor.results.lowest(),
-                    schnelllauf.relValue,
-                    schnelllauf.points,
-                    ballwurf.relValue,
-                    ballwurf.points,
-                    ballzielwurf.relValue,
-                    ballzielwurf.points,
-                    korbeinwurf.relValue,
-                    korbeinwurf.points,
-                    seilspringen.relValue,
-                    seilspringen.points,
-                    weitsprung.relValue,
-                    weitsprung.points
+                    rank = rank,
+                    prename = competitor.participant.prename,
+                    surname = competitor.participant.surname,
+                    group = competitor.participant.group,
+                    total = totalPoints,
+                    deletedResult = competitor.results.lowest(),
+                    schnelllaufResult = schnelllauf.map { it.relativeValue }.orElse("0"),
+                    schnelllaufPoints = schnelllauf.map { it.points }.orElse(1),
+                    ballwurfResult = ballwurf.map { it.relativeValue }.orElse("0"),
+                    ballwurfPoints = ballwurf.map { it.points }.orElse(1),
+                    ballzielWurfResult = ballzielwurf.map { it.relativeValue }.orElse("0"),
+                    ballzielWurfPoints = ballzielwurf.map { it.points }.orElse(1),
+                    korbeinWurfResult = korbeinwurf.map { it.relativeValue }.orElse("0"),
+                    korbeinWurfPoints = korbeinwurf.map { it.points }.orElse(1),
+                    seilspringenResult = seilspringen.map { it.relativeValue }.orElse("0"),
+                    seilspringenPoints = seilspringen.map { it.points }.orElse(1),
+                    weitsprungResult = weitsprung.map { it.relativeValue }.orElse("0"),
+                    weitsprungPoints = weitsprung.map { it.points }.orElse(1)
                 )
             }
     }
 
-    private fun List<ResultDto>.total() = this.map { it.points }.sorted().reversed().dropLast(1).sum()
+    private fun Map<String, ResultDto>.calculateTotal() =
+        this.values.map { it.points }.sorted().reversed().dropLast(1).sum()
 
-    private fun List<ResultDto>.lowest() = this.map { it.points }.sorted().reversed().last()
+    private fun Map<String, ResultDto>.lowest() = this.values.map { it.points }.sorted().reversed().last()
 
-    private fun List<ResultDto>.disciplineGroupTotal() =
-        this.filter { it.discipline.name == "Ballwurf" || it.discipline.name == "Schnelllauf" || it.discipline.name == "Weitsprung" }.map { it.points }.sum()
+    private fun Map<String, ResultDto>.calculateDisciplineGroupTotal() =
+        this.values.filter { it.discipline.name == "Ballwurf" || it.discipline.name == "Schnelllauf" || it.discipline.name == "Weitsprung" }.map { it.points }.sum()
 }

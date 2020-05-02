@@ -38,15 +38,15 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -57,13 +57,11 @@ class JasperTotalRankingApi(
     private val reportManager: ReportManager,
     private val filesystem: FileSystem
 ) : TotalRankingApi {
-
     override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
-
         val competitors = data
-            .filter { it.gender == config.gender }
-            .filter { it.birthday.year == config.year }
-            .filterNot { it.absent }
+            .filter { it.participant.gender == config.gender }
+            .filter { it.participant.birthday.year == config.year }
+            .filterNot { it.participant.isAbsent }
 
         val rankedCompetitors = RankingFactory.totalRankingOf(competitors)
 
@@ -77,8 +75,8 @@ class JasperTotalRankingApi(
         )
 
         val template = object : Template {
-            override val source: InputStream
-                get() = JasperTotalRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/total-ranking.jrxml")
+            override val source: InputStream =
+                JasperTotalRankingApi::class.java.getResourceAsStream("/reporting/jasper-templates/total-ranking.jrxml")
             override val parameters = parameters
         }
 

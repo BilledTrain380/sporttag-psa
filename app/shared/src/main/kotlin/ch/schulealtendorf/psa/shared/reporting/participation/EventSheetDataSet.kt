@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -50,21 +50,21 @@ data class EventSheetDataSet @JvmOverloads constructor(
     val distance: String = ""
 ) {
     companion object {
-        infix fun from(competitor: CompetitorDto): EventSheetDataSet {
+        fun ofCompetitor(competitor: CompetitorDto): EventSheetDataSet {
             return EventSheetDataSet(
-                competitor.startNumber,
-                competitor.prename,
-                competitor.surname,
-                competitor.group.name
+                competitor.startnumber,
+                competitor.participant.prename,
+                competitor.participant.surname,
+                competitor.participant.group
             )
         }
 
-        fun from(competitor: CompetitorDto, distance: String): EventSheetDataSet {
+        fun ofCompetitorWithDistance(competitor: CompetitorDto, distance: String): EventSheetDataSet {
             return EventSheetDataSet(
-                competitor.startNumber,
-                competitor.prename,
-                competitor.surname,
-                competitor.group.name,
+                competitor.startnumber,
+                competitor.participant.prename,
+                competitor.participant.surname,
+                competitor.participant.group,
                 distance
             )
         }

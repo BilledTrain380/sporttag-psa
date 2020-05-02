@@ -38,18 +38,17 @@ package ch.schulealtendorf.psa.shared.reporting.ranking
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.csvNameOf
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
 import java.util.ResourceBundle
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -60,30 +59,35 @@ class JasperDisciplineGroupApi(
     private val reportManager: ReportManager,
     private val filesystem: FileSystem
 ) : DisciplineGroupRankingApi {
-
     private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
 
     override fun createCsvReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
-
         val competitors = data filterByConfig config
 
         val lines = listOf(resourceBundle.getString("ranking.csv.header-line"))
-            .plus(competitors.map {
+            .plus(competitors.map { competitor ->
                 listOf(
-                    it.startNumber.toString(),
-                    it.surname,
-                    it.prename,
-                    it.address,
-                    it.town.zip,
-                    it.town.name,
-                    it.birthday.format(),
+                    competitor.startnumber.toString(),
+                    competitor.participant.surname,
+                    competitor.participant.prename,
+                    competitor.participant.address,
+                    competitor.participant.town.zip,
+                    competitor.participant.town.name,
+                    competitor.participant.birthday.format(),
                     "Primarschule Altendorf / KTV",
-                    it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
-                    it.resultByDiscipline("Weitsprung").orElse(ResultDto.empty()).relValue,
-                    it.resultByDiscipline("Ballwurf").orElse(ResultDto.empty()).relValue
+                    competitor.findResultByDiscipline("Schnelllauf")
+                        .map { it.relativeValue }
+                        .orElse(""),
+                    competitor.findResultByDiscipline("Weitsprung")
+                        .map { it.relativeValue }
+                        .orElse(""),
+                    competitor.findResultByDiscipline("Ballwurf")
+                        .map { it.relativeValue }
+                        .orElse("")
                 ).joinToString(",") { it }
             })
 
+        // TODO: Extract directories to enum or constants
         val file = ApplicationFile("reporting", csvNameOf(config))
 
         return filesystem.write(file, lines)
@@ -96,8 +100,8 @@ class JasperDisciplineGroupApi(
         val rankingDataSet = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
 
         val template = object : Template {
-            override val source: InputStream
-                get() = JasperDisciplineGroupApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-group-ranking.jrxml")
+            override val source: InputStream =
+                JasperDisciplineGroupApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-group-ranking.jrxml")
             override val parameters: Map<String, Any> = hashMapOf(
                 "gender" to config.gender.text,
                 "year" to config.year.value,
@@ -114,8 +118,8 @@ class JasperDisciplineGroupApi(
 
     private infix fun Collection<CompetitorDto>.filterByConfig(config: DisciplineGroupConfig): List<CompetitorDto> {
         return this
-            .filter { it.gender == config.gender }
-            .filter { it.birthday.year == config.year }
-            .filterNot { it.absent }
+            .filter { it.participant.gender == config.gender }
+            .filter { it.participant.birthday.year == config.year }
+            .filterNot { it.participant.isAbsent }
     }
 }

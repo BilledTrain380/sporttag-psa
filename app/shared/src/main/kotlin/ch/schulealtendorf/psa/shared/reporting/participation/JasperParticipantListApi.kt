@@ -38,15 +38,15 @@ package ch.schulealtendorf.psa.shared.reporting.participation
 
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
-import java.io.File
-import java.io.InputStream
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
+import java.io.File
+import java.io.InputStream
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -57,12 +57,10 @@ class JasperParticipantListApi(
     private val reportManager: ReportManager,
     private val filesystem: FileSystem
 ) : ParticipantListApi {
-
     override fun createPdfReport(data: Collection<ParticipantDto>, config: SportDto): File {
-
         val participants = data
             .filterNot { it.isAbsent }
-            .filter { it.sport == config }
+            .filter { it.sportType == config.name }
             .map { ParticipantDataSet from it }
             .sortedBy { it.group }
 

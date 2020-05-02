@@ -36,13 +36,12 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
 import ch.schulealtendorf.psa.dto.SportDto
 import ch.schulealtendorf.psa.shared.reporting.participation.ParticipantListApi
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.participantDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
-import java.io.File
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -54,12 +53,11 @@ class ParticipantListReporterImpl(
     private val participantListApi: ParticipantListApi
 ) : ParticipantListReporter {
     override fun generateReport(data: Iterable<SportDto>): Set<File> {
-
         return try {
-
             data.map { sport ->
-
-                val participants = participantRepository.findBySportName(sport.name).map { ParticipantDto from it }
+                val participants = participantRepository
+                    .findBySportName(sport.name)
+                    .map { participantDtoOf(it) }
 
                 participantListApi.createPdfReport(participants, sport)
             }.toSet()

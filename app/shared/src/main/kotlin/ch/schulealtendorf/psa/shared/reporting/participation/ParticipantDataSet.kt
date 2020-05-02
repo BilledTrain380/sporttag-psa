@@ -57,8 +57,8 @@ internal data class ParticipantDataSet(
                 participant.prename,
                 participant.surname,
                 participant.gender.text,
-                participant.group.name,
-                participant.group.coach.name
+                participant.group,
+                participant.group // FIXME: Need coach
             )
         }
     }
