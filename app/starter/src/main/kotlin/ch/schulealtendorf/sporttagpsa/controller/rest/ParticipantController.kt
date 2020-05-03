@@ -45,8 +45,6 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
-import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import ch.schulealtendorf.sporttagpsa.lib.ifNotNull
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -55,7 +53,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -95,8 +92,7 @@ class ParticipantController(
                 name = "group",
                 description = "Only include participants related to a group"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_READ])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -130,8 +126,7 @@ class ParticipantController(
                 name = "participant_id",
                 description = "The id of the participant to find"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_READ])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -160,8 +155,7 @@ class ParticipantController(
 
     @Operation(
         summary = "Add a new participant",
-        tags = ["Participant"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+        tags = ["Participant"]
     )
     @ApiResponses(
         value = [
@@ -205,8 +199,7 @@ class ParticipantController(
                 name = "participant_id",
                 description = "The id of the participant to update"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -268,8 +261,7 @@ class ParticipantController(
                 name = "participant_id",
                 description = "The id of the participant to update"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -311,8 +303,7 @@ class ParticipantController(
                 name = "participant_id",
                 description = "The id of the participant to delete"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])]
+        ]
     )
     @ApiResponses(
         value = [

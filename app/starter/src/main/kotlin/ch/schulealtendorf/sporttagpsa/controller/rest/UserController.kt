@@ -43,8 +43,6 @@ import ch.schulealtendorf.psa.dto.user.UserRelation
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
-import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
-import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -52,7 +50,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -81,8 +78,7 @@ class UserController(
 
     @Operation(
         summary = "List users",
-        tags = ["User"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+        tags = ["User"]
     )
     @ApiResponses(
         value = [
@@ -106,8 +102,7 @@ class UserController(
 
     @Operation(
         summary = "Create a new user",
-        tags = ["User"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+        tags = ["User"]
     )
     @ApiResponses(
         value = [
@@ -145,8 +140,7 @@ class UserController(
                 name = "user_id",
                 description = "The id of the user to get"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -176,8 +170,7 @@ class UserController(
                 name = "user_id",
                 description = "The id of the user to update"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -218,8 +211,7 @@ class UserController(
                 name = "user_id",
                 description = "The id of the user to update"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -259,8 +251,7 @@ class UserController(
                 name = "user_id",
                 description = "The id of the user to delete"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])]
+        ]
     )
     @ApiResponses(
         value = [

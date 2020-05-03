@@ -38,8 +38,6 @@ package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
-import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
-import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -47,7 +45,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -68,8 +65,7 @@ class DisciplineController(
 
     @Operation(
         summary = "List disciplines",
-        tags = ["Discipline"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.DISCIPLINE_READ])]
+        tags = ["Discipline"]
     )
     @ApiResponses(
         value = [
@@ -99,8 +95,7 @@ class DisciplineController(
                 name = "discipline_name",
                 description = "The competitor id to find"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.DISCIPLINE_READ])]
+        ]
     )
     @ApiResponses(
         value = [

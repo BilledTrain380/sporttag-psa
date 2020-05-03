@@ -40,8 +40,6 @@ import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
-import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
-import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -49,7 +47,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -79,8 +76,7 @@ class GroupController(
                 name = "group_name",
                 description = "The group name to find"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -110,8 +106,7 @@ class GroupController(
 
     @Operation(
         summary = "List groups",
-        tags = ["Group"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])]
+        tags = ["Group"]
     )
     @ApiResponses(
         value = [
@@ -141,8 +136,7 @@ class GroupController(
                 name = "status_type",
                 description = "The status type to filter"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])]
+        ]
     )
     @ApiResponses(
         value = [

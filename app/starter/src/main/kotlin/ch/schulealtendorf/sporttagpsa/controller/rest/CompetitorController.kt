@@ -43,8 +43,6 @@ import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorFilter
 import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorResultAmend
-import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
-import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -52,7 +50,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -90,8 +87,7 @@ class CompetitorController(
                 name = "absent",
                 description = "If true only absent competitors will be returned, otherwise only present competitors"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_READ])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -135,8 +131,7 @@ class CompetitorController(
                 name = "competitor_id",
                 description = "The competitor id to find"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_READ])]
+        ]
     )
     @ApiResponses(
         value = [
@@ -172,8 +167,7 @@ class CompetitorController(
                 name = "competitor_id",
                 description = "The id of the competitor to update its result"
             )
-        ],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_WRITE])]
+        ]
     )
     @ApiResponses(
         value = [

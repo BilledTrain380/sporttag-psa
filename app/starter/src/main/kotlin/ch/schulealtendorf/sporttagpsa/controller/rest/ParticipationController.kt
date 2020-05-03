@@ -44,15 +44,12 @@ import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
-import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -75,8 +72,7 @@ class ParticipationController(
 ) {
     @Operation(
         summary = "Get the participation status",
-        tags = ["Participation"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPATION])]
+        tags = ["Participation"]
     )
     @ApiResponses(
         value = [
@@ -117,8 +113,7 @@ class ParticipationController(
 
     @Operation(
         summary = "Close or reset the participation",
-        tags = ["Participation"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPATION])]
+        tags = ["Participation"]
     )
     @ApiResponses(
         value = [
@@ -143,8 +138,7 @@ class ParticipationController(
 
     @Operation(
         summary = "List all sport types",
-        tags = ["Participation"],
-        security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.SPORT_READ])]
+        tags = ["Participation"]
     )
     @ApiResponses(
         value = [
