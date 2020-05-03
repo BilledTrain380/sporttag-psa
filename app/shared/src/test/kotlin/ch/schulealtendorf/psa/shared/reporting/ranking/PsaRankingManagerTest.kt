@@ -23,6 +23,12 @@ import org.junit.jupiter.api.Test
 internal class PsaRankingManagerTest {
     private lateinit var rankingManager: PsaRankingManager
 
+    companion object {
+        private const val FIRST_RANK = "1. rank"
+        private const val SECOND_RANK = "2. rank"
+        private const val THIRD_RANK = "3. rank"
+    }
+
     @BeforeEach
     internal fun beforeEach() {
         rankingManager = PsaRankingManager()
@@ -30,70 +36,30 @@ internal class PsaRankingManagerTest {
 
     @Nested
     internal inner class DisciplineGroupRanking {
+        private val firstRankWithResults = competitorDtoOf(surname = FIRST_RANK, results = createHighestResult())
+        private val thirdRankWithResults = competitorDtoOf(surname = THIRD_RANK, results = createLowestResults())
 
         @Test
         internal fun createRanking() {
             val competitors = listOf(
-                competitorDtoOf(
-                    surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 100, discipline = BALLWURF),
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 300, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "2. rank", results = listOf(
-                        resultDtoOf(points = 200, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 200, discipline = BALLWURF),
-                        resultDtoOf(points = 200, discipline = WEITSPRUNG)
-                    )
-                )
+                thirdRankWithResults.copy(),
+                competitorDtoOf(surname = FIRST_RANK, results = createHighestResult()),
+                competitorDtoOf(surname = SECOND_RANK, results = createMiddleResults())
             )
 
             val ranking = rankingManager.createDisciplineGroupRanking(competitors)
 
-            val expected = listOf("1. rank", "2. rank", "3. rank")
+            val expected = listOf(FIRST_RANK, SECOND_RANK, THIRD_RANK)
             assertThat(ranking.map { it.surname }).isEqualTo(expected)
         }
 
         @Test
         internal fun createRankingWhenSamePoints() {
             val competitors = listOf(
-                competitorDtoOf(
-                    surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 100, discipline = BALLWURF),
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 300, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 300, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
-                        resultDtoOf(points = 300, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
-                    )
-                )
+                thirdRankWithResults.copy(),
+                firstRankWithResults.copy(),
+                firstRankWithResults.copy(),
+                firstRankWithResults.copy()
             )
 
             val ranking = rankingManager.createDisciplineGroupRanking(competitors)
@@ -103,6 +69,30 @@ internal class PsaRankingManagerTest {
             assertThat(ranking[2].rank).isEqualTo(1)
             assertThat(ranking[3].rank).isEqualTo(4)
         }
+
+        private fun createLowestResults(): List<ResultDto> {
+            return listOf(
+                schnelllaufWithPoints(100),
+                ballwurfWithPoints(100),
+                weitsprungWithPoints(100)
+            )
+        }
+
+        private fun createMiddleResults(): List<ResultDto> {
+            return listOf(
+                schnelllaufWithPoints(200),
+                ballwurfWithPoints(200),
+                weitsprungWithPoints(200)
+            )
+        }
+
+        private fun createHighestResult(): List<ResultDto> {
+            return listOf(
+                schnelllaufWithPoints(300),
+                ballwurfWithPoints(300),
+                weitsprungWithPoints(300)
+            )
+        }
     }
 
     @Nested
@@ -111,21 +101,9 @@ internal class PsaRankingManagerTest {
         @Test
         internal fun createRanking() {
             val competitors = listOf(
-                competitorDtoOf(
-                    surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = BALLZIELWURF)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "2. rank", results = listOf(
-                        resultDtoOf(points = 200, discipline = BALLZIELWURF)
-                    )
-                )
+                competitorDtoOf(surname = THIRD_RANK, results = listOf(ballzielwurfWithPoints(100))),
+                competitorDtoOf(surname = FIRST_RANK, results = listOf(ballzielwurfWithPoints(300))),
+                competitorDtoOf(surname = SECOND_RANK, results = listOf(ballzielwurfWithPoints(200)))
             )
 
             val discipline = DisciplineDto(
@@ -137,33 +115,22 @@ internal class PsaRankingManagerTest {
 
             val ranking = rankingManager.createDisciplineRanking(competitors, discipline)
 
-            val expected = listOf("1. rank", "2. rank", "3. rank")
+            val expected = listOf(FIRST_RANK, SECOND_RANK, THIRD_RANK)
             assertThat(ranking.map { it.surname }).isEqualTo(expected)
         }
 
         @Test
         internal fun createRankingWhenSamePoints() {
+            val firstRank = competitorDtoOf(
+                surname = FIRST_RANK,
+                results = listOf(ballwurfWithPoints(100))
+            )
+
             val competitors = listOf(
-                competitorDtoOf(
-                    surname = "3. Rank", results = listOf(
-                        resultDtoOf(points = 50, discipline = BALLZIELWURF)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
-                    )
-                )
+                competitorDtoOf(surname = "3. Rank", results = listOf(ballzielwurfWithPoints(50))),
+                firstRank.copy(),
+                firstRank.copy(),
+                firstRank.copy()
             )
 
             val discipline = DisciplineDto(
@@ -187,26 +154,29 @@ internal class PsaRankingManagerTest {
 
         @Test
         internal fun createRanking() {
+            val weitsprung = weitsprungWithPoints(100)
+            val seilspringen = seilspringenWithPoints(300)
+
             val competitors = listOf(
                 competitorDtoOf(
-                    surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 100, discipline = BALLWURF),
-                        resultDtoOf(points = 100, discipline = SEILSPRINGEN)
+                    surname = THIRD_RANK, results = listOf(
+                        weitsprung.copy(),
+                        ballwurfWithPoints(100),
+                        seilspringenWithPoints(100)
                     )
                 ),
                 competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 200, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
+                    surname = FIRST_RANK, results = listOf(
+                        weitsprung.copy(),
+                        ballwurfWithPoints(200),
+                        seilspringen.copy()
                     )
                 ),
                 competitorDtoOf(
-                    surname = "2. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 150, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
+                    surname = SECOND_RANK, results = listOf(
+                        weitsprung.copy(),
+                        ballwurfWithPoints(150),
+                        seilspringen.copy()
                     )
                 )
             )
@@ -216,41 +186,31 @@ internal class PsaRankingManagerTest {
             assertThat(ranking[0].total).isEqualTo(500)
             assertThat(ranking[0].deletedResult).isEqualTo(100)
 
-            val expected = listOf("1. rank", "2. rank", "3. rank")
+            val expected = listOf(FIRST_RANK, SECOND_RANK, THIRD_RANK)
             assertThat(ranking.map { it.surname }).isEqualTo(expected)
         }
 
         @Test
         internal fun createRankingWhenSamePoints() {
+            val firstRankResults = listOf(
+                weitsprungWithPoints(100),
+                ballwurfWithPoints(200),
+                seilspringenWithPoints(300)
+            )
+
+            val firstRank = competitorDtoOf(surname = FIRST_RANK, results = firstRankResults)
+
             val competitors = listOf(
                 competitorDtoOf(
-                    surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 100, discipline = BALLWURF),
-                        resultDtoOf(points = 100, discipline = SEILSPRINGEN)
+                    surname = THIRD_RANK, results = listOf(
+                        weitsprungWithPoints(100),
+                        ballwurfWithPoints(100),
+                        seilspringenWithPoints(100)
                     )
                 ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 200, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 100, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 200, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
-                    )
-                ),
-                competitorDtoOf(
-                    surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
-                        resultDtoOf(points = 200, discipline = BALLWURF),
-                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
-                    )
-                )
+                firstRank.copy(),
+                firstRank.copy(),
+                firstRank.copy()
             )
 
             val ranking = rankingManager.createTotalRanking(competitors)
@@ -262,7 +222,7 @@ internal class PsaRankingManagerTest {
         }
     }
 
-    internal fun competitorDtoOf(
+    private fun competitorDtoOf(
         id: Int = 1,
         startNumber: Int = 1,
         surname: String = "",
@@ -301,7 +261,27 @@ internal class PsaRankingManagerTest {
         )
     }
 
-    internal fun resultDtoOf(
+    private fun schnelllaufWithPoints(points: Int): ResultDto {
+        return resultDtoOf(points = points, discipline = SCHNELLLAUF)
+    }
+
+    private fun ballwurfWithPoints(points: Int): ResultDto {
+        return resultDtoOf(points = points, discipline = BALLWURF)
+    }
+
+    private fun weitsprungWithPoints(points: Int): ResultDto {
+        return resultDtoOf(points = points, discipline = WEITSPRUNG)
+    }
+
+    private fun ballzielwurfWithPoints(points: Int): ResultDto {
+        return resultDtoOf(points = points, discipline = BALLZIELWURF)
+    }
+
+    private fun seilspringenWithPoints(points: Int): ResultDto {
+        return resultDtoOf(points = points, discipline = SEILSPRINGEN)
+    }
+
+    private fun resultDtoOf(
         id: Int = 1,
         value: Long = 0,
         points: Int = 0,
