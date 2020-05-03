@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
@@ -243,7 +244,7 @@ class ParticipantController(
         }
 
         dto.birthday.ifNotNull {
-            builder.setBirthday(it)
+            builder.setBirthday(BirthdayDto(it.time))
         }
 
         dto.gender.ifNotNull {

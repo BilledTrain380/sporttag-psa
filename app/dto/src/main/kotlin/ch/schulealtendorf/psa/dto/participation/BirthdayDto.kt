@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.dto.participation
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.Year
@@ -49,7 +50,10 @@ data class BirthdayDto(
 ) {
     private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
 
+    @JsonIgnore
     val age: Int = ZonedDateTime.now().year - time.atZone(ZoneId.systemDefault()).year
+
+    @JsonIgnore
     val year: Year = Year.of(time.atZone(ZoneId.systemDefault()).year)
 
     companion object {
