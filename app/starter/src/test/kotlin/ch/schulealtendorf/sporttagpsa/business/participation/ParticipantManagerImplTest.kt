@@ -4,6 +4,7 @@ import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.SCHATZSUCHE
 import ch.schulealtendorf.psa.dto.participation.TownDto
 import org.assertj.core.api.Assertions.assertThat
 import org.flywaydb.test.annotation.FlywayTest
@@ -74,7 +75,7 @@ internal class ParticipantManagerImplTest {
         assertThat(participant.town.zip).isEqualTo("3000")
         assertThat(participant.town.name).isEqualTo("Bern")
         assertThat(participant.group.name).isEqualTo("2a")
-        assertThat(participant.sportType).isEqualTo("Schatzsuche")
+        assertThat(participant.sportType).isEqualTo(SCHATZSUCHE)
     }
 
     @Test

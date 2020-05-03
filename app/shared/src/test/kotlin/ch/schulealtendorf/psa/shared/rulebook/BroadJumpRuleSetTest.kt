@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ internal class BroadJumpRuleSetTest {
 
     @Test
     internal fun onFemaleCompetitors() {
-        val model = FormulaModel("Weitsprung", null, 4.31, GenderDto.FEMALE)
+        val model = FormulaModel(WEITSPRUNG, null, 4.31, GenderDto.FEMALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -20,7 +21,7 @@ internal class BroadJumpRuleSetTest {
 
     @Test
     internal fun onMaleCompetitors() {
-        val model = FormulaModel("Weitsprung", null, 3.32, GenderDto.MALE)
+        val model = FormulaModel(WEITSPRUNG, null, 3.32, GenderDto.MALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 

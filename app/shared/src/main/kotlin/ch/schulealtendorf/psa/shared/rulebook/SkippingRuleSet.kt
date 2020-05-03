@@ -37,6 +37,7 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
 import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
@@ -50,7 +51,7 @@ class SkippingRuleSet : RuleSet<FormulaModel, Int>() {
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
-    override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Seilspringen" }
+    override val whenever: (FormulaModel) -> Boolean = { it.discipline == SEILSPRINGEN }
 
     init {
 

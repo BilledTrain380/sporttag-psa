@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ internal class TargetThrowingRuleSetTest {
 
     @Test
     internal fun onFemaleCompetitors4m() {
-        val model = FormulaModel("Ballzielwurf", "4m", 17.0, GenderDto.FEMALE)
+        val model = FormulaModel(BALLZIELWURF, "4m", 17.0, GenderDto.FEMALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -20,7 +21,7 @@ internal class TargetThrowingRuleSetTest {
 
     @Test
     internal fun onFemaleCompetitors5m() {
-        val model = FormulaModel("Ballzielwurf", "5m", 34.0, GenderDto.FEMALE)
+        val model = FormulaModel(BALLZIELWURF, "5m", 34.0, GenderDto.FEMALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -29,7 +30,7 @@ internal class TargetThrowingRuleSetTest {
 
     @Test
     internal fun onMaleCompetitors4m() {
-        val model = FormulaModel("Ballzielwurf", "4m", 20.0, GenderDto.MALE)
+        val model = FormulaModel(BALLZIELWURF, "4m", 20.0, GenderDto.MALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -38,7 +39,7 @@ internal class TargetThrowingRuleSetTest {
 
     @Test
     internal fun onMaleCompetitors5m() {
-        val model = FormulaModel("Ballzielwurf", "5m", 30.0, GenderDto.MALE)
+        val model = FormulaModel(BALLZIELWURF, "5m", 30.0, GenderDto.MALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 

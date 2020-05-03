@@ -2,7 +2,13 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import ch.schulealtendorf.psa.shared.rulebook.PSARuleBook
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -67,40 +73,40 @@ internal class CompetitorManagerImplTest {
         assertThat(competitor.town.name).isEqualTo("Bern")
 
         assertThat(competitor.results.keys).contains(
-            "Schnelllauf",
-            "Weitsprung",
-            "Ballwurf",
-            "Ballzielwurf",
-            "Seilspringen",
-            "Korbeinwurf"
+            SCHNELLLAUF,
+            WEITSPRUNG,
+            BALLWURF,
+            BALLZIELWURF,
+            SEILSPRINGEN,
+            KORBEINWURF
         )
 
-        val schnelllauf = competitor.results["Schnelllauf"]
+        val schnelllauf = competitor.results[SCHNELLLAUF]
         assertThat(schnelllauf).isNotNull
         assertThat(schnelllauf?.value).isEqualTo(1)
         assertThat(schnelllauf?.points).isEqualTo(1)
 
-        val weitsprung = competitor.results["Weitsprung"]
+        val weitsprung = competitor.results[WEITSPRUNG]
         assertThat(weitsprung).isNotNull
         assertThat(weitsprung?.value).isEqualTo(1)
         assertThat(weitsprung?.points).isEqualTo(1)
 
-        val ballwurf = competitor.results["Ballwurf"]
+        val ballwurf = competitor.results[BALLWURF]
         assertThat(ballwurf).isNotNull
         assertThat(ballwurf?.value).isEqualTo(1)
         assertThat(ballwurf?.points).isEqualTo(1)
 
-        val ballzielwurf = competitor.results["Ballzielwurf"]
+        val ballzielwurf = competitor.results[BALLZIELWURF]
         assertThat(ballzielwurf).isNotNull
         assertThat(ballzielwurf?.value).isEqualTo(1)
         assertThat(ballzielwurf?.points).isEqualTo(1)
 
-        val seilspringen = competitor.results["Seilspringen"]
+        val seilspringen = competitor.results[SEILSPRINGEN]
         assertThat(seilspringen).isNotNull
         assertThat(seilspringen?.value).isEqualTo(1)
         assertThat(seilspringen?.points).isEqualTo(1)
 
-        val korbeinwurf = competitor.results["Korbeinwurf"]
+        val korbeinwurf = competitor.results[KORBEINWURF]
         assertThat(korbeinwurf).isNotNull
         assertThat(korbeinwurf?.value).isEqualTo(1)
         assertThat(korbeinwurf?.points).isEqualTo(1)

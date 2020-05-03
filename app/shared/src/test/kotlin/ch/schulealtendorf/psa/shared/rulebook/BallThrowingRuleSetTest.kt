@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ internal class BallThrowingRuleSetTest {
 
     @Test
     internal fun onFemaleCompetitors() {
-        val model = FormulaModel("Ballwurf", "60m", 32.96, GenderDto.FEMALE)
+        val model = FormulaModel(BALLWURF, "60m", 32.96, GenderDto.FEMALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -20,7 +21,7 @@ internal class BallThrowingRuleSetTest {
 
     @Test
     internal fun onMaleCompetitors() {
-        val model = FormulaModel("Ballwurf", "60m", 16.32, GenderDto.MALE)
+        val model = FormulaModel(BALLWURF, "60m", 16.32, GenderDto.MALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 

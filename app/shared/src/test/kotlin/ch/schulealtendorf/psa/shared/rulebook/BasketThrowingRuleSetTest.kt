@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -11,7 +12,7 @@ internal class BasketThrowingRuleSetTest {
 
     @Test
     internal fun onFemaleCompetitorsWith2m() {
-        val model = FormulaModel("Korbeinwurf", "2m", 2.0, GenderDto.FEMALE)
+        val model = FormulaModel(KORBEINWURF, "2m", 2.0, GenderDto.FEMALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -20,7 +21,7 @@ internal class BasketThrowingRuleSetTest {
 
     @Test
     internal fun onFemaleCompetitorsWith2p5m() {
-        val model = FormulaModel("Korbeinwurf", "2.5m", 10.0, GenderDto.FEMALE)
+        val model = FormulaModel(KORBEINWURF, "2.5m", 10.0, GenderDto.FEMALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -29,7 +30,7 @@ internal class BasketThrowingRuleSetTest {
 
     @Test
     internal fun onMaleCompetitorsWith2m() {
-        val model = FormulaModel("Korbeinwurf", "2m", 8.0, GenderDto.MALE)
+        val model = FormulaModel(KORBEINWURF, "2m", 8.0, GenderDto.MALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 
@@ -38,7 +39,7 @@ internal class BasketThrowingRuleSetTest {
 
     @Test
     internal fun onMaleCompetitorsOn2p5m() {
-        val model = FormulaModel("Korbeinwurf", "2.5m", 8.0, GenderDto.MALE)
+        val model = FormulaModel(KORBEINWURF, "2.5m", 8.0, GenderDto.MALE)
 
         val points: Int = ruleSet.getRules().first { it.whenever(model) }.then(model)
 

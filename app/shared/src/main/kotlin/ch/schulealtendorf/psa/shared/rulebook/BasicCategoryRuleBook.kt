@@ -36,6 +36,9 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
 import ch.schulealtendorf.psa.shared.rulebook.rules.BasicRuleBook
 import ch.schulealtendorf.psa.shared.rulebook.rules.Rule
 import org.springframework.stereotype.Component
@@ -56,7 +59,7 @@ class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
         addRule(
             object : Rule<CategoryModel, String>() {
 
-                override val whenever: (CategoryModel) -> Boolean = { it.discipline == "Schnelllauf" }
+                override val whenever: (CategoryModel) -> Boolean = { it.discipline == SCHNELLLAUF }
 
                 override val then: (CategoryModel) -> String = { "60m" }
             }
@@ -65,7 +68,7 @@ class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
         addRule(
             object : Rule<CategoryModel, String>() {
 
-                override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Ballzielwurf" }
+                override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == BALLZIELWURF }
 
                 override val then: (CategoryModel) -> String = { "4m" }
             }
@@ -74,7 +77,7 @@ class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
         addRule(
             object : Rule<CategoryModel, String>() {
 
-                override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Ballzielwurf" }
+                override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == BALLZIELWURF }
 
                 override val then: (CategoryModel) -> String = { "5m" }
             }
@@ -83,7 +86,7 @@ class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
         addRule(
             object : Rule<CategoryModel, String>() {
 
-                override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == "Korbeinwurf" }
+                override val whenever: (CategoryModel) -> Boolean = { it.age < 12 && it.discipline == KORBEINWURF }
 
                 override val then: (CategoryModel) -> String = { "2m" }
             }
@@ -92,7 +95,7 @@ class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
         addRule(
             object : Rule<CategoryModel, String>() {
 
-                override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == "Korbeinwurf" }
+                override val whenever: (CategoryModel) -> Boolean = { it.age > 11 && it.discipline == KORBEINWURF }
 
                 override val then: (CategoryModel) -> String = { "2.5m" }
             }

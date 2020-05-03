@@ -1,5 +1,8 @@
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -14,7 +17,7 @@ internal class BasicCategoryRuleBookTest {
 
         @Test
         internal fun ageUnder12() {
-            val categoryModel = CategoryModel(11, "Ballzielwurf")
+            val categoryModel = CategoryModel(11, BALLZIELWURF)
 
             val distance = ruleBook.run(categoryModel)
 
@@ -23,7 +26,7 @@ internal class BasicCategoryRuleBookTest {
 
         @Test
         internal fun ageAbove12() {
-            val categoryModel = CategoryModel(12, "Ballzielwurf")
+            val categoryModel = CategoryModel(12, BALLZIELWURF)
 
             val distance = ruleBook.run(categoryModel)
 
@@ -36,7 +39,7 @@ internal class BasicCategoryRuleBookTest {
 
         @Test
         internal fun ageUnder12() {
-            val categoryModel = CategoryModel(11, "Korbeinwurf")
+            val categoryModel = CategoryModel(11, KORBEINWURF)
 
             val distance = ruleBook.run(categoryModel)
 
@@ -45,7 +48,7 @@ internal class BasicCategoryRuleBookTest {
 
         @Test
         internal fun ageAbove12() {
-            val categoryModel = CategoryModel(12, "Korbeinwurf")
+            val categoryModel = CategoryModel(12, KORBEINWURF)
 
             val distance = ruleBook.run(categoryModel)
 
@@ -55,8 +58,8 @@ internal class BasicCategoryRuleBookTest {
 
     @Test
     internal fun ageUnder12() {
-        val ballThrowing = CategoryModel(12, "Korbeinwurf")
-        val skipping = CategoryModel(12, "Seilspringen")
+        val ballThrowing = CategoryModel(12, KORBEINWURF)
+        val skipping = CategoryModel(12, SEILSPRINGEN)
 
         ruleBook.run(ballThrowing)
 

@@ -36,9 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
-import ch.schulealtendorf.psa.dto.participation.SportTypeConstant.ATHLETICS
 import ch.schulealtendorf.psa.shared.rulebook.CategoryModel
 import ch.schulealtendorf.psa.shared.rulebook.CategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.CompetitorEntity
