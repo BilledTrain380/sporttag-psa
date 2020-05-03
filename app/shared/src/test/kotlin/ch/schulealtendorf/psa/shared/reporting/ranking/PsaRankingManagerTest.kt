@@ -1,9 +1,9 @@
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
-import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.TownDto
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
@@ -278,19 +278,20 @@ internal class PsaRankingManagerTest {
         return CompetitorDto(
             startnumber = startNumber,
             results = resultMap,
-            participant = ParticipantDto(
-                id = id,
-                surname = surname,
-                prename = prename,
-                gender = gender,
-                birthday = birthday,
-                isAbsent = absent,
-                address = address,
-                town = TownDto(
-                    zip = zip,
-                    name = town
-                ),
-                group = group
+            id = id,
+            surname = surname,
+            prename = prename,
+            gender = gender,
+            birthday = birthday,
+            isAbsent = absent,
+            address = address,
+            town = TownDto(
+                zip = zip,
+                name = town
+            ),
+            group = SimpleGroupDto(
+                name = group,
+                coach = ""
             )
         )
     }

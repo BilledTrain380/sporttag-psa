@@ -77,6 +77,8 @@ interface ParticipantManager {
      * The property [ParticipantDto.sportType] will be ignored.
      * To update this use [ParticipationManager.participate] or [ParticipationManager#reParticipate].
      *
+     * The property [ParticipantDto.group.coach] will be ignored.
+     *
      * @param participant the participant to save
      *
      * @return the created participant

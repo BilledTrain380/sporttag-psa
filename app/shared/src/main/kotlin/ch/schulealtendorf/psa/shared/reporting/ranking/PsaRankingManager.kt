@@ -77,9 +77,9 @@ internal class PsaRankingManager : RankingManager {
 
                 DisciplineRankingDataSet(
                     rank,
-                    competitor.participant.prename,
-                    competitor.participant.surname,
-                    competitor.participant.group,
+                    competitor.prename,
+                    competitor.surname,
+                    competitor.group.name,
                     value,
                     points
                 )
@@ -108,9 +108,9 @@ internal class PsaRankingManager : RankingManager {
 
                 DisciplineGroupRankingDataSet(
                     rank = rank,
-                    prename = competitor.participant.prename,
-                    surname = competitor.participant.surname,
-                    group = competitor.participant.group,
+                    prename = competitor.prename,
+                    surname = competitor.surname,
+                    group = competitor.group.name,
                     total = totalPoints,
                     schnelllaufResult = schnelllauf.map { it.relativeValue }.orElse("0"),
                     schnelllaufPoints = schnelllauf.map { it.points }.orElse(1),
@@ -147,9 +147,9 @@ internal class PsaRankingManager : RankingManager {
 
                 TotalRankingDataSet(
                     rank = rank,
-                    prename = competitor.participant.prename,
-                    surname = competitor.participant.surname,
-                    group = competitor.participant.group,
+                    prename = competitor.prename,
+                    surname = competitor.surname,
+                    group = competitor.group.name,
                     total = totalPoints,
                     deletedResult = competitor.results.lowest(),
                     schnelllaufResult = schnelllauf.map { it.relativeValue }.orElse("0"),

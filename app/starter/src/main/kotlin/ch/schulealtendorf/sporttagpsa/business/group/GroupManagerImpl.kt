@@ -47,6 +47,7 @@ import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
+import ch.schulealtendorf.sporttagpsa.lib.simpleGroupDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
@@ -132,7 +133,7 @@ class GroupManagerImpl(
 
     private fun ParticipantEntity.isCompetitive() = sport != null && sport?.name == ATHLETICS
 
-    private fun GroupEntity.toDto() = SimpleGroupDto(name, coach.name)
+    private fun GroupEntity.toDto() = simpleGroupDtoOf(this)
 
     private fun GroupEntity.toOverview(): OverviewGroupDto {
         var severity = StatusSeverity.OK

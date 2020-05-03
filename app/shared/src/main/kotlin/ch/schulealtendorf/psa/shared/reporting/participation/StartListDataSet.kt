@@ -54,11 +54,11 @@ data class StartListDataSet(
         fun fromCompetitor(competitor: CompetitorDto): StartListDataSet {
             return StartListDataSet(
                 competitor.startnumber,
-                competitor.participant.prename,
-                competitor.participant.surname,
-                competitor.participant.gender.text,
-                competitor.participant.group,
-                competitor.participant.group // FIXME: Use coach
+                competitor.prename,
+                competitor.surname,
+                competitor.gender.text,
+                competitor.group.name,
+                competitor.group.coach
             )
         }
     }

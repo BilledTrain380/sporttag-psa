@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.dto.participation
 
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+
 /**
  * Data class representing a participant.
  *
@@ -43,17 +45,17 @@ package ch.schulealtendorf.psa.dto.participation
  * @since 2.0.0
  */
 data class ParticipantDto @JvmOverloads constructor(
-    val id: Int = 0,
-    val surname: String,
-    val prename: String,
-    val gender: GenderDto,
-    val birthday: BirthdayDto,
-    val isAbsent: Boolean = false,
-    val address: String,
-    val town: TownDto,
-    val group: String,
+    override val id: Int = 0,
+    override val surname: String,
+    override val prename: String,
+    override val gender: GenderDto,
+    override val birthday: BirthdayDto,
+    override val isAbsent: Boolean = false,
+    override val address: String,
+    override val town: TownDto,
+    override val group: SimpleGroupDto,
     val sportType: String? = null
-) {
+) : ParticipantBase {
     fun toBuilder() = Builder(this)
 
     class Builder internal constructor(

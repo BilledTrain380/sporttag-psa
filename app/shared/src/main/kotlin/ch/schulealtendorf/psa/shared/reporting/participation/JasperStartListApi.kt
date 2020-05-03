@@ -61,7 +61,7 @@ class JasperStartListApi(
 
     override fun createReport(data: Collection<CompetitorDto>): File {
         val competitors = data
-            .filterNot { it.participant.isAbsent }
+            .filterNot { it.isAbsent }
             .map { StartListDataSet.fromCompetitor(it) }
             .sortedBy { it.startnumber }
 

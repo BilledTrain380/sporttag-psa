@@ -60,7 +60,7 @@ class JasperEventSheetApi(
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: EventSheetConfig): File {
         val competitors: List<EventSheetDataSet> = data
-            .filterNot { it.participant.isAbsent }
+            .filterNot { it.isAbsent }
             .map { competitor ->
 
                 if (config.discipline.hasDistance.not()) {

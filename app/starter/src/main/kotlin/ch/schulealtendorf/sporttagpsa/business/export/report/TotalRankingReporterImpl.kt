@@ -59,7 +59,7 @@ class TotalRankingReporterImpl(
             data.map { gender ->
                 competitorRepository.findByParticipantGender(gender)
                     .map { competitorDtoOf(it) }
-                    .groupBy { it.participant.birthday.year }
+                    .groupBy { it.birthday.year }
                     .map {
                         totalRankingApi.createPdfReport(
                             it.value, TotalRankingConfig(

@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.rest.participation
 
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
@@ -191,7 +192,7 @@ class ParticipantController(
             address = input.address,
             town = input.town,
             isAbsent = false,
-            group = input.group
+            group = SimpleGroupDto.ofNameOnly(input.group)
         )
 
         participantManager.saveParticipant(participant)

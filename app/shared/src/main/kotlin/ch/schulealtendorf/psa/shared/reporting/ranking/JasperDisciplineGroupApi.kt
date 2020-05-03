@@ -70,12 +70,12 @@ class JasperDisciplineGroupApi(
             .plus(competitors.map { competitor ->
                 listOf(
                     competitor.startnumber.toString(),
-                    competitor.participant.surname,
-                    competitor.participant.prename,
-                    competitor.participant.address,
-                    competitor.participant.town.zip,
-                    competitor.participant.town.name,
-                    competitor.participant.birthday.format(),
+                    competitor.surname,
+                    competitor.prename,
+                    competitor.address,
+                    competitor.town.zip,
+                    competitor.town.name,
+                    competitor.birthday.format(),
                     "Primarschule Altendorf / KTV",
                     competitor.findResultByDiscipline("Schnelllauf")
                         .map { it.relativeValue }
@@ -117,8 +117,8 @@ class JasperDisciplineGroupApi(
 
     private infix fun Collection<CompetitorDto>.filterByConfig(config: DisciplineGroupConfig): List<CompetitorDto> {
         return this
-            .filter { it.participant.gender == config.gender }
-            .filter { it.participant.birthday.year == config.year }
-            .filterNot { it.participant.isAbsent }
+            .filter { it.gender == config.gender }
+            .filter { it.birthday.year == config.year }
+            .filterNot { it.isAbsent }
     }
 }

@@ -7,4 +7,10 @@ package ch.schulealtendorf.psa.dto.group
 data class SimpleGroupDto(
     val name: String,
     val coach: String
-)
+) {
+    companion object {
+        fun ofNameOnly(name: String): SimpleGroupDto {
+            return SimpleGroupDto(name, "n/a")
+        }
+    }
+}

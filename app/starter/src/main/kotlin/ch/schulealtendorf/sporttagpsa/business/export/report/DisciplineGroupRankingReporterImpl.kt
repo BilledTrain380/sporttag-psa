@@ -73,7 +73,7 @@ class DisciplineGroupRankingReporterImpl(
     private inline fun Iterable<GenderDto>.generateReport(createReport: (Collection<CompetitorDto>, DisciplineGroupConfig) -> File): Set<File> {
         return this.map { gender ->
             competitorRepository.findByParticipantGender(gender).map { competitorDtoOf(it) }
-                .groupBy { it.participant.birthday.year }
+                .groupBy { it.birthday.year }
                 .map { createReport(it.value, DisciplineGroupConfig(gender, it.key)) }
         }.flatten().toSet()
     }

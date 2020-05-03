@@ -62,9 +62,9 @@ class JasperDisciplineRankingApi(
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineRankingConfig): File {
         val competitors = data
-            .filter { it.participant.gender == config.gender }
-            .filter { it.participant.birthday.year == config.year }
-            .filterNot { it.participant.isAbsent }
+            .filter { it.gender == config.gender }
+            .filter { it.birthday.year == config.year }
+            .filterNot { it.isAbsent }
 
         val rankingDataSet = rankingManager.createDisciplineRanking(competitors, config.discipline)
 

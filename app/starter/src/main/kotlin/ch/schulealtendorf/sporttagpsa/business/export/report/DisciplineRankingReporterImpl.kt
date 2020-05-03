@@ -58,7 +58,7 @@ class DisciplineRankingReporterImpl(
             data.map { disciplineExport ->
                 competitorRepository.findByParticipantGender(disciplineExport.gender)
                     .map { competitorDtoOf(it) }
-                    .groupBy { it.participant.birthday.year }
+                    .groupBy { it.birthday.year }
                     .map {
                         disciplineRankingApi.createPdfReport(
                             it.value,

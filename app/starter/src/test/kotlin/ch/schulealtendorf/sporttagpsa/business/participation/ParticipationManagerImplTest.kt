@@ -1,5 +1,6 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
@@ -81,7 +82,7 @@ internal class ParticipationManagerImplTest {
                 zip = "3027",
                 name = "Bern"
             ),
-            group = "2a"
+            group = SimpleGroupDto.ofNameOnly("2a")
         )
 
         assertThrows<NoSuchElementException>("Could not find participant: id=0") {

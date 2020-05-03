@@ -2,7 +2,6 @@ package ch.schulealtendorf.sporttagpsa.business.athletics
 
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
-import ch.schulealtendorf.psa.dto.participation.SportTypeConstant
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import ch.schulealtendorf.psa.shared.rulebook.PSARuleBook
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -39,9 +38,6 @@ internal class CompetitorManagerImplTest {
         val competitors = competitorManager.getCompetitors()
 
         assertThat(competitors).hasSize(3)
-
-        val sportTypes = competitors.map { it.participant.sportType }
-        assertThat(sportTypes).containsOnly(SportTypeConstant.ATHLETICS)
     }
 
     @Test
@@ -61,15 +57,14 @@ internal class CompetitorManagerImplTest {
         val competitor = competitorOptional.get()
         assertThat(competitor).isNotNull
         assertThat(competitor.startnumber).isEqualTo(1)
-        assertThat(competitor.participant.prename).isEqualTo("Eric A")
-        assertThat(competitor.participant.surname).isEqualTo("Mason")
-        assertThat(competitor.participant.gender).isEqualTo(GenderDto.MALE)
-        assertThat(competitor.participant.birthday).isEqualTo(BirthdayDto.parse("2012-02-14T00:00:00Z"))
-        assertThat(competitor.participant.isAbsent).isFalse()
-        assertThat(competitor.participant.address).isEqualTo("Peck Court 51")
-        assertThat(competitor.participant.town.zip).isEqualTo("3000")
-        assertThat(competitor.participant.town.name).isEqualTo("Bern")
-        assertThat(competitor.participant.sportType).isEqualTo(SportTypeConstant.ATHLETICS)
+        assertThat(competitor.prename).isEqualTo("Eric A")
+        assertThat(competitor.surname).isEqualTo("Mason")
+        assertThat(competitor.gender).isEqualTo(GenderDto.MALE)
+        assertThat(competitor.birthday).isEqualTo(BirthdayDto.parse("2012-02-14T00:00:00Z"))
+        assertThat(competitor.isAbsent).isFalse()
+        assertThat(competitor.address).isEqualTo("Peck Court 51")
+        assertThat(competitor.town.zip).isEqualTo("3000")
+        assertThat(competitor.town.name).isEqualTo("Bern")
 
         assertThat(competitor.results.keys).contains(
             "Schnelllauf",

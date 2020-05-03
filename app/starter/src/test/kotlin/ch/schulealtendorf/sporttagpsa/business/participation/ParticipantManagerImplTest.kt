@@ -1,5 +1,6 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
@@ -72,7 +73,7 @@ internal class ParticipantManagerImplTest {
         assertThat(participant.address).isEqualTo("Hanover Street 45")
         assertThat(participant.town.zip).isEqualTo("3000")
         assertThat(participant.town.name).isEqualTo("Bern")
-        assertThat(participant.group).isEqualTo("2a")
+        assertThat(participant.group.name).isEqualTo("2a")
         assertThat(participant.sportType).isEqualTo("Schatzsuche")
     }
 
@@ -88,7 +89,7 @@ internal class ParticipantManagerImplTest {
                 zip = "3027",
                 name = "Bern"
             ),
-            group = "2a"
+            group = SimpleGroupDto.ofNameOnly("2a")
         )
 
         val savedParticipant = participantManager.saveParticipant(participant)
@@ -133,7 +134,7 @@ internal class ParticipantManagerImplTest {
                 zip = "3000",
                 name = "Bern"
             ),
-            group = "non-existing group"
+            group = SimpleGroupDto.ofNameOnly("non-existing group")
         )
 
         assertThrows<NoSuchElementException>("Group does not exist: name=${participant.group}") {

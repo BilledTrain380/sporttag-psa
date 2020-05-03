@@ -74,7 +74,7 @@ class ParticipantManagerImpl(
         val townEntity = townRepository.findByZipAndName(participant.town.zip, participant.town.name)
             .orElseGet { TownEntity(zip = participant.town.zip, name = participant.town.name) }
 
-        val groupEntity = groupRepository.findById(participant.group)
+        val groupEntity = groupRepository.findById(participant.group.name)
             .orElseThrow { NoSuchElementException("Group does not exist: name=${participant.group}") }
 
         participantEntity.apply {

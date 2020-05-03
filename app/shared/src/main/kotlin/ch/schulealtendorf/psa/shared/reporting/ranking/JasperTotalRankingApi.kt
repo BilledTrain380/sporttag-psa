@@ -61,9 +61,9 @@ class JasperTotalRankingApi(
 ) : TotalRankingApi {
     override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
         val competitors = data
-            .filter { it.participant.gender == config.gender }
-            .filter { it.participant.birthday.year == config.year }
-            .filterNot { it.participant.isAbsent }
+            .filter { it.gender == config.gender }
+            .filter { it.birthday.year == config.year }
+            .filterNot { it.isAbsent }
 
         val rankedCompetitors = rankingManager.createTotalRanking(competitors)
 

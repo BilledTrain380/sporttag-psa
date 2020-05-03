@@ -53,18 +53,18 @@ data class EventSheetDataSet @JvmOverloads constructor(
         fun ofCompetitor(competitor: CompetitorDto): EventSheetDataSet {
             return EventSheetDataSet(
                 competitor.startnumber,
-                competitor.participant.prename,
-                competitor.participant.surname,
-                competitor.participant.group
+                competitor.prename,
+                competitor.surname,
+                competitor.group.name
             )
         }
 
         fun ofCompetitorWithDistance(competitor: CompetitorDto, distance: String): EventSheetDataSet {
             return EventSheetDataSet(
                 competitor.startnumber,
-                competitor.participant.prename,
-                competitor.participant.surname,
-                competitor.participant.group,
+                competitor.prename,
+                competitor.surname,
+                competitor.group.name,
                 distance
             )
         }
