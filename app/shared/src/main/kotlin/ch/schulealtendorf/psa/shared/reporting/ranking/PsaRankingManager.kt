@@ -181,8 +181,8 @@ internal class PsaRankingManager : RankingManager {
 
     private fun Map<String, ResultDto>.calculateDisciplineGroupTotal() =
         this.values.filter {
-            it.discipline.name == BALLWURF
-                || it.discipline.name == SCHNELLLAUF
-                || it.discipline.name == WEITSPRUNG
+            it.discipline.name == BALLWURF ||
+                it.discipline.name == SCHNELLLAUF ||
+                it.discipline.name == WEITSPRUNG
         }.map { it.points }.sum()
 }
