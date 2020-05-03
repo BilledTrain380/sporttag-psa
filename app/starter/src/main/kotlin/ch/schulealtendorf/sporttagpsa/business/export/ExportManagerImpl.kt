@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineGroupRankingReporter
@@ -74,7 +75,7 @@ class ExportManagerImpl(
         try {
             val reports = eventSheetReporter.generateReport(data.disciplines)
 
-            val file = ApplicationFile("export", resourceBundle.getString("name.event-sheets"))
+            val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("name.event-sheets"))
             return fileSystem.createArchive(file, reports)
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -98,7 +99,7 @@ class ExportManagerImpl(
                 disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
 
-            val file = ApplicationFile("export", resourceBundle.getString("name.ranking"))
+            val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("name.ranking"))
             return fileSystem.createArchive(file, reports)
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -117,7 +118,7 @@ class ExportManagerImpl(
         try {
             val reports = participantListReporter.generateReport(data.sports)
 
-            val file = ApplicationFile("export", resourceBundle.getString("name.participant-list"))
+            val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("name.participant-list"))
             return fileSystem.createArchive(file, reports)
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)

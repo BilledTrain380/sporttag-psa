@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import net.sf.jasperreports.engine.JREmptyDataSource
@@ -76,7 +77,7 @@ class JasperReportManager(
 
     private fun copyResources() {
         val altendorfLogo = JasperReportManager::class.java.getResourceAsStream("/img/gemeinde-altendorf.jpg")
-        val applicationFile = ApplicationFile("reporting", "gemeinde-altendorf.jpg")
+        val applicationFile = ApplicationFile(AppDirectory.REPORTING, "gemeinde-altendorf.jpg")
         filesystem.write(applicationFile, altendorfLogo)
     }
 }

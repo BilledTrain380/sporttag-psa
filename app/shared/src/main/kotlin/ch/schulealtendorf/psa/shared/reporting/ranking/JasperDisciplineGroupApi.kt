@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
@@ -88,8 +89,7 @@ class JasperDisciplineGroupApi(
                 ).joinToString(",") { it }
             })
 
-        // TODO: Extract directories to enum or constants
-        val file = ApplicationFile("reporting", csvNameOf(config))
+        val file = ApplicationFile(AppDirectory.REPORTING, csvNameOf(config))
 
         return filesystem.write(file, lines)
     }
@@ -110,7 +110,7 @@ class JasperDisciplineGroupApi(
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", pdfNameOf(config))
+        val file = ApplicationFile(AppDirectory.REPORTING, pdfNameOf(config))
 
         return filesystem.write(file, reportInputStream)
     }

@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
@@ -73,7 +74,7 @@ class JasperStartListApi(
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", "${resourceBundle.getString("file.name.startlist")}.pdf")
+        val file = ApplicationFile(AppDirectory.REPORTING, "${resourceBundle.getString("file.name.startlist")}.pdf")
 
         return filesystem.write(file, reportInputStream)
     }
