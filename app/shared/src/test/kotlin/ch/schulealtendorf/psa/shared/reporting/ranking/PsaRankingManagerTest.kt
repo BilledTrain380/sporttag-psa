@@ -123,7 +123,7 @@ internal class PsaRankingManagerTest {
         internal fun createRankingWhenSamePoints() {
             val firstRank = competitorDtoOf(
                 surname = FIRST_RANK,
-                results = listOf(ballwurfWithPoints(100))
+                results = listOf(ballzielwurfWithPoints(100))
             )
 
             val competitors = listOf(
