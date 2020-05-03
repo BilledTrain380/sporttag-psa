@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest.competitor
+package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
@@ -45,7 +45,6 @@ import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorManager
 import ch.schulealtendorf.sporttagpsa.business.athletics.CompetitorResultAmend
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -70,14 +69,14 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/api")
-@Tag(name = "competitor", description = "Manage competitors")
+@Tag(name = "Competitor", description = "Manage competitors")
 class CompetitorController(
     private val competitorManager: CompetitorManager
 ) {
 
     @Operation(
         summary = "List competitors",
-        tags = ["competitor"],
+        tags = ["Competitor"],
         parameters = [
             Parameter(
                 name = "group",
@@ -130,7 +129,7 @@ class CompetitorController(
 
     @Operation(
         summary = "Find a competitor by its id",
-        tags = ["competitor"],
+        tags = ["Competitor"],
         parameters = [
             Parameter(
                 name = "competitor_id",
@@ -167,7 +166,7 @@ class CompetitorController(
 
     @Operation(
         summary = "Update competitor result",
-        tags = ["competitor"],
+        tags = ["Competitor"],
         parameters = [
             Parameter(
                 name = "competitor_id",

@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest.participation
+package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
@@ -43,12 +43,10 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
 import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
-import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import ch.schulealtendorf.sporttagpsa.lib.ifNotNull
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -83,8 +81,7 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "Participant", description = "Manage participants")
 class ParticipantController(
     private val participantManager: ParticipantManager,
-    private val participationManager: ParticipationManager,
-    private val groupManager: GroupManager
+    private val participationManager: ParticipationManager
 ) {
     companion object {
         const val PARTICIPANT: String = "/participant/{participant_id}"
@@ -170,7 +167,8 @@ class ParticipantController(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Participant created"
+                description = "Participant created",
+                content = [Content(schema = Schema(implementation = ParticipantDto::class))]
             ),
             ApiResponse(
                 responseCode = "401",
@@ -184,7 +182,7 @@ class ParticipantController(
     )
     @PreAuthorize("#oauth2.hasScope('participant_write')")
     @PostMapping("/participants")
-    fun createParticipant(@RequestBody input: ParticipantInput) {
+    fun createParticipant(@RequestBody input: ParticipantInput): ParticipantDto {
         val participant = ParticipantDto(
             surname = input.surname,
             prename = input.prename,
@@ -196,7 +194,7 @@ class ParticipantController(
             group = SimpleGroupDto.ofNameOnly(input.group)
         )
 
-        participantManager.saveParticipant(participant)
+        return participantManager.saveParticipant(participant)
     }
 
     @Operation(

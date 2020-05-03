@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest.user
+package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.psa.dto.user.UserElement
@@ -45,9 +45,6 @@ import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
-import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.rest.UnauthorizedException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema

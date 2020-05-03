@@ -34,13 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.rest.discipline
+package ch.schulealtendorf.sporttagpsa.controller.rest
 
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -62,14 +61,14 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/api")
-@Tag(name = "discipline", description = "Manager disciplines")
+@Tag(name = "Discipline", description = "Manager disciplines")
 class DisciplineController(
     private val disciplineManager: DisciplineManager
 ) {
 
     @Operation(
         summary = "List disciplines",
-        tags = ["discipline"],
+        tags = ["Discipline"],
         security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.DISCIPLINE_READ])]
     )
     @ApiResponses(
@@ -94,7 +93,7 @@ class DisciplineController(
 
     @Operation(
         summary = "Get a single disciplines",
-        tags = ["discipline"],
+        tags = ["Discipline"],
         parameters = [
             Parameter(
                 name = "discipline_name",
