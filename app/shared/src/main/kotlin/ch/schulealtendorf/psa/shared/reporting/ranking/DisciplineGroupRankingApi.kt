@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportApi
 import java.io.File
 

@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import java.util.NoSuchElementException
 import java.util.Optional
 
@@ -54,36 +54,42 @@ interface ParticipantManager {
     fun getParticipants(): List<ParticipantDto>
 
     /**
+     * @return a list of participants related to the given [groupName]
+     */
+    fun getParticipantsByGroup(groupName: String): List<ParticipantDto>
+
+    /**
      * @param id the id of the participant
      *
-     * @return an Optional containing the participant or empty if the participant could not be found
+     * @return an optional containing the participant or empty if the participant could not be found
      */
     fun getParticipant(id: Int): Optional<ParticipantDto>
 
     /**
-     * Saves the given {@code participant}.
+     * Saves the given [participant].
      *
-     * If the {@link Participant#id} < 1, it will be created.
+     * If the [ParticipantDto.id] < 1, it will be created.
      *
      * If the participant exists already, it will be updated.
      *
-     * If the {@link Participant#town} does not exist, it will be created
+     * If the [ParticipantDto.town] does not exist, it will be created
      *
-     * The properties {@link Participant#absent} and {@link Participant#sport} will be ignored.
-     * To update those use {@link ParticipationManager#markAsAbsent}, {@link ParticipationManager#markAsPresent}
-     * or {@link ParticipationManager#participate}.
+     * The property [ParticipantDto.sportType] will be ignored.
+     * To update this use [ParticipationManager.participate] or [ParticipationManager#reParticipate].
+     *
+     * The property [ParticipantDto.group.coach] will be ignored.
      *
      * @param participant the participant to save
      *
      * @return the created participant
-     * @throws NoSuchElementException if the group of the given {@code participant} does not exist
+     * @throws NoSuchElementException if the group of the given [participant] does not exist
      */
     fun saveParticipant(participant: ParticipantDto): ParticipantDto
 
     /**
-     * Deletes the given {@code participant}.
+     * Deletes the participant with the given [id].
      *
-     * @param participant the participant to delete
+     * @param id the participant id
      */
-    fun deleteParticipant(participant: ParticipantDto)
+    fun deleteParticipantById(id: Int)
 }

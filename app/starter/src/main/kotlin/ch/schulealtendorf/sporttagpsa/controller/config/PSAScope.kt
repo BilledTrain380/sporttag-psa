@@ -38,23 +38,21 @@ package ch.schulealtendorf.sporttagpsa.controller.config
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 0.0.1
+ * @since 2.2.0
  */
-enum class PSAScope(
-    val value: String
-) {
-    USER("user"),
-    GROUP_READ("group_read"),
-    GROUP_WRITE("group_write"),
-    SPORT_READ("sport_read"),
-    DISCIPLINE_READ("discipline_read"),
-    COMPETITOR_READ("competitor_read"),
-    COMPETITOR_WRITE("competitor_write"),
-    PARTICIPANT_READ("participant_read"),
-    PARTICIPANT_WRITE("participant_write"),
-    PARTICIPATION("participation"),
-    FILES("files"),
-    RANKING("ranking"),
-    EVENT_SHEETS("event_sheets"),
-    PARTICIPANT_LIST("participant_list")
+object PSAScope {
+    const val GROUP_READ = "group_read"
+    const val GROUP_WRITE = "group_write"
+    const val PARTICIPANT_READ = "participant_read"
+    const val PARTICIPANT_WRITE = "participant_write"
+    const val COMPETITOR_READ = "competitor_read"
+    const val COMPETITOR_WRITE = "competitor_write"
+    const val DISCIPLINE_READ = "discipline_read"
+    const val SPORT_READ = "sport_read"
+    const val PARTICIPATION = "participation"
+    const val PARTICIPANT_LIST = "participant_list"
+    const val FILES = "files"
+    const val RANKING = "ranking"
+    const val EVENT_SHEETS = "event_sheets"
+    const val USER = "user"
 }

@@ -36,6 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.config
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.security.OAuthFlow
+import io.swagger.v3.oas.annotations.security.OAuthFlows
+import io.swagger.v3.oas.annotations.security.OAuthScope
+import io.swagger.v3.oas.annotations.security.SecurityScheme
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
@@ -51,6 +56,32 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices
  */
 @Configuration
 @EnableResourceServer
+@SecurityScheme(
+    name = SecurityRequirementNames.OAUTH2,
+    type = SecuritySchemeType.OAUTH2,
+    flows = OAuthFlows(
+        implicit = OAuthFlow(
+            authorizationUrl = "/oauth/authorize",
+            tokenUrl = "/oauth/token",
+            scopes = [
+                OAuthScope(name = PSAScope.GROUP_READ, description = "Allows to read groups resources"),
+                OAuthScope(name = PSAScope.GROUP_WRITE, description = "Allows to modify groups resources"),
+                OAuthScope(name = PSAScope.PARTICIPANT_READ, description = "Allows to read participant resources"),
+                OAuthScope(name = PSAScope.PARTICIPANT_WRITE, description = "Allows to modify participant resources"),
+                OAuthScope(name = PSAScope.COMPETITOR_READ, description = "Allows to read competitor resources"),
+                OAuthScope(name = PSAScope.COMPETITOR_WRITE, description = "Allows to modify competitor resources"),
+                OAuthScope(name = PSAScope.DISCIPLINE_READ, description = "Allows to read discipline resources"),
+                OAuthScope(name = PSAScope.SPORT_READ, description = "Allows to read sport resources"),
+                OAuthScope(name = PSAScope.PARTICIPATION, description = "Access participation resources"),
+                OAuthScope(name = PSAScope.PARTICIPANT_LIST, description = "Access participation list"),
+                OAuthScope(name = PSAScope.FILES, description = "Access files"),
+                OAuthScope(name = PSAScope.RANKING, description = "Access ranking"),
+                OAuthScope(name = PSAScope.EVENT_SHEETS, description = "Access event sheets"),
+                OAuthScope(name = PSAScope.USER, description = "Access to user management)")
+            ]
+        )
+    )
+)
 class ResourceServerConfig(
     private val tokenServices: DefaultTokenServices
 ) : ResourceServerConfigurerAdapter() {
@@ -62,25 +93,25 @@ class ResourceServerConfig(
             ?.authorizeRequests()
 
             ?.antMatchers(
-                "/api/rest/groups",
-                "/api/rest/participation",
-                "/api/rest/competitors",
-                "/api/rest/competitor/**",
-                "/api/rest/sports",
-                "/api/rest/disciplines"
+                "/api/groups",
+                "/api/participation",
+                "/api/competitors",
+                "/api/competitor/**",
+                "/api/sports",
+                "/api/disciplines"
             )?.hasRole("USER")
 
             ?.antMatchers(
-                "/api/rest/group/**",
-                "/api/rest/participant/**",
-                "/api/rest/participants",
-                "/api/rest/users",
-                "/api/rest/user/**",
-                "/api/web/group-import",
-                "/api/web/ranking",
-                "/api/web/event-sheets",
-                "/api/web/file/**",
-                "/api/web/participant-list"
+                "/api/group/**",
+                "/api/participant/**",
+                "/api/participants",
+                "/api/users",
+                "/api/user/**",
+                "/web/group-import",
+                "/web/ranking",
+                "/web/event-sheets",
+                "/web/file/**",
+                "/web/participant-list"
             )?.hasRole("ADMIN")
 
             ?.anyRequest()?.authenticated()

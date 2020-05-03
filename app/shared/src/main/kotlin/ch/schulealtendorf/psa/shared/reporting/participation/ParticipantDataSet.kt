@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 
 /**
  * Data class representing the data set for jasper template.
@@ -58,7 +58,7 @@ internal data class ParticipantDataSet(
                 participant.surname,
                 participant.gender.text,
                 participant.group.name,
-                participant.group.coach.name
+                participant.group.coach
             )
         }
     }

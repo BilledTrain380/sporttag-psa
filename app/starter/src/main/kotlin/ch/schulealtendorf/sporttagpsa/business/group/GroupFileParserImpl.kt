@@ -36,8 +36,10 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.psa.dto.BirthdayDto
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.BirthdayDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import java.nio.charset.Charset
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -46,8 +48,6 @@ import java.util.Locale
 import java.util.Optional
 import java.util.stream.Stream
 import kotlin.streams.toList
-import org.springframework.stereotype.Component
-import org.springframework.web.multipart.MultipartFile
 
 /**
  * An implementation of a FileReader for a competitor input file.
@@ -117,7 +117,7 @@ class GroupFileParserImpl : GroupFileParser {
                         surname,
                         prename,
                         gender,
-                        BirthdayDto(birthday.time),
+                        BirthdayDto.ofMillis(birthday.time),
                         address,
                         zipCode,
                         town,

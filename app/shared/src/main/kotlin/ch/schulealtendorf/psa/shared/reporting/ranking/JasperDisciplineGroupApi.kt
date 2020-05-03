@@ -36,20 +36,23 @@
 
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.ResultDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.csvNameOf
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.InputStream
 import java.time.Year
 import java.util.ResourceBundle
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
-import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -58,46 +61,49 @@ import org.springframework.stereotype.Component
 @Component
 class JasperDisciplineGroupApi(
     private val reportManager: ReportManager,
+    private val rankingManager: RankingManager,
     private val filesystem: FileSystem
 ) : DisciplineGroupRankingApi {
-
     private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
 
     override fun createCsvReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
-
         val competitors = data filterByConfig config
 
         val lines = listOf(resourceBundle.getString("ranking.csv.header-line"))
-            .plus(competitors.map {
+            .plus(competitors.map { competitor ->
                 listOf(
-                    it.startNumber.toString(),
-                    it.surname,
-                    it.prename,
-                    it.address,
-                    it.town.zip,
-                    it.town.name,
-                    it.birthday.format(),
+                    competitor.startnumber.toString(),
+                    competitor.surname,
+                    competitor.prename,
+                    competitor.address,
+                    competitor.town.zip,
+                    competitor.town.name,
+                    competitor.birthday.format(),
                     "Primarschule Altendorf / KTV",
-                    it.resultByDiscipline("Schnelllauf").orElse(ResultDto.empty()).relValue,
-                    it.resultByDiscipline("Weitsprung").orElse(ResultDto.empty()).relValue,
-                    it.resultByDiscipline("Ballwurf").orElse(ResultDto.empty()).relValue
+                    competitor.findResultByDiscipline(SCHNELLLAUF)
+                        .map { it.relativeValue }
+                        .orElse(""),
+                    competitor.findResultByDiscipline(WEITSPRUNG)
+                        .map { it.relativeValue }
+                        .orElse(""),
+                    competitor.findResultByDiscipline(BALLWURF)
+                        .map { it.relativeValue }
+                        .orElse("")
                 ).joinToString(",") { it }
             })
 
-        val file = ApplicationFile("reporting", csvNameOf(config))
+        val file = ApplicationFile(AppDirectory.REPORTING, csvNameOf(config))
 
         return filesystem.write(file, lines)
     }
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
-
         val competitors = data filterByConfig config
-
-        val rankingDataSet = RankingFactory.disciplineGroupRankingFactoryOf(competitors)
+        val rankingDataSet = rankingManager.createDisciplineGroupRanking(competitors)
 
         val template = object : Template {
-            override val source: InputStream
-                get() = JasperDisciplineGroupApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-group-ranking.jrxml")
+            override val source: InputStream =
+                JasperDisciplineGroupApi::class.java.getResourceAsStream("/reporting/jasper-templates/discipline-group-ranking.jrxml")
             override val parameters: Map<String, Any> = hashMapOf(
                 "gender" to config.gender.text,
                 "year" to config.year.value,
@@ -107,7 +113,7 @@ class JasperDisciplineGroupApi(
         }
 
         val reportInputStream = reportManager.exportToPdf(template)
-        val file = ApplicationFile("reporting", pdfNameOf(config))
+        val file = ApplicationFile(AppDirectory.REPORTING, pdfNameOf(config))
 
         return filesystem.write(file, reportInputStream)
     }
@@ -116,6 +122,6 @@ class JasperDisciplineGroupApi(
         return this
             .filter { it.gender == config.gender }
             .filter { it.birthday.year == config.year }
-            .filterNot { it.absent }
+            .filterNot { it.isAbsent }
     }
 }

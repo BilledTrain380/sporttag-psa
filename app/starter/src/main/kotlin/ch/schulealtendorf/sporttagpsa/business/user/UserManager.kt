@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
-import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import java.util.Optional
 
@@ -50,13 +50,13 @@ import java.util.Optional
 interface UserManager {
 
     /**
-     * Saves the given {@code user}. If the user does not exist yet, it will be created.
+     * Saves the given [user]. If the user does not exist yet, it will be created.
      *
-     * The {@code password} property will
+     * The [password] property will
      * not be considered at all.
      *
      * To update the password use the
-     * {@link UserManager#update} method.
+     * [UserManager.changePassword] method.
      *
      * @param user the user to save
      *
@@ -66,7 +66,7 @@ interface UserManager {
     fun save(user: UserDto): UserDto
 
     /**
-     * Changes the password for the given {@code user}.
+     * Changes the password for the given [user].
      * The password will be encrypted before its being saved.
      *
      * @param user the user to change its password
@@ -82,7 +82,7 @@ interface UserManager {
     fun getAll(): List<UserDto>
 
     /**
-     * Gets the user by the given {@code userId} or an empty Optional,
+     * Gets the user by the given [userId] or an empty Optional,
      * if the user does not exist.
      *
      * @param userId id of the user
@@ -92,7 +92,7 @@ interface UserManager {
     fun getOne(userId: Int): Optional<UserDto>
 
     /**
-     * Gets the user by the given {@code username} or an empty Optional,
+     * Gets the user by the given [username] or an empty Optional,
      * if the username does not exist.
      *
      * @param username the username to look up
@@ -102,13 +102,13 @@ interface UserManager {
     fun getOne(username: String): Optional<UserDto>
 
     /**
-     * Deletes the user matching the given {@code userId}.
+     * Deletes the user matching the given [userId].
      *
      * The user representing the administrator can not be deleted.
      *
      * @param userId id of the user to delete
      *
-     * @throws IllegalArgumentException if the given id belongs to the administrator user
+     * @throws IllegalUserOperationException if the given id belongs to the administrator user
      */
     fun delete(userId: Int)
 }

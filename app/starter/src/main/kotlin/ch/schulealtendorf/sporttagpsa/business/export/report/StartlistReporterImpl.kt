@@ -36,12 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.participation.StartListApi
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import java.io.File
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -57,10 +56,8 @@ class StartlistReporterImpl(
     }
 
     override fun generateReport(): File {
-
         return try {
-
-            val competitors = competitorRepository.findAll().map { CompetitorDto from it }
+            val competitors = competitorRepository.findAll().map { competitorDtoOf(it) }
 
             startListApi.createReport(competitors)
         } catch (exception: Exception) {

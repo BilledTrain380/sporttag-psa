@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.participation.SportDto
 
 /**
  * Describes a reporter for participant list.

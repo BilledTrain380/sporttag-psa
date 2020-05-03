@@ -36,20 +36,24 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.psa.dto.CoachDto
-import ch.schulealtendorf.psa.dto.GroupDto
-import ch.schulealtendorf.sporttagpsa.business.participation.ATHLETICS
+import ch.schulealtendorf.psa.dto.group.GroupStatusType
+import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.psa.dto.participation.ATHLETICS
+import ch.schulealtendorf.psa.dto.status.StatusDto
+import ch.schulealtendorf.psa.dto.status.StatusEntry
+import ch.schulealtendorf.psa.dto.status.StatusSeverity
 import ch.schulealtendorf.sporttagpsa.entity.CoachEntity
 import ch.schulealtendorf.sporttagpsa.entity.GroupEntity
 import ch.schulealtendorf.sporttagpsa.entity.ParticipantEntity
 import ch.schulealtendorf.sporttagpsa.entity.TownEntity
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.simpleGroupDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CoachRepository
 import ch.schulealtendorf.sporttagpsa.repository.GroupRepository
 import ch.schulealtendorf.sporttagpsa.repository.ParticipantRepository
 import ch.schulealtendorf.sporttagpsa.repository.TownRepository
-import java.util.Optional
 import org.springframework.stereotype.Component
+import java.util.Optional
 
 /**
  * A {@link GroupManager} which uses repositories to process its data.
@@ -64,61 +68,37 @@ class GroupManagerImpl(
     private val coachRepository: CoachRepository,
     private val townRepository: TownRepository
 ) : GroupManager {
+    override fun hasPendingParticipation(group: SimpleGroupDto) = hasPendingParticipation(group.name)
 
-    /**
-     * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
-     */
-    override fun hasPendingParticipation(group: GroupDto): Boolean {
+    override fun isCompetitive(group: SimpleGroupDto) = isCompetitive(group.name)
 
-        val participants = participantRepository.findByGroupName(group.name)
-
-        return participants.any { it.sport == null }
+    override fun getGroup(name: String): Optional<SimpleGroupDto> {
+        return groupRepository.findById(name)
+            .map { it.toDto() }
     }
 
-    /**
-     * @return all groups
-     */
-    override fun getGroups(): List<GroupDto> {
+    override fun getGroups(): List<SimpleGroupDto> {
         return groupRepository.findAll()
-            .map { GroupDto from it }
+            .map { it.toDto() }
     }
 
-    override fun isCompetitive(group: GroupDto): Boolean {
-
-        val participants = participantRepository.findByGroupName(group.name)
-
-        return participants.any { it.sport != null && it.sport?.name == ATHLETICS }
+    override fun getGroupsBy(filter: GroupStatusType): List<SimpleGroupDto> {
+        return getOverviewBy(filter)
+            .map { it.group }
     }
 
-    /**
-     * Gets the group matching the given {@code name}.
-     *
-     * @param name tha name of the group
-     *
-     * @return an Optional containing the group, or empty if the group could not be found
-     */
-    override fun getGroup(name: String): Optional<GroupDto> = groupRepository.findById(name).map { GroupDto from it }
+    override fun getOverview(): List<OverviewGroupDto> {
+        return groupRepository.findAll()
+            .map { it.toOverview() }
+    }
 
-    /**
-     * Gets the coach matching the given {@code name}.
-     *
-     * @param name the name of the coach
-     *
-     * @return an Optional containing the coach, or empty if the coach could not be found
-     */
-    override fun getCoach(name: String): Optional<CoachDto> = coachRepository.findByName(name).map { CoachDto from it }
+    override fun getOverviewBy(filter: GroupStatusType): List<OverviewGroupDto> {
+        return getOverview()
+            .filter { it.status.contains(filter) }
+    }
 
-    /**
-     * Imports the given {@code participant} by considering all their relations.
-     * If a relation does not exist yet, it will be created, otherwise the already
-     * created relation will be used.
-     *
-     * The participant will always be created.
-     *
-     * @param participant the participant to import
-     */
+    @Deprecated("Use participant manager instead")
     override fun import(participant: FlatParticipant) {
-
         val town = townRepository.findByZipAndName(participant.zipCode, participant.town)
             .orElseGet { TownEntity(zip = participant.zipCode, name = participant.town) }
 
@@ -132,12 +112,61 @@ class GroupManagerImpl(
             surname = participant.surname,
             prename = participant.prename,
             gender = participant.gender,
-            birthday = participant.birthday.milliseconds,
+            birthday = participant.birthday.time.toEpochMilli(),
             address = participant.address,
             town = town,
             group = group
         )
 
         participantRepository.save(participantEntity)
+    }
+
+    private fun hasPendingParticipation(groupName: String): Boolean {
+        return participantRepository.findByGroupName(groupName)
+            .any { it.sport == null }
+    }
+
+    private fun isCompetitive(groupName: String): Boolean {
+        return participantRepository.findByGroupName(groupName)
+            .any { it.isCompetitive() }
+    }
+
+    private fun ParticipantEntity.isCompetitive() = sport != null && sport?.name == ATHLETICS
+
+    private fun GroupEntity.toDto() = simpleGroupDtoOf(this)
+
+    private fun GroupEntity.toOverview(): OverviewGroupDto {
+        var severity = StatusSeverity.OK
+
+        val statusList = ArrayList<StatusEntry>()
+
+        if (hasPendingParticipation(name)) {
+            severity = StatusSeverity.WARNING
+            statusList.add(
+                StatusEntry(
+                    StatusSeverity.WARNING,
+                    GroupStatusType.UNFINISHED_PARTICIPANTS
+                )
+            )
+        }
+
+        val statusType =
+            if (isCompetitive(name)) GroupStatusType.GROUP_TYPE_COMPETITIVE
+            else GroupStatusType.GROUP_TYPE_FUN
+
+        statusList.add(
+            StatusEntry(
+                StatusSeverity.INFO,
+                statusType
+            )
+        )
+
+        return OverviewGroupDto(
+            this.toDto(),
+            StatusDto(
+                severity,
+                statusList
+            )
+        )
     }
 }

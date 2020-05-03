@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+
 data class CategoryModel(
     val age: Int,
     val discipline: String
@@ -45,5 +47,5 @@ data class FormulaModel(
     val discipline: String,
     val distance: String?,
     val result: Double,
-    val gender: Boolean
+    val gender: GenderDto
 )

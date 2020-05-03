@@ -36,45 +36,25 @@
 
 package ch.schulealtendorf.sporttagpsa.business.participation
 
-import ch.schulealtendorf.psa.dto.ParticipantDto
-import ch.schulealtendorf.psa.dto.ParticipationStatusDto
-import ch.schulealtendorf.psa.dto.SportDto
+import ch.schulealtendorf.psa.dto.participation.ParticipantDto
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import java.util.NoSuchElementException
 
 /**
  * Describes a manager for the participation.
- * Provides various operations with a {@link Participant}. In addition,
+ * Provides various operations with a participant. In addition,
  * the participation status can be modified.
  *
  * @author nmaerchy
- * @version 2.0.0
  * @since 1.0.0
  */
 interface ParticipationManager {
 
     /**
-     * Marks the given {@code participant} as absent.
+     * Sets the given [sport] to the given [participant].
      *
-     * @param participant the participant to mark as absent
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     */
-    fun markAsAbsent(participant: ParticipantDto)
-
-    /**
-     * Marks the given {@code participant} as present.
-     *
-     * @param participant the participant to mark as absent
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     */
-    fun markAsPresent(participant: ParticipantDto)
-
-    /**
-     * Sets the given {@code sport} to the given {@code participant}.
-     *
-     * This operation can not be performed, if the {@link ParticipationManager#getParticipationStatus}equals {@link ParticipationStatus#CLOSE}.
-     * In order to change the sport of a participant, use the {@link ParticipationManager#reParticipate} method.
+     * This operation can not be performed, if the [ParticipationManager.getParticipationStatus] equals [ParticipationStatusType.CLOSED].
+     * In order to change the sport of a participant, use the [ParticipationManager.reParticipate] method.
      *
      * @param participant the participant to set the sport on
      * @param sport the sport to set on the participant
@@ -82,23 +62,23 @@ interface ParticipationManager {
      * @throws NoSuchElementException if the given participant could not be found
      * @throws IllegalStateException if the participation is already closed
      */
-    fun participate(participant: ParticipantDto, sport: SportDto)
+    fun participate(participant: ParticipantDto, sport: String)
 
     /**
-     * Sets the given {@code sport} to the given {@code participant}.
+     * Sets the given [sport] to the given [participant].
      *
-     * In contrast to the {@link ParticipationManager#participate} method, this operation will
+     * In contrast to the [ParticipationManager.participate] method, this operation will
      * consider the participation status.
      *
-     * If the {@link ParticipationManager#getParticipationStatus} equals {@link ParticipationStatus#CLOSE},
-     * and the given {@code sport} equals athletics, the participant will be saved as a competitor.
+     * If the [ParticipationManager.getParticipationStatus] equals [ParticipationStatusType.CLOSED],
+     * and the given [sport] equals athletics, the participant will be saved as a competitor.
      *
-     * If the {@link ParticipationManager#getParticipationStatus} equals {@link ParticipationStatus#CLOSE},
-     * and the given {@code participant} is already a competitor, but the given {@code sport} is not athletics,
+     * If the [ParticipationManager.getParticipationStatus] [equals ParticipationStatusType.CLOSED],
+     * and the given [participant] is already a competitor, but the given [sport] is not athletics,
      * the competitor will be removed.
      *
-     * The {@link ParticipationManager#getParticipationStatus} must be equal to {@link ParticipationStatus#CLOSE}
-     * in order to perform this operation. Otherwise use the {@link ParticipationManager#participate} method.
+     * The [ParticipationManager.getParticipationStatus] must be equal to [ParticipationStatusType.CLOSED]
+     * in order to perform this operation. Otherwise use the [ParticipationManager.participate] method.
      *
      * @param participant the participant to set the sport on
      * @param sport the sport to set on the participant
@@ -106,28 +86,33 @@ interface ParticipationManager {
      * @throws NoSuchElementException if the given participant could not be found
      * @throws IllegalStateException if the participation status is not CLOSE.
      */
-    fun reParticipate(participant: ParticipantDto, sport: SportDto)
+    fun reParticipate(participant: ParticipantDto, sport: String)
 
     /**
-     * Closes the participation. {@link ParticipationManager#getParticipationStatus} will always
-     * return {@link ParticipationStatus#CLOSE} until {@link ParticipationManager#resetParticipation}
+     * Closes the participation. [ParticipationManager.getParticipationStatus] will always
+     * return [ParticipationStatusType.CLOSED] until [ParticipationManager.resetParticipation]
      * will be invoked.
      *
      * This operation looks up all participant who participates in the sport athletics
-     * and saves them as {@link Competitor} with default results of all available disciplines.
+     * and saves them as competitor with default results of all available disciplines.
      */
     fun closeParticipation()
 
     /**
      * Resets the participation. All recorded data will be DELETED.
      *
-     * {@link ParticipationManager#getParticipationStatus} will always return {@link ParticipationStatus#OPEN}
-     * until {@link ParticipationManager#closeParticipation} will be invoked.
+     * [ParticipationManager.getParticipationStatus] will always return [ParticipationStatusType.OPEN]
+     * until [ParticipationManager.closeParticipation] will be invoked.
      */
     fun resetParticipation()
 
     /**
      * @return the participation status
      */
-    fun getParticipationStatus(): ParticipationStatusDto
+    fun getParticipationStatus(): ParticipationStatusType
+
+    /**
+     * @return a list of all sport types
+     */
+    fun getSportTypes(): List<String>
 }

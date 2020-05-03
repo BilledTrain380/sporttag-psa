@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
 import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
@@ -49,7 +51,7 @@ class SkippingRuleSet : RuleSet<FormulaModel, Int>() {
     /**
      * @return true if the rules of this rule set can be used, otherwise false
      */
-    override val whenever: (FormulaModel) -> Boolean = { it.discipline == "Seilspringen" }
+    override val whenever: (FormulaModel) -> Boolean = { it.discipline == SEILSPRINGEN }
 
     init {
 
@@ -57,7 +59,7 @@ class SkippingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (1 * ((it - 0) pow 1.245)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender == GenderDto.FEMALE }
             }
         )
 
@@ -65,7 +67,7 @@ class SkippingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (1.4 * ((it - 0) pow 1.18)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() }
+                override val whenever: (FormulaModel) -> Boolean = { it.gender == GenderDto.MALE }
             }
         )
     }

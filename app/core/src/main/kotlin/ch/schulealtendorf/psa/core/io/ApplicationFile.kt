@@ -40,6 +40,8 @@ class ApplicationFile(
     first: String,
     vararg more: String
 ) {
+    constructor(appDirectory: AppDirectory, vararg more: String) : this(appDirectory.toString(), *more)
+
     val path: String = first + "/" + more.joinToString("/")
     val pathSegments: List<String> = listOf(first, *more)
     val fileName: String = pathSegments.last()

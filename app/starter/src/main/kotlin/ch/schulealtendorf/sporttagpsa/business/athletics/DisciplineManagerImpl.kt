@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.sporttagpsa.business.athletics
 
-import ch.schulealtendorf.psa.dto.DisciplineDto
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
+import ch.schulealtendorf.sporttagpsa.lib.disciplineDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
-import java.util.Optional
 import org.springframework.stereotype.Component
+import java.util.Optional
 
 /**
  * Default implementation for a {@link DisciplineManager} which uses repositories to get its data.
@@ -52,12 +52,11 @@ import org.springframework.stereotype.Component
 class DisciplineManagerImpl(
     private val disciplineRepository: DisciplineRepository
 ) : DisciplineManager {
-
-    override fun getDisciplineList(): List<DisciplineDto> {
-        return disciplineRepository.findAll().map { DisciplineDto from it }
+    override fun getDisciplines(): List<DisciplineDto> {
+        return disciplineRepository.findAll().map { disciplineDtoOf(it) }
     }
 
     override fun getDiscipline(name: String): Optional<DisciplineDto> {
-        return disciplineRepository.findById(name).map { DisciplineDto from it }
+        return disciplineRepository.findById(name).map { disciplineDtoOf(it) }
     }
 }

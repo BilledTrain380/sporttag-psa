@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.entity
 
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.EnumType
