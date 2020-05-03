@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.rulebook
 
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.rulebook.rules.RuleSet
 
 /**
@@ -57,7 +58,8 @@ class BasketThrowingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (29 * ((it - 0) pow 1.1)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "2m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.FEMALE && it.distance == "2m" }
             }
         )
 
@@ -65,7 +67,8 @@ class BasketThrowingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (32 * ((it - 0) pow 1.1)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isFemale() && it.distance == "2.5m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.FEMALE && it.distance == "2.5m" }
             }
         )
 
@@ -73,7 +76,8 @@ class BasketThrowingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (28 * ((it - 0) pow 1.08)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "2m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.MALE && it.distance == "2m" }
             }
         )
 
@@ -81,7 +85,8 @@ class BasketThrowingRuleSet : RuleSet<FormulaModel, Int>() {
             object : FormulaRule() {
                 override val formula: (Double) -> Int = { (31 * ((it - 0) pow 1.08)).toInt() }
 
-                override val whenever: (FormulaModel) -> Boolean = { it.gender.isMale() && it.distance == "2.5m" }
+                override val whenever: (FormulaModel) -> Boolean =
+                    { it.gender == GenderDto.MALE && it.distance == "2.5m" }
             }
         )
     }

@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
-import ch.schulealtendorf.psa.dto.DisciplineDto
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import java.time.Year
 
 /**

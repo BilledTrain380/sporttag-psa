@@ -36,8 +36,9 @@
 
 package ch.schulealtendorf.sporttagpsa.business.group
 
-import ch.schulealtendorf.psa.dto.CoachDto
-import ch.schulealtendorf.psa.dto.GroupDto
+import ch.schulealtendorf.psa.dto.group.GroupStatusType
+import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
+import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import java.util.Optional
 
 /**
@@ -49,19 +50,22 @@ import java.util.Optional
 interface GroupManager {
 
     /**
-     * @return true if the given {@code group} has participant, which are not participate in any sport, otherwise false
+     * @return true if the given {@code group} has participant, which do not participate in any sport, otherwise false
      */
-    fun hasPendingParticipation(group: GroupDto): Boolean
+    fun hasPendingParticipation(group: SimpleGroupDto): Boolean
 
     /**
      * @return true whenever any participant of the given group is a competitor, otherwise false
      */
-    fun isCompetitive(group: GroupDto): Boolean
+    fun isCompetitive(group: SimpleGroupDto): Boolean
 
-    /**
-     * @return all groups
-     */
-    fun getGroups(): List<GroupDto>
+    fun getGroups(): List<SimpleGroupDto>
+
+    fun getGroupsBy(filter: GroupStatusType): List<SimpleGroupDto>
+
+    fun getOverview(): List<OverviewGroupDto>
+
+    fun getOverviewBy(filter: GroupStatusType): List<OverviewGroupDto>
 
     /**
      * Gets the group matching the given {@code name}.
@@ -70,16 +74,7 @@ interface GroupManager {
      *
      * @return an Optional containing the group, or empty if the group could not be found
      */
-    fun getGroup(name: String): Optional<GroupDto>
-
-    /**
-     * Gets the coach matching the given {@code name}.
-     *
-     * @param name the name of the coach
-     *
-     * @return an Optional containing the coach, or empty if the coach could not be found
-     */
-    fun getCoach(name: String): Optional<CoachDto>
+    fun getGroup(name: String): Optional<SimpleGroupDto>
 
     /**
      * Imports the given {@code participant} by considering all their relations.

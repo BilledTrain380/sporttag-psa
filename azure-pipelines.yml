@@ -15,6 +15,7 @@ pr:
   - master
   - develop
   - release/*
+  - epic/*
 
 variables:
   profileProd: prod
@@ -39,7 +40,12 @@ stages:
               javaHomeOption: JDKVersion
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
-              tasks: 'ktlintCheck junitPlatformTest'
+              tasks: 'ktlintCheck test'
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/TEST-*.xml'
 
       - job: Frontend
         pool:

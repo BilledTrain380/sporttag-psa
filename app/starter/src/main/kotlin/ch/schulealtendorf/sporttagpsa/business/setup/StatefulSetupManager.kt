@@ -38,10 +38,10 @@ package ch.schulealtendorf.sporttagpsa.business.setup
 
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
-import ch.schulealtendorf.sporttagpsa.entity.DEFAULT_SETUP
+import ch.schulealtendorf.sporttagpsa.entity.SetupEntity.Companion.DEFAULT_SETUP
 import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
-import java.util.Random
 import org.springframework.stereotype.Component
+import java.util.Random
 
 /**
  * A {@link SetupManager} which is stateful to reduce db access.
@@ -59,7 +59,6 @@ class StatefulSetupManager(
     private var jwtSec = ""
 
     init {
-
         val setup = this.setupRepository.findById(DEFAULT_SETUP).get()
         isInit = setup.initialized
         jwtSec = setup.jwtSecret
@@ -69,8 +68,9 @@ class StatefulSetupManager(
     override val jwtSecret: String get() = jwtSec
 
     override fun initialize(setup: SetupInformation) {
-
-        if (isInitialized) throw IllegalStateException("Setup is already initialized")
+        if (isInitialized) {
+            throw IllegalStateException("Setup is already initialized")
+        }
 
         // set admin password
         val user = userManager.getOne(USER_ADMIN).get()

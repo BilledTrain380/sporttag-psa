@@ -36,14 +36,14 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
-import ch.schulealtendorf.psa.dto.GenderDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingApi
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingConfig
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import java.io.File
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -55,13 +55,10 @@ class TotalRankingReporterImpl(
     private val totalRankingApi: TotalRankingApi
 ) : TotalRankingReporter {
     override fun generateReport(data: Iterable<GenderDto>): Set<File> {
-
         return try {
-
             data.map { gender ->
-
                 competitorRepository.findByParticipantGender(gender)
-                    .map { CompetitorDto from it }
+                    .map { competitorDtoOf(it) }
                     .groupBy { it.birthday.year }
                     .map {
                         totalRankingApi.createPdfReport(
@@ -82,16 +79,16 @@ class TotalRankingReporterImpl(
     private fun List<CompetitorDto>.ballThrowingDistance(): String {
         val competitor = firstOrNull() ?: return ""
 
-        return competitor.resultByDiscipline("Ballwurf").map {
-            it.distance ?: ""
-        }.orElse("")
+        return competitor.findResultByDiscipline("Ballwurf")
+            .map { it.distance ?: "" }
+            .orElse("")
     }
 
     private fun List<CompetitorDto>.targetThrowingDistance(): String {
         val competitor = firstOrNull() ?: return ""
 
-        return competitor.resultByDiscipline("Korbeinwurf").map {
-            it.distance ?: ""
-        }.orElse("")
+        return competitor.findResultByDiscipline("Korbeinwurf")
+            .map { it.distance ?: "" }
+            .orElse("")
     }
 }

@@ -36,17 +36,18 @@
 
 package ch.schulealtendorf.psa.shared.reporting
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
-import java.io.ByteArrayInputStream
-import java.io.File
-import java.io.InputStream
 import net.sf.jasperreports.engine.JREmptyDataSource
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperExportManager
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
 import org.springframework.stereotype.Component
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.InputStream
 
 /**
  * Report manager with jasper reports.
@@ -58,16 +59,14 @@ import org.springframework.stereotype.Component
 class JasperReportManager(
     private val filesystem: FileSystem
 ) : ReportManager {
-
     private val logoPath = "${filesystem.getApplicationDir()}/reporting/gemeinde-altendorf.jpg"
 
     override fun exportToPdf(template: Template): InputStream {
-
-        // copies the logo image if not exist already
-        copyResources()
+        if (File(logoPath).exists().not()) {
+            copyResources()
+        }
 
         val report = JasperCompileManager.compileReport(template.source)
-
         val parameters = template.parameters.plus("logoPath" to logoPath)
 
         val jasperPrint: JasperPrint = JasperFillManager.fillReport(report, parameters, JREmptyDataSource())
@@ -77,13 +76,8 @@ class JasperReportManager(
     }
 
     private fun copyResources() {
-
-        if (File(logoPath).exists()) return
-
         val altendorfLogo = JasperReportManager::class.java.getResourceAsStream("/img/gemeinde-altendorf.jpg")
-
-        val applicationFile = ApplicationFile("reporting", "gemeinde-altendorf.jpg")
-
+        val applicationFile = ApplicationFile(AppDirectory.REPORTING, "gemeinde-altendorf.jpg")
         filesystem.write(applicationFile, altendorfLogo)
     }
 }

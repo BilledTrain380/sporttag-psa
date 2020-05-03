@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export
 
+import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineGroupRankingReporter
@@ -43,9 +44,9 @@ import ch.schulealtendorf.sporttagpsa.business.export.report.DisciplineRankingRe
 import ch.schulealtendorf.sporttagpsa.business.export.report.EventSheetReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.ParticipantListReporter
 import ch.schulealtendorf.sporttagpsa.business.export.report.TotalRankingReporter
+import org.springframework.stereotype.Component
 import java.io.File
 import java.util.ResourceBundle
-import org.springframework.stereotype.Component
 
 /**
  * @author nmaerchy
@@ -60,7 +61,6 @@ class ExportManagerImpl(
     private val disciplineGroupRankingReporter: DisciplineGroupRankingReporter,
     private val disciplineRankingReporter: DisciplineRankingReporter
 ) : ExportManager {
-
     private val resourceBundle = ResourceBundle.getBundle("i18n.archives")
 
     /**
@@ -73,10 +73,9 @@ class ExportManagerImpl(
      */
     override fun generateArchive(data: EventSheetExport): File {
         try {
-
             val reports = eventSheetReporter.generateReport(data.disciplines)
 
-            val file = ApplicationFile("export", resourceBundle.getString("name.event-sheets"))
+            val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("name.event-sheets"))
             return fileSystem.createArchive(file, reports)
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -93,7 +92,6 @@ class ExportManagerImpl(
      */
     override fun generateArchive(data: RankingExport): File {
         try {
-
             val reports = setOf(
                 totalRankingReporter.generateReport(data.total),
                 disciplineGroupRankingReporter.generateReport(data.disciplineGroup),
@@ -101,7 +99,7 @@ class ExportManagerImpl(
                 disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
 
-            val file = ApplicationFile("export", resourceBundle.getString("name.ranking"))
+            val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("name.ranking"))
             return fileSystem.createArchive(file, reports)
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)
@@ -118,10 +116,9 @@ class ExportManagerImpl(
      */
     override fun generateArchive(data: ParticipantExport): File {
         try {
-
             val reports = participantListReporter.generateReport(data.sports)
 
-            val file = ApplicationFile("export", resourceBundle.getString("name.participant-list"))
+            val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("name.participant-list"))
             return fileSystem.createArchive(file, reports)
         } catch (ex: Exception) {
             throw ArchiveGenerationException("Could not generate archive: case=${ex.message}", ex)

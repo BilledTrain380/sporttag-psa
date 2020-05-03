@@ -36,16 +36,16 @@
 
 package ch.schulealtendorf.sporttagpsa.business.user
 
-import ch.schulealtendorf.psa.dto.UserDto
+import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
 import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.userDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.UserRepository
-import java.util.Optional
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.Optional
 
 /**
  * Default implementation for managing a user.
@@ -58,9 +58,7 @@ class UserManagerImpl(
     private val userRepository: UserRepository,
     private val passwordValidator: PasswordValidator
 ) : UserManager {
-
     override fun save(user: UserDto): UserDto {
-
         val userEntity = userRepository.findById(user.id)
             .orElseGet {
                 user.password.validate()
@@ -77,9 +75,8 @@ class UserManagerImpl(
     }
 
     override fun changePassword(user: UserDto, password: String) {
-
         val userEntity = userRepository.findById(user.id)
-            .orElseThrow { UserNotFoundException("The user could not be found: user=$user") }
+            .orElseThrow { UserNotFoundException("Could not find user: username=${user.username}") }
 
         password.validate()
         userEntity.password = password.encode()
@@ -87,24 +84,23 @@ class UserManagerImpl(
         userRepository.save(userEntity)
     }
 
-    override fun getAll(): List<UserDto> = userRepository.findAll().map { UserDto from it }
+    override fun getAll(): List<UserDto> = userRepository.findAll().map { userDtoOf(it) }
 
-    override fun getOne(userId: Int): Optional<UserDto> = userRepository.findById(userId).map { UserDto from it }
+    override fun getOne(userId: Int): Optional<UserDto> = userRepository.findById(userId).map { userDtoOf(it) }
 
     override fun getOne(username: String): Optional<UserDto> =
-        userRepository.findByUsername(username).map { UserDto from it }
+        userRepository.findByUsername(username).map { userDtoOf(it) }
 
     override fun delete(userId: Int) {
-
         val user = userRepository.findById(userId)
 
         if (user.isPresent && user.get().username == USER_ADMIN)
-            throw IllegalArgumentException("Not allowed to delete administrator")
+            throw IllegalUserOperationException("Not allowed to delete admin user")
 
         userRepository.deleteById(userId)
     }
 
-    private fun UserEntity.toDto() = UserDto from this
+    private fun UserEntity.toDto() = userDtoOf(this)
 
     private fun String.encode(): String = BCryptPasswordEncoder(4).encode(this)
 

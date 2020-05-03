@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.shared.reporting.participation
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -51,14 +51,14 @@ data class StartListDataSet(
     val coach: String
 ) {
     companion object {
-        infix fun from(competitor: CompetitorDto): StartListDataSet {
+        fun fromCompetitor(competitor: CompetitorDto): StartListDataSet {
             return StartListDataSet(
-                competitor.startNumber,
+                competitor.startnumber,
                 competitor.prename,
                 competitor.surname,
                 competitor.gender.text,
                 competitor.group.name,
-                competitor.group.coach.name
+                competitor.group.coach
             )
         }
     }

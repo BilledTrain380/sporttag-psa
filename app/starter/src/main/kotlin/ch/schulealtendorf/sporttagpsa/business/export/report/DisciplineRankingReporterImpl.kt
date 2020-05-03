@@ -36,14 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineRankingApi
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineRankingConfig
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import java.io.File
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -55,15 +54,12 @@ class DisciplineRankingReporterImpl(
     private val disciplineRankingApi: DisciplineRankingApi
 ) : DisciplineRankingReporter {
     override fun generateReport(data: Iterable<DisciplineExport>): Set<File> {
-
         return try {
-
             data.map { disciplineExport ->
                 competitorRepository.findByParticipantGender(disciplineExport.gender)
-                    .map { CompetitorDto from it }
+                    .map { competitorDtoOf(it) }
                     .groupBy { it.birthday.year }
                     .map {
-
                         disciplineRankingApi.createPdfReport(
                             it.value,
                             DisciplineRankingConfig(

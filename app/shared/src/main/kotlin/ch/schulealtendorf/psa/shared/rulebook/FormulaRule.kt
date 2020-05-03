@@ -52,8 +52,4 @@ abstract class FormulaRule : Rule<FormulaModel, Int>() {
     override val then: (FormulaModel) -> Int = { formula(it.result) }
 
     protected infix fun Double.pow(exponent: Double) = Math.pow(this, exponent)
-
-    protected fun Boolean.isMale() = this
-
-    protected fun Boolean.isFemale() = !this
 }

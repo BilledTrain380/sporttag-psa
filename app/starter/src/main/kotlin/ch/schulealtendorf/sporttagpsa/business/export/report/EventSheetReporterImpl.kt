@@ -36,14 +36,13 @@
 
 package ch.schulealtendorf.sporttagpsa.business.export.report
 
-import ch.schulealtendorf.psa.dto.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetApi
 import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetConfig
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
-import ch.schulealtendorf.sporttagpsa.from
+import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
-import java.io.File
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -55,16 +54,11 @@ class EventSheetReporterImpl(
     private val eventSheetApi: EventSheetApi
 ) : EventSheetReporter {
     override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
-
         return try {
-
             data.map { export ->
-
-                val competitors = competitorRepository.findByParticipantGenderAndParticipantGroupName(
-                    export.gender,
-                    export.group.name
-                )
-                    .map { CompetitorDto from it }
+                val competitors = competitorRepository
+                    .findByParticipantGenderAndParticipantGroupName(export.gender, export.group.name)
+                    .map { competitorDtoOf(it) }
 
                 val config = EventSheetConfig(
                     export.discipline,
