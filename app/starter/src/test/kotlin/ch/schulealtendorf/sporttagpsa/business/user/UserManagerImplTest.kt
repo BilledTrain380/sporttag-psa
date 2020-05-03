@@ -104,17 +104,17 @@ internal class UserManagerImplTest {
     @FlywayTest
     @Sql("/db/user/add-user.sql")
     internal fun changePassword() {
-        val newPassword = "Secret12345$"
+        val newPass = "Secret12345$"
 
         val userOptional = userManager.getOne(WWIRBELWIND)
         assertThat(userOptional).isNotEmpty
 
-        userManager.changePassword(userOptional.get(), newPassword)
+        userManager.changePassword(userOptional.get(), newPass)
 
         val userEntity = userRepository.findByUsername(WWIRBELWIND)
         assertThat(userEntity).isNotEmpty
 
-        val isPasswordMatch = encoder.matches(newPassword, userEntity.get().password)
+        val isPasswordMatch = encoder.matches(newPass, userEntity.get().password)
         assertThat(isPasswordMatch).isTrue()
     }
 
