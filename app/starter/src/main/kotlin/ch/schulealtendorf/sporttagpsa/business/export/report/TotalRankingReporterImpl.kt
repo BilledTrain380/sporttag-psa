@@ -38,6 +38,8 @@ package ch.schulealtendorf.sporttagpsa.business.export.report
 
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingApi
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingConfig
 import ch.schulealtendorf.sporttagpsa.lib.competitorDtoOf
@@ -79,7 +81,7 @@ class TotalRankingReporterImpl(
     private fun List<CompetitorDto>.ballThrowingDistance(): String {
         val competitor = firstOrNull() ?: return ""
 
-        return competitor.findResultByDiscipline("Ballwurf")
+        return competitor.findResultByDiscipline(BALLWURF)
             .map { it.distance ?: "" }
             .orElse("")
     }
@@ -87,7 +89,7 @@ class TotalRankingReporterImpl(
     private fun List<CompetitorDto>.targetThrowingDistance(): String {
         val competitor = firstOrNull() ?: return ""
 
-        return competitor.findResultByDiscipline("Korbeinwurf")
+        return competitor.findResultByDiscipline(KORBEINWURF)
             .map { it.distance ?: "" }
             .orElse("")
     }

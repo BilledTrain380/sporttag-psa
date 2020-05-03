@@ -40,6 +40,9 @@ import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.csvNameOf
@@ -77,13 +80,13 @@ class JasperDisciplineGroupApi(
                     competitor.town.name,
                     competitor.birthday.format(),
                     "Primarschule Altendorf / KTV",
-                    competitor.findResultByDiscipline("Schnelllauf")
+                    competitor.findResultByDiscipline(SCHNELLLAUF)
                         .map { it.relativeValue }
                         .orElse(""),
-                    competitor.findResultByDiscipline("Weitsprung")
+                    competitor.findResultByDiscipline(WEITSPRUNG)
                         .map { it.relativeValue }
                         .orElse(""),
-                    competitor.findResultByDiscipline("Ballwurf")
+                    competitor.findResultByDiscipline(BALLWURF)
                         .map { it.relativeValue }
                         .orElse("")
                 ).joinToString(",") { it }

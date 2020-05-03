@@ -37,8 +37,14 @@
 package ch.schulealtendorf.psa.shared.reporting.ranking
 
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import org.springframework.stereotype.Component
 
 @Component
@@ -102,9 +108,9 @@ internal class PsaRankingManager : RankingManager {
 
                 previousPoints = totalPoints
 
-                val schnelllauf = competitor.findResultByDiscipline("Schnelllauf")
-                val ballwurf = competitor.findResultByDiscipline("Ballwurf")
-                val weitsprung = competitor.findResultByDiscipline("Weitsprung")
+                val schnelllauf = competitor.findResultByDiscipline(SCHNELLLAUF)
+                val ballwurf = competitor.findResultByDiscipline(BALLWURF)
+                val weitsprung = competitor.findResultByDiscipline(WEITSPRUNG)
 
                 DisciplineGroupRankingDataSet(
                     rank = rank,
@@ -138,12 +144,12 @@ internal class PsaRankingManager : RankingManager {
 
                 previousPoints = totalPoints
 
-                val schnelllauf = competitor.findResultByDiscipline("Schnelllauf")
-                val ballwurf = competitor.findResultByDiscipline("Ballwurf")
-                val ballzielwurf = competitor.findResultByDiscipline("Ballzielwurf")
-                val korbeinwurf = competitor.findResultByDiscipline("Korbeinwurf")
-                val seilspringen = competitor.findResultByDiscipline("Seilspringen")
-                val weitsprung = competitor.findResultByDiscipline("Weitsprung")
+                val schnelllauf = competitor.findResultByDiscipline(SCHNELLLAUF)
+                val ballwurf = competitor.findResultByDiscipline(BALLWURF)
+                val ballzielwurf = competitor.findResultByDiscipline(BALLZIELWURF)
+                val korbeinwurf = competitor.findResultByDiscipline(KORBEINWURF)
+                val seilspringen = competitor.findResultByDiscipline(SEILSPRINGEN)
+                val weitsprung = competitor.findResultByDiscipline(WEITSPRUNG)
 
                 TotalRankingDataSet(
                     rank = rank,
@@ -174,5 +180,9 @@ internal class PsaRankingManager : RankingManager {
     private fun Map<String, ResultDto>.lowest() = this.values.map { it.points }.sorted().reversed().last()
 
     private fun Map<String, ResultDto>.calculateDisciplineGroupTotal() =
-        this.values.filter { it.discipline.name == "Ballwurf" || it.discipline.name == "Schnelllauf" || it.discipline.name == "Weitsprung" }.map { it.points }.sum()
+        this.values.filter {
+            it.discipline.name == BALLWURF
+                || it.discipline.name == SCHNELLLAUF
+                || it.discipline.name == WEITSPRUNG
+        }.map { it.points }.sum()
 }

@@ -39,7 +39,7 @@ package ch.schulealtendorf.sporttagpsa.business.group
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
-import ch.schulealtendorf.psa.dto.participation.SportTypeConstant.ATHLETICS
+import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.status.StatusDto
 import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity

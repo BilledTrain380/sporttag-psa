@@ -5,9 +5,14 @@ import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.TownDto
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
 import ch.schulealtendorf.psa.dto.participation.athletics.UnitDto
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -31,23 +36,23 @@ internal class PsaRankingManagerTest {
             val competitors = listOf(
                 competitorDtoOf(
                     surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 100, discipline = "Ballwurf"),
-                        resultDtoOf(points = 100, discipline = "Weitsprung")
+                        resultDtoOf(points = 100, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 100, discipline = BALLWURF),
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 300, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 300, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
                     )
                 ),
                 competitorDtoOf(
                     surname = "2. rank", results = listOf(
-                        resultDtoOf(points = 200, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 200, discipline = "Ballwurf"),
-                        resultDtoOf(points = 200, discipline = "Weitsprung")
+                        resultDtoOf(points = 200, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 200, discipline = BALLWURF),
+                        resultDtoOf(points = 200, discipline = WEITSPRUNG)
                     )
                 )
             )
@@ -63,30 +68,30 @@ internal class PsaRankingManagerTest {
             val competitors = listOf(
                 competitorDtoOf(
                     surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 100, discipline = "Ballwurf"),
-                        resultDtoOf(points = 100, discipline = "Weitsprung")
+                        resultDtoOf(points = 100, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 100, discipline = BALLWURF),
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 300, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 300, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 300, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 300, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = "Schnelllauf"),
-                        resultDtoOf(points = 300, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Weitsprung")
+                        resultDtoOf(points = 300, discipline = SCHNELLLAUF),
+                        resultDtoOf(points = 300, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = WEITSPRUNG)
                     )
                 )
             )
@@ -108,23 +113,23 @@ internal class PsaRankingManagerTest {
             val competitors = listOf(
                 competitorDtoOf(
                     surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 300, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 300, discipline = BALLZIELWURF)
                     )
                 ),
                 competitorDtoOf(
                     surname = "2. rank", results = listOf(
-                        resultDtoOf(points = 200, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 200, discipline = BALLZIELWURF)
                     )
                 )
             )
 
             val discipline = DisciplineDto(
-                name = "Ballzielwurf",
+                name = BALLZIELWURF,
                 unit = UnitDto(name = "", factor = 0),
                 hasDistance = false,
                 hasTrials = false
@@ -141,28 +146,28 @@ internal class PsaRankingManagerTest {
             val competitors = listOf(
                 competitorDtoOf(
                     surname = "3. Rank", results = listOf(
-                        resultDtoOf(points = 50, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 50, discipline = BALLZIELWURF)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Ballzielwurf")
+                        resultDtoOf(points = 100, discipline = BALLZIELWURF)
                     )
                 )
             )
 
             val discipline = DisciplineDto(
-                name = "Ballzielwurf",
+                name = BALLZIELWURF,
                 unit = UnitDto(name = "", factor = 0),
                 hasDistance = false,
                 hasTrials = false
@@ -185,23 +190,23 @@ internal class PsaRankingManagerTest {
             val competitors = listOf(
                 competitorDtoOf(
                     surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Weitsprung"),
-                        resultDtoOf(points = 100, discipline = "Ballwurf"),
-                        resultDtoOf(points = 100, discipline = "Seilspringen")
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 100, discipline = BALLWURF),
+                        resultDtoOf(points = 100, discipline = SEILSPRINGEN)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Weitsprung"),
-                        resultDtoOf(points = 200, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Seilspringen")
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 200, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
                     )
                 ),
                 competitorDtoOf(
                     surname = "2. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Weitsprung"),
-                        resultDtoOf(points = 150, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Seilspringen")
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 150, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
                     )
                 )
             )
@@ -220,30 +225,30 @@ internal class PsaRankingManagerTest {
             val competitors = listOf(
                 competitorDtoOf(
                     surname = "3. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Weitsprung"),
-                        resultDtoOf(points = 100, discipline = "Ballwurf"),
-                        resultDtoOf(points = 100, discipline = "Seilspringen")
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 100, discipline = BALLWURF),
+                        resultDtoOf(points = 100, discipline = SEILSPRINGEN)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 200, discipline = "Weitsprung"),
-                        resultDtoOf(points = 100, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Seilspringen")
+                        resultDtoOf(points = 200, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 100, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Weitsprung"),
-                        resultDtoOf(points = 200, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Seilspringen")
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 200, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
                     )
                 ),
                 competitorDtoOf(
                     surname = "1. rank", results = listOf(
-                        resultDtoOf(points = 100, discipline = "Weitsprung"),
-                        resultDtoOf(points = 200, discipline = "Ballwurf"),
-                        resultDtoOf(points = 300, discipline = "Seilspringen")
+                        resultDtoOf(points = 100, discipline = WEITSPRUNG),
+                        resultDtoOf(points = 200, discipline = BALLWURF),
+                        resultDtoOf(points = 300, discipline = SEILSPRINGEN)
                     )
                 )
             )

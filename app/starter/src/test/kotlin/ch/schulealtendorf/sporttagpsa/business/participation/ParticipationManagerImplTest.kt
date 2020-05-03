@@ -1,12 +1,21 @@
 package ch.schulealtendorf.sporttagpsa.business.participation
 
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.psa.dto.participation.ATHLETICS
+import ch.schulealtendorf.psa.dto.participation.BRENNBALL
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
-import ch.schulealtendorf.psa.dto.participation.SportTypeConstant.ATHLETICS
+import ch.schulealtendorf.psa.dto.participation.SCHATZSUCHE
 import ch.schulealtendorf.psa.dto.participation.TownDto
+import ch.schulealtendorf.psa.dto.participation.VELO_ROLLERBLADES
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.BALLZIELWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.KORBEINWURF
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
+import ch.schulealtendorf.psa.dto.participation.athletics.SEILSPRINGEN
+import ch.schulealtendorf.psa.dto.participation.athletics.WEITSPRUNG
 import ch.schulealtendorf.psa.shared.rulebook.BasicCategoryRuleBook
 import ch.schulealtendorf.sporttagpsa.entity.ResultEntity
 import ch.schulealtendorf.sporttagpsa.repository.CompetitorRepository
@@ -108,13 +117,13 @@ internal class ParticipationManagerImplTest {
 
         val participant = participantManager.getParticipant(7).get()
 
-        participationManager.reParticipate(participant, "Schatzsuche")
+        participationManager.reParticipate(participant, SCHATZSUCHE)
 
         val competitor = competitorRepository.findByParticipantId(7)
         assertThat(competitor).isEmpty
 
         val updatedParticipant = participantManager.getParticipant(7)
-        assertThat(updatedParticipant.get().sportType).isEqualTo("Schatzsuche")
+        assertThat(updatedParticipant.get().sportType).isEqualTo(SCHATZSUCHE)
     }
 
     @Test
@@ -177,41 +186,41 @@ internal class ParticipationManagerImplTest {
 
         assertThat(sportTypes).hasSize(4)
         assertThat(sportTypes)
-            .contains("Schatzsuche")
+            .contains(SCHATZSUCHE)
             .contains(ATHLETICS)
-            .contains("Brennball")
-            .contains("Velo- Rollerblades")
+            .contains(BRENNBALL)
+            .contains(VELO_ROLLERBLADES)
     }
 
     private fun assertDefaultResults(results: Collection<ResultEntity>) {
         assertThat(results).hasSize(6)
 
-        val schnelllauf = results.find { it.discipline.name == "Schnelllauf" }
+        val schnelllauf = results.find { it.discipline.name == SCHNELLLAUF }
         assertThat(schnelllauf).isNotNull
         assertThat(schnelllauf?.value).isEqualTo(100)
         assertThat(schnelllauf?.points).isEqualTo(1)
 
-        val weitsprung = results.find { it.discipline.name == "Weitsprung" }
+        val weitsprung = results.find { it.discipline.name == WEITSPRUNG }
         assertThat(weitsprung).isNotNull
         assertThat(weitsprung?.value).isEqualTo(100)
         assertThat(weitsprung?.points).isEqualTo(1)
 
-        val ballwurf = results.find { it.discipline.name == "Ballwurf" }
+        val ballwurf = results.find { it.discipline.name == BALLWURF }
         assertThat(ballwurf).isNotNull
         assertThat(ballwurf?.value).isEqualTo(100)
         assertThat(ballwurf?.points).isEqualTo(1)
 
-        val ballzielwurf = results.find { it.discipline.name == "Ballzielwurf" }
+        val ballzielwurf = results.find { it.discipline.name == BALLZIELWURF }
         assertThat(ballzielwurf).isNotNull
         assertThat(ballzielwurf?.value).isEqualTo(1)
         assertThat(ballzielwurf?.points).isEqualTo(1)
 
-        val seilspringen = results.find { it.discipline.name == "Seilspringen" }
+        val seilspringen = results.find { it.discipline.name == SEILSPRINGEN }
         assertThat(seilspringen).isNotNull
         assertThat(seilspringen?.value).isEqualTo(1)
         assertThat(seilspringen?.points).isEqualTo(1)
 
-        val korbeinwurf = results.find { it.discipline.name == "Korbeinwurf" }
+        val korbeinwurf = results.find { it.discipline.name == KORBEINWURF }
         assertThat(korbeinwurf).isNotNull
         assertThat(korbeinwurf?.value).isEqualTo(1)
         assertThat(korbeinwurf?.points).isEqualTo(1)
