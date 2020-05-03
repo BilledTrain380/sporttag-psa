@@ -34,18 +34,18 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.ranking
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
-import ch.schulealtendorf.psa.dto.participation.GenderDto
+data class FileQualifier(
+    val value: String,
+    val name: String
+) {
+    companion object {
+        fun ofPath(path: String): FileQualifier {
+            val value = path.removePrefix("/").replace("/", "-")
+            val name = path.split("/").last()
 
-data class DisciplineRanking(
-    val discipline: String,
-    val gender: GenderDto
-)
-
-data class RankingData(
-    val total: List<GenderDto> = listOf(),
-    val discipline: List<DisciplineRanking> = listOf(),
-    val disciplineGroup: List<GenderDto> = listOf(),
-    val ubsCup: List<GenderDto> = listOf()
-)
+            return FileQualifier(value, name)
+        }
+    }
+}

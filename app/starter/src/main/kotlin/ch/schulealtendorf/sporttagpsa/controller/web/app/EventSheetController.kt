@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.eventsheets
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
 import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
@@ -43,8 +43,6 @@ import ch.schulealtendorf.sporttagpsa.business.export.EventSheetExport
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
-import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
@@ -54,7 +52,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping("/api/web")
+@RequestMapping("/web")
 class EventSheetController(
     private val exportManager: ExportManager,
     private val disciplineManager: DisciplineManager,
@@ -82,6 +80,6 @@ class EventSheetController(
         val exportData = EventSheetExport(exports)
 
         val zip = exportManager.generateArchive(exportData)
-        return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
+        return FileQualifier.ofPath(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

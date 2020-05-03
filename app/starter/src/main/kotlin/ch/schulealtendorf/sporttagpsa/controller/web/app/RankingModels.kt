@@ -34,26 +34,18 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.home
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
+import ch.schulealtendorf.psa.dto.participation.GenderDto
 
-@Controller
-class HomeController {
-    @GetMapping("/", "/index")
-    fun index(model: Model, authentication: Authentication?): String {
-        if (authentication != null) {
-            model.addAttribute("username", (authentication.principal as UserDetails).username)
-            model.addAttribute("isAuthenticated", authentication.isAuthenticated)
-            return "index"
-        }
+data class DisciplineRanking(
+    val discipline: String,
+    val gender: GenderDto
+)
 
-        model.addAttribute("isAuthenticated", false)
-
-        return "index"
-    }
-}
+data class RankingData(
+    val total: List<GenderDto> = listOf(),
+    val discipline: List<DisciplineRanking> = listOf(),
+    val disciplineGroup: List<GenderDto> = listOf(),
+    val ubsCup: List<GenderDto> = listOf()
+)

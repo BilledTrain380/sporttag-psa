@@ -34,16 +34,12 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.files
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
-data class FileQualifier(
-    val value: String,
-    val name: String
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+
+data class EventSheetData(
+    val discipline: String,
+    val group: String,
+    val gender: GenderDto
 )
-
-fun fileQualifierOf(path: String): FileQualifier {
-    val value = path.removePrefix("/").replace("/", "-")
-    val name = path.split("/").last()
-
-    return FileQualifier(value, name)
-}

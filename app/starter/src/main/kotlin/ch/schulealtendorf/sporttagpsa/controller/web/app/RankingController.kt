@@ -34,52 +34,52 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.files
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
+import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
+import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
+import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
+import ch.schulealtendorf.sporttagpsa.business.export.RankingExport
+import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import java.io.File
-import java.io.FileInputStream
+import org.springframework.web.bind.annotation.ResponseBody
 
-/**
- * Controller to resolve files from the application dir.
- *
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
 @Controller
-@RequestMapping("/api/web/file")
-class FileController(
+@RequestMapping("/web")
+class RankingController(
+    private val exportManager: ExportManager,
+    private val disciplineManager: DisciplineManager,
     private val fileSystem: FileSystem
 ) {
+    @PreAuthorize("#oauth2.hasScope('ranking')")
+    @PostMapping(
+        "/ranking",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    @ResponseBody
+    fun createRanking(@RequestBody data: RankingData): FileQualifier {
+        val disciplineExports = data.discipline.map {
+            val discipline = disciplineManager.getDiscipline(it.discipline)
+                .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }
 
-    @PreAuthorize("#oauth2.hasScope('files')")
-    @GetMapping("/{file_qualifier}")
-    fun getFile(@PathVariable("file_qualifier") fileQualifier: String): ResponseEntity<InputStreamResource> {
-
-        val file: File = fileSystem.getApplicationDir().resolve(fileQualifier.replace("-", "/"))
-
-        if (file.exists().not())
-            throw NotFoundException("The file could not be found: qualifier=$fileQualifier")
-
-        val headers = HttpHeaders().apply {
-            contentType = MediaType.APPLICATION_OCTET_STREAM
-            contentLength = file.length()
-            setContentDispositionFormData("attachment", file.name)
+            DisciplineExport(discipline, it.gender)
         }
 
-        val inputStreamResource = InputStreamResource(FileInputStream(file))
+        val rankingExport = RankingExport(
+            disciplineExports,
+            data.disciplineGroup,
+            data.total,
+            data.ubsCup
+        )
 
-        return ResponseEntity(inputStreamResource, headers, HttpStatus.OK)
+        val zip = exportManager.generateArchive(rankingExport)
+        return FileQualifier.ofPath(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }

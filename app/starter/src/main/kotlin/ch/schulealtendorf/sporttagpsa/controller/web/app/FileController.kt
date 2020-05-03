@@ -34,38 +34,52 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.participantlist
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.psa.dto.participation.SportDto
-import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
-import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
-import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
-import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
+import ch.schulealtendorf.sporttagpsa.controller.rest.NotFoundException
+import org.springframework.core.io.InputStreamResource
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
+import java.io.File
+import java.io.FileInputStream
 
+/**
+ * Controller to resolve files from the application dir.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
 @Controller
-@RequestMapping("/api/web")
-class ParticipantListController(
-    private val exportManager: ExportManager,
+@RequestMapping("/web/file")
+class FileController(
     private val fileSystem: FileSystem
 ) {
-    @PreAuthorize("#oauth2.hasScope('participant_list')")
-    @PostMapping(
-        "/participant-list",
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
-    @ResponseBody
-    fun createParticipantList(@RequestBody data: List<SportDto>): FileQualifier {
-        val exportData = ParticipantExport(data)
-        val zip = exportManager.generateArchive(exportData)
-        return fileQualifierOf(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
+
+    @PreAuthorize("#oauth2.hasScope('files')")
+    @GetMapping("/{file_qualifier}")
+    fun getFile(@PathVariable("file_qualifier") fileQualifier: String): ResponseEntity<InputStreamResource> {
+
+        val file: File = fileSystem.getApplicationDir().resolve(fileQualifier.replace("-", "/"))
+
+        if (file.exists().not())
+            throw NotFoundException("The file could not be found: qualifier=$fileQualifier")
+
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_OCTET_STREAM
+            contentLength = file.length()
+            setContentDispositionFormData("attachment", file.name)
+        }
+
+        val inputStreamResource = InputStreamResource(FileInputStream(file))
+
+        return ResponseEntity(inputStreamResource, headers, HttpStatus.OK)
     }
 }

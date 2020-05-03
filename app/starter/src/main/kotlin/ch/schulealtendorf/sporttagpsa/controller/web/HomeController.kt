@@ -34,17 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.setup
+package ch.schulealtendorf.sporttagpsa.controller.web
 
-import javax.validation.constraints.NotNull
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
 
-/**
- * Describes the form data used for the setup.
- *
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
- */
-data class SetupForm(
-    @NotNull
-    val password: String
-)
+@Controller
+class HomeController {
+    @GetMapping("/", "/index")
+    fun index(model: Model, authentication: Authentication?): String {
+        if (authentication != null) {
+            model.addAttribute("username", (authentication.principal as UserDetails).username)
+            model.addAttribute("isAuthenticated", authentication.isAuthenticated)
+            return "index"
+        }
+
+        model.addAttribute("isAuthenticated", false)
+
+        return "index"
+    }
+}

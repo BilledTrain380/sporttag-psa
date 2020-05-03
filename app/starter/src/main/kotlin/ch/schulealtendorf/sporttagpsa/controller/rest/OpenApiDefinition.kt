@@ -1,5 +1,7 @@
-package ch.schulealtendorf.sporttagpsa.controller.config
+package ch.schulealtendorf.sporttagpsa.controller.rest
 
+import ch.schulealtendorf.sporttagpsa.controller.config.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.config.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.info.License

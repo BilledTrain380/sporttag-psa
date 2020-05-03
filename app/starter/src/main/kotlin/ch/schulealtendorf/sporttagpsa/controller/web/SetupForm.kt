@@ -34,12 +34,17 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.eventsheets
+package ch.schulealtendorf.sporttagpsa.controller.web
 
-import ch.schulealtendorf.psa.dto.participation.GenderDto
+import javax.validation.constraints.NotNull
 
-data class EventSheetData(
-    val discipline: String,
-    val group: String,
-    val gender: GenderDto
+/**
+ * Describes the form data used for the setup.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+data class SetupForm(
+    @NotNull
+    val password: String
 )

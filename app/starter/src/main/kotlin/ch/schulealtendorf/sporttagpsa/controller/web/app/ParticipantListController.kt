@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,34 +34,36 @@
  *
  */
 
-package ch.schulealtendorf.sporttagpsa.controller.web.startlist
+package ch.schulealtendorf.sporttagpsa.controller.web.app
 
 import ch.schulealtendorf.psa.core.io.FileSystem
-import ch.schulealtendorf.sporttagpsa.business.export.report.StartlistReporter
-import ch.schulealtendorf.sporttagpsa.controller.web.files.FileQualifier
-import ch.schulealtendorf.sporttagpsa.controller.web.files.fileQualifierOf
+import ch.schulealtendorf.psa.dto.participation.SportDto
+import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
+import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 
-/**
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.1.0
- */
 @Controller
-@RequestMapping("/api/web")
-class StartlistController(
-    private val startlistReporter: StartlistReporter,
+@RequestMapping("/web")
+class ParticipantListController(
+    private val exportManager: ExportManager,
     private val fileSystem: FileSystem
 ) {
     @PreAuthorize("#oauth2.hasScope('participant_list')")
-    @GetMapping("/startlist", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(
+        "/participant-list",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     @ResponseBody
-    fun createStartlist(): FileQualifier {
-        val file = startlistReporter.generateReport()
-        return fileQualifierOf(file.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
+    fun createParticipantList(@RequestBody data: List<SportDto>): FileQualifier {
+        val exportData = ParticipantExport(data)
+        val zip = exportManager.generateArchive(exportData)
+        return FileQualifier.ofPath(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
     }
 }
