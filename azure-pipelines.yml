@@ -42,6 +42,11 @@ stages:
               jdkArchitectureOption: x64
               tasks: 'ktlintCheck test'
 
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/TEST-*.xml'
+
       - job: Frontend
         pool:
           vmImage: $(ubuntu)
