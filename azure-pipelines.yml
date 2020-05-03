@@ -15,6 +15,7 @@ pr:
   - master
   - develop
   - release/*
+  - epic/*
 
 variables:
   profileProd: prod
