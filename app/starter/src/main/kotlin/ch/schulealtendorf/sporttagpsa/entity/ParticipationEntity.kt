@@ -41,7 +41,6 @@ import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import javax.persistence.Transient
 import javax.validation.constraints.Size
 
 /**
