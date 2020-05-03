@@ -16,5 +16,4 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
     ),
     security = [SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_WRITE])]
 )
-class OpenApiDefinition {
-}
+class OpenApiDefinition
