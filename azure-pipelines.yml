@@ -40,7 +40,7 @@ stages:
               javaHomeOption: JDKVersion
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
-              tasks: 'ktlintCheck junitPlatformTest'
+              tasks: 'ktlintCheck test'
 
       - job: Frontend
         pool:

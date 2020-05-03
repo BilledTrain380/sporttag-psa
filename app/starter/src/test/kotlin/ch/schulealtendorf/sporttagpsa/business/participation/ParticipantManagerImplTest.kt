@@ -101,7 +101,7 @@ internal class ParticipantManagerImplTest {
         assertThat(savedParticipant.birthday).isEqualTo(participant.birthday)
         assertThat(savedParticipant.address).isEqualTo(participant.address)
         assertThat(savedParticipant.town).isEqualTo(participant.town)
-        assertThat(savedParticipant.group).isEqualTo(participant.group)
+        assertThat(savedParticipant.group.name).isEqualTo(participant.group.name)
     }
 
     @Test
