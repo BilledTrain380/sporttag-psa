@@ -47,6 +47,10 @@ stages:
               testResultsFormat: 'JUnit'
               testResultsFiles: '**/TEST-*.xml'
 
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'JaCoCo'
+
       - job: Frontend
         pool:
           vmImage: $(ubuntu)
