@@ -42,6 +42,8 @@ stages:
               tasks: 'ktlintCheck test sonarqube'
             env:
               SONAR_LOGIN: $(SONAR_LOGIN)
+              SYSTEM_PULLREQUEST_SOURCEBRANCH: $(SYSTEM_PULLREQUEST_SOURCEBRANCH)
+              SYSTEM_PULLREQUEST_TARGETBRANCH: $(SYSTEM_PULLREQUEST_TARGETBRANCH)
 
           - task: PublishTestResults@2
             inputs:
