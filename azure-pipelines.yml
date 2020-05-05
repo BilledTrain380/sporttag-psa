@@ -9,7 +9,6 @@ trigger:
   - master
   - develop
   - release/*
-  - hotfix/*
 
 pr:
   - master
@@ -40,7 +39,7 @@ stages:
               javaHomeOption: JDKVersion
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
-              tasks: 'ktlintCheck test'
+              tasks: 'ktlintCheck test sonarqube'
 
           - task: PublishTestResults@2
             inputs:
