@@ -40,6 +40,8 @@ stages:
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
               tasks: 'ktlintCheck test sonarqube'
+            env:
+              SONAR_LOGIN: $(SONAR_LOGIN)
 
           - task: PublishTestResults@2
             inputs:
