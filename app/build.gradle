@@ -51,6 +51,7 @@ configure([
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'jacoco'
+    apply plugin: 'org.sonarqube'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jlleitschuh.gradle.ktlint'
     apply plugin: 'org.springframework.boot'
