@@ -50,13 +50,6 @@ stages:
               testResultsFormat: 'JUnit'
               testResultsFiles: '**/TEST-*.xml'
 
-          - task: PublishCodeCoverageResults@1
-            inputs:
-              codeCoverageTool: 'JaCoCo'
-              summaryFileLocation: $(System.DefaultWorkingDirectory)/app/**/jacoco/**/*xml
-              pathToSources: $(System.DefaultWorkingDirectory)/app/**/src/main/kotlin
-              failIfCoverageEmpty: true
-
       - job: Frontend
         pool:
           vmImage: $(ubuntu)
