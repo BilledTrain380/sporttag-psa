@@ -29,8 +29,14 @@ plugins {
 sonarqube {
     properties {
         property "sonar.projectKey", "BilledTrain380_sporttag-psa"
+        property "sonar.projectName", "${rootProject.name}"
+        property "sonar.projectVersion", "$version"
+        property "sonar.links.homepage", "https://billedtrain380.github.io/sporttag-psa/"
+        property "sonar.links.ci", "https://dev.azure.com/billedtrain380/PSA"
+        property "sonar.links.scm", "https://github.com/BilledTrain380/sporttag-psa"
         property "sonar.organization", "billedtrain380"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.log.level", "DEBUG"
         property "sonar.login", "$sonarLogin"
         property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootProject}/**/reports/jacoco/**/*TestReport.xml"
 
