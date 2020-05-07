@@ -32,7 +32,7 @@ sonarqube {
         property "sonar.organization", "billedtrain380"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.login", "$sonarLogin"
-        property "sonar.coverage.jacoco.xmlReport", "${project.rootProject}/**/reports/jacoco/**/*TestReport.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootProject}/**/reports/jacoco/**/*TestReport.xml"
 
         if (pullRequestNumber != null) {
             property "sonar.pullrequest.key", "$pullRequestNumber"
