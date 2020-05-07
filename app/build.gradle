@@ -32,8 +32,6 @@ sonarqube {
         property "sonar.organization", "billedtrain380"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.login", "$sonarLogin"
-        property "sonar.branch.name", "$sourceBranch"
-        property "sonar.branch.target", "$targetBranch"
         property "sonar.coverage.jacoco.xmlReport", "${project.rootProject}/**/reports/jacoco/**/*TestReport.xml"
 
         if (pullRequestNumber != null) {
@@ -42,6 +40,9 @@ sonarqube {
             property "sonar.pullrequest.base", "$targetBranch"
             property "sonar.pullrequest.provider", "github"
             property "sonar.pullrequest.github.repository", "BilledTrain380/sporttag-psa"
+        } else {
+            property "sonar.branch.name", "$sourceBranch"
+            property "sonar.branch.target", "$targetBranch"
         }
     }
 }
