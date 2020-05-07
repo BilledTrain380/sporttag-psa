@@ -5,6 +5,7 @@ buildscript {
         sonarLogin = System.getenv("SONAR_LOGIN")
         sourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
         targetBranch = System.getenv("SYSTEM_PULLREQUEST_TARGETBRANCH")
+        pullRequestNumber = System.getenv("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER")
     }
 
     repositories {
@@ -34,6 +35,14 @@ sonarqube {
         property "sonar.branch.name", "$sourceBranch"
         property "sonar.branch.target", "$targetBranch"
         property "sonar.coverage.jacoco.xmlReport", "${project.rootProject}/**/reports/jacoco/**/*TestReport.xml"
+
+        if (pullRequestNumber != null) {
+            property "sonar.pullrequest.key", "$pullRequestNumber"
+            property "sonar.pullrequest.branch", "$sourceBranch"
+            property "sonar.pullrequest.base", "$targetBranch"
+            property "sonar.pullrequest.provider", "github"
+            property "sonar.pullrequest.github.repository", "BilledTrain380/sporttag-psa"
+        }
     }
 }
 
