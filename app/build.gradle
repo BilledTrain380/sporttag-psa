@@ -6,7 +6,6 @@ buildscript {
         sourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
         targetBranch = System.getenv("SYSTEM_PULLREQUEST_TARGETBRANCH")
         pullRequestNumber = System.getenv("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER")
-        jacocoTestResultPath = "build/reports/jacoco/test/jacocoTestReport.xml"
     }
 
     repositories {
