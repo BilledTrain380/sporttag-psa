@@ -38,7 +38,6 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.log.level", "DEBUG"
         property "sonar.login", "$sonarLogin"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootProject}/**/reports/jacoco/**/*TestReport.xml"
 
         if (pullRequestNumber != null) {
             property "sonar.pullrequest.key", "$pullRequestNumber"
@@ -48,7 +47,6 @@ sonarqube {
             property "sonar.pullrequest.github.repository", "BilledTrain380/sporttag-psa"
         } else {
             property "sonar.branch.name", "$sourceBranch"
-            property "sonar.branch.target", "$targetBranch"
         }
     }
 }
@@ -154,6 +152,12 @@ configure([
         reports {
             xml.enabled true
             html.enabled true
+        }
+    }
+
+    sonarqube {
+        properties {
+            property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         }
     }
 }
