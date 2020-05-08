@@ -3,8 +3,9 @@ buildscript {
         kotlinVersion = '1.3.61'
         springBootVersion = '2.0.2.RELEASE'
         sonarLogin = System.getenv("SONAR_LOGIN")
-        sourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
-        targetBranch = System.getenv("SYSTEM_PULLREQUEST_TARGETBRANCH")
+        sourceBranch = System.getenv("BUILD_SOURCEBRANCHNAME")
+        pullRequestSourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
+        pullRequestTargetBranch = System.getenv("SYSTEM_PULLREQUEST_TARGETBRANCH")
         pullRequestNumber = System.getenv("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER")
     }
 
@@ -43,8 +44,8 @@ sonarqube {
 
         if (pullRequestNumber != null) {
             property "sonar.pullrequest.key", "$pullRequestNumber"
-            property "sonar.pullrequest.branch", "$sourceBranch"
-            property "sonar.pullrequest.base", "$targetBranch"
+            property "sonar.pullrequest.branch", "$pullRequestSourceBranch"
+            property "sonar.pullrequest.base", "$pullRequestTargetBranch"
             property "sonar.pullrequest.provider", "github"
             property "sonar.pullrequest.github.repository", "BilledTrain380/sporttag-psa"
         } else {
