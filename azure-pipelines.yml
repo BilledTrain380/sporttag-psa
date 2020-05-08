@@ -96,6 +96,7 @@ stages:
               javaHomeOptions: JDKVersion
               jdkVersionOption: 1.8
               jdkArchitecture: x64
+              codeCoverageToolOption: 'jaCoCo'
           - script: printenv
 
           - download: current
