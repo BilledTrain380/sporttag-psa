@@ -40,7 +40,7 @@ stages:
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
               codeCoverageToolOption: 'jaCoCo'
-              tasks: 'ktlintCheck test sonarqube'
+              tasks: 'ktlintCheck test jacocoTestReport sonarqube'
             env:
               SONAR_LOGIN: $(SONAR_LOGIN)
               SYSTEM_PULLREQUEST_SOURCEBRANCH: $(SYSTEM_PULLREQUEST_SOURCEBRANCH)
