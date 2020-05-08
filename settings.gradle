@@ -34,7 +34,6 @@
  *
  */
 rootProject.name = "PSA"
-include ':app:psa-kitten'
 include ':app:dto'
 include ':app:core'
 include ':app:shared'

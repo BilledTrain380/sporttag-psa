@@ -2,6 +2,10 @@ buildscript {
     ext {
         kotlinVersion = '1.3.61'
         springBootVersion = '2.0.2.RELEASE'
+        sonarLogin = System.getenv("SONAR_LOGIN")
+        sourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
+        targetBranch = System.getenv("SYSTEM_PULLREQUEST_TARGETBRANCH")
+        pullRequestNumber = System.getenv("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER")
     }
 
     repositories {
@@ -13,11 +17,40 @@ buildscript {
 plugins {
     id "java"
     id "idea"
+    id "jacoco"
+    id "org.sonarqube" version "2.8"
     id "org.jetbrains.kotlin.jvm" version "1.3.61" apply false
     id "org.jlleitschuh.gradle.ktlint" version "9.2.1" apply false
     id "org.springframework.boot" version "${springBootVersion}" apply false
     id "org.jetbrains.kotlin.plugin.spring" version "1.3.61" apply false
     id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "BilledTrain380_sporttag-psa"
+        property "sonar.projectName", "${rootProject.name}"
+        property "sonar.projectVersion", "$version"
+        property "sonar.links.homepage", "https://billedtrain380.github.io/sporttag-psa/"
+        property "sonar.links.ci", "https://dev.azure.com/billedtrain380/PSA"
+        property "sonar.links.scm", "https://github.com/BilledTrain380/sporttag-psa"
+        property "sonar.organization", "billedtrain380"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.log.level", "DEBUG"
+        property "sonar.login", "$sonarLogin"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/app/**/build/reports/jacoco/**/*.xml"
+
+        if (pullRequestNumber != null) {
+            property "sonar.pullrequest.key", "$pullRequestNumber"
+            property "sonar.pullrequest.branch", "$sourceBranch"
+            property "sonar.pullrequest.base", "$targetBranch"
+            property "sonar.pullrequest.provider", "github"
+            property "sonar.pullrequest.github.repository", "BilledTrain380/sporttag-psa"
+        } else {
+            property "sonar.branch.name", "$sourceBranch"
+        }
+    }
 }
 
 project(":app:starter") {
@@ -34,6 +67,8 @@ configure([
 ]) {
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'jacoco'
+    apply plugin: 'org.sonarqube'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jlleitschuh.gradle.ktlint'
     apply plugin: 'org.springframework.boot'
@@ -41,6 +76,12 @@ configure([
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
+
+    repositories {
+        maven { url "https://dl.bintray.com/jetbrains/spek" }
+        maven { url "https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-dev/" }
+    }
 
     dependencyManagement {
         dependencies {
@@ -86,12 +127,6 @@ configure([
         }
     }
 
-    repositories {
-        maven { url "https://dl.bintray.com/jetbrains/spek" }
-        maven { url "https://jaspersoft.jfrog.io/jaspersoft/jr-ce-releases" }
-        maven { url "https://dl.bintray.com/kotlin/kotlin-dev/" }
-    }
-
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
@@ -112,6 +147,13 @@ configure([
 
     test {
         useJUnitPlatform()
+        finalizedBy jacocoTestReport
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+        }
     }
 }
 
