@@ -38,7 +38,7 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.log.level", "DEBUG"
         property "sonar.login", "$sonarLogin"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootProject}/**/build/reports/jacoco/test/*.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/test/jacocoTestReport.xml"
 
         if (pullRequestNumber != null) {
             property "sonar.pullrequest.key", "$pullRequestNumber"
@@ -147,6 +147,12 @@ configure([
     test {
         useJUnitPlatform()
         finalizedBy jacocoTestReport
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+        }
     }
 }
 
