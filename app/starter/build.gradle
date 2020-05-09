@@ -15,7 +15,6 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-security"
 
     implementation "io.jsonwebtoken:jjwt"
-    implementation "joda-time:joda-time"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
 
     implementation project(":app:core")

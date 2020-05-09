@@ -89,9 +89,6 @@ configure([
             dependency "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
             dependency "io.jsonwebtoken:jjwt:0.9.1"
 
-            // FIXME Remove this dependency
-            dependency "joda-time:joda-time:2.9.9"
-
             dependency "org.springframework.cloud:spring-cloud-starter-oauth2:2.0.0.RELEASE"
             dependency "org.springframework.security:spring-security-jwt:1.0.9.RELEASE"
             dependency "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1"
