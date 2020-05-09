@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = '1.3.61'
-        springBootVersion = '2.0.2.RELEASE'
+        kotlinVersion = '1.3.72'
+        springBootVersion = '2.2.7.RELEASE'
         sonarLogin = System.getenv("SONAR_LOGIN")
         sourceBranch = System.getenv("BUILD_SOURCEBRANCHNAME")
         pullRequestSourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
@@ -20,9 +20,9 @@ plugins {
     id "idea"
     id "jacoco"
     id "org.sonarqube" version "2.8"
-    id "org.jetbrains.kotlin.jvm" version "1.3.61" apply false
+    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion" apply false
     id "org.jlleitschuh.gradle.ktlint" version "9.2.1" apply false
-    id "org.springframework.boot" version "${springBootVersion}" apply false
+    id "org.springframework.boot" version "$springBootVersion" apply false
     id "org.jetbrains.kotlin.plugin.spring" version "1.3.61" apply false
     id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
 }
