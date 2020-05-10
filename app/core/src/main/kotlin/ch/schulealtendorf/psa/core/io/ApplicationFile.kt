@@ -36,13 +36,16 @@
 
 package ch.schulealtendorf.psa.core.io
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class ApplicationFile(
     first: String,
     vararg more: String
 ) {
     constructor(appDirectory: AppDirectory, vararg more: String) : this(appDirectory.toString(), *more)
 
-    val path: String = first + "/" + more.joinToString("/")
+    val path: Path = Paths.get(first, *more)
     val pathSegments: List<String> = listOf(first, *more)
     val fileName: String = pathSegments.last()
 }
