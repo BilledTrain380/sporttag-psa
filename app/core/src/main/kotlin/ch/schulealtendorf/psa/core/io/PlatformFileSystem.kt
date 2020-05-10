@@ -41,9 +41,7 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.net.URI
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -58,7 +56,7 @@ import java.util.zip.ZipOutputStream
 class PlatformFileSystem(
     appDirs: AppDirs
 ) : FileSystem {
-    private val applicationDir = Paths.get(URI.create("file://" + appDirs.getUserDataDir("PSA", "", "")))
+    private val applicationDir = File(appDirs.getUserDataDir("PSA", "", "")).toPath()
 
     init {
         Files.createDirectories(applicationDir)
