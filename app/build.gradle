@@ -120,7 +120,7 @@ configure([
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
             dependency "org.assertj:assertj-core:3.15.0"
             // Keep in sync with spring boots junit version
-            dependency "org.junit.jupiter:junit-jupiter-params:5.6.0"
+            dependency "org.junit.jupiter:junit-jupiter-params:5.5.2"
         }
     }
 
@@ -147,12 +147,12 @@ configure([
         testImplementation "org.assertj:assertj-core"
         testImplementation "org.junit.jupiter:junit-jupiter-api"
         testImplementation "org.junit.jupiter:junit-jupiter-params"
-        testRuntimeOnly 'org.junit.jupiter:junit-vintage-engine'
+        testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
     }
 
     test {
         useJUnitPlatform {
-            include 'junit-vintage'
+            includeEngines "junit-vintage"
         }
         finalizedBy jacocoTestReport
     }

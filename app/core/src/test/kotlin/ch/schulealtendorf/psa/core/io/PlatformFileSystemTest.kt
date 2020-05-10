@@ -6,12 +6,14 @@ import com.nhaarman.mockito_kotlin.whenever
 import net.harawata.appdirs.AppDirs
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Files
 import java.util.zip.ZipInputStream
 
+@Tag("unit-test")
 internal class PlatformFileSystemTest {
 
     @TempDir
