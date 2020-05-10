@@ -14,7 +14,6 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.annotation.DirtiesContext
@@ -29,8 +28,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
     UserManagerImpl::class,
     PSAPasswordValidator::class
 )
-@SpringBootTest(properties = ["spring.flyway.locations=classpath:/db/migration"])
-@DataJpaTest
+@DataJpaTest(properties = ["spring.flyway.locations=classpath:/db/migration"])
 @FlywayTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 internal class StatefulSetupManagerTest {

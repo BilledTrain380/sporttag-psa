@@ -36,13 +36,14 @@
 
 package ch.schulealtendorf.psa.core.io
 
-import java.io.File
-import java.io.InputStream
 import net.harawata.appdirs.AppDirs
-import net.lingala.zip4j.core.ZipFile
-import net.lingala.zip4j.model.ZipParameters
-import net.lingala.zip4j.util.Zip4jConstants
 import org.springframework.stereotype.Component
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.nio.file.Files
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 /**
  * The file system considers the special directory of the platform.
@@ -55,29 +56,24 @@ import org.springframework.stereotype.Component
 class PlatformFileSystem(
     appDirs: AppDirs
 ) : FileSystem {
-
-    private val applicationDir = File(appDirs.getUserDataDir("PSA", "", ""))
+    private val applicationDir = File(appDirs.getUserDataDir("PSA", "", "")).toPath()
 
     init {
-
-        if (!applicationDir.exists())
-            applicationDir.mkdirs()
+        Files.createDirectories(applicationDir)
     }
 
     /**
      * @return the application directory which Sporttag PSA can use
      */
-    override fun getApplicationDir() = applicationDir
+    override fun getApplicationDir(): File = applicationDir.toFile()
 
     override fun write(file: ApplicationFile, lines: List<String>): File {
-
         val newFile = createFile(file)
 
-        newFile.bufferedWriter().use {
-
-            lines.forEach { line ->
-                it.write(line)
-                it.newLine()
+        newFile.bufferedWriter().use { writer ->
+            lines.forEach {
+                writer.write(it)
+                writer.newLine()
             }
         }
 
@@ -85,12 +81,11 @@ class PlatformFileSystem(
     }
 
     override fun write(file: ApplicationFile, input: InputStream): File {
-
         val newFile = createFile(file)
 
-        input.use {
-            newFile.outputStream().use { fileOut ->
-                it.copyTo(fileOut)
+        input.use { inputStream ->
+            newFile.outputStream().use {
+                inputStream.copyTo(it)
             }
         }
 
@@ -98,35 +93,22 @@ class PlatformFileSystem(
     }
 
     override fun createArchive(file: ApplicationFile, files: Iterable<File>): File {
-
         val zipFile = createFile(file, ".zip")
 
-        if (zipFile.exists())
-            zipFile.delete()
-
-        val rankingZip = ZipFile(zipFile).apply {
-            setFileNameCharset("UTF-8")
+        ZipOutputStream(FileOutputStream(zipFile)).use { outputStream ->
+            files
+                .map { ZipEntry(it.absolutePath) }
+                .forEach { outputStream.putNextEntry(it) }
         }
-        val parameters = ZipParameters().apply {
-            compressionMethod = Zip4jConstants.COMP_DEFLATE
-            compressionLevel = Zip4jConstants.DEFLATE_LEVEL_NORMAL
-        }
-
-        files.forEach { rankingZip.addFile(it, parameters) }
 
         return zipFile
     }
 
     private fun createFile(appFile: ApplicationFile, extension: String = ""): File {
-
         val file = applicationDir.resolve("${appFile.path}$extension")
-
-        if (file.exists())
-            file.delete()
-
-        file.parentFile.mkdirs()
-        file.createNewFile()
-
-        return file
+        Files.createDirectories(file.parent)
+        Files.deleteIfExists(file)
+        Files.createFile(file)
+        return file.toFile()
     }
 }

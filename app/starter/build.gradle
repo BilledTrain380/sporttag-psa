@@ -4,20 +4,6 @@ bootJar {
     archiveFileName = "PSA-${archiveVersion.get()}+$commitHash.${archiveExtension.get()}"
 }
 
-compileKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
-        jvmTarget = "1.8"
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ["-Xjsr305=strict"]
-        jvmTarget = "1.8"
-    }
-}
-
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
     implementation "org.springframework.boot:spring-boot-starter-web"
@@ -29,7 +15,6 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-security"
 
     implementation "io.jsonwebtoken:jjwt"
-    implementation "joda-time:joda-time"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
 
     implementation project(":app:core")

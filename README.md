@@ -1,6 +1,7 @@
 # PSA
 
 [![Build Status](https://dev.azure.com/billedtrain380/PSA/_apis/build/status/PSA%20Github?branchName=master)](https://dev.azure.com/billedtrain380/PSA/_build/latest?definitionId=3&branchName=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BilledTrain380_sporttag-psa&metric=alert_status)](https://sonarcloud.io/dashboard?id=BilledTrain380_sporttag-psa)
 
 PSA is a sport event management system.
 

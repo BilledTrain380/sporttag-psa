@@ -48,7 +48,7 @@ import java.io.InputStream
 interface FileSystem {
 
     /**
-     * @return the application directory which Sporttag PSA can use
+     * @return the application directory which PSA can use
      */
     fun getApplicationDir(): File
 
