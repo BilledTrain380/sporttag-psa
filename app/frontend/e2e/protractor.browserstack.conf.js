@@ -3,6 +3,9 @@ const browserstack = require("browserstack-local");
 const uuidv4 = require("uuid/v4");
 const HttpClient = require("protractor-http-client").HttpClient;
 
+const pullRequestSourceBranch = process.env.SYSTEM_PULLREQUEST_SOURCEBRANCH;
+const branch = pullRequestSourceBranch ? pullRequestSourceBranch : process.env.BUILD_SOURCEBRANCHNAME;
+
 exports.config = {
   ...baseConfig,
 
@@ -14,7 +17,7 @@ exports.config = {
 
   capabilities: {
     "project": "PSA",
-    "build": `PSA-${process.env.SYSTEM_PULLREQUEST_SOURCEBRANCH}-${process.env.SYSTEM_STAGEATTEMPT}`,
+    "build": `PSA-${branch}-${process.env.SYSTEM_STAGEATTEMPT}`,
     "name": `PSA-${process.env.FULL_VERSION}`,
     "browserstack.localIdentifier": uuidv4(),
     "browserstack.user": process.env.BROWSERSTACK_USER,
