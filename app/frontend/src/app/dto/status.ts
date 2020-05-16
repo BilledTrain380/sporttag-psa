@@ -9,12 +9,7 @@ export enum StatusSeverity {
   WARNING = "WARNING",
 }
 
-export interface StatusType {
-  readonly code: number;
-  readonly text: string;
-}
-
 export interface StatusEntry {
   readonly severity: StatusSeverity;
-  readonly type: StatusType;
+  readonly type: string;
 }
