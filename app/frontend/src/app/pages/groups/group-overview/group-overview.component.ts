@@ -3,9 +3,9 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 
-import { GroupDto } from "../../../@core/service/api/group-api";
+import { OverviewGroupDto } from "../../../dto/group";
 import { AppState } from "../../../store/app";
-import { loadGroups } from "../../../store/group/group.action";
+import { loadGroupsOverviewAction } from "../../../store/group/group.action";
 import { selectGroups } from "../../../store/group/group.selector";
 
 @Component({
@@ -14,8 +14,9 @@ import { selectGroups } from "../../../store/group/group.selector";
   styleUrls: ["./group-overview.component.scss"],
 })
 export class GroupOverviewComponent implements OnInit {
+  readonly displayedColumns: ReadonlyArray<string> = ["name", "coach", "status"];
 
-  readonly groups$: Observable<ReadonlyArray<GroupDto>> = this.store.select(selectGroups);
+  readonly groups$: Observable<ReadonlyArray<OverviewGroupDto>> = this.store.select(selectGroups);
 
   readonly faUpload = faUpload;
 
@@ -25,6 +26,6 @@ export class GroupOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadGroups({}));
+    this.store.dispatch(loadGroupsOverviewAction({}));
   }
 }

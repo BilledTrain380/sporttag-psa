@@ -9,5 +9,25 @@
     </button>
   </app-layout-buttons>
 
-  <div *ngFor="let group of (groups$ | async)">{{group.name}}</div>
+  <table mat-table [dataSource]="groups$">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef i18n>Name</th>
+      <td mat-cell *matCellDef="let overviewGroup">{{overviewGroup.group.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="coach">
+      <th mat-header-cell *matHeaderCellDef i18n>Coach</th>
+      <td mat-cell *matCellDef="let overviewGroup">{{overviewGroup.group.coach}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef i18n>Status</th>
+      <td mat-cell *matCellDef="let overviewGroup">
+        <app-status [status]="overviewGroup.status"></app-status>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 </app-simple-page>

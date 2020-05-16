@@ -1,6 +1,5 @@
-import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { MatTableModule } from "@angular/material/table";
 import { EffectsModule } from "@ngrx/effects";
 
 import { ThemeModule } from "../../@theme/theme.module";
@@ -11,9 +10,8 @@ import { GroupOverviewComponent } from "./group-overview/group-overview.componen
 @NgModule({
   declarations: [GroupOverviewComponent],
   imports: [
-    CommonModule,
     ThemeModule,
-    FontAwesomeModule,
+    MatTableModule,
     EffectsModule.forFeature([GroupEffects]),
   ],
 })

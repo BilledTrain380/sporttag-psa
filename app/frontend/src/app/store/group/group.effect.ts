@@ -1,32 +1,37 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, Effect, ofType } from "@ngrx/effects";
-import { NGXLogger } from "ngx-logger";
 import { EMPTY } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
 
-import { GroupApi } from "../../@core/service/api/group-api";
+import { getLogger, Logger } from "../../@core/logging";
+import { GroupApi, GroupOverviewParameters } from "../../@core/service/api/group-api";
 
-import { loadGroups, setGroups } from "./group.action";
+import { loadGroupsOverviewAction, LoadGroupsOverviewProps, setGroupsAction } from "./group.action";
 
 @Injectable()
 export class GroupEffects {
 
   @Effect()
   readonly loadGroups$ = createEffect(() => this.actions$
-    .pipe(ofType(loadGroups.type))
-    .pipe(mergeMap(() => this.groupApi.getGroups()))
-    .pipe(map(groups => setGroups({groups})))
+    .pipe(ofType(loadGroupsOverviewAction.type))
+    .pipe(mergeMap((action: LoadGroupsOverviewProps) => {
+      const parameters = action.statusType ? new GroupOverviewParameters(action.statusType) : undefined;
+
+      return this.groupApi.getGroupsOverview(parameters);
+    }))
+    .pipe(map(groups => setGroupsAction({groups})))
     .pipe(catchError(err => {
-      this.log.warn("Could not load groups", err);
+      this.log.warn("Could not load groups overview", err);
 
       // FIXME: Dispatch error notification action
       return EMPTY;
     })));
 
+  private log: Logger = getLogger("GroupEffect");
+
   constructor(
     private readonly actions$: Actions,
     private readonly groupApi: GroupApi,
-    private readonly log: NGXLogger,
   ) {
   }
 }

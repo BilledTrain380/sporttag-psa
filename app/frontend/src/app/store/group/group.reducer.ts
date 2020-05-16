@@ -1,9 +1,11 @@
-import { GroupDto } from "../../@core/service/api/group-api";
 import { Action, createReducer, on } from "@ngrx/store";
-import { setGroups } from "./group.action";
+
+import { OverviewGroupDto } from "../../dto/group";
+
+import { setGroupsAction } from "./group.action";
 
 export interface GroupState {
-  readonly groups: ReadonlyArray<GroupDto>;
+  readonly groups: ReadonlyArray<OverviewGroupDto>;
 }
 
 const initialState: GroupState = {
@@ -12,7 +14,7 @@ const initialState: GroupState = {
 
 const reducer = createReducer(
   initialState,
-  on(setGroups, ((_, action) => ({groups: action.groups}))),
+  on(setGroupsAction, ((_, action) => ({groups: action.groups}))),
 );
 
 export function groupReducer(state: GroupState | undefined, action: Action): GroupState {

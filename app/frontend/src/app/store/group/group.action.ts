@@ -1,22 +1,21 @@
 import { createAction, props } from "@ngrx/store";
 
-import { GroupDto } from "../../@core/service/api/group-api";
+import { GroupStatusType, OverviewGroupDto } from "../../dto/group";
 
-export interface PropsLoadGroups {
-  readonly competitive?: boolean;
-  readonly includePendingParticipationStatus?: boolean;
+export interface LoadGroupsOverviewProps {
+  readonly statusType?: GroupStatusType;
 }
 
-export const loadGroups = createAction(
-  "[GroupOverview] Load Groups",
-  props<PropsLoadGroups>(),
+export const loadGroupsOverviewAction = createAction(
+  "[GroupOverview] Load groups overview",
+  props<LoadGroupsOverviewProps>(),
 );
 
 export interface PropsSetGroup {
-  readonly groups: ReadonlyArray<GroupDto>;
+  readonly groups: ReadonlyArray<OverviewGroupDto>;
 }
 
-export const setGroups = createAction(
+export const setGroupsAction = createAction(
   "[GroupReducer] Set Groups",
   props<PropsSetGroup>(),
 );

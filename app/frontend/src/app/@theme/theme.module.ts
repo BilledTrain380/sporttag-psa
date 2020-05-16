@@ -29,21 +29,23 @@ const BASE_COMPONENTS = [
   LayoutButtonComponent,
 ];
 
+const MODULES = [
+  CoreModule,
+  CommonModule,
+  RouterModule,
+  FontAwesomeModule,
+  NgbNavModule,
+  NgbDropdownModule,
+  NgbCollapseModule,
+];
+
 @NgModule({
   declarations: [
     ...BASE_COMPONENTS,
     PageHeaderComponent,
   ],
-  imports: [
-    CommonModule,
-    CoreModule,
-    NgbDropdownModule,
-    NgbNavModule,
-    NgbCollapseModule,
-    RouterModule,
-    FontAwesomeModule,
-  ],
-  exports: [...BASE_COMPONENTS],
+  imports: [...MODULES],
+  exports: [...BASE_COMPONENTS, ...MODULES],
 })
 export class ThemeModule {
 }
