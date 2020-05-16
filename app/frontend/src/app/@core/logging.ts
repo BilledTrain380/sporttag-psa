@@ -23,26 +23,26 @@ export class ConsoleLogger implements Logger {
   }
 
   debug(message: any, ...optionalParams: ReadonlyArray<any>): void {
-    this.logMessage(console.debug, message, ...optionalParams);
+    this.logMessage(console.debug, "DEBUG", message, ...optionalParams);
   }
 
   info(message: string, ...optionalParams: ReadonlyArray<any>): void {
-    this.logMessage(console.info, message, ...optionalParams);
+    this.logMessage(console.info, "INFO", message, ...optionalParams);
   }
 
   log(message: any, ...optionalParams: ReadonlyArray<any>): void {
-    this.logMessage(console.log, message, ...optionalParams);
+    this.logMessage(console.log, "LOG", message, ...optionalParams);
   }
 
   warn(message: any, ...optionalParams: ReadonlyArray<any>): void {
-    this.logMessage(console.warn, message, ...optionalParams);
+    this.logMessage(console.warn, "WARN", message, ...optionalParams);
   }
 
   error(message: any, ...optionalParams: ReadonlyArray<any>): void {
-    this.logMessage(console.error, message, ...optionalParams);
+    this.logMessage(console.error, "ERROR", message, ...optionalParams);
   }
 
-  private logMessage(logFn: Function, message: any, ...optionalParams: ReadonlyArray<any>): void {
-    logFn(new Date().toUTCString(), `[${this.name}] - ${message}`, ...optionalParams);
+  private logMessage(logFn: Function, logLevel: string, message: any, ...optionalParams: ReadonlyArray<any>): void {
+    logFn(new Date().toISOString(), `${logLevel} [${this.name}] - ${message}`, ...optionalParams);
   }
 }

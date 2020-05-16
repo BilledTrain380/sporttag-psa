@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { JwksValidationHandler, OAuthService } from "angular-oauth2-oidc";
+import {Component, OnInit} from "@angular/core";
+import {Store} from "@ngrx/store";
+import {JwksValidationHandler, OAuthService} from "angular-oauth2-oidc";
 import * as jwt_decode from "jwt-decode";
-import { NGXLogger } from "ngx-logger";
 
-import { authConfig, PsaJwt } from "./@core/auth/auth-config";
-import { AppState } from "./store/app";
-import { loginSuccess } from "./store/user/user.action";
+import {authConfig, PsaJwt} from "./@core/auth/auth-config";
+import {AppState} from "./store/app";
+import {loginSuccess} from "./store/user/user.action";
+import {getLogger, Logger} from "./@core/logging";
 
 @Component({
   selector: "app-root",
@@ -15,10 +15,11 @@ import { loginSuccess } from "./store/user/user.action";
 })
 export class AppComponent implements OnInit {
 
+  private log: Logger = getLogger("AppComponent");
+
   constructor(
     private readonly oauthService: OAuthService,
     private readonly store: Store<AppState>,
-    private readonly log: NGXLogger,
   ) {
   }
 

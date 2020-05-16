@@ -1,17 +1,18 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { OAuthService } from "angular-oauth2-oidc";
-import { NGXLogger } from "ngx-logger";
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 
+import { getLogger, Logger } from "../logging";
 import { HTTP_STATUS_UNAUTHORIZED } from "../web";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  private readonly log: Logger = getLogger("TokenInterceptor");
+
   constructor(
     private readonly auth: OAuthService,
-    private readonly log: NGXLogger,
   ) {
   }
 
