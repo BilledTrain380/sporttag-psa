@@ -8,8 +8,8 @@ import { getLogger, Logger } from "../../logging";
 import { API_ENDPOINT, ApiParameters } from "./pas-api";
 
 @Injectable({
-  providedIn: "root",
-})
+              providedIn: "root",
+            })
 export class GroupApi {
   private log: Logger = getLogger("GroupApi");
 

@@ -10,23 +10,23 @@ import { StatusComponent } from "./component/status/status.component";
 import { MenuItemComponent } from "./menu/menu-item/menu-item.component";
 
 @NgModule({
-  declarations: [
-    MenuItemComponent,
-    CardComponent,
-    StatusComponent,
-    StatusDetailComponent,
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgbPopoverModule,
-    FontAwesomeModule,
-  ],
-  exports: [
-    MenuItemComponent,
-    CardComponent,
-    StatusComponent,
-  ],
-})
+            declarations: [
+              MenuItemComponent,
+              CardComponent,
+              StatusComponent,
+              StatusDetailComponent,
+            ],
+            imports: [
+              CommonModule,
+              RouterModule,
+              NgbPopoverModule,
+              FontAwesomeModule,
+            ],
+            exports: [
+              MenuItemComponent,
+              CardComponent,
+              StatusComponent,
+            ],
+          })
 export class CoreModule {
 }

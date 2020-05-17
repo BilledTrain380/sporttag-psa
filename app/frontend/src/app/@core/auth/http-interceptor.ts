@@ -22,10 +22,10 @@ export class TokenInterceptor implements HttpInterceptor {
     if (this.auth.hasValidAccessToken()) {
       this.log.debug("Intercept http request with access token");
       const request = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${this.auth.getAccessToken()}`,
-        },
-      });
+                                  setHeaders: {
+                                    Authorization: `Bearer ${this.auth.getAccessToken()}`,
+                                  },
+                                });
 
       return next.handle(request);
     }

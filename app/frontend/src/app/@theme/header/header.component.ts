@@ -10,10 +10,10 @@ import { logout } from "../../store/user/user.action";
 import { selectUsername } from "../../store/user/user.selector";
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"],
-})
+             selector: "app-header",
+             templateUrl: "./header.component.html",
+             styleUrls: ["./header.component.scss"],
+           })
 export class HeaderComponent implements OnInit {
 
   username$?: Observable<string>;

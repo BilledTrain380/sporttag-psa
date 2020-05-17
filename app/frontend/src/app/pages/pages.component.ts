@@ -3,9 +3,9 @@ import { Component } from "@angular/core";
 import { MENU_ITEMS } from "./pages-menu";
 
 @Component({
-  selector: "app-pages",
-  styleUrls: ["./pages.component.scss"],
-  template: `
+             selector: "app-pages",
+             styleUrls: ["./pages.component.scss"],
+             template: `
     <app-sidebar [items]="menu"></app-sidebar>
     <div class="pages-container">
         <div class="container-fluid">
@@ -14,7 +14,7 @@ import { MENU_ITEMS } from "./pages-menu";
         <app-footer class="footer"></app-footer>
     </div>
   `,
-})
+           })
 export class PagesComponent {
   readonly menu = MENU_ITEMS;
 }

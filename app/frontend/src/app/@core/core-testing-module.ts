@@ -15,8 +15,8 @@ const MODULES = [
 ];
 
 @NgModule({
-  imports: [...MODULES],
-  exports: [...MODULES],
-})
+            imports: [...MODULES],
+            exports: [...MODULES],
+          })
 export class CoreTestingModule {
 }

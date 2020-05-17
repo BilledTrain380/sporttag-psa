@@ -3,15 +3,15 @@
       {{statusModel.text}}
     </span>
 
-    <span class="show-details"
-          [ngbPopover]="statusContent"
-          popoverClass="increase-popover-width"
-          placement="bottom"
-          i18n>
+  <span class="show-details"
+        [ngbPopover]="statusContent"
+        popoverClass="increase-popover-width"
+        placement="bottom"
+        i18n>
       Details
     </span>
 
-    <ng-template #statusContent>
-      <app-status-detail [entries]="statusModel.entries"></app-status-detail>
-    </ng-template>
+  <ng-template #statusContent>
+    <app-status-detail [entries]="statusModel.entries"></app-status-detail>
+  </ng-template>
 </div>

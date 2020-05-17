@@ -1,9 +1,9 @@
 import { Component, Input } from "@angular/core";
 
 @Component({
-  selector: "app-row-page",
-  templateUrl: "./row-page.component.html",
-})
+             selector: "app-row-page",
+             templateUrl: "./row-page.component.html",
+           })
 export class RowPageComponent {
 
   @Input()

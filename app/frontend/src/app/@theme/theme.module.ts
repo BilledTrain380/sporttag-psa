@@ -40,12 +40,12 @@ const MODULES = [
 ];
 
 @NgModule({
-  declarations: [
-    ...BASE_COMPONENTS,
-    PageHeaderComponent,
-  ],
-  imports: [...MODULES],
-  exports: [...BASE_COMPONENTS, ...MODULES],
-})
+            declarations: [
+              ...BASE_COMPONENTS,
+              PageHeaderComponent,
+            ],
+            imports: [...MODULES],
+            exports: [...BASE_COMPONENTS, ...MODULES],
+          })
 export class ThemeModule {
 }

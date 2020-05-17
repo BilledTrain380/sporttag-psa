@@ -9,10 +9,10 @@ import { getLogger, Logger } from "../../@core/logging";
 import { PageMenu } from "../../@core/menu/page-menu";
 
 @Component({
-  selector: "app-sidebar",
-  templateUrl: "./sidebar.component.html",
-  styleUrls: ["./sidebar.component.scss"],
-})
+             selector: "app-sidebar",
+             templateUrl: "./sidebar.component.html",
+             styleUrls: ["./sidebar.component.scss"],
+           })
 export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input()
@@ -43,10 +43,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.breakpointObserver
       .observe([
-        Breakpoints.Tablet,
-        Breakpoints.Small,
-        Breakpoints.XSmall,
-      ])
+                 Breakpoints.Tablet,
+                 Breakpoints.Small,
+                 Breakpoints.XSmall,
+               ])
       .pipe(tap(() => this.log.info("Detected media breakpoint change")))
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => this.collapsed = result.matches);
