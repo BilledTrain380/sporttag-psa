@@ -14,8 +14,6 @@ import { selectGroups } from "../../../store/group/group.selector";
   styleUrls: ["./group-overview.component.scss"],
 })
 export class GroupOverviewComponent implements OnInit {
-  readonly displayedColumns: ReadonlyArray<string> = ["name", "coach", "status"];
-
   readonly groups$: Observable<ReadonlyArray<OverviewGroupDto>> = this.store.select(selectGroups);
 
   readonly faUpload = faUpload;
