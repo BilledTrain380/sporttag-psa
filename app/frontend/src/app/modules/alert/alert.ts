@@ -3,6 +3,18 @@ import { Injectable } from "@angular/core";
 export interface Alert {
   readonly type: AlertType;
   readonly message: string;
+
+  isSuccess(): boolean;
+
+  isInfo(): boolean;
+
+  isWarning(): boolean;
+
+  isDanger(): boolean;
+
+  isPrimary(): boolean;
+
+  isSecondary(): boolean;
 }
 
 export enum AlertType {
@@ -58,10 +70,43 @@ export class TextAlertInstance extends AlertInstance {
   }
 }
 
-export class TextAlert implements Alert {
-  constructor(
+export abstract class AbstractAlert implements Alert {
+  protected constructor(
     readonly type: AlertType,
     readonly message: string,
   ) {
+  }
+
+  isDanger(): boolean {
+    return this.type === AlertType.DANGER;
+  }
+
+  isInfo(): boolean {
+    return this.type === AlertType.INFO;
+  }
+
+  isPrimary(): boolean {
+    return this.type === AlertType.PRIMARY;
+  }
+
+  isSecondary(): boolean {
+    return this.type === AlertType.SECONDARY;
+  }
+
+  isSuccess(): boolean {
+    return this.type === AlertType.SUCCESS;
+  }
+
+  isWarning(): boolean {
+    return this.type === AlertType.WARNING;
+  }
+}
+
+export class TextAlert extends AbstractAlert {
+  constructor(
+    type: AlertType,
+    message: string,
+  ) {
+    super(type, message);
   }
 }

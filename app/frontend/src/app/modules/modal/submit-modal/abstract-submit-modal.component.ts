@@ -3,7 +3,7 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
-import { Alert, AlertType } from "../../alert/alert";
+import { Alert } from "../../alert/alert";
 
 export abstract class AbstractSubmitModalComponent implements OnInit {
   get alert(): Alert | undefined {
@@ -24,7 +24,7 @@ export abstract class AbstractSubmitModalComponent implements OnInit {
     this.alert$
       .pipe(takeUntil(this.destroy$))
       .subscribe(alert => {
-        if (alert?.type === AlertType.SUCCESS) {
+        if (alert?.isSuccess()) {
           this.activeModal.close(alert);
         } else {
           this._alert = alert;
