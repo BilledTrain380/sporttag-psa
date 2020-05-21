@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{title}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="emitCancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <app-text-alert [alert]="alert"></app-text-alert>
+  <ng-content></ng-content>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" (click)="emitCancel()" i18n>
+    Cancel
+  </button>
+  <button type="button" ngbAutofocus class="btn btn-primary" (click)="emitSubmit()" i18n>
+    Submit
+  </button>
+</div>
