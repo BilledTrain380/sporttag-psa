@@ -12,6 +12,9 @@ export class SubmitModalComponent {
   readonly title?: string;
 
   @Input()
+  readonly isSubmitEnabled: boolean = false;
+
+  @Input()
   readonly alert?: Alert;
 
   @Output()

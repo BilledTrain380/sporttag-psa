@@ -1,11 +1,11 @@
-import { OnInit } from "@angular/core";
+import { OnDestroy, OnInit } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
 import { Alert } from "../../alert/alert";
 
-export abstract class AbstractSubmitModalComponent implements OnInit {
+export abstract class AbstractSubmitModalComponent implements OnInit, OnDestroy {
   get alert(): Alert | undefined {
     return this._alert;
   }
@@ -32,9 +32,14 @@ export abstract class AbstractSubmitModalComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   abstract submit(): void;
 
   cancel(): void {
-    this.activeModal.dismiss();
+    this.activeModal.close();
   }
 }
