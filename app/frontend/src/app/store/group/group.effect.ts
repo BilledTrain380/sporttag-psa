@@ -4,31 +4,31 @@ import { EMPTY, of } from "rxjs";
 import { catchError, map, mergeMap, switchMap } from "rxjs/operators";
 
 import { getLogger } from "../../@core/logging";
-import { GroupApi, GroupOverviewParameters } from "../../@core/service/api/group-api";
+import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
 import { WebApi } from "../../@core/service/api/web-api";
 import { AlertFactory } from "../../modules/alert/alert";
 
 import {
   importGroupsAction,
   ImportGroupsProps,
-  loadGroupsOverviewAction,
-  LoadGroupsOverviewProps,
-  setGroupsAction,
+  loadOverviewGroupsAction,
+  LoadOverviewGroupsProps,
   setImportGroupsAlertAction,
+  setOverviewGroupsAction,
 } from "./group.action";
 
 @Injectable()
 export class GroupEffects {
   readonly loadGroups$ = createEffect(() => this.actions$
-    .pipe(ofType(loadGroupsOverviewAction.type))
-    .pipe(mergeMap((action: LoadGroupsOverviewProps) => {
-      const parameters = action.statusType ? new GroupOverviewParameters(action.statusType) : undefined;
+    .pipe(ofType(loadOverviewGroupsAction.type))
+    .pipe(mergeMap((action: LoadOverviewGroupsProps) => {
+      const parameters = action.statusType ? new OverviewGroupsParameters(action.statusType) : undefined;
 
-      return this.groupApi.getGroupsOverview(parameters);
+      return this.groupApi.getOverviewGroups(parameters);
     }))
-    .pipe(map(groups => setGroupsAction({groups})))
+    .pipe(map(groups => setOverviewGroupsAction({groups})))
     .pipe(catchError(err => {
-      this.log.warn("Could not load groups overview", err);
+      this.log.warn("Could not load overview groups", err);
 
       return EMPTY;
     })));

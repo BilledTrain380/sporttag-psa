@@ -3,22 +3,22 @@ import { createAction, props } from "@ngrx/store";
 import { GroupStatusType, OverviewGroupDto } from "../../dto/group";
 import { Alert } from "../../modules/alert/alert";
 
-export interface LoadGroupsOverviewProps {
+export interface LoadOverviewGroupsProps {
   readonly statusType?: GroupStatusType;
 }
 
-export const loadGroupsOverviewAction = createAction(
-  "[GroupOverview] Load groups overview",
-  props<LoadGroupsOverviewProps>(),
+export const loadOverviewGroupsAction = createAction(
+  "[GroupOverview] Load overview groups",
+  props<LoadOverviewGroupsProps>(),
 );
 
-export interface PropsSetGroup {
+export interface SetOverviewGroupsProps {
   readonly groups: ReadonlyArray<OverviewGroupDto>;
 }
 
-export const setGroupsAction = createAction(
-  "[GroupReducer] Set Groups",
-  props<PropsSetGroup>(),
+export const setOverviewGroupsAction = createAction(
+  "[GroupReducer] Set overview groups",
+  props<SetOverviewGroupsProps>(),
 );
 
 export interface ImportGroupsProps {

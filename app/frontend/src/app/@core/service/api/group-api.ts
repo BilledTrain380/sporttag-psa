@@ -18,7 +18,7 @@ export class GroupApi {
   ) {
   }
 
-  getGroupsOverview(parameters?: GroupOverviewParameters): Observable<ReadonlyArray<OverviewGroupDto>> {
+  getOverviewGroups(parameters?: OverviewGroupsParameters): Observable<ReadonlyArray<OverviewGroupDto>> {
     this.log.info(`Get groups overview: parameters=${parameters}`);
 
     const params = parameters?.buildParameters();
@@ -39,7 +39,7 @@ export class GroupApi {
   }
 }
 
-export class GroupOverviewParameters implements ApiParameters {
+export class OverviewGroupsParameters implements ApiParameters {
   constructor(
     readonly statusType: GroupStatusType,
   ) {

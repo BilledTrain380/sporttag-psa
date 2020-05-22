@@ -3,20 +3,20 @@ import { Action, createReducer, on } from "@ngrx/store";
 import { OverviewGroupDto } from "../../dto/group";
 import { Alert } from "../../modules/alert/alert";
 
-import { clearImportGroupsAlertAction, setGroupsAction, setImportGroupsAlertAction } from "./group.action";
+import { clearImportGroupsAlertAction, setImportGroupsAlertAction, setOverviewGroupsAction } from "./group.action";
 
 export interface GroupState {
-  readonly groups: ReadonlyArray<OverviewGroupDto>;
+  readonly overviewGroups: ReadonlyArray<OverviewGroupDto>;
   readonly importAlert?: Alert;
 }
 
 const initialState: GroupState = {
-  groups: [],
+  overviewGroups: [],
 };
 
 const reducer = createReducer(
   initialState,
-  on(setGroupsAction, (state, action) => ({...state, groups: action.groups})),
+  on(setOverviewGroupsAction, (state, action) => ({...state, overviewGroups: action.groups})),
   on(setImportGroupsAlertAction, (state, action) => (
     {
       ...state,

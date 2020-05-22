@@ -7,8 +7,8 @@ import { Observable } from "rxjs";
 import { OverviewGroupDto } from "../../../dto/group";
 import { Alert } from "../../../modules/alert/alert";
 import { AppState } from "../../../store/app";
-import { loadGroupsOverviewAction } from "../../../store/group/group.action";
-import { selectGroups } from "../../../store/group/group.selector";
+import { loadOverviewGroupsAction } from "../../../store/group/group.action";
+import { selectOverviewGroups } from "../../../store/group/group.selector";
 
 import { ImportGroupsComponent } from "./import-groups/import-groups.component";
 
@@ -18,7 +18,7 @@ import { ImportGroupsComponent } from "./import-groups/import-groups.component";
              styleUrls: ["./group-overview.component.scss"],
            })
 export class GroupOverviewComponent implements OnInit {
-  readonly groups$: Observable<ReadonlyArray<OverviewGroupDto>> = this.store.select(selectGroups);
+  readonly groups$: Observable<ReadonlyArray<OverviewGroupDto>> = this.store.select(selectOverviewGroups);
 
   readonly faUpload = faUpload;
 
@@ -47,6 +47,6 @@ export class GroupOverviewComponent implements OnInit {
   }
 
   private loadGroups(): void {
-    this.store.dispatch(loadGroupsOverviewAction({}));
+    this.store.dispatch(loadOverviewGroupsAction({}));
   }
 }

@@ -6,9 +6,9 @@ import { GroupState } from "./group.reducer";
 
 export const selectGroup = (state: AppState) => state.group;
 
-export const selectGroups = createSelector(
+export const selectOverviewGroups = createSelector(
   selectGroup,
-  (state: GroupState) => state.groups,
+  (state: GroupState) => state.overviewGroups,
 );
 
 export const selectImportAlert = createSelector(
