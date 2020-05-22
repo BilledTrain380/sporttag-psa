@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
@@ -36,6 +37,7 @@ const MODULES = [
   CommonModule,
   RouterModule,
   FontAwesomeModule,
+  ReactiveFormsModule,
   NgbNavModule,
   NgbDropdownModule,
   NgbCollapseModule,
