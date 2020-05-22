@@ -5,7 +5,6 @@ import { FILE_SIZE_1KB, FILE_SIZE_1MB } from "../lib/files";
 import { FileValidators } from "./form-validators";
 
 fdescribe("FormValidators", () => {
-
   describe("FileValidators", () => {
     describe("on max files size validation", () => {
       it("should return null when file size is smaller than max file size", () => {

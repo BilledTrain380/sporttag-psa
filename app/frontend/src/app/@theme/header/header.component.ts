@@ -15,7 +15,6 @@ import { selectUsername } from "../../store/user/user.selector";
              styleUrls: ["./header.component.scss"],
            })
 export class HeaderComponent implements OnInit {
-
   username$?: Observable<string>;
 
   readonly faUser = faUser;

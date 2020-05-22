@@ -11,7 +11,6 @@ import { API_ENDPOINT } from "./pas-api";
               providedIn: "root",
             })
 export class WebApi {
-
   private readonly log = getLogger("WebApi");
 
   constructor(

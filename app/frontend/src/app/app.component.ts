@@ -14,7 +14,6 @@ import { loginSuccess } from "./store/user/user.action";
              styleUrls: ["./app.component.scss"],
            })
 export class AppComponent implements OnInit {
-
   private readonly log: Logger = getLogger("AppComponent");
 
   constructor(

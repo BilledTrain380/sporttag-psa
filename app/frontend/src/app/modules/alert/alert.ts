@@ -30,7 +30,6 @@ export enum AlertType {
               providedIn: "root",
             })
 export class AlertFactory {
-
   textAlert(): AlertInstance {
     return new TextAlertInstance();
   }

@@ -19,7 +19,6 @@ import {
 
 @Injectable()
 export class GroupEffects {
-
   readonly loadGroups$ = createEffect(() => this.actions$
     .pipe(ofType(loadGroupsOverviewAction.type))
     .pipe(mergeMap((action: LoadGroupsOverviewProps) => {
