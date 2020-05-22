@@ -49,7 +49,7 @@ export class FileDropComponent implements ControlValueAccessor {
 
   onInputChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.item(0) || undefined;
+    const file = inputElement.files?.item(0);
     this.setFileAndNotify(file);
   }
 
@@ -65,7 +65,7 @@ export class FileDropComponent implements ControlValueAccessor {
     event.stopPropagation();
     event.preventDefault();
     this.isDragOver = false;
-    const file = event.dataTransfer?.files?.item(0) || undefined;
+    const file = event.dataTransfer?.files?.item(0);
     this.setFileAndNotify(file);
   }
 
@@ -81,11 +81,11 @@ export class FileDropComponent implements ControlValueAccessor {
   }
 
   clearFile(): void {
-    this.setFileAndNotify(undefined);
+    this.setFileAndNotify();
   }
 
-  private setFileAndNotify(file?: File): void {
-    this.file = file;
+  private setFileAndNotify(file?: File | null): void {
+    this.file = file === null ? undefined : file;
 
     if (this.onTouch) {
       this.onTouch();

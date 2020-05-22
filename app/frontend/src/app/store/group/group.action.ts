@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
-import { Alert } from "../../modules/alert/alert";
 
 import { GroupStatusType, OverviewGroupDto } from "../../dto/group";
+import { Alert } from "../../modules/alert/alert";
 
 export interface LoadGroupsOverviewProps {
   readonly statusType?: GroupStatusType;

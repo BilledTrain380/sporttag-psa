@@ -15,7 +15,7 @@ import { loginSuccess } from "./store/user/user.action";
            })
 export class AppComponent implements OnInit {
 
-  private log: Logger = getLogger("AppComponent");
+  private readonly log: Logger = getLogger("AppComponent");
 
   constructor(
     private readonly oauthService: OAuthService,

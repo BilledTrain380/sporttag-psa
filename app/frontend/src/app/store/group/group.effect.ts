@@ -55,7 +55,7 @@ export class GroupEffects {
                     },
     )));
 
-  private log = getLogger("GroupEffect");
+  private readonly log = getLogger("GroupEffect");
 
   constructor(
     private readonly actions$: Actions,
