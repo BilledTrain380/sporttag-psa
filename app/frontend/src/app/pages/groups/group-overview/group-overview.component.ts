@@ -15,7 +15,6 @@ import { ImportGroupsComponent } from "./import-groups/import-groups.component";
 @Component({
              selector: "app-group-overview",
              templateUrl: "./group-overview.component.html",
-             styleUrls: ["./group-overview.component.scss"],
            })
 export class GroupOverviewComponent implements OnInit {
   readonly groups$: Observable<ReadonlyArray<OverviewGroupDto>> = this.store.select(selectOverviewGroups);
