@@ -33,14 +33,9 @@ const BASE_COMPONENTS = [
 ];
 
 const MODULES = [
-  CoreModule,
   CommonModule,
-  RouterModule,
   FontAwesomeModule,
   ReactiveFormsModule,
-  NgbNavModule,
-  NgbDropdownModule,
-  NgbCollapseModule,
 ];
 
 @NgModule({
@@ -48,7 +43,14 @@ const MODULES = [
               ...BASE_COMPONENTS,
               PageHeaderComponent,
             ],
-            imports: [...MODULES],
+            imports: [
+              ...MODULES,
+              CoreModule,
+              RouterModule,
+              NgbNavModule,
+              NgbDropdownModule,
+              NgbCollapseModule,
+            ],
             exports: [...BASE_COMPONENTS, ...MODULES],
           })
 export class ThemeModule {
