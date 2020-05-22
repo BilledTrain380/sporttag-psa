@@ -53,6 +53,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain
 import org.springframework.security.oauth2.provider.token.TokenStore
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
+import java.time.Duration
 
 /**
  * Configures OAuth 2 authorization server.
@@ -69,24 +70,24 @@ class AuthorizationServerConfig(
     @Qualifier("psa")
     private val tokenEnhancer: TokenEnhancer
 ) : AuthorizationServerConfigurerAdapter() {
+    companion object {
+        @JvmField val TOKEN_VALIDITY_DURATION: Duration = Duration.ofHours(2)
+    }
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
-
         security
             ?.tokenKeyAccess("permitAll()")
             ?.checkTokenAccess("isAuthenticated()")
     }
 
     override fun configure(clients: ClientDetailsServiceConfigurer?) {
-
         clients
             ?.inMemory()
-
             ?.withClient("psa-kitten")
             ?.autoApprove(true)
             ?.authorities("ADMIN", "USER")
             ?.authorizedGrantTypes("implicit")
-            ?.accessTokenValiditySeconds(43200) // access token is valid for 12 hours
+            ?.accessTokenValiditySeconds(TOKEN_VALIDITY_DURATION.seconds.toInt())
             ?.scopes(
                 PSAScope.USER,
                 PSAScope.GROUP_READ,
