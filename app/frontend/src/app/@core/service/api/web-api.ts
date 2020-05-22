@@ -5,6 +5,8 @@ import { mapTo } from "rxjs/operators";
 
 import { getLogger } from "../../logging";
 
+import { API_ENDPOINT } from "./pas-api";
+
 @Injectable({
               providedIn: "root",
             })
@@ -23,7 +25,7 @@ export class WebApi {
     const formData = new FormData();
     formData.append("group-input", file);
 
-    return this.http.post("/web/import-group", formData, {responseType: "text"})
+    return this.http.post(`${API_ENDPOINT}/import-group`, formData, {responseType: "text"})
       .pipe(mapTo(undefined));
   }
 }

@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping("/web")
+@RequestMapping("/api")
 class ParticipantListController(
     private val exportManager: ExportManager,
     private val fileSystem: FileSystem

@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping("/web")
+@RequestMapping("/api")
 class RankingController(
     private val exportManager: ExportManager,
     private val disciplineManager: DisciplineManager,

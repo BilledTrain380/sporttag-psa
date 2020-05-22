@@ -18,22 +18,26 @@ export class TokenInterceptor implements HttpInterceptor {
 
   // tslint:disable-next-line: no-any
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let request = req;
 
     if (this.auth.hasValidAccessToken()) {
       this.log.debug("Intercept http request with access token");
-      const request = req.clone({
-                                  setHeaders: {
-                                    Authorization: `Bearer ${this.auth.getAccessToken()}`,
-                                  },
-                                });
-
-      return next.handle(request);
+      request = req.clone({
+                            setHeaders: {
+                              Authorization: `Bearer ${this.auth.getAccessToken()}`,
+                            },
+                          });
     }
 
-    return next.handle(req)
+    return next.handle(request)
       .pipe(catchError(err => {
         if (err instanceof HttpErrorResponse && err.status === HTTP_STATUS_UNAUTHORIZED) {
-          location.reload();
+
+          // If we still have a valid access token, the token was invalidated by the resource server
+          if (this.auth.hasValidAccessToken()) {
+            this.auth.logOut();
+            location.replace("/");
+          }
         }
 
         throw err;

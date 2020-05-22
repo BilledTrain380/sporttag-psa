@@ -87,10 +87,8 @@ class ResourceServerConfig(
 ) : ResourceServerConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
-
-        // TODO: Fix antMatcher for /api and /web
         http
-            // ?.antMatcher("/api/**")
+            ?.antMatcher("/api/**")
             ?.authorizeRequests()
             ?.antMatchers(
                 "/api/groups",
@@ -106,11 +104,11 @@ class ResourceServerConfig(
                 "/api/participants",
                 "/api/users",
                 "/api/user/**",
-                "/web/import-group",
-                "/web/ranking",
-                "/web/event-sheets",
-                "/web/file/**",
-                "/web/participant-list"
+                "/api/import-group",
+                "/api/ranking",
+                "/api/event-sheets",
+                "/api/file/**",
+                "/api/participant-list"
             )?.hasRole("ADMIN")
 
             ?.anyRequest()?.authenticated()

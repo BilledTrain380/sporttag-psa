@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.ResponseBody
  * @since 2.1.0
  */
 @Controller
-@RequestMapping("/web")
+@RequestMapping("/api")
 class StartlistController(
     private val startlistReporter: StartlistReporter,
     private val fileSystem: FileSystem

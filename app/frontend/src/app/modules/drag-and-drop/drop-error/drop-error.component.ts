@@ -16,7 +16,7 @@ export class DropErrorComponent {
   errorKey = "";
 
   isInvalid(): boolean {
-    if (this.control?.touched === undefined) {
+    if (!this.control?.touched) {
       return false;
     }
 

@@ -53,7 +53,7 @@ import org.springframework.web.multipart.MultipartFile
  * @since 2.0.0
  */
 @Controller
-@RequestMapping("/web")
+@RequestMapping("/api")
 class GroupImportController(
     private val fileParser: GroupFileParser,
     private val groupManager: GroupManager
