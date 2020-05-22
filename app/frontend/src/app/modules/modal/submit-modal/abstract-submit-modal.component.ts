@@ -11,9 +11,10 @@ export abstract class AbstractSubmitModalComponent implements OnInit, OnDestroy 
   }
 
   protected abstract readonly alert$: Observable<Alert | undefined>;
-  protected readonly destroy$ = new Subject<void>();
 
   private _alert?: Alert;
+
+  private readonly destroy$ = new Subject<void>();
 
   protected constructor(
     private readonly activeModal: NgbActiveModal,
