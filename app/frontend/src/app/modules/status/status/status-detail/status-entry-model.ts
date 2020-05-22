@@ -15,7 +15,7 @@ export class StatusEntryModel {
   ) {
   }
 
-  public static fromDto(entry: StatusEntry): StatusEntryModel {
+  static fromDto(entry: StatusEntry): StatusEntryModel {
     const params = StatusEntryModel.createParameters(entry);
     const label = labelOfStatusType(entry.type);
 

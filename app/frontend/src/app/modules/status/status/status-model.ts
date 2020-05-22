@@ -14,7 +14,7 @@ export class StatusModel {
   ) {
   }
 
-  public static fromDto(status: StatusDto): StatusModel {
+  static fromDto(status: StatusDto): StatusModel {
     const params = StatusModel.createParameters(status);
     const cssClasses = `${StatusModel.CSS_BASE_CLASSES} ${params[StatusModel.CSS_BADGE_CLASS]}`;
     const entryModels = status.entries.map(entry => StatusEntryModel.fromDto(entry));
