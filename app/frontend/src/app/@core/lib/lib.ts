@@ -4,10 +4,9 @@ export class Optional<T> {
   // tslint:disable-next-line:no-any
   private static readonly EMPTY: Optional<any> = new Optional();
 
-  private readonly value?: T;
-
-  private constructor(value?: T) {
-    this.value = value;
+  private constructor(
+    private readonly value?: T,
+  ) {
   }
 
   static empty<T>(): Optional<T> {
