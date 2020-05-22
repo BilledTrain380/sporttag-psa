@@ -47,7 +47,10 @@ export class GroupEffects {
                         }))
                         .pipe(catchError(err => {
                           this.log.warn("Could not import groups", err);
-                          const alert = textAlert.error(err.error.message);
+
+                          const alert = (typeof err.error === "string")
+                            ? textAlert.error(err.error)
+                            : textAlert.error($localize`Unknown error`);
 
                           return of(setImportGroupsAlertAction({alert}));
                         }));
