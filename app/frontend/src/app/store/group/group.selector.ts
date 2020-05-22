@@ -10,3 +10,8 @@ export const selectGroups = createSelector(
   selectGroup,
   (state: GroupState) => state.groups,
 );
+
+export const selectImportAlert = createSelector(
+  selectGroup,
+  (state: GroupState) => state.importAlert,
+);

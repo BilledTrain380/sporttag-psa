@@ -1,17 +1,25 @@
 import { Injectable } from "@angular/core";
-import { Actions, createEffect, Effect, ofType } from "@ngrx/effects";
-import { EMPTY } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { EMPTY, of } from "rxjs";
+import { catchError, map, mergeMap, switchMap } from "rxjs/operators";
 
-import { getLogger, Logger } from "../../@core/logging";
+import { getLogger } from "../../@core/logging";
 import { GroupApi, GroupOverviewParameters } from "../../@core/service/api/group-api";
+import { WebApi } from "../../@core/service/api/web-api";
+import { AlertFactory } from "../../modules/alert/alert";
 
-import { loadGroupsOverviewAction, LoadGroupsOverviewProps, setGroupsAction } from "./group.action";
+import {
+  importGroupsAction,
+  ImportGroupsProps,
+  loadGroupsOverviewAction,
+  LoadGroupsOverviewProps,
+  setGroupsAction,
+  setImportGroupsAlertAction,
+} from "./group.action";
 
 @Injectable()
 export class GroupEffects {
 
-  @Effect()
   readonly loadGroups$ = createEffect(() => this.actions$
     .pipe(ofType(loadGroupsOverviewAction.type))
     .pipe(mergeMap((action: LoadGroupsOverviewProps) => {
@@ -23,15 +31,37 @@ export class GroupEffects {
     .pipe(catchError(err => {
       this.log.warn("Could not load groups overview", err);
 
-      // FIXME: Dispatch error notification action
       return EMPTY;
     })));
 
-  private log: Logger = getLogger("GroupEffect");
+  readonly importGroups$ = createEffect(() => this.actions$
+    .pipe(ofType(importGroupsAction.type))
+    .pipe(switchMap((action: ImportGroupsProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.webApi.importGroups(action.file)
+                        .pipe(map(() => {
+                          this.log.info("Successfully imported groups");
+                          const alert = textAlert.success($localize`Successfully imported groups`);
+
+                          return setImportGroupsAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not import groups", err);
+                          const alert = textAlert.error(err.error.message);
+
+                          return of(setImportGroupsAlertAction({alert}));
+                        }));
+                    },
+    )));
+
+  private log = getLogger("GroupEffect");
 
   constructor(
     private readonly actions$: Actions,
     private readonly groupApi: GroupApi,
+    private readonly webApi: WebApi,
+    private readonly alertFactory: AlertFactory,
   ) {
   }
 }
