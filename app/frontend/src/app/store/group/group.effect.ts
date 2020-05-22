@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY, of } from "rxjs";
-import { catchError, map, mergeMap, switchMap } from "rxjs/operators";
+import { catchError, map, switchMap } from "rxjs/operators";
 
 import { getLogger } from "../../@core/logging";
 import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
@@ -21,16 +21,16 @@ import {
 export class GroupEffects {
   readonly loadGroups$ = createEffect(() => this.actions$
     .pipe(ofType(loadOverviewGroupsAction.type))
-    .pipe(mergeMap((action: LoadOverviewGroupsProps) => {
+    .pipe(switchMap((action: LoadOverviewGroupsProps) => {
       const parameters = action.statusType ? new OverviewGroupsParameters(action.statusType) : undefined;
 
-      return this.groupApi.getOverviewGroups(parameters);
-    }))
-    .pipe(map(groups => setOverviewGroupsAction({groups})))
-    .pipe(catchError(err => {
-      this.log.warn("Could not load overview groups", err);
+      return this.groupApi.getOverviewGroups(parameters)
+        .pipe(map(groups => setOverviewGroupsAction({groups})))
+        .pipe(catchError(err => {
+          this.log.warn("Could not load overview groups", err);
 
-      return EMPTY;
+          return EMPTY;
+        }));
     })));
 
   readonly importGroups$ = createEffect(() => this.actions$
