@@ -75,7 +75,8 @@ class SetupAuthorizationFilter(
         }
 
         if (request.servletPath == "/setup" && setupManager.isInitialized) {
-            response.sendError(403, "Your are not allowed to access this page!")
+            // Do not leak 403
+            response.sendError(400, "Bad Request")
             return
         }
 

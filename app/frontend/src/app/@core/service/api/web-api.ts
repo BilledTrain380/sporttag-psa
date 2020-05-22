@@ -23,7 +23,7 @@ export class WebApi {
     const formData = new FormData();
     formData.append("group-input", file);
 
-    return this.http.post("/web/import-group", formData)
+    return this.http.post("/web/import-group", formData, {responseType: "text"})
       .pipe(mapTo(undefined));
   }
 }

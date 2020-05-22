@@ -40,13 +40,12 @@ import ch.schulealtendorf.sporttagpsa.business.group.CSVParsingException
 import ch.schulealtendorf.sporttagpsa.business.group.GroupFileParser
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.rest.BadRequestException
-import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.multipart.MultipartFile
 
 /**
@@ -61,11 +60,12 @@ class GroupImportController(
 ) {
     @PreAuthorize("#oauth2.hasScope('group_write')")
     @PostMapping("/import-group", consumes = ["multipart/form-data"])
-    @ResponseStatus(HttpStatus.OK)
-    fun importGroup(@RequestParam("group-input") file: MultipartFile) {
+    fun importGroup(@RequestParam("group-input") file: MultipartFile): ResponseEntity<String> {
         try {
             val participants = fileParser.parseCSV(file)
             participants.forEach(groupManager::import)
+
+            return ResponseEntity.ok("Group import successful")
         } catch (exception: CSVParsingException) {
             // we increment the line, so its not zero based line number for the user
             throw BadRequestException("${exception.message} (at line ${exception.line + 1}:${exception.column})")
