@@ -12,7 +12,7 @@ export class SubmitModalComponent {
   readonly title?: string;
 
   @Input()
-  readonly isSubmitEnabled: boolean = false;
+  readonly isSubmitEnabled = false;
 
   @Input()
   readonly alert?: Alert;
@@ -21,7 +21,7 @@ export class SubmitModalComponent {
   private readonly cancel = new EventEmitter<void>();
 
   @Output()
-  private readonly submitData = new EventEmitter<Alert>();
+  private readonly submitData = new EventEmitter<void>();
 
   emitCancel(): void {
     this.cancel.emit();
