@@ -29,13 +29,14 @@ export class FileDropComponent implements ControlValueAccessor {
   readonly faTrash = faTrash;
 
   private onChange?: Consumer<File | undefined>;
+  private onTouch?: Runnable;
 
   registerOnChange(fn: Consumer<File | undefined>): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(_: Runnable): void {
-    // Intentionally left blank
+  registerOnTouched(fn: Runnable): void {
+    this.onTouch = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -85,6 +86,10 @@ export class FileDropComponent implements ControlValueAccessor {
 
   private setFileAndNotify(file?: File): void {
     this.file = file;
+
+    if (this.onTouch) {
+      this.onTouch();
+    }
 
     if (this.onChange) {
       this.onChange(this.file);
