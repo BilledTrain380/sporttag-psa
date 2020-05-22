@@ -2,7 +2,6 @@
 
 [![Build Status](https://dev.azure.com/billedtrain380/PSA/_apis/build/status/PSA%20Github?branchName=master)](https://dev.azure.com/billedtrain380/PSA/_build/latest?definitionId=3&branchName=master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BilledTrain380_sporttag-psa&metric=alert_status)](https://sonarcloud.io/dashboard?id=BilledTrain380_sporttag-psa)
-
 [![Board Status](https://dev.azure.com/billedtrain380/62722b26-33c1-4ccb-aad4-d94161fdb57c/0e27f07f-6c5e-46b0-990f-9c47a5ca7b7c/_apis/work/boardbadge/18c16f81-2a06-481b-a930-e61fcedfcc6c)](https://dev.azure.com/billedtrain380/62722b26-33c1-4ccb-aad4-d94161fdb57c/_boards/board/t/0e27f07f-6c5e-46b0-990f-9c47a5ca7b7c/Microsoft.RequirementCategory/)
 
 PSA is a sport event management system.
