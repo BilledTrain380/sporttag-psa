@@ -3,13 +3,15 @@
                  cardTitle="Overview"
                  i18n-cardTitle>
   <app-layout-buttons>
-    <button type="button" class="btn btn-primary btn-sm">
+    <button (click)="openImportModal()" type="button" class="btn btn-primary btn-sm">
       <fa-icon [icon]="faUpload"></fa-icon>
       <span i18n>Import</span>
     </button>
   </app-layout-buttons>
 
-  <table class="table table-striped">
+  <app-text-alert [alert]="alert"></app-text-alert>
+
+  <table class="table">
     <thead>
     <tr>
       <th i18n>Name</th>

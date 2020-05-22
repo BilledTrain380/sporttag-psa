@@ -1,0 +1,47 @@
+<app-submit-modal title="Import groups"
+                  i18n-title
+                  [alert]="alert"
+                  [isSubmitEnabled]="form?.valid"
+                  (cancel)="cancel()"
+                  (submitData)="submit()">
+  <h4 i18n>CSV Format</h4>
+  <ul>
+    <li i18n>Must end with
+      <mark>.csv</mark>
+      extension
+    </li>
+    <li i18n>
+      Must follow the attribute order:
+      <br>
+      <i>Group,Surname,Prename,Gender,Street,Zip Code,Town,Birthday,Group Coach</i>
+    </li>
+    <li i18n>The gender must be a
+      <mark>m</mark>
+      for men and a
+      <mark>w</mark>
+      for woman
+    </li>
+    <li i18n>The birthday must follow the format
+      <mark>dd.MM.YYYY</mark>
+      ; e.g. 06.10.2009
+    </li>
+    <li i18n>The csv delimiter must be a comma
+      <mark>,</mark>
+    </li>
+  </ul>
+
+  <form [formGroup]="form">
+    <app-file-drop [formControlName]="formControls.file"></app-file-drop>
+    <app-drop-error [control]="fileControl" errorKey="required" i18n>
+      File is required
+    </app-drop-error>
+
+    <app-drop-error [control]="fileControl" errorKey="maxFileSize" i18n>
+      Max file size is 1MiB
+    </app-drop-error>
+
+    <app-drop-error [control]="fileControl" errorKey="accepts" i18n>
+      Only .csv files are allowed
+    </app-drop-error>
+  </form>
+</app-submit-modal>
