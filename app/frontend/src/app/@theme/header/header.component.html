@@ -1,30 +1,18 @@
 <nav class="navbar navbar-expand-md sticky-top navbar-light bg-light">
   <a class="navbar-brand" href="#">
-    <img src="assets/brand/psa-logo.svg" width="30" height="30" class="d-inline-block align-top"
+    <img src="assets/brand/psa-logo.svg" width="38" height="38" class="d-inline-block align-top"
          alt="PSA Logo">
     <span *ngIf="!isMobile">PSA</span>
   </a>
 
   <div class="navbar flex-grow-1 flex-row-reverse">
     <ul class="navbar-nav psa-navbar">
-      <li class="ml-1 mr-1">
-        <button [ngClass]="{'btn-sm': isMobile}" class="btn btn-outline-dark">
-          <fa-icon [icon]="faTrophy"></fa-icon>
-          <span *ngIf="!isMobile" class="ml-2">Ranking</span>
-        </button>
-      </li>
-
-      <li class="ml-1 mr-1">
-        <button [ngClass]="{'btn-sm': isMobile}" class="btn btn-outline-dark">
-          <fa-icon [icon]="faRunning"></fa-icon>
-          <span *ngIf="!isMobile" class="ml-2">Athletics</span>
-        </button>
-      </li>
-
-      <li class="ml-1 mr-1">
-        <button [ngClass]="{'btn-sm': isMobile}" class="btn btn-outline-dark">
-          <fa-icon [icon]="faCogs"></fa-icon>
-          <span *ngIf="!isMobile" class="ml-2">Administration</span>
+      <li *ngFor="let item of menu" class="ml-1 mr-1">
+        <button [routerLink]="item.link"
+                [routerLinkActive]="['active']"
+                class="btn btn-outline-secondary">
+          <fa-icon [icon]="item.icon"></fa-icon>
+          <span *ngIf="!isMobile" class="ml-2">{{item.title}}</span>
         </button>
       </li>
 

@@ -1,12 +1,13 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { faCogs, faRunning, faTrophy, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Store } from "@ngrx/store";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Observable, Subject } from "rxjs";
 import { takeUntil, tap } from "rxjs/operators";
 
 import { getLogger, Logger } from "../../@core/logging";
+import { MENU_ITEMS } from "../../@core/menu/page-menu";
 import { AppState } from "../../store/app";
 import { logout } from "../../store/user/user.action";
 import { selectUsername } from "../../store/user/user.selector";
@@ -20,20 +21,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   username$?: Observable<string>;
 
   isMobile = false;
+  readonly menu = MENU_ITEMS;
 
-  readonly faTrophy = faTrophy;
-  readonly faRunning = faRunning;
-  readonly faCogs = faCogs;
   readonly faUser = faUser;
 
   private readonly destroy$ = new Subject<void>();
-
   private readonly log: Logger = getLogger("HeaderComponent");
 
   constructor(
     private readonly store: Store<AppState>,
     private readonly oauthService: OAuthService,
-    // private readonly route: ActivatedRoute,
     private readonly breakpointObserver: BreakpointObserver,
   ) {
   }
