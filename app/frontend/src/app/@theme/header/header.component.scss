@@ -1,6 +1,10 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
-.bg-dark {
-  background-color: $gray-900 !important;
+.navbar-bg {
+  background-color: $gray-200 !important;
+}
+
+.psa-navbar {
+  flex-direction: row !important;
 }

@@ -4,11 +4,11 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 
-import { OverviewGroupDto } from "../../../dto/group";
-import { Alert } from "../../../modules/alert/alert";
-import { AppState } from "../../../store/app";
-import { loadOverviewGroupsAction } from "../../../store/group/group.action";
-import { selectOverviewGroups } from "../../../store/group/group.selector";
+import { OverviewGroupDto } from "../../../../dto/group";
+import { Alert } from "../../../../modules/alert/alert";
+import { AppState } from "../../../../store/app";
+import { loadOverviewGroupsAction } from "../../../../store/group/group.action";
+import { selectOverviewGroups } from "../../../../store/group/group.selector";
 
 import { ImportGroupsComponent } from "./import-groups/import-groups.component";
 
