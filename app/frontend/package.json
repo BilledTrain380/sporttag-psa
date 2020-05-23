@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "e2e:ci": "protractor e2e/protractor.browserstack.conf.js"
+    "e2e:ci": "protractor e2e/protractor.browserstack.conf.js",
+    "stats": "ng build --stats-json"
   },
   "private": true,
   "dependencies": {
