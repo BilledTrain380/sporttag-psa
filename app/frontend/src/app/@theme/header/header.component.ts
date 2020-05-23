@@ -15,7 +15,6 @@ import { selectUsername } from "../../store/user/user.selector";
 @Component({
              selector: "app-header",
              templateUrl: "./header.component.html",
-             styleUrls: ["./header.component.scss"],
            })
 export class HeaderComponent implements OnInit, OnDestroy {
   username$?: Observable<string>;
