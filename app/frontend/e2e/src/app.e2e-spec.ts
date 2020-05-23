@@ -7,7 +7,7 @@ describe("PSA frontend", () => {
 
   beforeEach(() => {
     page = new AppPage();
-    page.navigateTo();
+    page.navigateToBaseUrl();
   });
 
   it("should display the username", () => {

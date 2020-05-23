@@ -30,7 +30,7 @@
     </li>
   </ul>
 
-  <form [formGroup]="form">
+  <form [formGroup]="form" data-test-selector="group-input">
     <app-file-drop [formControlName]="formControls.file"></app-file-drop>
     <app-drop-error [control]="fileControl" errorKey="required" i18n>
       File is required

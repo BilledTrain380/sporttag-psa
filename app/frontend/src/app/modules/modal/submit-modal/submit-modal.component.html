@@ -12,7 +12,12 @@
   <button type="button" class="btn btn-light" (click)="emitCancel()" i18n>
     Cancel
   </button>
-  <button type="button" [disabled]="!isSubmitEnabled" ngbAutofocus class="btn btn-primary" (click)="emitSubmit()" i18n>
+  <button type="submit"
+          [disabled]="!isSubmitEnabled"
+          ngbAutofocus
+          class="btn btn-primary"
+          (click)="emitSubmit()"
+          i18n>
     Submit
   </button>
 </div>

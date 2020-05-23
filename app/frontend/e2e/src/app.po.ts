@@ -4,7 +4,11 @@ export class AppPage {
   readonly username = element(by.css('[data-test-selector="user-menu"]'))
     .getText() as Promise<string>;
 
-  navigateTo(): Promise<unknown> {
-    return browser.get(browser.baseUrl) as Promise<unknown>;
+  navigateToBaseUrl(): Promise<void> {
+    return browser.get(browser.baseUrl) as Promise<void>;
+  }
+
+  navigateToGroupManagement(): Promise<void> {
+    return browser.get(`${browser.baseUrl}/pages/administration/group-management`) as Promise<void>;
   }
 }
