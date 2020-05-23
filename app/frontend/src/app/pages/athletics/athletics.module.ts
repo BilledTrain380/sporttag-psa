@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { AthleticsRoutingModule } from "./athletics-routing.module";
 
+import { AthleticsRoutingModule } from "./athletics-routing.module";
 import { AthleticsComponent } from "./athletics.component";
 
 @NgModule({
