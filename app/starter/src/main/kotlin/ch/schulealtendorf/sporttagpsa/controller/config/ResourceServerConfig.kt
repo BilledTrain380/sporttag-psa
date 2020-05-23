@@ -87,11 +87,9 @@ class ResourceServerConfig(
 ) : ResourceServerConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
-
         http
             ?.antMatcher("/api/**")
             ?.authorizeRequests()
-
             ?.antMatchers(
                 "/api/groups",
                 "/api/participation",
@@ -100,18 +98,17 @@ class ResourceServerConfig(
                 "/api/sports",
                 "/api/disciplines"
             )?.hasRole("USER")
-
             ?.antMatchers(
                 "/api/group/**",
                 "/api/participant/**",
                 "/api/participants",
                 "/api/users",
                 "/api/user/**",
-                "/web/group-import",
-                "/web/ranking",
-                "/web/event-sheets",
-                "/web/file/**",
-                "/web/participant-list"
+                "/api/import-group",
+                "/api/ranking",
+                "/api/event-sheets",
+                "/api/file/**",
+                "/api/participant-list"
             )?.hasRole("ADMIN")
 
             ?.anyRequest()?.authenticated()

@@ -4,7 +4,7 @@ import { loginSuccess, logout } from "./user.action";
 
 export interface UserState {
   readonly username: string;
-  readonly authorities: Array<string>;
+  readonly authorities: ReadonlyArray<string>;
 }
 
 const initialState: UserState = {

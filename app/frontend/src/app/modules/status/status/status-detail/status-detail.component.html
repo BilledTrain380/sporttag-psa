@@ -1,0 +1,6 @@
+<div *ngFor="let entry of entries">
+      <span>
+        <fa-icon [attr.class]="entry.cssClasses" [icon]="entry.icon"></fa-icon>
+        {{entry.text}}
+      </span>
+</div>

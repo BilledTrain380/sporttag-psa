@@ -45,15 +45,15 @@ describe("SidebarComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SidebarComponent],
-      imports: [
-        CoreTestingModule,
-        NgbNavModule,
-        NgbCollapseModule,
-        NgbDropdownModule,
-        RouterTestingModule,
-      ],
-    })
+                                     declarations: [SidebarComponent],
+                                     imports: [
+                                       CoreTestingModule,
+                                       NgbNavModule,
+                                       NgbCollapseModule,
+                                       NgbDropdownModule,
+                                       RouterTestingModule,
+                                     ],
+                                   })
       .compileComponents();
   }));
 

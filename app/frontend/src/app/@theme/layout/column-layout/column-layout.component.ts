@@ -1,9 +1,9 @@
 import { Component, HostBinding, Input } from "@angular/core";
 
 @Component({
-  selector: "app-column-layout",
-  templateUrl: "./column-layout.component.html",
-})
+             selector: "app-column-layout",
+             templateUrl: "./column-layout.component.html",
+           })
 export class ColumnLayoutComponent {
 
   @Input()

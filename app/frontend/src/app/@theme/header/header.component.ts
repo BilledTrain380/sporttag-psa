@@ -2,28 +2,28 @@ import { Component, OnInit } from "@angular/core";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Store } from "@ngrx/store";
 import { OAuthService } from "angular-oauth2-oidc";
-import { NGXLogger } from "ngx-logger";
 import { Observable } from "rxjs";
 
+import { getLogger, Logger } from "../../@core/logging";
 import { AppState } from "../../store/app";
 import { logout } from "../../store/user/user.action";
 import { selectUsername } from "../../store/user/user.selector";
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"],
-})
+             selector: "app-header",
+             templateUrl: "./header.component.html",
+             styleUrls: ["./header.component.scss"],
+           })
 export class HeaderComponent implements OnInit {
-
   username$?: Observable<string>;
 
   readonly faUser = faUser;
 
+  private readonly log: Logger = getLogger("HeaderComponent");
+
   constructor(
     private readonly store: Store<AppState>,
     private readonly oauthService: OAuthService,
-    private readonly log: NGXLogger,
   ) {
   }
 

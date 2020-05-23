@@ -1,0 +1,18 @@
+<div [ngClass]="{'bg-light-dark': isDragOver, 'bg-light': !isDragOver}"
+     class="drop-container border-dark pt-5 pb-5 pl-3 pr-3">
+  <span class="mr-2">
+    <button (click)="onClick()" type="button" class="btn btn-outline-dark" i18n>
+      Choose file
+    </button>
+  </span>
+  <span *ngIf="file; else dragText">
+    {{file.name}}
+    <fa-icon (click)="clearFile()"
+             class="delete-icon text-danger ml-1"
+             [icon]="faTrash">
+    </fa-icon>
+  </span>
+  <ng-template #dragText><span i18n>or drag and drop file here</span></ng-template>
+
+  <input #fileInput class="input-element" type="file" (change)="onInputChange($event)"/>
+</div>

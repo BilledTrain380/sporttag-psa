@@ -2,23 +2,23 @@ import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { JwksValidationHandler, OAuthService } from "angular-oauth2-oidc";
 import * as jwt_decode from "jwt-decode";
-import { NGXLogger } from "ngx-logger";
 
 import { authConfig, PsaJwt } from "./@core/auth/auth-config";
+import { getLogger, Logger } from "./@core/logging";
 import { AppState } from "./store/app";
 import { loginSuccess } from "./store/user/user.action";
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
-})
+             selector: "app-root",
+             templateUrl: "./app.component.html",
+             styleUrls: ["./app.component.scss"],
+           })
 export class AppComponent implements OnInit {
+  private readonly log: Logger = getLogger("AppComponent");
 
   constructor(
     private readonly oauthService: OAuthService,
     private readonly store: Store<AppState>,
-    private readonly log: NGXLogger,
   ) {
   }
 
@@ -55,8 +55,8 @@ export class AppComponent implements OnInit {
     this.log.info("Successfully logged in as user", parsedToken.user_name);
     this.store.dispatch(
       loginSuccess({
-        username: parsedToken.user_name,
-        authorities: parsedToken.authorities,
-      }));
+                     username: parsedToken.user_name,
+                     authorities: parsedToken.authorities,
+                   }));
   }
 }

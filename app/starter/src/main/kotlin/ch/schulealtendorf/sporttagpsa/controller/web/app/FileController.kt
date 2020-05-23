@@ -58,7 +58,7 @@ import java.io.FileInputStream
  * @since 2.0.0
  */
 @Controller
-@RequestMapping("/web/file")
+@RequestMapping("/api/file")
 class FileController(
     private val fileSystem: FileSystem
 ) {

@@ -1,5 +1,6 @@
-@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 .bg-dark {
-  background-color: $gray-900!important;
+  background-color: $gray-900 !important;
 }

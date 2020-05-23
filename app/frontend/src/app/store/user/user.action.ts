@@ -1,8 +1,13 @@
 import { createAction, props } from "@ngrx/store";
 
+export interface PropsLoginSuccess {
+  readonly username: string;
+  readonly authorities: ReadonlyArray<string>;
+}
+
 export const loginSuccess = createAction(
   "[Authentication] Login Success",
-  props<{ username: string; authorities: Array<string> }>(),
+  props<PropsLoginSuccess>(),
 );
 
 export const logout = createAction(

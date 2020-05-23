@@ -72,7 +72,6 @@ class SecurityConfig(
     }
 
     override fun configure(http: HttpSecurity?) {
-
         http
             ?.authorizeRequests()
             ?.requestMatchers(PathRequest.toStaticResources().atCommonLocations())?.permitAll()

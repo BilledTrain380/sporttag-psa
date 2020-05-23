@@ -1,10 +1,33 @@
-<app-simple-page pageTitle="Groups" title="Overview">
+<app-simple-page pageTitle="Groups"
+                 i18n-pageTitle
+                 cardTitle="Overview"
+                 i18n-cardTitle>
   <app-layout-buttons>
-    <button type="button" class="btn btn-primary btn-sm">
+    <button (click)="openImportModal()" type="button" class="btn btn-primary btn-sm">
       <fa-icon [icon]="faUpload"></fa-icon>
       <span i18n>Import</span>
     </button>
   </app-layout-buttons>
 
-  <p>it works</p>
+  <app-text-alert [alert]="alert"></app-text-alert>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th i18n>Name</th>
+      <th i18n>Coach</th>
+      <th i18n>Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let overviewGroup of groups$ | async">
+      <th>{{overviewGroup.group.name}}</th>
+      <th>{{overviewGroup.group.coach}}</th>
+      <th>
+        <app-status [status]="overviewGroup.status"></app-status>
+      </th>
+    </tr>
+    </tbody>
+  </table>
 </app-simple-page>

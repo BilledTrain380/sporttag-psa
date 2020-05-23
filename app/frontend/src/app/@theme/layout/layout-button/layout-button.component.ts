@@ -2,9 +2,9 @@ import { Component, Input } from "@angular/core";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 @Component({
-  selector: "app-layout-button",
-  templateUrl: "./layout-button.component.html",
-})
+             selector: "app-layout-button",
+             templateUrl: "./layout-button.component.html",
+           })
 export class LayoutButtonComponent {
 
   @Input()
