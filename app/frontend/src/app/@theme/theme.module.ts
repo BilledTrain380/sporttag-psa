@@ -17,12 +17,10 @@ import { PageHeaderComponent } from "./layout/page-header/page-header.component"
 import { RowLayoutComponent } from "./layout/row-layout/row-layout.component";
 import { RowPageComponent } from "./layout/row-page/row-page.component";
 import { SimplePageComponent } from "./layout/simple-page/simple-page.component";
-import { SidebarComponent } from "./sidebar/sidebar.component";
 
 const BASE_COMPONENTS = [
   HeaderComponent,
   FooterComponent,
-  SidebarComponent,
   CardComponent,
   SimplePageComponent,
   RowPageComponent,
