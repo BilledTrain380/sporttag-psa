@@ -86,10 +86,9 @@ class AuthorizationServerConfig(
         clients
             ?.inMemory()
             ?.withClient("psa-kitten")
-            ?.secret("very-secret")
             ?.autoApprove(true)
             ?.authorities("ADMIN", "USER")
-            ?.authorizedGrantTypes("implicit", "authorization_code")
+            ?.authorizedGrantTypes("implicit")
             ?.accessTokenValiditySeconds(TOKEN_VALIDITY_DURATION.seconds.toInt())
             ?.scopes(
                 PSAScope.USER,
