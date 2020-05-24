@@ -1,5 +1,7 @@
 import * as path from "path";
 import { browser, ExpectedConditions as EC } from "protractor";
+// tslint:disable-next-line:no-implicit-dependencies
+import * as remote from "selenium-webdriver/remote";
 
 import { AppPage } from "../../app.po";
 
@@ -13,6 +15,7 @@ describe("Group Management", () => {
     appPage = new AppPage();
     page = new GroupManagementPage();
     appPage.navigateToGroupManagement();
+    browser.setFileDetector(new remote.FileDetector());
   });
 
   it("should a list of groups", async () => {
@@ -22,7 +25,7 @@ describe("Group Management", () => {
       .toBeGreaterThan(0);
   });
 
-  it("should import groups", async () => {
+  xit("should import groups", async () => {
     const previousRowCount = await page.getGroupCount();
 
     await browser.wait(EC.visibilityOf(page.importButton));
