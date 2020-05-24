@@ -11,7 +11,7 @@ exports.config = {
 
   directConnect: false,
 
-  baseUrl: "http://localhost:8080/app/",
+  baseUrl: "http://localhost:8080/app/ch-de",
 
   seleniumAddress: "http://hub-cloud.browserstack.com/wd/hub",
 

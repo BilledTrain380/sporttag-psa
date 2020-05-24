@@ -23,7 +23,7 @@ Usage
     <app-row-layout>
         <app-column-layout title="My card" size="6">
             // Content of card
-        </app-column-layout-title>
+        </app-column-layout>
     </app-row-layout>
 </app-row-page>
 ```

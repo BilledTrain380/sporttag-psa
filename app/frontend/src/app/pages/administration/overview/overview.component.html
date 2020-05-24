@@ -1,0 +1,11 @@
+<app-row-layout>
+  <app-column-layout *ngFor="let item of items"
+                     [title]="item.title"
+                     [routerLink]="item.link"
+                     size="6"
+                     class="tile">
+    <div class="flex icon-container text-secondary">
+      <fa-icon [icon]="item.icon"></fa-icon>
+    </div>
+  </app-column-layout>
+</app-row-layout>

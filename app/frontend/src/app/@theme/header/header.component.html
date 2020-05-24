@@ -1,16 +1,28 @@
-<nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">
-    <img src="assets/brand/psa-logo.svg" width="30" height="30" class="d-inline-block align-top"
+<nav class="navbar navbar-expand-md sticky-top navbar-light bg-white">
+  <a class="navbar-brand" routerLink="/">
+    <img src="assets/brand/psa-logo.svg"
+         width="38"
+         height="38"
+         class="d-inline-block align-top"
          alt="PSA Logo">
-    PSA
+    <span *ngIf="!isMobile" class="ml-2 mt-1 d-inline-block">PSA</span>
   </a>
 
-  <div class="navbar flex-grow-1">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
+  <div class="navbar flex-grow-1 flex-row-reverse">
+    <ul class="navbar-nav flex-row">
+      <li *ngFor="let item of menu" class="ml-1 mr-1">
+        <button [routerLink]="item.link"
+                [routerLinkActive]="['active']"
+                class="btn btn-outline-secondary">
+          <fa-icon [icon]="item.icon"></fa-icon>
+          <span *ngIf="!isMobile" class="ml-2">{{item.title}}</span>
+        </button>
+      </li>
+
+      <li class="nav-item ml-4" ngbDropdown display="dynamic" placement="bottom-right">
         <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button" data-test-selector="user-menu">
           <fa-icon [icon]="faUser"></fa-icon>
-          {{ username$ | async }}
+          <span *ngIf="!isMobile" class="ml-2">{{username$ | async}}</span>
         </a>
         <div ngbDropdownMenu class="dropdown-menu">
           <a ngbDropdownItem href="#" (click)="$event.preventDefault()" i18n>Change password</a>

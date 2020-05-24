@@ -1,24 +1,32 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { GroupOverviewComponent } from "./groups/group-overview/group-overview.component";
 import { PagesComponent } from "./pages.component";
 
-const routes: Routes = [{
-  path: "",
-  component: PagesComponent,
-  children: [
-    {
-      path: "groups/overview",
-      component: GroupOverviewComponent,
-    },
-    {
-      path: "",
-      redirectTo: "groups/overview",
-      pathMatch: "full",
-    },
-  ],
-}];
+const routes: Routes = [
+  {
+    path: "",
+    component: PagesComponent,
+    children: [
+      {
+        path: "athletics",
+        loadChildren: () => import("./athletics/athletics.module")
+          .then(module => module.AthleticsModule),
+      },
+      {
+        path: "administration",
+        loadChildren: () => import("./administration/administration.module")
+          .then(module => module.AdministrationModule),
+      },
+      {
+        path: "",
+        redirectTo: "athletics",
+        pathMatch: "full",
+      },
+    ],
+  },
+
+];
 
 @NgModule({
             imports: [RouterModule.forChild(routes)],

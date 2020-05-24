@@ -13,7 +13,7 @@ COPY *.jar /opt/psa/
 WORKDIR /opt/psa/
 
 ENV server_port 8080
-ENV spring_profiles_active prod,test
+ENV spring_profiles_active prod,data
 ENV psa_version $PSA_VERSION
 
 ENTRYPOINT ["sh", "-c", "java -jar PSA-${psa_version}.jar"]

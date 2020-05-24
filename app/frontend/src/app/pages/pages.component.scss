@@ -4,7 +4,7 @@
 :host {
   display: flex;
   flex-direction: row;
-  height: calc(100% - 56px);
+  height: calc(100% - 72px);
 }
 
 .pages-container {
@@ -15,7 +15,7 @@
 
   .container-fluid {
     flex: 8;
-    background-color: var(--light);
+    background-color: $gray-200;
   }
 
   .footer {

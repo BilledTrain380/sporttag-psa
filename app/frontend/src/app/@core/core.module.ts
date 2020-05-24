@@ -4,12 +4,8 @@ import { RouterModule } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbAlertModule, NgbPopoverModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { MenuItemComponent } from "./menu/menu-item/menu-item.component";
-
 @NgModule({
-            declarations: [
-              MenuItemComponent,
-            ],
+            declarations: [],
             imports: [
               CommonModule,
               RouterModule,
@@ -17,9 +13,7 @@ import { MenuItemComponent } from "./menu/menu-item/menu-item.component";
               NgbAlertModule,
               FontAwesomeModule,
             ],
-            exports: [
-              MenuItemComponent,
-            ],
+            exports: [],
           })
 export class CoreModule {
 }

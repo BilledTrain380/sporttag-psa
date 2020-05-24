@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 
 import { ThemeModule } from "../@theme/theme.module";
 
-import { GroupsModule } from "./groups/groups.module";
 import { PagesRoutingModule } from "./pages-routing.module";
 import { PagesComponent } from "./pages.component";
 
@@ -13,7 +12,6 @@ import { PagesComponent } from "./pages.component";
               CommonModule,
               ThemeModule,
               PagesRoutingModule,
-              GroupsModule,
             ],
           })
 export class PagesModule {

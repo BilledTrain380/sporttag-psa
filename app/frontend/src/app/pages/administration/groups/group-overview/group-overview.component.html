@@ -1,9 +1,12 @@
-<app-simple-page pageTitle="Groups"
+<app-simple-page pageTitle="Group Management"
                  i18n-pageTitle
                  cardTitle="Overview"
                  i18n-cardTitle>
   <app-layout-buttons>
-    <button (click)="openImportModal()" type="button" class="btn btn-primary btn-sm">
+    <button (click)="openImportModal()"
+            type="button"
+            class="btn btn-primary btn-sm"
+            data-test-selector="import-groups">
       <fa-icon [icon]="faUpload"></fa-icon>
       <span i18n>Import</span>
     </button>
@@ -11,7 +14,7 @@
 
   <app-text-alert [alert]="alert"></app-text-alert>
 
-  <table class="table">
+  <table class="table" data-test-selector="group-table">
     <thead>
     <tr>
       <th i18n>Name</th>

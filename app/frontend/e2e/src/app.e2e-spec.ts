@@ -1,4 +1,4 @@
-import { browser, ExpectedConditions as EC, logging } from "protractor";
+import { browser, logging } from "protractor";
 
 import { AppPage } from "./app.po";
 
@@ -7,51 +7,12 @@ describe("PSA frontend", () => {
 
   beforeEach(() => {
     page = new AppPage();
-    page.navigateTo();
+    page.navigateToBaseUrl();
   });
 
   it("should display the username", () => {
-    expect(page.getUsername())
+    expect(page.username)
       .toEqual(browser.params.username);
-  });
-
-  describe("on responsiveness", () => {
-    afterAll(async () => {
-      // Ensure a desktop screen size even if a test fails.
-      const width = 1440;
-      const height = 900;
-      await browser.driver.manage()
-        .window()
-        .setSize(width, height);
-    });
-
-    it("should hide the navigation menu on tablet screen size", async () => {
-      const width = 786;
-      const height = 1024;
-      await browser.driver.manage()
-        .window()
-        .setSize(width, height);
-
-      const menu = page.getMenu();
-      browser.wait(EC.invisibilityOf(menu));
-
-      expect(menu.isPresent())
-        .toBe(true, "Expected navigation menu to be hidden");
-    });
-
-    it("should show the navigation menu on desktop screen size", async () => {
-      const width = 1440;
-      const height = 900;
-      await browser.driver.manage()
-        .window()
-        .setSize(width, height);
-
-      const menu = page.getMenu();
-      browser.wait(EC.visibilityOf(menu));
-
-      expect(menu.isPresent())
-        .toBe(true, "Expected navigation menu to be visible");
-    });
   });
 
   afterEach(async () => {
@@ -62,7 +23,7 @@ describe("PSA frontend", () => {
     expect(logs)
       .not
       .toContain(jasmine.objectContaining({
-        level: logging.Level.SEVERE,
-      }));
+                                            level: logging.Level.SEVERE,
+                                          }));
   });
 });
