@@ -116,6 +116,9 @@ class ResourceServerConfig(
             ?.anyRequest()?.authenticated()
 
             ?.and()
+            ?.exceptionHandling()
+            ?.accessDeniedHandler(CustomAccessDeniedHandler())
+            ?.and()
             ?.csrf()?.disable()
             ?.cors()
     }
