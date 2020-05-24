@@ -39,8 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.breakpointObserver
       .observe([
-                 Breakpoints.Tablet,
-                 Breakpoints.Small,
+                 Breakpoints.TabletPortrait,
                  Breakpoints.XSmall,
                ])
       .pipe(tap(() => this.log.info("Detected media breakpoint change")))
