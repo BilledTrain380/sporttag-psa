@@ -101,6 +101,7 @@ class ResourceServerConfig(
                 "/api/disciplines"
             )?.hasRole("USER")
             ?.antMatchers(
+                "/api/groups/overview",
                 "/api/group/**",
                 "/api/participant/**",
                 "/api/participants",
