@@ -191,7 +191,7 @@ class CompetitorController(
     )
     @PreAuthorize("#oauth2.hasScope('competitor_write')")
     @PutMapping("/competitor/{competitor_id}")
-    fun updateResults(@PathVariable("competitor_id") id: Int, @RequestBody result: ResultElement): ResultDto {
+    fun updateCompetitorResult(@PathVariable("competitor_id") id: Int, @RequestBody result: ResultElement): ResultDto {
         try {
             val resultAmend = CompetitorResultAmend(
                 competitorId = id,

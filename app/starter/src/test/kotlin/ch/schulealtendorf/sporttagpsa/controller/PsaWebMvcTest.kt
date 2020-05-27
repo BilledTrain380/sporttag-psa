@@ -1,5 +1,6 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
+import org.codehaus.jackson.map.ObjectMapper
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,6 +37,8 @@ class PsaWebMvcTest {
     @Autowired
     private lateinit var mvc: MockMvc
 
+    private val objectMapper = ObjectMapper()
+
     protected fun bearerTokenAdmin(vararg scope: String): RequestPostProcessor {
         return bearerToken(ADMIN_USER, *scope)
     }
@@ -49,6 +52,10 @@ class PsaWebMvcTest {
             it.addHeader("Authorization", "Bearer ${createToken(username, *scope)}")
             it
         }
+    }
+
+    protected fun jsonBodyOf(obj: Any): String {
+        return objectMapper.writeValueAsString(obj)
     }
 
     private fun createToken(username: String, vararg scope: String): String {
