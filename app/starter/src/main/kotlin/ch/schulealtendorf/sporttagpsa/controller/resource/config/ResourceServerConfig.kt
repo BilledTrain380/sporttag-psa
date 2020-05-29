@@ -38,7 +38,10 @@ package ch.schulealtendorf.sporttagpsa.controller.resource.config
 
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
 import ch.schulealtendorf.sporttagpsa.controller.oauth.SecurityRequirementNames
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.info.Info
+import io.swagger.v3.oas.annotations.info.License
 import io.swagger.v3.oas.annotations.security.OAuthFlow
 import io.swagger.v3.oas.annotations.security.OAuthFlows
 import io.swagger.v3.oas.annotations.security.OAuthScope
@@ -58,6 +61,16 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices
  */
 @Configuration
 @EnableResourceServer
+@OpenAPIDefinition(
+    info = Info(
+        title = "PSA API",
+        version = "1.0.0",
+        license = License(
+            name = "GNU General Public License v3.0",
+            url = "https://github.com/BilledTrain380/sporttag-psa/blob/master/LICENSE.md"
+        )
+    )
+)
 @SecurityScheme(
     name = SecurityRequirementNames.OAUTH2,
     type = SecuritySchemeType.OAUTH2,
