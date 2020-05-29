@@ -40,6 +40,7 @@ import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation
+import ch.schulealtendorf.sporttagpsa.business.user.IllegalUserOperationException
 import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
@@ -195,8 +196,9 @@ class UserController(
         val user = userManager.getOneOrFail(id)
 
         // Do not leak 403 Forbidden
-        if (principal.isAuthorized(user).not())
-            throw UnauthorizedException("You are not authorized to perform this operation.")
+        if (principal.isAuthorized(user).not()) {
+            throw NotFoundException("Not found")
+        }
 
         val updatedUser = user.toBuilder()
             .setEnabled(userElement.enabled)
@@ -273,7 +275,11 @@ class UserController(
     @PreAuthorize("#oauth2.hasScope('user')")
     @DeleteMapping("/user/{user_id}")
     fun deleteUser(@PathVariable("user_id") id: Int) {
-        userManager.delete(id)
+        try {
+            userManager.delete(id)
+        } catch (exception: IllegalUserOperationException) {
+            throw BadRequestException("Admin user can not be deleted")
+        }
     }
 
     private fun UserManager.getOneOrFail(id: Int): UserDto {
