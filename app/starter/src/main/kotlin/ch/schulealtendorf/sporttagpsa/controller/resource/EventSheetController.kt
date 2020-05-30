@@ -36,7 +36,6 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
-import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetDisciplineExport
 import ch.schulealtendorf.sporttagpsa.business.export.EventSheetExport
@@ -44,31 +43,53 @@ import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.resource.models.EventSheetData
-import ch.schulealtendorf.sporttagpsa.controller.resource.models.FileQualifier
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 @RequestMapping("/api")
+@Tag(name = "EventSheets", description = "Manage event sheets")
 class EventSheetController(
     private val exportManager: ExportManager,
     private val disciplineManager: DisciplineManager,
-    private val groupManager: GroupManager,
-    private val fileSystem: FileSystem
+    private val groupManager: GroupManager
 ) {
+    @Operation(
+        summary = "Download a zip containing the event sheets",
+        tags = ["EventSheets"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "A zip containing the event sheets",
+                content = [Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @PostMapping(
-        "/event-sheets",
+        "/event-sheets/download",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
-    @ResponseBody
-    fun createEventSheets(@RequestBody data: List<EventSheetData>): FileQualifier {
+    fun createEventSheets(@RequestBody data: List<EventSheetData>): ResponseEntity<InputStreamResource> {
         val exports = data.map {
             val discipline = disciplineManager.getDiscipline(it.discipline)
                 .orElseThrow { BadRequestException("The discipline does not exist: name=${it.discipline}") }
@@ -82,6 +103,6 @@ class EventSheetController(
         val exportData = EventSheetExport(exports)
 
         val zip = exportManager.generateArchive(exportData)
-        return FileQualifier.ofPath(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
+        return buildFileResponse(zip)
     }
 }
