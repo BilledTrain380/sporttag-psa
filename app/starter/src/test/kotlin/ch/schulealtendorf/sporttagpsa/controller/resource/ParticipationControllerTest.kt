@@ -1,10 +1,13 @@
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
+import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.participation.ParticipationCommand
+import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -13,6 +16,11 @@ internal class ParticipationControllerTest : PsaWebMvcTest() {
     companion object {
         private const val PARTICIPATION_ENDPOINT = "/api/participation"
         private const val SPORTS_ENDPOINT = "/api/sports"
+        private const val PARTICIPATION_LIST_DOWNLOAD_ENDPOINT = "/api/participation-list/download"
+
+        private val PARTICIPANT_List_BODY = listOf(
+            SportDto(ATHLETICS)
+        )
     }
 
     @Test
@@ -105,6 +113,45 @@ internal class ParticipationControllerTest : PsaWebMvcTest() {
         mockMvc.perform(
             get(SPORTS_ENDPOINT)
                 .with(bearerTokenAdmin(PSAScope.PARTICIPANT_WRITE))
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    internal fun downloadParticipationList() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(PARTICIPATION_LIST_DOWNLOAD_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.PARTICIPATION))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBodyOf(PARTICIPANT_List_BODY))
+        ).andExpect(status().isOk)
+    }
+
+    @Test
+    internal fun downloadParticipationListWhenUnauthorized() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(PARTICIPATION_LIST_DOWNLOAD_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBodyOf(PARTICIPANT_List_BODY))
+        ).andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    internal fun downloadParticipationListWhenMissingScope() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(PARTICIPATION_LIST_DOWNLOAD_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.COMPETITOR_WRITE))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBodyOf(PARTICIPANT_List_BODY))
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    internal fun downloadParticipationListWhenMissingAuthority() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(PARTICIPATION_LIST_DOWNLOAD_ENDPOINT)
+                .with(bearerTokenUser(PSAScope.PARTICIPATION))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBodyOf(PARTICIPANT_List_BODY))
         ).andExpect(status().isNotFound)
     }
 }

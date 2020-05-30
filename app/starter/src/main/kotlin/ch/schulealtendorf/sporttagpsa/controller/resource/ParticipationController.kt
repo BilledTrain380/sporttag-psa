@@ -39,9 +39,12 @@ package ch.schulealtendorf.sporttagpsa.controller.resource
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.participation.ParticipationCommand
 import ch.schulealtendorf.psa.dto.participation.ParticipationDto
+import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.dto.status.StatusDto
 import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity
+import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
+import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import io.swagger.v3.oas.annotations.Operation
@@ -51,10 +54,13 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -68,7 +74,8 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "Participation", description = "Manage the participation")
 class ParticipationController(
     private val participationManager: ParticipationManager,
-    private val groupManager: GroupManager
+    private val groupManager: GroupManager,
+    private val exportManager: ExportManager
 ) {
     @Operation(
         summary = "Get the participation status",
@@ -158,5 +165,36 @@ class ParticipationController(
     @GetMapping("/sports", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getSportTypes(): List<String> {
         return participationManager.getSportTypes()
+    }
+
+    @Operation(
+        summary = "Download a zip containing the participation list",
+        tags = ["Participation"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "A zip containing the participation list",
+                content = [Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('participation')")
+    @PostMapping(
+        "/participation-list/download",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
+    )
+    fun createParticipantList(@RequestBody data: List<SportDto>): ResponseEntity<InputStreamResource> {
+        val exportData = ParticipantExport(data)
+        val zip = exportManager.generateArchive(exportData)
+
+        return buildFileResponse(zip)
     }
 }
