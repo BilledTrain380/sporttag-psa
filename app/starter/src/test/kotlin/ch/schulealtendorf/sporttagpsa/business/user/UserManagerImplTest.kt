@@ -29,7 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @FlywayTest
 internal class UserManagerImplTest {
     companion object {
-        private const val WWIRBELWIND = "wwirbelwind"
+        private const val FHANSELER = "fhanseler"
     }
 
     @Autowired
@@ -85,7 +85,7 @@ internal class UserManagerImplTest {
     @FlywayTest
     @Sql("/db/user/add-user.sql")
     internal fun saveExistingUser() {
-        val userOptional = userManager.getOne(WWIRBELWIND)
+        val userOptional = userManager.getOne(FHANSELER)
         assertThat(userOptional).isNotEmpty
 
         val user = userOptional.get().toBuilder()
@@ -95,7 +95,7 @@ internal class UserManagerImplTest {
         val updatedUser = userManager.save(user)
         assertThat(updatedUser.enabled).isFalse()
 
-        val userEntity = userRepository.findByUsername(WWIRBELWIND)
+        val userEntity = userRepository.findByUsername(FHANSELER)
         assertThat(userEntity).isNotEmpty
         assertThat(userEntity.get().enabled).isFalse()
     }
@@ -106,12 +106,12 @@ internal class UserManagerImplTest {
     internal fun changePassword() {
         val newPass = "Secret12345$"
 
-        val userOptional = userManager.getOne(WWIRBELWIND)
+        val userOptional = userManager.getOne(FHANSELER)
         assertThat(userOptional).isNotEmpty
 
         userManager.changePassword(userOptional.get(), newPass)
 
-        val userEntity = userRepository.findByUsername(WWIRBELWIND)
+        val userEntity = userRepository.findByUsername(FHANSELER)
         assertThat(userEntity).isNotEmpty
 
         val isPasswordMatch = encoder.matches(newPass, userEntity.get().password)
@@ -135,7 +135,7 @@ internal class UserManagerImplTest {
     @Test
     @Sql("/db/user/add-user.sql")
     internal fun changeInvalidPassword() {
-        val userOptional = userManager.getOne(WWIRBELWIND)
+        val userOptional = userManager.getOne(FHANSELER)
         assertThat(userOptional).isNotEmpty
 
         assertThrows<InvalidPasswordException> {
@@ -147,15 +147,15 @@ internal class UserManagerImplTest {
     @FlywayTest
     @Sql("/db/user/add-user.sql")
     internal fun deleteUser() {
-        val user = userManager.getOne(WWIRBELWIND)
+        val user = userManager.getOne(FHANSELER)
         assertThat(user).isNotEmpty
 
         userManager.delete(user.get().id)
 
-        val userOptional = userManager.getOne(WWIRBELWIND)
+        val userOptional = userManager.getOne(FHANSELER)
         assertThat(userOptional).isEmpty
 
-        val userEntity = userRepository.findByUsername(WWIRBELWIND)
+        val userEntity = userRepository.findByUsername(FHANSELER)
         assertThat(userEntity).isEmpty
     }
 
