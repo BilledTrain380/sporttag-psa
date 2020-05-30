@@ -39,7 +39,10 @@ package ch.schulealtendorf.sporttagpsa.controller.resource
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.sporttagpsa.business.group.CSVParsingException
+import ch.schulealtendorf.sporttagpsa.business.group.GroupFileParser
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
+import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -49,13 +52,17 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 /**
  * Rest controller for {@link Group}.
@@ -67,7 +74,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 @Tag(name = "Group", description = "Manage groups")
 class GroupController(
-    private val groupManager: GroupManager
+    private val groupManager: GroupManager,
+    private val fileParser: GroupFileParser
 ) {
     @Operation(
         summary = "Find groups by name",
@@ -163,5 +171,46 @@ class GroupController(
         }
 
         return groupManager.getOverviewBy(statusType)
+    }
+
+    @Operation(
+        summary = "Import groups by a csv file",
+        tags = ["Group"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Imported groups",
+                content = [Content(mediaType = MediaType.TEXT_PLAIN_VALUE)]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('group_write')")
+    @PostMapping(
+        "/groups/import",
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.TEXT_PLAIN_VALUE]
+    )
+    fun importGroup(@RequestParam("group-input") file: MultipartFile): ResponseEntity<String> {
+        return try {
+            val participants = fileParser.parseCSV(file)
+            participants.forEach(groupManager::import)
+
+            ResponseEntity.ok("Group import successful")
+        } catch (exception: CSVParsingException) {
+            // we increment the line, so its not zero based line number for the user
+            ResponseEntity(
+                "${exception.message} (at line ${exception.line + 1}:${exception.column})",
+                HttpStatus.BAD_REQUEST
+            )
+        } catch (exception: IllegalArgumentException) {
+            throw BadRequestException(exception.message)
+        }
     }
 }

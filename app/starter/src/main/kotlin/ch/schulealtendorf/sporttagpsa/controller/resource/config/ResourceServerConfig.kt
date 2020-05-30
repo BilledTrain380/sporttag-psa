@@ -116,12 +116,12 @@ class ResourceServerConfig(
             )?.hasRole("USER")
             ?.antMatchers(
                 "/api/groups/overview",
+                "/api/groups/import",
                 "/api/group/**",
                 "/api/participant/**",
                 "/api/participants",
                 "/api/users",
                 "/api/user/**",
-                "/api/import-group",
                 "/api/event-sheets",
                 "/api/file/**",
                 "/api/participant-list"

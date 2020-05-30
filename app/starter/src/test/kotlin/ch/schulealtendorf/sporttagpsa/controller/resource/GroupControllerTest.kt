@@ -3,7 +3,10 @@ package ch.schulealtendorf.sporttagpsa.controller.resource
 import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
 import org.junit.jupiter.api.Test
+import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 internal class GroupControllerTest : PsaWebMvcTest() {
@@ -11,6 +14,10 @@ internal class GroupControllerTest : PsaWebMvcTest() {
         private const val GROUP_2A_ENDPOINT = "/api/group/2a"
         private const val GROUPS_ENDPOINT = "/api/groups"
         private const val OVERVIEW_GROUP_ENDPOINT = "/api/groups/overview"
+        private const val GROUP_IMPORT_ENDPOINT = "/api/groups/import"
+
+        private val CONTENT = GroupControllerTest::class.java.getResourceAsStream("/parsing/test-group-import.csv")
+        private val GROUPS_CSV = MockMultipartFile("group-input", "groups.csv", "text/csv", CONTENT)
     }
 
     @Test
@@ -97,6 +104,67 @@ internal class GroupControllerTest : PsaWebMvcTest() {
         mockMvc.perform(
             get(OVERVIEW_GROUP_ENDPOINT)
                 .with(bearerTokenUser(PSAScope.GROUP_READ))
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    internal fun importGroups() {
+        mockMvc.perform(
+            multipart(GROUP_IMPORT_ENDPOINT)
+                .file(GROUPS_CSV)
+                .with(bearerTokenAdmin(PSAScope.GROUP_WRITE))
+        ).andExpect(status().isOk)
+    }
+
+    @Test
+    internal fun importGroupsWhenInvalidCsvContent() {
+        val content =
+            GroupControllerTest::class.java.getResourceAsStream("/parsing/test-group-import-invalid-gender.csv")
+        val invalidCsv = MockMultipartFile("group-input", "groups.csv", "text/csv", content)
+
+        mockMvc.perform(
+            multipart(GROUP_IMPORT_ENDPOINT)
+                .file(invalidCsv)
+                .with(bearerTokenAdmin(PSAScope.GROUP_WRITE))
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    internal fun importGroupsWhenInvalidFileType() {
+        val content =
+            GroupControllerTest::class.java.getResourceAsStream("/parsing/test-group-import-invalid-gender.csv")
+        val invalidCsv = MockMultipartFile("group-input", "groups.txt", MediaType.TEXT_PLAIN_VALUE, content)
+
+        mockMvc.perform(
+            multipart(GROUP_IMPORT_ENDPOINT)
+                .file(invalidCsv)
+                .with(bearerTokenAdmin(PSAScope.GROUP_WRITE))
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    internal fun importGroupsWhenUnauthorized() {
+        mockMvc.perform(
+            multipart(GROUP_IMPORT_ENDPOINT)
+                .file(GROUPS_CSV)
+        ).andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    internal fun importGroupsWhenMissingScope() {
+        mockMvc.perform(
+            multipart(GROUP_IMPORT_ENDPOINT)
+                .file(GROUPS_CSV)
+                .with(bearerTokenAdmin(PSAScope.RANKING))
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    internal fun importGroupsWhenMissingAuthority() {
+        mockMvc.perform(
+            multipart(GROUP_IMPORT_ENDPOINT)
+                .file(GROUPS_CSV)
+                .with(bearerTokenUser(PSAScope.GROUP_WRITE))
         ).andExpect(status().isNotFound)
     }
 }
