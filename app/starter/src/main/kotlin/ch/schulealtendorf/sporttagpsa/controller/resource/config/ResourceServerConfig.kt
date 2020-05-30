@@ -111,7 +111,8 @@ class ResourceServerConfig(
                 "/api/competitors",
                 "/api/competitor/**",
                 "/api/sports",
-                "/api/disciplines"
+                "/api/disciplines",
+                "/api/ranking/download"
             )?.hasRole("USER")
             ?.antMatchers(
                 "/api/groups/overview",
@@ -121,7 +122,6 @@ class ResourceServerConfig(
                 "/api/users",
                 "/api/user/**",
                 "/api/import-group",
-                "/api/ranking",
                 "/api/event-sheets",
                 "/api/file/**",
                 "/api/participant-list"

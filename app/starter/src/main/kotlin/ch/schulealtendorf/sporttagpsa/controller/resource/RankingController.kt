@@ -36,37 +36,58 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
-import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.sporttagpsa.business.athletics.DisciplineManager
 import ch.schulealtendorf.sporttagpsa.business.export.DisciplineExport
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.RankingExport
 import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.BadRequestException
-import ch.schulealtendorf.sporttagpsa.controller.resource.models.FileQualifier
 import ch.schulealtendorf.sporttagpsa.controller.resource.models.RankingData
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 @RequestMapping("/api")
+@Tag(name = "Ranking", description = "Manage the ranking")
 class RankingController(
     private val exportManager: ExportManager,
-    private val disciplineManager: DisciplineManager,
-    private val fileSystem: FileSystem
+    private val disciplineManager: DisciplineManager
 ) {
+    @Operation(
+        summary = "Download the ranking as zip file",
+        tags = ["Ranking"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "A zip containing the ranking files",
+                content = [Content(mediaType = "application/octet-stream")]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
     @PreAuthorize("#oauth2.hasScope('ranking')")
     @PostMapping(
-        "/ranking",
+        "/ranking/download",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
-    @ResponseBody
-    fun createRanking(@RequestBody data: RankingData): FileQualifier {
+    fun createRanking(@RequestBody data: RankingData): ResponseEntity<InputStreamResource> {
         val disciplineExports = data.discipline.map {
             val discipline = disciplineManager.getDiscipline(it.discipline)
                 .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }
@@ -82,6 +103,7 @@ class RankingController(
         )
 
         val zip = exportManager.generateArchive(rankingExport)
-        return FileQualifier.ofPath(zip.absolutePath.removePrefix(fileSystem.getApplicationDir().absolutePath))
+
+        return buildFileResponse(zip)
     }
 }
