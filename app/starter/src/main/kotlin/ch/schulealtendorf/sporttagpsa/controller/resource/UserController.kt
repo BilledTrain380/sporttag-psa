@@ -41,12 +41,11 @@ import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation
 import ch.schulealtendorf.sporttagpsa.business.user.IllegalUserOperationException
-import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.BadRequestException
 import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.NotFoundException
-import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.UnauthorizedException
+import ch.schulealtendorf.sporttagpsa.lib.ifNotNull
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -193,19 +192,17 @@ class UserController(
     @PreAuthorize("#oauth2.hasScope('user')")
     @PatchMapping("/user/{user_id}")
     fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userElement: UserElement, principal: Principal) {
-        val user = userManager.getOneOrFail(id)
+        val userBuilder = userManager.getOneOrFail(id).toBuilder()
 
-        // Do not leak 403 Forbidden
-        if (principal.isAuthorized(user).not()) {
-            throw NotFoundException("Not found")
+        userElement.enabled.ifNotNull {
+            userBuilder.setEnabled(it)
         }
 
-        val updatedUser = user.toBuilder()
-            .setEnabled(userElement.enabled)
-            .setUsername(userElement.username)
-            .build()
+        userElement.username.ifNotNull {
+            userBuilder.setUsername(it)
+        }
 
-        userManager.save(updatedUser)
+        userManager.save(userBuilder.build())
     }
 
     @Operation(
@@ -236,10 +233,6 @@ class UserController(
     @PutMapping("/user/{user_id}")
     fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userRelation: UserRelation, principal: Principal) {
         val user = userManager.getOneOrFail(id)
-
-        if (principal.isAuthorized(user).not()) {
-            throw UnauthorizedException("You are not authorized to perform this operation.")
-        }
 
         try {
             userManager.changePassword(user, userRelation.password)
@@ -286,6 +279,4 @@ class UserController(
         return getOne(id)
             .orElseThrow { NotFoundException("Could not find user: user_id=$id") }
     }
-
-    private fun Principal.isAuthorized(user: UserDto) = (name == USER_ADMIN || name == user.username)
 }
