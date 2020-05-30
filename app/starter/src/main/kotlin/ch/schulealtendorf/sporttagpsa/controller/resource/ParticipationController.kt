@@ -45,6 +45,7 @@ import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity
 import ch.schulealtendorf.sporttagpsa.business.export.ExportManager
 import ch.schulealtendorf.sporttagpsa.business.export.ParticipantExport
+import ch.schulealtendorf.sporttagpsa.business.export.report.StartlistReporter
 import ch.schulealtendorf.sporttagpsa.business.group.GroupManager
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import io.swagger.v3.oas.annotations.Operation
@@ -75,7 +76,8 @@ import org.springframework.web.bind.annotation.RestController
 class ParticipationController(
     private val participationManager: ParticipationManager,
     private val groupManager: GroupManager,
-    private val exportManager: ExportManager
+    private val exportManager: ExportManager,
+    private val startlistReporter: StartlistReporter
 ) {
     @Operation(
         summary = "Get the participation status",
@@ -196,5 +198,31 @@ class ParticipationController(
         val zip = exportManager.generateArchive(exportData)
 
         return buildFileResponse(zip)
+    }
+
+    @Operation(
+        summary = "Download a zip containing the start list",
+        tags = ["Participation"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "A zip containing the start list",
+                content = [Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('participation')")
+    @GetMapping("/start-list/download", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
+    fun createStartList(): ResponseEntity<InputStreamResource> {
+        val startList = startlistReporter.generateReport()
+
+        return buildFileResponse(startList)
     }
 }
