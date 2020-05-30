@@ -237,7 +237,7 @@ class UserController(
         try {
             userManager.changePassword(user, userRelation.password)
         } catch (ex: InvalidPasswordException) {
-            throw BadRequestException(ex.message, ex)
+            throw BadRequestException(ex.message)
         }
     }
 
