@@ -44,7 +44,10 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
             birthday = null,
             address = "Fischerstrasse 65",
             isAbsent = true,
-            town = null
+            town = TownDto(
+                zip = "8000",
+                name = "Zürich"
+            )
         )
 
         private val PARTICIPANT_RELATION = ParticipantRelation(

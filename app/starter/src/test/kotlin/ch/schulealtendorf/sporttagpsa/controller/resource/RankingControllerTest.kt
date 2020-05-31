@@ -1,9 +1,11 @@
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
 import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
 import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
+import ch.schulealtendorf.sporttagpsa.controller.resource.models.DisciplineRanking
 import ch.schulealtendorf.sporttagpsa.controller.resource.models.RankingData
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,7 +19,13 @@ internal class RankingControllerTest : PsaWebMvcTest() {
         private const val RANKING_DOWNLOAD_ENDPOINT = "/api/ranking/download"
 
         private val RANKING_DATA = RankingData(
-            total = listOf(GenderDto.MALE)
+            total = listOf(GenderDto.MALE),
+            discipline = listOf(
+                DisciplineRanking(
+                    discipline = SCHNELLLAUF,
+                    gender = GenderDto.MALE
+                )
+            )
         )
     }
 
