@@ -1,7 +1,6 @@
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
 import ch.schulealtendorf.psa.dto.participation.ATHLETICS
-import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
@@ -9,7 +8,6 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
 import ch.schulealtendorf.psa.dto.participation.TownDto
 import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -18,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.Instant
 
 internal class ParticipantControllerTest : PsaWebMvcTest() {
     companion object {
@@ -31,7 +28,7 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
             surname = "Wirbelwind",
             gender = GenderDto.MALE,
             address = "Musterstrasse 21",
-            birthday = BirthdayDto(Instant.EPOCH),
+            birthday = "2020-01-01",
             group = "2a",
             town = TownDto("8000", "Zürich")
         )
@@ -116,7 +113,6 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
     }
 
     @Test
-    @Disabled("Birthday data type must be rewritten first")
     internal fun createParticipant() {
         mockMvc.perform(
             post(PARTICIPANTS_ENDPOINT)
@@ -133,7 +129,6 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
     }
 
     @Test
-    @Disabled("Birthday data type must be rewritten first")
     internal fun createParticipantWhenMissingScope() {
         mockMvc.perform(
             post(PARTICIPANTS_ENDPOINT)

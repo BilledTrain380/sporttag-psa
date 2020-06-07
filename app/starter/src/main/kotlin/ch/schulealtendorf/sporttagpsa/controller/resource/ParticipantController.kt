@@ -182,7 +182,8 @@ class ParticipantController(
             surname = input.surname,
             prename = input.prename,
             gender = input.gender,
-            birthday = input.birthday,
+            // FIXME: Use value from input
+            birthday = BirthdayDto.ofMillis(0),
             address = input.address,
             town = input.town,
             isAbsent = false,
