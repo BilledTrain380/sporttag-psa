@@ -19,7 +19,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ActiveProfiles("test")
 @Tag("ctrl-test")
-@SpringBootTest(properties = ["spring.flyway.locations=classpath:/db/migration"])
+@SpringBootTest(
+    properties = [
+        "spring.flyway.locations=classpath:/db/migration",
+        "spring.datasource.url=jdbc:h2:mem:psa-4833e875-390b-4897-b7f4-3b3e8bbd2e40;USER=psa;PASSWORD=psa"
+    ]
+)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 internal class SetupControllerTest {
