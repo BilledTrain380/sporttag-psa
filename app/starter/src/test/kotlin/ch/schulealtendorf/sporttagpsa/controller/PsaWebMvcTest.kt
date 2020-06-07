@@ -57,6 +57,11 @@ class PsaWebMvcTest {
         }
     }
 
+    protected fun user(username: String): RequestPostProcessor {
+        val userDetails = userDetailsService.loadUserByUsername(username)
+        return user(userDetails)
+    }
+
     protected fun jsonBodyOf(obj: Any): String {
         return objectMapper.writeValueAsString(obj)
     }

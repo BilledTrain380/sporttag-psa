@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.sporttagpsa.controller.authorization
 
+import ch.schulealtendorf.sporttagpsa.lib.ifNotNull
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Controller
@@ -46,13 +47,12 @@ import org.springframework.web.bind.annotation.GetMapping
 class HomeController {
     @GetMapping("/", "/index")
     fun index(model: Model, authentication: Authentication?): String {
-        if (authentication != null) {
-            model.addAttribute("username", (authentication.principal as UserDetails).username)
-            model.addAttribute("isAuthenticated", authentication.isAuthenticated)
-            return "index"
-        }
-
         model.addAttribute("isAuthenticated", false)
+
+        authentication.ifNotNull {
+            model.addAttribute("username", (it.principal as UserDetails).username)
+            model.addAttribute("isAuthenticated", it.isAuthenticated)
+        }
 
         return "index"
     }
