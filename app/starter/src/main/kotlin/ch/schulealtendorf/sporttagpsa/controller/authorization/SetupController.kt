@@ -55,15 +55,12 @@ class SetupController(
 ) {
     @GetMapping("/setup")
     fun index(model: Model): String {
-        model.addAttribute(
-            "setupForm",
-            SetupForm("")
-        )
+        model.addAttribute("setupForm", SetupForm(""))
         return "setup/index"
     }
 
     @PostMapping("/setup")
-    fun setup(
+    fun applySetup(
         @Valid @ModelAttribute setupForm: SetupForm,
         request: HttpServletRequest,
         redirectAttributes: RedirectAttributes

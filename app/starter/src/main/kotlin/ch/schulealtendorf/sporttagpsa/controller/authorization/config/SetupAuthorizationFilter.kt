@@ -56,6 +56,9 @@ import javax.servlet.http.HttpServletResponse
 class SetupAuthorizationFilter(
     private val setupManager: SetupManager
 ) : OncePerRequestFilter() {
+    companion object {
+        private val STATIC_RESOURCES = PathRequest.toStaticResources().atCommonLocations()
+    }
 
     /**
      * Checks if the setup page can be accessed, if it is forbidden or if it should redirect to it.
@@ -68,25 +71,16 @@ class SetupAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-
-        if (request.servletPath == "/setup" && setupManager.isInitialized.not()) {
+        if (request.pathInfo == "/setup" && setupManager.isInitialized.not()) {
             filterChain.doFilter(request, response)
-            return
-        }
-
-        if (request.servletPath == "/setup" && setupManager.isInitialized) {
+        } else if (request.pathInfo == "/setup" && setupManager.isInitialized) {
             // Do not leak 403
-            response.sendError(400, "Bad Request")
-            return
-        }
-
-        if (PathRequest.toStaticResources().atCommonLocations().matches(request)
-                .not() && setupManager.isInitialized.not()
+            response.sendError(404, "Resource not found")
+        } else if (STATIC_RESOURCES.matches(request).not() && setupManager.isInitialized.not()
         ) {
             response.sendRedirect("${request.scheme}://${request.serverName}:${request.serverPort}/setup")
-            return
+        } else {
+            filterChain.doFilter(request, response)
         }
-
-        filterChain.doFilter(request, response)
     }
 }
