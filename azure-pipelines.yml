@@ -39,6 +39,7 @@ stages:
               javaHomeOption: JDKVersion
               jdkVersionOption: 1.8
               jdkArchitectureOption: x64
+              options: "-i"
               tasks: 'ktlintCheck test jacocoTestReport sonarqube'
             env:
               SONAR_LOGIN: $(SONAR_LOGIN)
