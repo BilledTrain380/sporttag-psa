@@ -55,7 +55,7 @@ class SetupController(
 ) {
     @GetMapping("/setup")
     fun index(model: Model): String {
-        model.addAttribute("setupForm", SetupForm(""))
+        model.addAttribute("setupForm", SetupForm.empty())
         return "setup/index"
     }
 

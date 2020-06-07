@@ -47,4 +47,10 @@ import javax.validation.constraints.NotNull
 data class SetupForm(
     @NotNull
     val password: String
-)
+) {
+    companion object {
+        fun empty(): SetupForm {
+            return SetupForm(password = "")
+        }
+    }
+}
