@@ -7,6 +7,7 @@ import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
@@ -69,6 +70,7 @@ internal class UserControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    @DirtiesContext
     internal fun createUser() {
         mockMvc.perform(
             post(USERS_ENDPOINT)
@@ -148,6 +150,7 @@ internal class UserControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    @DirtiesContext
     internal fun updateUser() {
         mockMvc.perform(
             patch(WWIRBELWIND_USER_ENDPOINT)
@@ -201,6 +204,7 @@ internal class UserControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    @DirtiesContext
     internal fun updateUserRelation() {
         mockMvc.perform(
             put(WWIRBELWIND_USER_ENDPOINT)
@@ -240,6 +244,7 @@ internal class UserControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    @DirtiesContext
     internal fun deleteUser() {
         mockMvc.perform(
             delete(MMUSTER_USER_ENDPOINT)

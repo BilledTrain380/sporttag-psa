@@ -7,6 +7,7 @@ import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -52,6 +53,7 @@ internal class ParticipationControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    @DirtiesContext
     internal fun updateParticipation() {
         mockMvc.perform(
             patch(PARTICIPATION_ENDPOINT)

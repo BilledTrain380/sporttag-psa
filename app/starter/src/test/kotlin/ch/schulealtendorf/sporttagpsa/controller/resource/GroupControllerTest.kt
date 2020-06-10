@@ -5,6 +5,7 @@ import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -108,6 +109,7 @@ internal class GroupControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    @DirtiesContext
     internal fun importGroups() {
         mockMvc.perform(
             multipart(GROUP_IMPORT_ENDPOINT)
