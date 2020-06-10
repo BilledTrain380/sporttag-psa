@@ -42,6 +42,7 @@ import ch.schulealtendorf.sporttagpsa.entity.SetupEntity.Companion.DEFAULT_SETUP
 import ch.schulealtendorf.sporttagpsa.repository.SetupRepository
 import org.springframework.stereotype.Component
 import java.util.Random
+import javax.annotation.PostConstruct
 
 /**
  * A {@link SetupManager} which is stateful to reduce db access.
@@ -58,14 +59,16 @@ class StatefulSetupManager(
     private var isInit = false
     private var jwtSec = ""
 
-    init {
-        val setup = this.setupRepository.findById(DEFAULT_SETUP).get()
+    override val isInitialized: Boolean get() = isInit
+    override val jwtSecret: String get() = jwtSec
+
+    @PostConstruct
+    fun init() {
+        val setup = this.setupRepository.findById(DEFAULT_SETUP)
+            .orElseThrow { IllegalStateException("Setup \"$DEFAULT_SETUP\" does not exist. Check your database") }
         isInit = setup.initialized
         jwtSec = setup.jwtSecret
     }
-
-    override val isInitialized: Boolean get() = isInit
-    override val jwtSecret: String get() = jwtSec
 
     override fun initialize(setup: SetupInformation) {
         if (isInitialized) {
