@@ -18,9 +18,9 @@ import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.entity.UnitEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 
-fun ageOf(entity: ParticipantEntity): Int = BirthdayDto.ofMillis(entity.birthday).age
+fun ageOf(entity: ParticipantEntity): Int = BirthdayDto.ofDate(entity.birthday).age
 
-fun ageOf(entity: CompetitorEntity): Int = BirthdayDto.ofMillis(entity.participant.birthday).age
+fun ageOf(entity: CompetitorEntity): Int = BirthdayDto.ofDate(entity.participant.birthday).age
 
 fun participantDtoOf(participantEntity: ParticipantEntity): ParticipantDto {
     return ParticipantDto(
@@ -28,7 +28,7 @@ fun participantDtoOf(participantEntity: ParticipantEntity): ParticipantDto {
         surname = participantEntity.surname,
         prename = participantEntity.prename,
         gender = participantEntity.gender,
-        birthday = BirthdayDto.ofMillis(participantEntity.birthday),
+        birthday = BirthdayDto.ofDate(participantEntity.birthday),
         isAbsent = participantEntity.absent,
         address = participantEntity.address,
         town = townDtoOf(participantEntity.town),
@@ -62,7 +62,7 @@ fun competitorDtoOf(competitorEntity: CompetitorEntity): CompetitorDto {
         surname = competitorEntity.participant.surname,
         prename = competitorEntity.participant.prename,
         gender = competitorEntity.participant.gender,
-        birthday = BirthdayDto.ofMillis(competitorEntity.participant.birthday),
+        birthday = BirthdayDto.ofDate(competitorEntity.participant.birthday),
         isAbsent = competitorEntity.participant.absent,
         address = competitorEntity.participant.address,
         town = townDtoOf(competitorEntity.participant.town),

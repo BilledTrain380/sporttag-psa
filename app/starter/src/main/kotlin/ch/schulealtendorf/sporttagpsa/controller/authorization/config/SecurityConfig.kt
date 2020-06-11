@@ -96,6 +96,9 @@ class SecurityConfig(
             ?.and()
             ?.csrf()?.disable()
 
+            ?.headers()?.frameOptions()?.disable()
+            ?.and()
+
             ?.addFilterBefore(
                 SetupAuthorizationFilter(
                     setupManager

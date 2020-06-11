@@ -17,7 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 @ActiveProfiles("test")
 @Tag("db-test")
@@ -70,7 +70,7 @@ internal class ParticipantManagerImplTest {
         assertThat(participant.prename).isEqualTo("Emily")
         assertThat(participant.surname).isEqualTo("Hill")
         assertThat(participant.gender).isEqualTo(GenderDto.FEMALE)
-        assertThat(participant.birthday.time).isEqualTo(ZonedDateTime.parse("2011-02-23T00:00:00Z").toInstant())
+        assertThat(participant.birthday.value).isEqualTo(LocalDate.parse("2011-02-23"))
         assertThat(participant.address).isEqualTo("Hanover Street 45")
         assertThat(participant.town.zip).isEqualTo("3000")
         assertThat(participant.town.name).isEqualTo("Bern")
@@ -84,7 +84,7 @@ internal class ParticipantManagerImplTest {
             surname = "Meyer",
             prename = "Max",
             gender = GenderDto.MALE,
-            birthday = BirthdayDto.parse("2012-05-15T00:00:00Z"),
+            birthday = BirthdayDto.parse("2012-05-15"),
             address = "Hillburg 48",
             town = TownDto(
                 zip = "3027",
@@ -129,7 +129,7 @@ internal class ParticipantManagerImplTest {
             surname = "Haller",
             prename = "Alisha",
             gender = GenderDto.FEMALE,
-            birthday = BirthdayDto.parse("2011-07-25T00:00:00Z"),
+            birthday = BirthdayDto.parse("2011-07-25"),
             address = "Davis Court 535",
             town = TownDto(
                 zip = "3000",

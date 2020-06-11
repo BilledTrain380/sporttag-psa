@@ -1,6 +1,8 @@
 package ch.schulealtendorf.sporttagpsa.controller
 
-import org.codehaus.jackson.map.ObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,12 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.RequestPostProcessor
 import org.springframework.web.util.UriComponentsBuilder
-import kotlin.reflect.KVisibility
-import kotlin.reflect.full.memberProperties
 
 @ActiveProfiles("test")
 @Tag("ctrl-test")
@@ -40,7 +39,10 @@ class PsaWebMvcTest {
     @Autowired
     private lateinit var mvc: MockMvc
 
-    private val objectMapper = ObjectMapper()
+    private val objectMapper = ObjectMapper().apply {
+        registerModule(JavaTimeModule())
+        disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    }
 
     protected fun bearerTokenAdmin(vararg scope: String): RequestPostProcessor {
         return bearerToken(ADMIN_USER, *scope)
@@ -64,16 +66,6 @@ class PsaWebMvcTest {
 
     protected fun jsonBodyOf(obj: Any): String {
         return objectMapper.writeValueAsString(obj)
-    }
-
-    protected fun MockHttpServletRequestBuilder.formContent(value: Any): MockHttpServletRequestBuilder {
-        value::class.memberProperties
-            .filter { it.visibility == KVisibility.PUBLIC }
-            .forEach {
-                this.param(it.name, it.getter.call(value).toString())
-            }
-
-        return this
     }
 
     private fun createToken(username: String, vararg scope: String): String {

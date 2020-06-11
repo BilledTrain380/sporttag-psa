@@ -66,7 +66,7 @@ internal class CompetitorManagerImplTest {
         assertThat(competitor.prename).isEqualTo("Eric A")
         assertThat(competitor.surname).isEqualTo("Mason")
         assertThat(competitor.gender).isEqualTo(GenderDto.MALE)
-        assertThat(competitor.birthday).isEqualTo(BirthdayDto.parse("2012-02-14T00:00:00Z"))
+        assertThat(competitor.birthday).isEqualTo(BirthdayDto.parse("2012-02-14"))
         assertThat(competitor.isAbsent).isFalse()
         assertThat(competitor.address).isEqualTo("Peck Court 51")
         assertThat(competitor.town.zip).isEqualTo("3000")

@@ -228,7 +228,7 @@ internal class PsaRankingManagerTest {
         surname: String = "",
         prename: String = "",
         gender: GenderDto = GenderDto.MALE,
-        birthday: BirthdayDto = BirthdayDto.ofMillis(0),
+        birthday: BirthdayDto = BirthdayDto.min(),
         absent: Boolean = false,
         address: String = "",
         zip: String = "",

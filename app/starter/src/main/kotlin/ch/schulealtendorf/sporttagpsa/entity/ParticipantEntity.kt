@@ -37,6 +37,7 @@
 package ch.schulealtendorf.sporttagpsa.entity
 
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import java.time.LocalDate
 import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -77,7 +78,7 @@ data class ParticipantEntity(
     var gender: GenderDto = GenderDto.MALE,
 
     @NotNull
-    var birthday: Long = 0,
+    var birthday: LocalDate = LocalDate.now(),
 
     @NotNull
     var absent: Boolean = false,

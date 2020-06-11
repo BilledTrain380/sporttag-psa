@@ -1,6 +1,7 @@
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
 import ch.schulealtendorf.psa.dto.participation.ATHLETICS
+import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
@@ -29,7 +30,7 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
             surname = "Wirbelwind",
             gender = GenderDto.MALE,
             address = "Musterstrasse 21",
-            birthday = "2020-01-01",
+            birthday = BirthdayDto.parse("2020-01-01"),
             group = "2a",
             town = TownDto("8000", "Zürich")
         )
@@ -39,7 +40,7 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
             prename = "Fritz",
             surname = "Fisher",
             gender = GenderDto.MALE,
-            birthday = null,
+            birthday = BirthdayDto.parse("2020-01-02"),
             address = "Fischerstrasse 65",
             isAbsent = true,
             town = TownDto(
