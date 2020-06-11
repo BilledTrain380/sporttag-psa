@@ -18,8 +18,6 @@ import ch.schulealtendorf.sporttagpsa.entity.TownEntity
 import ch.schulealtendorf.sporttagpsa.entity.UnitEntity
 import ch.schulealtendorf.sporttagpsa.entity.UserEntity
 
-fun ageOf(entity: ParticipantEntity): Int = BirthdayDto.ofDate(entity.birthday).age
-
 fun ageOf(entity: CompetitorEntity): Int = BirthdayDto.ofDate(entity.participant.birthday).age
 
 fun participantDtoOf(participantEntity: ParticipantEntity): ParticipantDto {
