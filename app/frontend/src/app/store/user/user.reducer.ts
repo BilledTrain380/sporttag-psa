@@ -1,5 +1,7 @@
 import { Action, createReducer, on } from "@ngrx/store";
 
+import { ANONYMOUS } from "../../@core/auth/auth-constants";
+
 import { loginSuccess, logout } from "./user.action";
 
 export interface UserState {
@@ -8,14 +10,14 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  username: "anonymous",
+  username: ANONYMOUS,
   authorities: [],
 };
 
 const reducer = createReducer(
   initialState,
   on(loginSuccess, ((_, action) => ({username: action.username, authorities: action.authorities}))),
-  on(logout, (() => initialState)),
+  on(logout, (() => ({...initialState}))),
 );
 
 export function userReducer(state: UserState | undefined, action: Action): UserState {

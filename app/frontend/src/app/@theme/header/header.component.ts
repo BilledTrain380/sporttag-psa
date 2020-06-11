@@ -17,7 +17,7 @@ import { selectUsername } from "../../store/user/user.selector";
              templateUrl: "./header.component.html",
            })
 export class HeaderComponent implements OnInit, OnDestroy {
-  username$?: Observable<string>;
+  readonly username$: Observable<string> = this.store.select(selectUsername);
 
   isMobile = false;
   readonly menu = MENU_ITEMS;
@@ -35,8 +35,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.username$ = this.store.select(selectUsername);
-
     this.breakpointObserver
       .observe([
                  Breakpoints.TabletPortrait,
