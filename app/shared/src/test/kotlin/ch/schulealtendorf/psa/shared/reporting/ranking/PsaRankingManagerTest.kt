@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 
 @Tag("unit-test")
 internal class PsaRankingManagerTest {
@@ -228,7 +229,7 @@ internal class PsaRankingManagerTest {
         surname: String = "",
         prename: String = "",
         gender: GenderDto = GenderDto.MALE,
-        birthday: BirthdayDto = BirthdayDto.min(),
+        birthday: BirthdayDto = BirthdayDto.ofDate(LocalDate.MIN),
         absent: Boolean = false,
         address: String = "",
         zip: String = "",

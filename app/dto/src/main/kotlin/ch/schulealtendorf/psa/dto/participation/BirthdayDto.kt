@@ -37,18 +37,14 @@
 package ch.schulealtendorf.psa.dto.participation
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Year
 import java.time.format.DateTimeFormatter
-import java.util.Locale
-import java.util.ResourceBundle
+import java.time.format.FormatStyle
 
 data class BirthdayDto(
     val value: LocalDate
 ) {
-    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
-
     @JsonIgnore
     val age: Int = Year.now().value - value.year
 
@@ -56,18 +52,11 @@ data class BirthdayDto(
     val year: Year = Year.of(value.year)
 
     companion object {
-        fun parse(text: String) =
-            BirthdayDto(LocalDate.parse(text))
+        fun parse(text: String) = BirthdayDto(LocalDate.parse(text))
 
         fun parse(text: String, formatter: DateTimeFormatter) = BirthdayDto(LocalDate.parse(text, formatter))
 
         fun ofDate(date: LocalDate) = BirthdayDto(date)
-
-        fun min() = BirthdayDto(LocalDate.MIN)
-
-        @Deprecated(message = "Will be removed", replaceWith = ReplaceWith("parse"))
-        fun ofMillis(milliSeconds: Long): BirthdayDto =
-            TODO()
     }
 
     /**
@@ -77,11 +66,12 @@ data class BirthdayDto(
      *
      * @param pattern the format pattern of the date
      */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(value)
+    fun format(pattern: String): String = DateTimeFormatter.ofPattern(pattern).format(value)
 
     /**
      * Formats the birthday based on the default locale.
-     * @see Locale.getDefault
+     * @see DateTimeFormatter.ofLocalizedDate
+     * @see FormatStyle.SHORT
      */
-    fun format() = format(resourceBundle.getString("birthday.format"))
+    fun format(): String = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(value)
 }
