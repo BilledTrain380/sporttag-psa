@@ -78,7 +78,7 @@ data class ParticipantEntity(
     var gender: GenderDto = GenderDto.MALE,
 
     @NotNull
-    var birthday: LocalDate = LocalDate.now(),
+    var birthday: LocalDate = LocalDate.MIN,
 
     @NotNull
     var absent: Boolean = false,
