@@ -181,7 +181,6 @@ class ParticipantController(
             surname = input.surname,
             prename = input.prename,
             gender = input.gender,
-            // FIXME: Use value from input
             birthday = input.birthday,
             address = input.address,
             town = input.town,
