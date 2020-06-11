@@ -81,7 +81,7 @@ class ParticipantManagerImpl(
             surname = participant.surname
             prename = participant.prename
             gender = participant.gender
-            birthday = participant.birthday.time.toEpochMilli()
+            birthday = participant.birthday.value
             address = participant.address
             town = townEntity
             group = groupEntity

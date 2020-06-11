@@ -37,7 +37,6 @@
 package ch.schulealtendorf.sporttagpsa.controller.resource
 
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
-import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
@@ -182,8 +181,7 @@ class ParticipantController(
             surname = input.surname,
             prename = input.prename,
             gender = input.gender,
-            // FIXME: Use value from input
-            birthday = BirthdayDto.ofMillis(0),
+            birthday = input.birthday,
             address = input.address,
             town = input.town,
             isAbsent = false,
@@ -237,7 +235,7 @@ class ParticipantController(
         }
 
         dto.birthday.ifNotNull {
-            builder.setBirthday(BirthdayDto(it.time))
+            builder.setBirthday(it)
         }
 
         dto.gender.ifNotNull {

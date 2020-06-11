@@ -85,7 +85,7 @@ internal class ParticipationManagerImplTest {
             surname = "Miller",
             prename = "Ben R",
             gender = GenderDto.MALE,
-            birthday = BirthdayDto.parse("2012-05-15T00:00:00Z"),
+            birthday = BirthdayDto.parse("2012-05-15"),
             address = "Deans Lane 124",
             town = TownDto(
                 zip = "3027",

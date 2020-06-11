@@ -37,31 +37,26 @@
 package ch.schulealtendorf.psa.dto.participation
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import java.text.SimpleDateFormat
-import java.time.Instant
+import java.time.LocalDate
 import java.time.Year
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.Locale
-import java.util.ResourceBundle
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 data class BirthdayDto(
-    val time: Instant
+    val value: LocalDate
 ) {
-    private val resourceBundle = ResourceBundle.getBundle("i18n.dto-terms")
+    @JsonIgnore
+    val age: Int = Year.now().value - value.year
 
     @JsonIgnore
-    val age: Int = ZonedDateTime.now().year - time.atZone(ZoneId.systemDefault()).year
-
-    @JsonIgnore
-    val year: Year = Year.of(time.atZone(ZoneId.systemDefault()).year)
+    val year: Year = Year.of(value.year)
 
     companion object {
-        fun parse(text: String) =
-            BirthdayDto(ZonedDateTime.parse(text).toInstant())
+        fun parse(text: String) = BirthdayDto(LocalDate.parse(text))
 
-        fun ofMillis(milliSeconds: Long) =
-            BirthdayDto(Instant.ofEpochMilli(milliSeconds))
+        fun parse(text: String, formatter: DateTimeFormatter) = BirthdayDto(LocalDate.parse(text, formatter))
+
+        fun ofDate(date: LocalDate) = BirthdayDto(date)
     }
 
     /**
@@ -71,31 +66,12 @@ data class BirthdayDto(
      *
      * @param pattern the format pattern of the date
      */
-    fun format(pattern: String): String = SimpleDateFormat(pattern).format(time.atZone(ZoneId.systemDefault()))
+    fun format(pattern: String): String = DateTimeFormatter.ofPattern(pattern).format(value)
 
     /**
      * Formats the birthday based on the default locale.
-     * @see Locale.getDefault
+     * @see DateTimeFormatter.ofLocalizedDate
+     * @see FormatStyle.SHORT
      */
-    fun format() = format(resourceBundle.getString("birthday.format"))
-
-    fun toBuilder() = Builder(this)
-
-    class Builder internal constructor(
-        dto: BirthdayDto
-    ) {
-        private var time = dto.time
-
-        fun setMilliseconds(milliseconds: Long): Builder {
-            this.time = Instant.ofEpochMilli(milliseconds)
-            return this
-        }
-
-        fun setTime(time: Instant): Builder {
-            this.time = time
-            return this
-        }
-
-        fun build() = BirthdayDto(time)
-    }
+    fun format(): String = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(value)
 }

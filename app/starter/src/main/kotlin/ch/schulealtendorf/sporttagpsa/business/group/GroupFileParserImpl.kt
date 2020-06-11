@@ -41,9 +41,7 @@ import ch.schulealtendorf.psa.dto.participation.GenderDto
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.nio.charset.Charset
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.Optional
 import java.util.stream.Stream
@@ -102,7 +100,7 @@ class GroupFileParserImpl : GroupFileParser {
                     val town: String = parts[6]
 
                     val birthdayValue: String = parts[7]
-                    val birthday = birthdayValue.toDate()
+                    val birthday = parseBirthdayValue(birthdayValue)
                         .orElseThrow {
                             CSVParsingException(
                                 "Can not parse birthday: value=$birthdayValue",
@@ -117,7 +115,7 @@ class GroupFileParserImpl : GroupFileParser {
                         surname,
                         prename,
                         gender,
-                        BirthdayDto.ofMillis(birthday.time),
+                        birthday,
                         address,
                         zipCode,
                         town,
@@ -135,11 +133,10 @@ class GroupFileParserImpl : GroupFileParser {
 
     private fun List<String>.column(endIndex: Int) = this.subList(0, endIndex).joinToString(",").length + 1
 
-    private fun String.toDate(): Optional<Date> {
-
+    private fun parseBirthdayValue(value: String): Optional<BirthdayDto> {
         return try {
-            val format: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
-            Optional.of(format.parse(this))
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.GERMAN)
+            Optional.of(BirthdayDto.parse(value, formatter))
         } catch (exception: Exception) {
             Optional.empty()
         }
