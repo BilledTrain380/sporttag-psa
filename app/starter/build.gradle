@@ -16,7 +16,7 @@ dependencies {
 
     implementation "io.jsonwebtoken:jjwt"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
 
     implementation project(":app:core")
     implementation project(':app:shared')
