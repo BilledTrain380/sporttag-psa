@@ -26,8 +26,6 @@ export class AppComponent implements OnInit {
     this.log.info("Browser version: ", navigator.userAgent);
     this.log.info("Started PSA frontend Angular application");
 
-    // We don't have an id token, but its required to perform the logout properly, so we just provide a uuid
-    sessionStorage.setItem("id_token", "8c1f517c-9e6d-4881-9a79-8d2ddf8f7c84");
     this.oauthService.configure(authConfig);
     this.oauthService.setStorage(sessionStorage);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
