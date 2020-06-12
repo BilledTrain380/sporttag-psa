@@ -12,3 +12,25 @@ body {
 .popover.increase-popover-width {
   max-width: 400px;
 }
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 10px solid #ccc;
+  border-top-color: #FFC107;
+  animation: spinner .6s linear infinite;
+}

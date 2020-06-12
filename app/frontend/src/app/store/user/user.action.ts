@@ -5,8 +5,8 @@ export interface PropsLoginSuccess {
   readonly authorities: ReadonlyArray<string>;
 }
 
-export const loginSuccess = createAction(
-  "[Authentication] Login Success",
+export const setUser = createAction(
+  "[Authentication] Set user",
   props<PropsLoginSuccess>(),
 );
 
