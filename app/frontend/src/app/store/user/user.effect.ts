@@ -7,7 +7,7 @@ import { ANONYMOUS } from "../../@core/auth/auth-constants";
 import { PsaAuthService } from "../../@core/auth/psa-auth.service";
 import { getLogger } from "../../@core/logging";
 
-import { loginSuccess, logout } from "./user.action";
+import { logout, setUser } from "./user.action";
 
 @Injectable()
 export class UserEffects {
@@ -15,7 +15,7 @@ export class UserEffects {
     .pipe(ofType(logout.type))
     .pipe(switchMap(() =>
                       this.authService.revokeToken()
-                        .pipe(map(() => loginSuccess({username: ANONYMOUS, authorities: []})))
+                        .pipe(map(() => setUser({username: ANONYMOUS, authorities: []})))
                         .pipe(catchError(err => {
                           this.log.warn("Could perform logout", err);
 
