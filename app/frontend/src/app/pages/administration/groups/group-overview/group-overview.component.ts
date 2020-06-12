@@ -9,6 +9,7 @@ import { Alert } from "../../../../modules/alert/alert";
 import { AppState } from "../../../../store/app";
 import { loadOverviewGroupsAction } from "../../../../store/group/group.action";
 import { selectOverviewGroups } from "../../../../store/group/group.selector";
+import { GROUP_DETAIL_PREFIX_PATH } from "../groups-paths";
 
 import { ImportGroupsComponent } from "./import-groups/import-groups.component";
 
@@ -17,6 +18,8 @@ import { ImportGroupsComponent } from "./import-groups/import-groups.component";
              templateUrl: "./group-overview.component.html",
            })
 export class GroupOverviewComponent implements OnInit {
+  readonly groupDetailPrefixPath = GROUP_DETAIL_PREFIX_PATH;
+
   readonly groups$: Observable<ReadonlyArray<OverviewGroupDto>> = this.store.select(selectOverviewGroups);
 
   readonly faUpload = faUpload;

@@ -9,6 +9,7 @@ import { ModalModule } from "../../../modules/modal/modal.module";
 import { StatusModule } from "../../../modules/status/status.module";
 import { GroupEffects } from "../../../store/group/group.effect";
 
+import { GroupDetailComponent } from "./group-detail/group-detail.component";
 import { GroupOverviewComponent } from "./group-overview/group-overview.component";
 import { ImportGroupsComponent } from "./group-overview/import-groups/import-groups.component";
 import { GroupsRoutingModule } from "./groups-routing.module";
@@ -19,6 +20,7 @@ import { GroupsComponent } from "./groups.component";
               GroupsComponent,
               GroupOverviewComponent,
               ImportGroupsComponent,
+              GroupDetailComponent,
             ],
             imports: [
               ThemeModule,

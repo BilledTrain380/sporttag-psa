@@ -17,6 +17,7 @@
   <table class="table" data-test-selector="group-table">
     <thead>
     <tr>
+      <th i18n>Actions</th>
       <th i18n>Name</th>
       <th i18n>Coach</th>
       <th i18n>Status</th>
@@ -25,6 +26,12 @@
 
     <tbody>
     <tr *ngFor="let overviewGroup of groups$ | async">
+      <th>
+        <app-single-button text="Manage"
+                           i18n-text
+                           [routerLink]="groupDetailPrefixPath + overviewGroup.group.name">
+        </app-single-button>
+      </th>
       <th>{{overviewGroup.group.name}}</th>
       <th>{{overviewGroup.group.coach}}</th>
       <th>
