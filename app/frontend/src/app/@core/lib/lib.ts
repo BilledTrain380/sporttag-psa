@@ -74,6 +74,7 @@ export class Optional<T> {
   }
 }
 
+// tslint:disable-next-line: no-null-undefined-union
 export function requireNonNullOrUndefined<T>(value: T | undefined | null): T {
   if (value === undefined || value === null) {
     throw new Error("Value must not be undefined or null");

@@ -18,9 +18,9 @@ export enum TemporalUnit {
 export class Duration {
   static readonly ZERO = new Duration(0);
 
-  private static ROUND_PRECISION = 1000_000;
+  private static readonly ROUND_PRECISION = 1000_000;
 
-  private static UNIT_MAP: ReadonlyMap<TemporalUnit, UFunction<number, number>> =
+  private static readonly UNIT_MAP: ReadonlyMap<TemporalUnit, UFunction<number, number>> =
     new Map([
               [TemporalUnit.DAYS, millis => millis / DAY_IN_MILLIS],
               [TemporalUnit.HOURS, millis => millis / HOUR_IN_MILLIS],
