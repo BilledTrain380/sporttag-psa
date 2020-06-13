@@ -45,7 +45,7 @@ export class ParticipantModel {
       dto.surname,
       dto.prename,
       translateGender(dto.gender),
-      dto.isAbsent,
+      dto.absent,
       dto.address,
       dto.sportType,
     );

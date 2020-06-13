@@ -13,7 +13,7 @@ export interface ParticipantDto {
   readonly prename: string;
   readonly gender: GenderDto;
   readonly birthday: BirthdayDto;
-  readonly isAbsent: boolean;
+  readonly absent: boolean;
   readonly address: string;
   readonly town: TownDto;
   readonly group: SimpleGroupDto;
@@ -51,7 +51,7 @@ export class ParticipantDtoBuilder {
     this.prename = dto.prename;
     this.gender = dto.gender;
     this.birthday = dto.birthday;
-    this.isAbsent = dto.isAbsent;
+    this.isAbsent = dto.absent;
     this.address = dto.address;
     this.town = dto.town;
     this.group = dto.group;
@@ -121,7 +121,7 @@ export class ParticipantDtoBuilder {
       prename: requireNonNullOrUndefined(this.prename),
       gender: requireNonNullOrUndefined(this.gender),
       birthday: requireNonNullOrUndefined(this.birthday),
-      isAbsent: requireNonNullOrUndefined(this.isAbsent),
+      absent: requireNonNullOrUndefined(this.isAbsent),
       address: requireNonNullOrUndefined(this.address),
       town: requireNonNullOrUndefined(this.town),
       group: requireNonNullOrUndefined(this.group),
