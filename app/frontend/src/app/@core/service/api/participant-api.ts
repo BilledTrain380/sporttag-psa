@@ -69,9 +69,7 @@ export class ParticipantParameters implements ApiParameters {
   }
 
   buildParameters(): HttpParams {
-    const params = new HttpParams();
-    params.set("group", this.group);
-
-    return params;
+    return new HttpParams()
+      .set("group", this.group);
   }
 }

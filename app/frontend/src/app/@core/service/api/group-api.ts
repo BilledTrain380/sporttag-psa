@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { GroupStatusType, OverviewGroupDto, SimpleGroupDto } from "../../../dto/group";
 import { getLogger, Logger } from "../../logging";
 
-import { ApiParameters, API_ENDPOINT } from "./pas-api";
+import { API_ENDPOINT, ApiParameters } from "./pas-api";
 
 @Injectable({
               providedIn: "root",
@@ -46,9 +46,7 @@ export class OverviewGroupsParameters implements ApiParameters {
   }
 
   buildParameters(): HttpParams {
-    const params = new HttpParams();
-    params.set("status_type", this.statusType);
-
-    return params;
+    return new HttpParams()
+      .set("status_type", this.statusType);
   }
 }
