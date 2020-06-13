@@ -1,25 +1,29 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { EMPTY, of } from "rxjs";
+import { EMPTY, forkJoin, of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
 import { getLogger } from "../../@core/logging";
 import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
+import { ParticipantApi, ParticipantParameters } from "../../@core/service/api/participant-api";
 import { WebApi } from "../../@core/service/api/web-api";
 import { AlertFactory } from "../../modules/alert/alert";
 
 import {
   importGroupsAction,
   ImportGroupsProps,
+  loadGroupAction,
+  LoadGroupProps,
   loadOverviewGroupsAction,
   LoadOverviewGroupsProps,
+  setActiveGroupAction,
   setImportGroupsAlertAction,
   setOverviewGroupsAction,
 } from "./group.action";
 
 @Injectable()
 export class GroupEffects {
-  readonly loadGroups$ = createEffect(() => this.actions$
+  readonly loadOverviewGroups$ = createEffect(() => this.actions$
     .pipe(ofType(loadOverviewGroupsAction.type))
     .pipe(switchMap((action: LoadOverviewGroupsProps) => {
       const parameters = action.statusType ? new OverviewGroupsParameters(action.statusType) : undefined;
@@ -57,11 +61,26 @@ export class GroupEffects {
                     },
     )));
 
+  readonly loadActiveGroup = createEffect(() => this.actions$
+    .pipe(ofType(loadGroupAction.type))
+    .pipe(switchMap((action: LoadGroupProps) =>
+                      forkJoin([
+                                 this.groupApi.getGroup(action.name),
+                                 this.participantApi.getParticipants(new ParticipantParameters(action.name)),
+                               ])
+                        .pipe(map(result => setActiveGroupAction({group: result[0], participants: result[1]})))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not load active group", err);
+
+                          return EMPTY;
+                        })))));
+
   private readonly log = getLogger("GroupEffect");
 
   constructor(
     private readonly actions$: Actions,
     private readonly groupApi: GroupApi,
+    private readonly participantApi: ParticipantApi,
     private readonly webApi: WebApi,
     private readonly alertFactory: AlertFactory,
   ) {
