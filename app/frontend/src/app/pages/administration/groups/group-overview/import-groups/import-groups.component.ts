@@ -11,6 +11,7 @@ import { Alert } from "../../../../../modules/alert/alert";
 import { AbstractSubmitModalComponent } from "../../../../../modules/modal/submit-modal/abstract-submit-modal.component";
 import { clearImportGroupsAlertAction, importGroupsAction } from "../../../../../store/group/group.action";
 import { selectImportAlert } from "../../../../../store/group/group.selector";
+import { VOID_PROPS } from "../../../../../store/standard-props";
 
 @Component({
              selector: "app-import-groups",
@@ -54,7 +55,7 @@ export class ImportGroupsComponent extends AbstractSubmitModalComponent implemen
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
-    this.store.dispatch(clearImportGroupsAlertAction({}));
+    this.store.dispatch(clearImportGroupsAlertAction(VOID_PROPS));
   }
 
   submit(): void {
