@@ -8,7 +8,7 @@ interface ExpectedDurationValues {
 }
 
 // tslint:disable: no-magic-numbers
-fdescribe("Time", () => {
+describe("Time", () => {
   describe("Duration", () => {
 
     function assertDuration(duration: Duration, expected: ExpectedDurationValues): void {
