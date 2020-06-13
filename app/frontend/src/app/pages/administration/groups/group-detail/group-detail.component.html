@@ -1,1 +1,61 @@
-<p>group-detail works!</p>
+<div class="mt-3">
+  <button class="btn btn-outline-info">Go back</button>
+</div>
+
+<!-- TODO: Loading component -->
+<app-simple-page *ngIf="group$ | async as group"
+                 [pageTitle]="group.name"
+                 [pageSubTitle]="group.coach"
+                 cardTitle="Participants"
+                 i18n-cardTitle>
+  <app-layout-buttons>
+    <button type="button"
+            class="btn btn-primary btn-sm"
+            data-test-selector="import-groups">
+      <fa-icon [icon]="faPlusCircle"></fa-icon>
+      <span i18n>Add participant</span>
+    </button>
+  </app-layout-buttons>
+
+  <app-text-alert [alert]="alert$ | async"></app-text-alert>
+
+  <table class="table" data-test-selector="participant-table">
+    <thead>
+    <tr>
+      <th i18n>Actions</th>
+      <th i18n>Surname</th>
+      <th i18n>Prename</th>
+      <th i18n>Gender</th>
+      <th i18n>Address</th>
+      <th i18n>Absent</th>
+      <th i18n>Sport Type</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let participant of group.participants">
+      <td>
+        <app-button-group>
+          <app-button-group-item text="Edit" i18n-text></app-button-group-item>
+          <app-button-group-item text="Delete" i18n-text></app-button-group-item>
+        </app-button-group>
+      </td>
+      <td>{{participant.surname}}</td>
+      <td>{{participant.prename}}</td>
+      <td>{{participant.gender}}</td>
+      <td>{{participant.address}}</td>
+      <td>
+        <div class="form-check">
+          <input class="form-check-input"
+                 type="checkbox"
+                 [(ngModel)]="participant.isAbsent"
+                 (change)="toggleAbsent(participant)">
+        </div>
+      </td>
+      <td>
+        {{participant.sportType}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</app-simple-page>

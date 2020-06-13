@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { EffectsModule } from "@ngrx/effects";
 
 import { ThemeModule } from "../../../@theme/theme.module";
@@ -31,6 +32,7 @@ import { GroupsComponent } from "./groups.component";
               GroupsRoutingModule,
               DragAndDropModule,
               EffectsModule.forFeature([GroupEffects]),
+              FormsModule,
             ],
           })
 export class GroupsModule {
