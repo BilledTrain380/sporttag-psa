@@ -11,7 +11,7 @@ import { Alert } from "../../../../modules/alert/alert";
 import { clearActiveGroupAction, loadGroupAction, updateParticipantAction } from "../../../../store/group/group.action";
 import { selectActiveGroup, selectActiveGroupAlert } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
-import { GROUP_NAME_PATH_VARIABLE } from "../groups-paths";
+import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
 
 import { GroupViewModel, ParticipantModel } from "./view-model";
 
@@ -22,6 +22,8 @@ import { GroupViewModel, ParticipantModel } from "./view-model";
            })
 export class GroupDetailComponent implements OnInit, OnDestroy {
   readonly faPlusCircle = faPlusCircle;
+
+  readonly groupManagementLink = ROOT_PATH;
 
   readonly group$: Observable<GroupViewModel> = this.store.select(selectActiveGroup)
     .pipe(map(group => {
