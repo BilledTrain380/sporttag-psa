@@ -17,8 +17,11 @@ import {
   loadOverviewGroupsAction,
   LoadOverviewGroupsProps,
   setActiveGroupAction,
+  setActiveGroupAlertAction,
   setImportGroupsAlertAction,
   setOverviewGroupsAction,
+  updateParticipantAction,
+  UpdateParticipantProps,
 } from "./group.action";
 
 @Injectable()
@@ -74,6 +77,29 @@ export class GroupEffects {
 
                           return EMPTY;
                         })))));
+
+  readonly updateParticipant = createEffect(() => this.actions$
+    .pipe(ofType(updateParticipantAction.type))
+    .pipe(switchMap((action: UpdateParticipantProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.participantApi.updateParticipant(action.participant)
+                        .pipe(map(() => {
+                          this.log.info("Successfully updated participant");
+
+                          const alert = textAlert.success($localize`Successfully updated participant`);
+
+                          return setActiveGroupAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not update participant", err);
+
+                          const alert = textAlert.error($localize`Could not update participant`);
+
+                          return of(setActiveGroupAlertAction({alert}));
+                        }));
+                    },
+    )));
 
   private readonly log = getLogger("GroupEffect");
 

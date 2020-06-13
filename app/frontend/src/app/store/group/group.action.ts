@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 
 import { GroupStatusType, OverviewGroupDto, SimpleGroupDto } from "../../dto/group";
-import { ParticipantDto } from "../../dto/participation";
+import { ParticipantDto, ParticipantElement } from "../../dto/participation";
 import { Alert } from "../../modules/alert/alert";
 
 export interface LoadOverviewGroupsProps {
@@ -71,5 +71,28 @@ export const setActiveGroupAction = createAction(
 
 export const clearActiveGroupAction = createAction(
   "[GroupDetail] Clear active group",
+  props(),
+);
+
+export interface UpdateParticipantProps {
+  participant: ParticipantElement;
+}
+
+export const updateParticipantAction = createAction(
+  "[GroupDetail] Update participant",
+  props<UpdateParticipantProps>(),
+);
+
+export interface SetActiveGroupAlertProps {
+  readonly alert: Alert;
+}
+
+export const setActiveGroupAlertAction = createAction(
+  "[GroupEffect] Set active group alert",
+  props<SetActiveGroupAlertProps>(),
+);
+
+export const clearActiveGroupAlertAction = createAction(
+  "[GroupDetail] Clear active group alert",
   props(),
 );
