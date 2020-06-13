@@ -1,12 +1,11 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { EMPTY, Observable } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 import { ParticipantDto, ParticipantElement, ParticipantInput, ParticipantRelation } from "../../../dto/participation";
 import { getLogger, Logger } from "../../logging";
 
-import { API_ENDPOINT, ApiParameters } from "./pas-api";
+import { ApiParameters, API_ENDPOINT } from "./pas-api";
 
 @Injectable({
               providedIn: "root",
@@ -36,29 +35,25 @@ export class ParticipantApi {
   updateParticipant(participantElement: ParticipantElement): Observable<void> {
     this.log.info(`Update participant: id=${participantElement.id}`);
 
-    return this.http.patch(`${API_ENDPOINT}/participant/${participantElement.id}`, participantElement)
-      .pipe(mergeMap(() => EMPTY));
+    return this.http.patch<void>(`${API_ENDPOINT}/participant/${participantElement.id}`, participantElement);
   }
 
   updateParticipantRelation(participantRelation: ParticipantRelation): Observable<void> {
     this.log.info(`Update participant relation: id=${participantRelation.id}`);
 
-    return this.http.put(`${API_ENDPOINT}/participant/${participantRelation.id}`, participantRelation)
-      .pipe(mergeMap(() => EMPTY));
+    return this.http.put<void>(`${API_ENDPOINT}/participant/${participantRelation.id}`, participantRelation);
   }
 
   createParticipant(participantInput: ParticipantInput): Observable<void> {
     this.log.info(`Create participant: name=${participantInput.surname} ${participantInput.prename}`);
 
-    return this.http.post(`${API_ENDPOINT}/participants`, participantInput)
-      .pipe(mergeMap(() => EMPTY));
+    return this.http.post<void>(`${API_ENDPOINT}/participants`, participantInput);
   }
 
   deleteParticipant(id: number): Observable<void> {
     this.log.info(`Delete participant: id=${id}`);
 
-    return this.http.delete(`${API_ENDPOINT}/participant/${id}`)
-      .pipe(mergeMap(() => EMPTY));
+    return this.http.delete<void>(`${API_ENDPOINT}/participant/${id}`);
   }
 }
 
