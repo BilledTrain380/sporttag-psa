@@ -1,10 +1,11 @@
 <div ngbDropdown class="d-inline-block">
-  <button class="btn btn-sm btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle i18n>
+  <button id="action-button-group"
+          class="btn btn-sm btn-light"
+          ngbDropdownToggle
+          i18n>
     Actions
   </button>
-  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-    <button ngbDropdownItem>Action - 1</button>
-    <button ngbDropdownItem>Another Action</button>
-    <button ngbDropdownItem>Something else is here</button>
+  <div ngbDropdownMenu aria-labelledby="action-button-group">
+    <ng-content></ng-content>
   </div>
 </div>
