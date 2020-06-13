@@ -98,6 +98,7 @@
       true,
       "ignore-arrow-function-shorthand"
     ],
+    "invalid-void": false,
     "no-floating-promises": false,
     "promise-function-async": false,
     "completed-docs": false,

@@ -1,22 +1,22 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AdministrationComponent } from "./administration.component";
-import { OverviewComponent } from "./overview/overview.component";
+import { GroupDetailComponent } from "./group-detail/group-detail.component";
+import { GroupOverviewComponent } from "./group-overview/group-overview.component";
+import { GroupsComponent } from "./groups.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: AdministrationComponent,
+    component: GroupsComponent,
     children: [
       {
         path: "overview",
-        component: OverviewComponent,
+        component: GroupOverviewComponent,
       },
       {
-        path: "group-management",
-        loadChildren: () => import("./groups/groups.module")
-          .then(module => module.GroupsModule),
+        path: ":name",
+        component: GroupDetailComponent,
       },
       {
         path: "",
@@ -31,5 +31,5 @@ const routes: Routes = [
             imports: [RouterModule.forChild(routes)],
             exports: [RouterModule],
           })
-export class AdministrationRoutingModule {
+export class GroupsRoutingModule {
 }

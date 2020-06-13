@@ -74,14 +74,22 @@ export class Optional<T> {
   }
 }
 
-// tslint:disable-next-line:no-any
-export function requireNonNullOrUndefined(value: any): void {
+// tslint:disable-next-line: no-null-undefined-union
+export function requireNonNullOrUndefined<T>(value: T | undefined | null): T {
   if (value === undefined || value === null) {
     throw new Error("Value must not be undefined or null");
   }
+
+  return value;
 }
 
 // tslint:disable-next-line:no-any
 export function isNullOrUndefined(value: any): boolean {
   return value === undefined || value === null;
+}
+
+export function ifNotNullOrUndefined<T>(value: T | undefined, consumer: Consumer<T>): void {
+  if (!isNullOrUndefined(value)) {
+    consumer(value!);
+  }
 }

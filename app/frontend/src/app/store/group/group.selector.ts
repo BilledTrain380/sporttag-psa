@@ -15,3 +15,13 @@ export const selectImportAlert = createSelector(
   selectGroup,
   (state: GroupState) => state.importAlert,
 );
+
+export const selectActiveGroup = createSelector(
+  selectGroup,
+  (state: GroupState) => state.activeGroup,
+);
+
+export const selectActiveGroupAlert = createSelector(
+  selectGroup,
+  (state: GroupState) => state.activeGroup?.alert,
+);
