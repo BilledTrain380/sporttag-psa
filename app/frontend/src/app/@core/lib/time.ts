@@ -1,14 +1,11 @@
 import { UFunction } from "./function";
 
-export const QUARTER_SECOND = 250;
-export const HALF_SECOND = 500;
-export const ONE_SECOND = 1000;
-export const FIVE_SECONDS = 5000;
-
 export const DAY_IN_MILLIS = 86_400_000;
 export const HOUR_IN_MILLIS = 3_600_000;
 export const MINUTE_IN_MILLIS = 60_000;
 export const SECOND_IN_MILLIS = 1000;
+export const HALF_SECOND_IN_MILLIS = 500;
+export const QUARTER_SECOND_IN_MILLIS = 250;
 
 export enum TemporalUnit {
   DAYS = "DAYS",
