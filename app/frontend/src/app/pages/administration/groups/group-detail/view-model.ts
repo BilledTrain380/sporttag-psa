@@ -1,5 +1,5 @@
+import { SimpleGroupDto } from "../../../../dto/group";
 import { ParticipantDto, translateGender } from "../../../../dto/participation";
-import { ActiveGroup } from "../../../../store/group/group.reducer";
 
 export class GroupViewModel {
   private static readonly GROUP_PREFIX = $localize`Group `;
@@ -7,23 +7,18 @@ export class GroupViewModel {
   private constructor(
     readonly name: string,
     readonly coach: string,
-    readonly participants: ReadonlyArray<ParticipantModel>,
   ) {
   }
 
-  static fromState(activeGroup: ActiveGroup): GroupViewModel {
-    const participantModels = activeGroup.participants
-      .map(dto => ParticipantModel.fromDto(dto));
-
+  static fromState(activeGroup: SimpleGroupDto): GroupViewModel {
     return new GroupViewModel(
-      GroupViewModel.GROUP_PREFIX + activeGroup.group.name,
-      activeGroup.group.coach,
-      participantModels,
+      GroupViewModel.GROUP_PREFIX + activeGroup.name,
+      activeGroup.coach,
     );
   }
 
   static empty(): GroupViewModel {
-    return new GroupViewModel("UNKNOWN GROUP", "", []);
+    return new GroupViewModel("UNKNOWN GROUP", "");
   }
 }
 

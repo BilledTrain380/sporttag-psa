@@ -17,7 +17,7 @@ import {
   loadGroupAction,
   updateParticipantAction
 } from "../../../../store/group/group.action";
-import { selectActiveGroup, selectActiveGroupAlert } from "../../../../store/group/group.selector";
+import { selectActiveGroup, selectParticipantAlert, selectParticipants } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
 
@@ -41,7 +41,10 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
       return GroupViewModel.empty();
     }));
 
-  readonly alert$: Observable<Alert | undefined> = this.store.select(selectActiveGroupAlert);
+  readonly participants$: Observable<ReadonlyArray<ParticipantModel>> = this.store.select(selectParticipants)
+    .pipe(map(participants => participants.map(participant => ParticipantModel.fromDto(participant))));
+
+  readonly alert$: Observable<Alert | undefined> = this.store.select(selectParticipantAlert);
 
   private readonly updateParticipantAbsentTimer = Timer.ofHalfSecond<ParticipantElement>();
 

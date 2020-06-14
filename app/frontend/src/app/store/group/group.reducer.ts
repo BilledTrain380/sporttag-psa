@@ -21,17 +21,14 @@ import {
 export interface GroupState {
   readonly overviewGroups: ReadonlyArray<OverviewGroupDto>;
   readonly importAlert?: Alert;
-  readonly activeGroup?: ActiveGroup;
-}
-
-export interface ActiveGroup {
-  readonly group: SimpleGroupDto;
+  readonly activeGroup?: SimpleGroupDto;
   readonly participants: ReadonlyArray<ParticipantDto>;
-  readonly alert?: Alert;
+  readonly participantAlert?: Alert;
 }
 
 const initialState: GroupState = {
   overviewGroups: [],
+  participants: [],
 };
 
 const reducer = createReducer(
@@ -53,35 +50,25 @@ const reducer = createReducer(
   on(setActiveGroupAction, (state, action) => (
     {
       ...state,
-      activeGroup: {
-        group: action.group,
-        participants: action.participants,
-      },
+      activeGroup: action.group,
+      participants: action.participants,
     }
   )),
   on(clearActiveGroupAction, (state, _) => ({...state, activeGroup: undefined})),
   on(setActiveGroupAlertAction, (state, action) => (
     {
       ...state,
-      activeGroup: !state.activeGroup ? undefined : {
-        group: state.activeGroup.group,
-        participants: state.activeGroup.participants,
-        alert: action.alert,
-      },
+      participantAlert: action.alert,
     }
   )),
   on(clearActiveGroupAlertAction, (state, _) => (
     {
       ...state,
-      activeGroup: !state.activeGroup ? undefined : {
-        group: state.activeGroup.group,
-        participants: state.activeGroup.participants,
-        alert: undefined,
-      },
+      participantAlert: undefined,
     }
   )),
   on(updateParticipantAction, (state, action) => {
-    const participants = state.activeGroup?.participants
+    const participants = state.participants
       .map(participant => {
         if (participant.id === action.participant.id) {
           const builder = ParticipantDtoBuilder.newBuilder(participant);
@@ -101,22 +88,16 @@ const reducer = createReducer(
 
     return {
       ...state,
-      activeGroup: !state.activeGroup ? undefined : {
-        ...state.activeGroup,
-        participants: participants ? participants : [],
-      },
+      participants,
     };
   }),
   on(deleteParticipantAction, (state, action) => {
-    const participants = state.activeGroup?.participants
+    const participants = state.participants
       .filter(participant => participant.id !== action.participant_id);
 
     return {
       ...state,
-      activeGroup: !state.activeGroup ? undefined : {
-        ...state.activeGroup,
-        participants: participants ? participants : [],
-      },
+      participants,
     };
   }),
 );
