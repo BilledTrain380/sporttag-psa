@@ -10,6 +10,7 @@ import {
   clearActiveGroupAlertAction,
   clearImportGroupsAlertAction,
   clearOverviewGroupsAction,
+  deleteParticipantAction,
   setActiveGroupAction,
   setActiveGroupAlertAction,
   setImportGroupsAlertAction,
@@ -97,6 +98,18 @@ const reducer = createReducer(
 
         return participant;
       });
+
+    return {
+      ...state,
+      activeGroup: !state.activeGroup ? undefined : {
+        ...state.activeGroup,
+        participants: participants ? participants : [],
+      },
+    };
+  }),
+  on(deleteParticipantAction, (state, action) => {
+    const participants = state.activeGroup?.participants
+      .filter(participant => participant.id !== action.participant_id);
 
     return {
       ...state,

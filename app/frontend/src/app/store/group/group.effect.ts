@@ -10,6 +10,8 @@ import { WebApi } from "../../@core/service/api/web-api";
 import { AlertFactory } from "../../modules/alert/alert";
 
 import {
+  deleteParticipantAction,
+  DeleteParticipantProps,
   importGroupsAction,
   ImportGroupsProps,
   loadGroupAction,
@@ -73,7 +75,7 @@ export class GroupEffects {
                                ])
                         .pipe(map(result => setActiveGroupAction({group: result[0], participants: result[1]})))
                         .pipe(catchError(err => {
-                          this.log.warn("Could not load active group", err);
+                          this.log.warn(`Could not load active group: name=${action.name}`, err);
 
                           return EMPTY;
                         })))));
@@ -85,16 +87,39 @@ export class GroupEffects {
 
                       return this.participantApi.updateParticipant(action.participant)
                         .pipe(map(() => {
-                          this.log.info("Successfully updated participant");
+                          this.log.info(`Successfully updated participant: participantId=${action.participant.id}`);
 
                           const alert = textAlert.success($localize`Successfully updated participant`);
 
                           return setActiveGroupAlertAction({alert});
                         }))
                         .pipe(catchError(err => {
-                          this.log.warn("Could not update participant", err);
+                          this.log.warn(`Could not update participant: participantId=${action.participant.id}`, err);
 
                           const alert = textAlert.error($localize`Could not update participant`);
+
+                          return of(setActiveGroupAlertAction({alert}));
+                        }));
+                    },
+    )));
+
+  readonly deleteParticipant = createEffect(() => this.actions$
+    .pipe(ofType(deleteParticipantAction.type))
+    .pipe(switchMap((action: DeleteParticipantProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.participantApi.deleteParticipant(action.participant_id)
+                        .pipe(map(() => {
+                          this.log.info(`Successfully deleted participant: participantId=${action.participant_id}`);
+
+                          const alert = textAlert.success($localize`Successfully deleted participant`);
+
+                          return setActiveGroupAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not delete participant", err);
+
+                          const alert = textAlert.error($localize`Could not delete participant`);
 
                           return of(setActiveGroupAlertAction({alert}));
                         }));

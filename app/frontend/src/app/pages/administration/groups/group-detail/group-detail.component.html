@@ -37,7 +37,10 @@
       <td>
         <app-button-group>
           <app-button-group-item text="Edit" i18n-text></app-button-group-item>
-          <app-button-group-item text="Delete" i18n-text></app-button-group-item>
+          <app-button-group-item text="Delete"
+                                 i18n-text
+                                 (click)="deleteParticipant(participant)">
+          </app-button-group-item>
         </app-button-group>
       </td>
       <td>{{participant.surname}}</td>

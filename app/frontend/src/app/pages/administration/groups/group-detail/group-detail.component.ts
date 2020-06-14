@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Store } from "@ngrx/store";
 import { Observable, Subject } from "rxjs";
 import { map, takeUntil } from "rxjs/operators";
@@ -8,7 +9,14 @@ import { map, takeUntil } from "rxjs/operators";
 import { Timer } from "../../../../@core/lib/timer";
 import { ParticipantElement } from "../../../../dto/participation";
 import { Alert } from "../../../../modules/alert/alert";
-import { clearActiveGroupAction, loadGroupAction, updateParticipantAction } from "../../../../store/group/group.action";
+import { ConfirmModalComponent } from "../../../../modules/modal/confirm-modal/confirm-modal.component";
+import { ConfirmType } from "../../../../modules/modal/confirm-modal/confirm-type";
+import {
+  clearActiveGroupAction,
+  deleteParticipantAction,
+  loadGroupAction,
+  updateParticipantAction
+} from "../../../../store/group/group.action";
 import { selectActiveGroup, selectActiveGroupAlert } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
@@ -42,6 +50,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly store: Store,
+    private readonly modalService: NgbModal,
   ) {
   }
 
@@ -68,5 +77,23 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     };
 
     this.updateParticipantAbsentTimer.trigger(participantElement);
+  }
+
+  deleteParticipant(participant: ParticipantModel): void {
+    const modalRef = this.modalService.open(ConfirmModalComponent, {size: "md"});
+
+    modalRef.componentInstance.buildText(
+      $localize`Are you really want to delete the participant `,
+      "\"",
+      participant.fullName,
+      "\"?",
+    );
+
+    modalRef.result
+      .then((type: ConfirmType) => {
+        if (type === ConfirmType.CONFIRM) {
+          this.store.dispatch(deleteParticipantAction({participant_id: participant.id}));
+        }
+      });
   }
 }

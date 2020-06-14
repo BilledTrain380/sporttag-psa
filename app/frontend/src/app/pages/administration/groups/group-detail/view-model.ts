@@ -28,6 +28,10 @@ export class GroupViewModel {
 }
 
 export class ParticipantModel {
+  get fullName(): string {
+    return `${this.surname} ${this.prename}`;
+  }
+
   private constructor(
     readonly id: number,
     readonly surname: string,

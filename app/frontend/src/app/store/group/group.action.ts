@@ -75,12 +75,21 @@ export const clearActiveGroupAction = createAction(
 );
 
 export interface UpdateParticipantProps {
-  participant: ParticipantElement;
+  readonly participant: ParticipantElement;
 }
 
 export const updateParticipantAction = createAction(
   "[GroupDetail] Update participant",
   props<UpdateParticipantProps>(),
+);
+
+export interface DeleteParticipantProps {
+  readonly participant_id: number;
+}
+
+export const deleteParticipantAction = createAction(
+  "[GroupDetail] Delete participant",
+  props<DeleteParticipantProps>(),
 );
 
 export interface SetActiveGroupAlertProps {
