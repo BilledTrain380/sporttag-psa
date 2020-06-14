@@ -88,7 +88,8 @@ export function isNullOrUndefined(value: any): boolean {
   return value === undefined || value === null;
 }
 
-export function ifNotNullOrUndefined<T>(value: T | undefined, consumer: Consumer<T>): void {
+// tslint:disable-next-line: no-null-undefined-union
+export function ifNotNullOrUndefined<T>(value: T | undefined | null, consumer: Consumer<T>): void {
   if (!isNullOrUndefined(value)) {
     consumer(value!);
   }
