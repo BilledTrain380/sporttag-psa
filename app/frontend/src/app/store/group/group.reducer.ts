@@ -13,6 +13,7 @@ import {
   deleteParticipantAction,
   setActiveGroupAction,
   setActiveGroupAlertAction,
+  setActiveParticipantAction,
   setImportGroupsAlertAction,
   setOverviewGroupsAction,
   updateParticipantAction,
@@ -24,6 +25,7 @@ export interface GroupState {
   readonly activeGroup?: SimpleGroupDto;
   readonly participants: ReadonlyArray<ParticipantDto>;
   readonly participantAlert?: Alert;
+  readonly activeParticipant?: ParticipantDto;
 }
 
 const initialState: GroupState = {
@@ -65,6 +67,12 @@ const reducer = createReducer(
     {
       ...state,
       participantAlert: undefined,
+    }
+  )),
+  on(setActiveParticipantAction, (state, action) => (
+    {
+      ...state,
+      activeParticipant: action.participant,
     }
   )),
   on(updateParticipantAction, (state, action) => {

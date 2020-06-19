@@ -30,3 +30,8 @@ export const selectParticipants = createSelector(
   selectGroup,
   (state: GroupState) => state.participants,
 );
+
+export const selectActiveParticipant = createSelector(
+  selectGroup,
+  (state: GroupState) => state.activeParticipant,
+);

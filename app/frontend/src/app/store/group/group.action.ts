@@ -74,6 +74,24 @@ export const clearActiveGroupAction = createAction(
   props(),
 );
 
+export interface LoadParticipantProps {
+  readonly participantId: number;
+}
+
+export const loadActiveParticipantAction = createAction(
+  "[EditParticipantModal] Edit participant",
+  props<LoadParticipantProps>(),
+);
+
+export interface SetActiveParticipantProps {
+  readonly participant: ParticipantDto;
+}
+
+export const setActiveParticipantAction = createAction(
+  "[GroupEffect] Set active participant",
+  props<SetActiveParticipantProps>(),
+);
+
 export interface UpdateParticipantProps {
   readonly participant: ParticipantElement;
 }

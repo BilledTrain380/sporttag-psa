@@ -14,12 +14,15 @@ import {
   DeleteParticipantProps,
   importGroupsAction,
   ImportGroupsProps,
+  loadActiveParticipantAction,
   loadGroupAction,
   LoadGroupProps,
   loadOverviewGroupsAction,
   LoadOverviewGroupsProps,
+  LoadParticipantProps,
   setActiveGroupAction,
   setActiveGroupAlertAction,
+  setActiveParticipantAction,
   setImportGroupsAlertAction,
   setOverviewGroupsAction,
   updateParticipantAction,
@@ -76,6 +79,21 @@ export class GroupEffects {
                         .pipe(map(result => setActiveGroupAction({group: result[0], participants: result[1]})))
                         .pipe(catchError(err => {
                           this.log.warn(`Could not load active group: name=${action.name}`, err);
+
+                          return EMPTY;
+                        })))));
+
+  readonly loadActiveParticipant = createEffect(() => this.actions$
+    .pipe(ofType(loadActiveParticipantAction.type))
+    .pipe(switchMap((action: LoadParticipantProps) =>
+                      this.participantApi.getParticipant(action.participantId)
+                        .pipe(map(participant => {
+                          this.log.info(`Successfully loaded participant: participantId=${action.participantId}`);
+
+                          return setActiveParticipantAction({participant});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn(`Could not load participant: participantId=${action.participantId}`, err);
 
                           return EMPTY;
                         })))));
