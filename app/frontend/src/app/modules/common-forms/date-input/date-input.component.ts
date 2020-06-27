@@ -1,12 +1,14 @@
-import { Component, forwardRef, OnInit } from "@angular/core";
+import { Component, forwardRef, OnDestroy, OnInit } from "@angular/core";
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 import { FormControlsObject } from "../../../@core/forms/form-util";
 import { Consumer } from "../../../@core/lib/function";
 import { isNullOrUndefined } from "../../../@core/lib/lib";
-import { ngbDateOfDate } from "../../../@core/lib/time";
+import { now } from "../../../@core/lib/time";
 
 @Component({
              selector: "app-date-input",
@@ -19,7 +21,7 @@ import { ngbDateOfDate } from "../../../@core/lib/time";
                },
              ],
            })
-export class DateInputComponent implements OnInit, ControlValueAccessor {
+export class DateInputComponent implements OnInit, OnDestroy, ControlValueAccessor {
   readonly faCalendar = faCalendar;
 
   readonly formControls: FormControlsObject = {
@@ -27,19 +29,19 @@ export class DateInputComponent implements OnInit, ControlValueAccessor {
   };
   form?: FormGroup;
 
-  set value(val: Date) {
+  set value(val: NgbDateStruct) {
     if (!isNullOrUndefined(val)) {
-      this.val = ngbDateOfDate(val);
-      this.onChange?.call(this, val);
-      this.onTouched?.call(this, val);
-
-      this.form?.controls[this.formControls.date]?.setValue(this.val);
+      this.val = val;
+      this.onChange?.call(this, this.val);
+      this.onTouched?.call(this, this.val);
     }
   }
 
-  private onChange?: Consumer<Date>;
-  private onTouched?: Consumer<Date>;
-  private val: NgbDateStruct = ngbDateOfDate(new Date());
+  private onChange?: Consumer<NgbDateStruct>;
+  private onTouched?: Consumer<NgbDateStruct>;
+  private val: NgbDateStruct = now();
+
+  private readonly destroy$ = new Subject();
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -50,13 +52,23 @@ export class DateInputComponent implements OnInit, ControlValueAccessor {
     this.form = this.formBuilder.group({
                                          [this.formControls.date]: this.val,
                                        });
+
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(values => {
+        this.value = values[this.formControls.date];
+      });
   }
 
-  registerOnChange(fn: Consumer<Date>): void {
+  ngOnDestroy(): void {
+    this.destroy$.complete();
+  }
+
+  registerOnChange(fn: Consumer<NgbDateStruct>): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: Consumer<Date>): void {
+  registerOnTouched(fn: Consumer<NgbDateStruct>): void {
     this.onTouched = fn;
   }
 
@@ -70,7 +82,7 @@ export class DateInputComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  writeValue(obj: Date): void {
-    this.value = obj;
+  writeValue(obj: NgbDateStruct): void {
+    this.form?.controls[this.formControls.date]?.setValue(obj);
   }
 }
