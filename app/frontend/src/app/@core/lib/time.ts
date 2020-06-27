@@ -1,4 +1,5 @@
 import { NgbDate, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+
 import { UFunction } from "./function";
 
 export const DAY_IN_MILLIS = 86_400_000;
@@ -81,11 +82,17 @@ export class Duration {
 }
 
 export function parseDate(text: string): NgbDateStruct {
+  const date = new Date(text);
+
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date value: ${text}`);
+  }
+
   return convertDateToNgbDate(new Date(text));
 }
 
 export function isoFormatOfDate(date: NgbDateStruct): string {
-  return `${date.year}-${date.month}-${date.day}`;
+  return `${date.year}-${formatWithTwoDigits(date.month)}-${formatWithTwoDigits(date.day)}`;
 }
 
 export function now(): NgbDateStruct {
@@ -95,4 +102,9 @@ export function now(): NgbDateStruct {
 function convertDateToNgbDate(date: Date): NgbDateStruct {
   // Month +1 as NgbDate uses a 1 based index
   return new NgbDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+}
+
+function formatWithTwoDigits(val: number): string {
+  // tslint:disable-next-line:no-magic-numbers
+  return val < 10 ? `0${val}` : val.toString();
 }
