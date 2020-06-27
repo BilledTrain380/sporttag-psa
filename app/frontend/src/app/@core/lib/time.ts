@@ -1,3 +1,4 @@
+import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
 import { UFunction } from "./function";
 
 export const DAY_IN_MILLIS = 86_400_000;
@@ -77,4 +78,12 @@ export class Duration {
   equalsTo(other: Duration): boolean {
     return this.millis === other.get(TemporalUnit.MILLIS);
   }
+}
+
+export function dateOfNgbDate(date: NgbDate): Date {
+  return new Date(date.year, date.month, date.day);
+}
+
+export function ngbDateOfDate(date: Date): NgbDate {
+  return new NgbDate(date.getFullYear(), date.getMonth(), date.getDay());
 }

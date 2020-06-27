@@ -1,0 +1,14 @@
+<div class="input-group" [formGroup]="form">
+  <input class="form-control"
+         placeholder="yyyy-mm-dd"
+         id="dateInput"
+         [formControlName]="formControls.date"
+         ngbDatepicker
+         #datepicker="ngbDatepicker"
+         readonly>
+  <div class="input-group-append">
+    <button id="date-input-calendar-btn" class="btn btn-outline-secondary" (click)="datepicker.toggle()" type="button">
+      <fa-icon [icon]="faCalendar"></fa-icon>
+    </button>
+  </div>
+</div>
