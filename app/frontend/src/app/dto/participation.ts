@@ -1,4 +1,6 @@
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { requireNonNullOrUndefined } from "../@core/lib/lib";
+import { isoFormatOfDate, parseDate } from "../@core/lib/time";
 
 import { SimpleGroupDto } from "./group";
 import { StatusDto } from "./status";
@@ -185,24 +187,24 @@ export function translateGender(gender: GenderDto): string {
 
 export interface BirthdayDto {
   readonly value: string;
-  readonly date: Date;
+  readonly date: NgbDateStruct;
 }
 
 export class BirthdayDtoImpl implements BirthdayDto {
-  readonly date: Date;
+  readonly value: string;
 
   private constructor(
-    readonly value: string,
+    readonly date: NgbDateStruct,
   ) {
-    this.date = new Date(value);
+    this.value = isoFormatOfDate(date);
   }
 
   static parse(text: string): BirthdayDto {
-    return new BirthdayDtoImpl(text);
+    return new BirthdayDtoImpl(parseDate(text));
   }
 
-  static of(date: Date): BirthdayDtoImpl {
-    return new BirthdayDtoImpl(date.toISOString());
+  static of(date: NgbDateStruct): BirthdayDtoImpl {
+    return new BirthdayDtoImpl(date);
   }
 }
 

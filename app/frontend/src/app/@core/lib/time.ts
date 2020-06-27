@@ -1,4 +1,4 @@
-import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDate, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { UFunction } from "./function";
 
 export const DAY_IN_MILLIS = 86_400_000;
@@ -80,10 +80,19 @@ export class Duration {
   }
 }
 
-export function dateOfNgbDate(date: NgbDate): Date {
-  return new Date(date.year, date.month, date.day);
+export function parseDate(text: string): NgbDateStruct {
+  return convertDateToNgbDate(new Date(text));
 }
 
-export function ngbDateOfDate(date: Date): NgbDate {
-  return new NgbDate(date.getFullYear(), date.getMonth(), date.getDay());
+export function isoFormatOfDate(date: NgbDateStruct): string {
+  return `${date.year}-${date.month}-${date.day}`;
+}
+
+export function now(): NgbDateStruct {
+  return convertDateToNgbDate(new Date());
+}
+
+function convertDateToNgbDate(date: Date): NgbDateStruct {
+  // Month +1 as NgbDate uses a 1 based index
+  return new NgbDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
 }

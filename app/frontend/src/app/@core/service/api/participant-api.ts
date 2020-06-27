@@ -4,9 +4,10 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 import { ParticipantDto, ParticipantElement, ParticipantInput, ParticipantRelation } from "../../../dto/participation";
+import { parseDate } from "../../lib/time";
 import { getLogger, Logger } from "../../logging";
 
-import { ApiParameters, API_ENDPOINT } from "./pas-api";
+import { API_ENDPOINT, ApiParameters } from "./pas-api";
 
 @Injectable({
               providedIn: "root",
@@ -25,14 +26,14 @@ export class ParticipantApi {
     const params = parameters?.buildParameters();
 
     return this.http.get<ReadonlyArray<ParticipantDto>>(`${API_ENDPOINT}/participants`, {params})
-      .pipe(tap(participants => participants.forEach(participant => enhanceBirthdayDtoWithDate(participant.birthday))));
+      .pipe(tap(participants => participants.forEach(participant => enhanceBirthdayDtoWithDateProperty(participant.birthday))));
   }
 
   getParticipant(id: number): Observable<ParticipantDto> {
     this.log.info(`Get participant: id=${id}`);
 
     return this.http.get<ParticipantDto>(`${API_ENDPOINT}/participant/${id}`)
-      .pipe(tap(participant => enhanceBirthdayDtoWithDate(participant.birthday)));
+      .pipe(tap(participant => enhanceBirthdayDtoWithDateProperty(participant.birthday)));
   }
 
   updateParticipant(participantElement: ParticipantElement): Observable<void> {
@@ -79,6 +80,6 @@ export class ParticipantParameters implements ApiParameters {
  * @param dto the birthday dto to enhance
  */
 // tslint:disable-next-line:no-any
-function enhanceBirthdayDtoWithDate(dto: any): void {
-  dto.date = new Date(dto.value);
+function enhanceBirthdayDtoWithDateProperty(dto: any): void {
+  dto.date = parseDate(dto.value);
 }
