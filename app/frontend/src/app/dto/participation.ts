@@ -184,7 +184,26 @@ export function translateGender(gender: GenderDto): string {
 }
 
 export interface BirthdayDto {
-  readonly value: Date;
+  readonly value: string;
+  readonly date: Date;
+}
+
+export class BirthdayDtoImpl implements BirthdayDto {
+  readonly date: Date;
+
+  private constructor(
+    readonly value: string,
+  ) {
+    this.date = new Date(value);
+  }
+
+  static parse(text: string): BirthdayDto {
+    return new BirthdayDtoImpl(text);
+  }
+
+  static of(date: Date): BirthdayDtoImpl {
+    return new BirthdayDtoImpl(date.toISOString());
+  }
 }
 
 export interface TownDto {

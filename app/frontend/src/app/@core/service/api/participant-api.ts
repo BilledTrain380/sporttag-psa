@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 import { ParticipantDto, ParticipantElement, ParticipantInput, ParticipantRelation } from "../../../dto/participation";
 import { getLogger, Logger } from "../../logging";
@@ -23,13 +24,15 @@ export class ParticipantApi {
 
     const params = parameters?.buildParameters();
 
-    return this.http.get<ReadonlyArray<ParticipantDto>>(`${API_ENDPOINT}/participants`, {params});
+    return this.http.get<ReadonlyArray<ParticipantDto>>(`${API_ENDPOINT}/participants`, {params})
+      .pipe(tap(participants => participants.forEach(participant => enhanceBirthdayDtoWithDate(participant.birthday))));
   }
 
   getParticipant(id: number): Observable<ParticipantDto> {
     this.log.info(`Get participant: id=${id}`);
 
-    return this.http.get<ParticipantDto>(`${API_ENDPOINT}/participant/${id}`);
+    return this.http.get<ParticipantDto>(`${API_ENDPOINT}/participant/${id}`)
+      .pipe(tap(participant => enhanceBirthdayDtoWithDate(participant.birthday)));
   }
 
   updateParticipant(participantElement: ParticipantElement): Observable<void> {
@@ -67,4 +70,15 @@ export class ParticipantParameters implements ApiParameters {
     return new HttpParams()
       .set("group", this.group);
   }
+}
+
+/**
+ * Since the json returned from the api will only have the value property and not a parsed date property,
+ * this function will defined the `date` property to the given `dto`.
+ *
+ * @param dto the birthday dto to enhance
+ */
+// tslint:disable-next-line:no-any
+function enhanceBirthdayDtoWithDate(dto: any): void {
+  dto.date = new Date(dto.value);
 }
