@@ -36,7 +36,10 @@
     <tr *ngFor="let participant of participants">
       <td>
         <app-button-group>
-          <app-button-group-item text="Edit" i18n-text></app-button-group-item>
+          <app-button-group-item text="Edit"
+                                 i18n-text
+                                 (click)="openEditParticipantModal(participant)">
+          </app-button-group-item>
           <app-button-group-item text="Delete"
                                  i18n-text
                                  (click)="deleteParticipant(participant)">

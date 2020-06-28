@@ -13,13 +13,16 @@ import { ConfirmModalComponent } from "../../../../modules/modal/confirm-modal/c
 import { ConfirmType } from "../../../../modules/modal/confirm-modal/confirm-type";
 import {
   clearActiveGroupAction,
+  clearParticipantAlertAction,
   deleteParticipantAction,
+  loadActiveParticipantAction,
   loadGroupAction,
   updateParticipantAction
 } from "../../../../store/group/group.action";
 import { selectActiveGroup, selectParticipantAlert, selectParticipants } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
+import { EditParticipantModalComponent } from "./edit-participant-modal/edit-participant-modal.component";
 
 import { GroupViewModel, ParticipantModel } from "./view-model";
 
@@ -74,6 +77,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   }
 
   toggleAbsent(participant: ParticipantModel): void {
+    this.clearAlert();
     const participantElement: ParticipantElement = {
       id: participant.id,
       isAbsent: participant.isAbsent,
@@ -82,7 +86,14 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.updateParticipantAbsentTimer.trigger(participantElement);
   }
 
+  openEditParticipantModal(participant: ParticipantModel): void {
+    this.clearAlert();
+    this.store.dispatch(loadActiveParticipantAction({participantId: participant.id}));
+    this.modalService.open(EditParticipantModalComponent, {size: "lg"});
+  }
+
   deleteParticipant(participant: ParticipantModel): void {
+    this.clearAlert();
     const modalRef = this.modalService.open(ConfirmModalComponent, {size: "md"});
 
     modalRef.componentInstance.buildText(
@@ -98,5 +109,9 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
           this.store.dispatch(deleteParticipantAction({participant_id: participant.id}));
         }
       });
+  }
+
+  private clearAlert(): void {
+    this.store.dispatch(clearParticipantAlertAction(VOID_PROPS));
   }
 }
