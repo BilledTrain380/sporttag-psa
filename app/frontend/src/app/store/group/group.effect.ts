@@ -21,10 +21,10 @@ import {
   LoadOverviewGroupsProps,
   LoadParticipantProps,
   setActiveGroupAction,
-  setActiveGroupAlertAction,
   setActiveParticipantAction,
   setImportGroupsAlertAction,
   setOverviewGroupsAction,
+  setParticipantAlertAction,
   updateParticipantAction,
   UpdateParticipantProps,
 } from "./group.action";
@@ -109,14 +109,14 @@ export class GroupEffects {
 
                           const alert = textAlert.success($localize`Successfully updated participant`);
 
-                          return setActiveGroupAlertAction({alert});
+                          return setParticipantAlertAction({alert});
                         }))
                         .pipe(catchError(err => {
                           this.log.warn(`Could not update participant: participantId=${action.participant.id}`, err);
 
                           const alert = textAlert.error($localize`Could not update participant`);
 
-                          return of(setActiveGroupAlertAction({alert}));
+                          return of(setParticipantAlertAction({alert}));
                         }));
                     },
     )));
@@ -132,14 +132,14 @@ export class GroupEffects {
 
                           const alert = textAlert.success($localize`Successfully deleted participant`);
 
-                          return setActiveGroupAlertAction({alert});
+                          return setParticipantAlertAction({alert});
                         }))
                         .pipe(catchError(err => {
                           this.log.warn("Could not delete participant", err);
 
                           const alert = textAlert.error($localize`Could not delete participant`);
 
-                          return of(setActiveGroupAlertAction({alert}));
+                          return of(setParticipantAlertAction({alert}));
                         }));
                     },
     )));

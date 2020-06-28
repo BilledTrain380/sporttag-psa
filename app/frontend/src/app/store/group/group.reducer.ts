@@ -7,15 +7,16 @@ import { Alert } from "../../modules/alert/alert";
 
 import {
   clearActiveGroupAction,
-  clearActiveGroupAlertAction,
+  clearActiveParticipantAction,
   clearImportGroupsAlertAction,
   clearOverviewGroupsAction,
+  clearParticipantAlertAction,
   deleteParticipantAction,
   setActiveGroupAction,
-  setActiveGroupAlertAction,
   setActiveParticipantAction,
   setImportGroupsAlertAction,
   setOverviewGroupsAction,
+  setParticipantAlertAction,
   updateParticipantAction,
 } from "./group.action";
 
@@ -57,13 +58,13 @@ const reducer = createReducer(
     }
   )),
   on(clearActiveGroupAction, (state, _) => ({...state, activeGroup: undefined})),
-  on(setActiveGroupAlertAction, (state, action) => (
+  on(setParticipantAlertAction, (state, action) => (
     {
       ...state,
       participantAlert: action.alert,
     }
   )),
-  on(clearActiveGroupAlertAction, (state, _) => (
+  on(clearParticipantAlertAction, (state, _) => (
     {
       ...state,
       participantAlert: undefined,
@@ -73,6 +74,12 @@ const reducer = createReducer(
     {
       ...state,
       activeParticipant: action.participant,
+    }
+  )),
+  on(clearActiveParticipantAction, (state, _) => (
+    {
+      ...state,
+      activeParticipant: undefined,
     }
   )),
   on(updateParticipantAction, (state, action) => {

@@ -92,6 +92,11 @@ export const setActiveParticipantAction = createAction(
   props<SetActiveParticipantProps>(),
 );
 
+export const clearActiveParticipantAction = createAction(
+  "[EditParticipantModal] Clears active participant",
+  props(),
+);
+
 export interface UpdateParticipantProps {
   readonly participant: ParticipantElement;
 }
@@ -110,16 +115,16 @@ export const deleteParticipantAction = createAction(
   props<DeleteParticipantProps>(),
 );
 
-export interface SetActiveGroupAlertProps {
+export interface SetParticipantAlertProps {
   readonly alert: Alert;
 }
 
-export const setActiveGroupAlertAction = createAction(
+export const setParticipantAlertAction = createAction(
   "[GroupEffect] Set active group alert",
-  props<SetActiveGroupAlertProps>(),
+  props<SetParticipantAlertProps>(),
 );
 
-export const clearActiveGroupAlertAction = createAction(
+export const clearParticipantAlertAction = createAction(
   "[GroupDetail] Clear active group alert",
   props(),
 );
