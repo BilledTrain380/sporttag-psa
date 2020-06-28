@@ -1,0 +1,58 @@
+<app-submit-modal title="Edit participant"
+                  i18n-title
+                  [alert]="alert"
+                  [isSubmitEnabled]="form?.valid"
+                  (cancel)="cancel()"
+                  (submitData)="submit()">
+  <div *ngIf="form">
+    <form [formGroup]="form" data-test-selector="group-input">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputPrename" i18n>Email</label>
+          <input id="inputPrename"
+                 [formControlName]="formControls.prename"
+                 type="text"
+                 appInputValidation
+                 class="form-control">
+          <div *ngIf="form.controls[formControls.prename]?.errors?.required" class="invalid-feedback" i18n>
+            Please enter a prename
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputSurname" i18n>Surname</label>
+          <input id="inputSurname"
+                 [formControlName]="formControls.surname"
+                 type="text"
+                 appInputValidation
+                 class="form-control">
+          <div *ngIf="form.controls[formControls.surname]?.errors?.required" class="invalid-feedback" i18n>
+            Please enter a surname
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputAddress" i18n>Address</label>
+        <input id="inputAddress"
+               [formControlName]="formControls.address"
+               type="text"
+               appInputValidation
+               class="form-control">
+        <div *ngIf="form.controls[formControls.address]?.errors?.required" class="invalid-feedback" i18n>
+          Please enter an address
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <app-gender-input [formControlName]="formControls.gender"></app-gender-input>
+        </div>
+        <div class="form-group col-md-6">
+          <label i18n>Birthday</label>
+          <app-date-input [formControlName]="formControls.birthday"></app-date-input>
+          <div *ngIf="form.controls[formControls.birthday]?.errors?.required" class="invalid-feedback" i18n>
+            Please enter a birthday
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</app-submit-modal>
