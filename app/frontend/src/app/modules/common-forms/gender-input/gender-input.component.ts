@@ -1,5 +1,7 @@
 import { Component, forwardRef, OnInit } from "@angular/core";
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 import { FormControlsObject } from "../../../@core/forms/form-util";
 import { Consumer } from "../../../@core/lib/function";
@@ -30,14 +32,14 @@ export class GenderInputComponent implements OnInit, ControlValueAccessor {
       this.val = val;
       this.onChange?.call(this, this.val);
       this.onTouched?.call(this, this.val);
-
-      this.form?.controls[this.formControl.gender]?.setValue(this.val);
     }
   }
 
   private val: GenderDto = GenderDto.MALE;
   private onChange?: Consumer<GenderDto>;
   private onTouched?: Consumer<GenderDto>;
+
+  private readonly destroy$ = new Subject();
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -48,6 +50,12 @@ export class GenderInputComponent implements OnInit, ControlValueAccessor {
     this.form = this.formBuilder.group({
                                          [this.formControl.gender]: this.val,
                                        });
+
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(values => {
+        this.value = values[this.formControl.gender];
+      });
   }
 
   registerOnChange(fn: Consumer<GenderDto>): void {
@@ -69,6 +77,6 @@ export class GenderInputComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: GenderDto): void {
-    this.value = obj;
+    this.form?.controls[this.formControl.gender]?.setValue(obj);
   }
 }
