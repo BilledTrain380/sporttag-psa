@@ -1,15 +1,18 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY, forkJoin, of } from "rxjs";
-import { catchError, map, switchMap } from "rxjs/operators";
+import { catchError, filter, map, switchMap } from "rxjs/operators";
 
 import { getLogger } from "../../@core/logging";
 import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
 import { ParticipantApi, ParticipantParameters } from "../../@core/service/api/participant-api";
 import { WebApi } from "../../@core/service/api/web-api";
+import { ParticipantInput } from "../../dto/participation";
 import { AlertFactory } from "../../modules/alert/alert";
 
 import {
+  addParticipantAction,
+  AddParticipantProps,
   deleteParticipantAction,
   DeleteParticipantProps,
   importGroupsAction,
@@ -97,6 +100,42 @@ export class GroupEffects {
 
                           return EMPTY;
                         })))));
+
+  readonly addParticipant = createEffect(() => this.actions$
+    .pipe(ofType(addParticipantAction.type))
+    .pipe(filter((action: AddParticipantProps) => action.participant.id === 0))
+    .pipe(switchMap((action: AddParticipantProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      const participantInput: ParticipantInput = {
+                        prename: action.participant.prename,
+                        surname: action.participant.surname,
+                        gender: action.participant.gender,
+                        address: action.participant.address,
+                        birthday: action.participant.birthday,
+                        group: action.participant.group.name,
+                        town: action.participant.town,
+                      };
+
+                      return this.participantApi.createParticipant(participantInput)
+                        .pipe(map(participant =>
+                                    of(addParticipantAction({participant}))))
+                        .pipe(map(() => {
+                          this.log.info(`Successfully added participant: prename=${action.participant.prename}, surname=${action.participant.surname}`);
+
+                          const alert = textAlert.success($localize`Successfully added participant`);
+
+                          return setParticipantAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn(`Could not add participant: prename=${action.participant.prename}, surname=${action.participant.surname}`, err);
+
+                          const alert = textAlert.error($localize`Could not add participant`);
+
+                          return of(setParticipantAlertAction({alert}));
+                        }));
+                    },
+    )));
 
   readonly updateParticipant = createEffect(() => this.actions$
     .pipe(ofType(updateParticipantAction.type))

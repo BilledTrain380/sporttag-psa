@@ -48,10 +48,10 @@ export class ParticipantApi {
     return this.http.put<void>(`${API_ENDPOINT}/participant/${participantRelation.id}`, participantRelation);
   }
 
-  createParticipant(participantInput: ParticipantInput): Observable<void> {
+  createParticipant(participantInput: ParticipantInput): Observable<ParticipantDto> {
     this.log.info(`Create participant: name=${participantInput.surname} ${participantInput.prename}`);
 
-    return this.http.post<void>(`${API_ENDPOINT}/participants`, participantInput);
+    return this.http.post<ParticipantDto>(`${API_ENDPOINT}/participants`, participantInput);
   }
 
   deleteParticipant(id: number): Observable<void> {

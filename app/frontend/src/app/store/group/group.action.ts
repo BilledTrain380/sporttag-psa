@@ -97,6 +97,15 @@ export const clearActiveParticipantAction = createAction(
   props(),
 );
 
+export interface AddParticipantProps {
+  readonly participant: ParticipantDto;
+}
+
+export const addParticipantAction = createAction(
+  "[AddParticipantModal] Add participant",
+  props<AddParticipantProps>(),
+);
+
 export interface UpdateParticipantProps {
   readonly participant: ParticipantElement;
 }

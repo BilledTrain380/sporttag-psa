@@ -6,6 +6,7 @@ import { ParticipantDto, ParticipantDtoBuilder } from "../../dto/participation";
 import { Alert } from "../../modules/alert/alert";
 
 import {
+  addParticipantAction,
   clearActiveGroupAction,
   clearActiveParticipantAction,
   clearImportGroupsAlertAction,
@@ -82,6 +83,18 @@ const reducer = createReducer(
       activeParticipant: undefined,
     }
   )),
+  on(addParticipantAction, (state, action) => {
+    if (action.participant.id === 0) {
+      return {...state};
+    }
+
+    const participants = [...state.participants, action.participant];
+
+    return {
+      ...state,
+      participants,
+    };
+  }),
   on(updateParticipantAction, (state, action) => {
     const participants = state.participants
       .map(participant => {
