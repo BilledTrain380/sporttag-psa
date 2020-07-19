@@ -22,6 +22,7 @@ import {
 import { selectActiveGroup, selectParticipantAlert, selectParticipants } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
+import { AddParticipantComponent } from "./add-participant/add-participant.component";
 import { EditParticipantModalComponent } from "./edit-participant-modal/edit-participant-modal.component";
 
 import { GroupViewModel, ParticipantModel } from "./view-model";
@@ -90,6 +91,11 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.clearAlert();
     this.store.dispatch(loadActiveParticipantAction({participantId: participant.id}));
     this.modalService.open(EditParticipantModalComponent, {size: "lg"});
+  }
+
+  openAddParticipantModal(): void {
+    this.clearAlert();
+    this.modalService.open(AddParticipantComponent, {size: "lg"});
   }
 
   deleteParticipant(participant: ParticipantModel): void {

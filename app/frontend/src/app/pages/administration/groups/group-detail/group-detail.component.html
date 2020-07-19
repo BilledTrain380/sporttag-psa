@@ -10,8 +10,9 @@
                  i18n-cardTitle>
   <app-layout-buttons>
     <button type="button"
+            (click)="openAddParticipantModal()"
             class="btn btn-primary btn-sm"
-            data-test-selector="import-groups">
+            data-test-selector="add-participant">
       <fa-icon [icon]="faPlusCircle"></fa-icon>
       <span i18n>Add participant</span>
     </button>
