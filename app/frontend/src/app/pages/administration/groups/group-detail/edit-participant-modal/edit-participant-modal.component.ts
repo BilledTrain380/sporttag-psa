@@ -48,14 +48,16 @@ export class EditParticipantModalComponent extends AbstractSubmitModalComponent 
     this.participant$
       .pipe(filter(participant => participant !== undefined))
       .subscribe((participant: ParticipantDto) => {
+        // tslint:disable: no-magic-numbers max-line-length
         this.form = this.formBuilder.group({
                                              [this.formControls.id]: participant.id,
-                                             [this.formControls.prename]: [participant.prename, Validators.required],
-                                             [this.formControls.surname]: [participant.surname, Validators.required],
-                                             [this.formControls.address]: [participant.address, Validators.required],
+                                             [this.formControls.prename]: [participant.prename, [Validators.required, Validators.maxLength(30)]],
+                                             [this.formControls.surname]: [participant.surname, [Validators.required, Validators.maxLength(30)]],
+                                             [this.formControls.address]: [participant.address, [Validators.required, Validators.maxLength(80)]],
                                              [this.formControls.gender]: [participant.gender, Validators.required],
                                              [this.formControls.birthday]: [participant.birthday.date, Validators.required],
                                            });
+        // tslint:enable
       });
   }
 
