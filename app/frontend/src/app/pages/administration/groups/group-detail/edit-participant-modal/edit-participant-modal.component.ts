@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { filter } from "rxjs/operators";
+import { filter, takeUntil } from "rxjs/operators";
 
 import { FormControlsObject } from "../../../../../@core/forms/form-util";
 import { requireNonNullOrUndefined } from "../../../../../@core/lib/lib";
@@ -19,8 +19,6 @@ import { VOID_PROPS } from "../../../../../store/standard-props";
              templateUrl: "./edit-participant-modal.component.html",
            })
 export class EditParticipantModalComponent extends AbstractSubmitModalComponent implements OnInit, OnDestroy {
-  readonly participant$: Observable<ParticipantDto | undefined> = this.store.select(selectActiveParticipant);
-
   readonly formControls: FormControlsObject = {
     id: "id",
     prename: "prename",
@@ -45,7 +43,8 @@ export class EditParticipantModalComponent extends AbstractSubmitModalComponent 
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.participant$
+    this.store.select(selectActiveParticipant)
+      .pipe(takeUntil(this.destroy$))
       .pipe(filter(participant => participant !== undefined))
       .subscribe((participant: ParticipantDto) => {
         // tslint:disable: no-magic-numbers max-line-length
