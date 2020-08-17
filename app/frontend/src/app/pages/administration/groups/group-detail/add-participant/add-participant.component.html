@@ -5,10 +5,10 @@
                   (cancel)="cancel()"
                   (submitData)="submit()">
   <div *ngIf="form">
-    <form [formGroup]="form" data-test-selector="group-input">
+    <form [formGroup]="form">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputPrename" i18n>Email</label>
+          <label for="inputPrename" i18n>Prename *</label>
           <input id="inputPrename"
                  [formControlName]="formControls.prename"
                  type="text"
@@ -17,9 +17,12 @@
           <div *ngIf="form.controls[formControls.prename]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a prename
           </div>
+          <div *ngIf="form.controls[formControls.prename]?.errors?.maxlength" class="invalid-feedback" i18n>
+            Max length {{form.controls[formControls.prename].errors?.maxlength?.requiredLength}}
+          </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="inputSurname" i18n>Surname</label>
+          <label for="inputSurname" i18n>Surname *</label>
           <input id="inputSurname"
                  [formControlName]="formControls.surname"
                  type="text"
@@ -31,7 +34,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="inputAddress" i18n>Address</label>
+        <label for="inputAddress" i18n>Address *</label>
         <input id="inputAddress"
                [formControlName]="formControls.address"
                type="text"
@@ -46,11 +49,44 @@
           <app-gender-input [formControlName]="formControls.gender"></app-gender-input>
         </div>
         <div class="form-group col-md-6">
-          <label i18n>Birthday</label>
+          <label i18n>Birthday *</label>
           <app-date-input [formControlName]="formControls.birthday"></app-date-input>
           <div *ngIf="form.controls[formControls.birthday]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a birthday
           </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputZip" i18n>Zip *</label>
+          <input id="inputZip"
+                 [formControlName]="formControls.zip"
+                 type="text"
+                 appInputValidation
+                 class="form-control">
+          <div *ngIf="form.controls[formControls.zip]?.errors?.required" class="invalid-feedback" i18n>
+            Please enter a zip code
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputTown" i18n>Town *</label>
+          <input id="inputTown"
+                 [formControlName]="formControls.town"
+                 type="text"
+                 appInputValidation
+                 class="form-control">
+          <div *ngIf="form.controls[formControls.town]?.errors?.required" class="invalid-feedback" i18n>
+            Please enter a name
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputSportType" i18n>Sport Type *</label>
+        <app-sport-type-input id="inputSportType"
+                              [formControlName]="formControls.sportType">
+        </app-sport-type-input>
+        <div *ngIf="form.controls[formControls.sportType]?.errors?.required" class="invalid-feedback" i18n>
+          Please select a sport type
         </div>
       </div>
     </form>

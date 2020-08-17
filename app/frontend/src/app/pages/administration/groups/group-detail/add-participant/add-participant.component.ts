@@ -4,15 +4,14 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+
 import { FormControlsObject } from "../../../../../@core/forms/form-util";
 import { requireNonNullOrUndefined } from "../../../../../@core/lib/lib";
-import { ATHLETICS, BirthdayDto, BirthdayDtoImpl, GenderDto, ParticipantDto } from "../../../../../dto/participation";
+import { BirthdayDto, BirthdayDtoImpl, GenderDto, ParticipantDto } from "../../../../../dto/participation";
 import { Alert } from "../../../../../modules/alert/alert";
-
 import { AbstractSubmitModalComponent } from "../../../../../modules/modal/submit-modal/abstract-submit-modal.component";
-import { addParticipantAction, clearParticipantAlertAction } from "../../../../../store/group/group.action";
+import { addParticipantAction } from "../../../../../store/group/group.action";
 import { selectActiveGroup, selectParticipantAlert } from "../../../../../store/group/group.selector";
-import { VOID_PROPS } from "../../../../../store/standard-props";
 
 @Component({
              selector: "app-add-participant",
@@ -44,6 +43,8 @@ export class AddParticipantComponent extends AbstractSubmitModalComponent implem
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
+
     this.store.select(selectActiveGroup)
       .pipe(takeUntil(this.destroy$))
       .subscribe(group => {
@@ -57,15 +58,10 @@ export class AddParticipantComponent extends AbstractSubmitModalComponent implem
                                              [this.formControls.zip]: ["", [Validators.required, Validators.maxLength(4)]],
                                              [this.formControls.town]: ["", [Validators.required, Validators.maxLength(50)]],
                                              [this.formControls.group]: [group, Validators.required],
-                                             [this.formControls.sportType]: [ATHLETICS, Validators.required],
+                                             [this.formControls.sportType]: ["", Validators.required],
                                            });
         // tslint:enable
       });
-  }
-
-  ngOnDestroy(): void {
-    this.store.dispatch(clearParticipantAlertAction(VOID_PROPS));
-    super.ngOnDestroy();
   }
 
   submit(): void {
