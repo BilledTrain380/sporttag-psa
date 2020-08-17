@@ -8,7 +8,7 @@
     <form [formGroup]="form" data-test-selector="group-input">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputPrename" i18n>Email</label>
+          <label for="inputPrename" i18n>Prename *</label>
           <input id="inputPrename"
                  [formControlName]="formControls.prename"
                  type="text"
@@ -17,9 +17,12 @@
           <div *ngIf="form.controls[formControls.prename]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a prename
           </div>
+          <div *ngIf="form.controls[formControls.prename]?.errors?.maxlength" class="invalid-feedback" i18n>
+            Max length {{form.controls[formControls.prename].errors?.maxlength?.requiredLength}}
+          </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="inputSurname" i18n>Surname</label>
+          <label for="inputSurname" i18n>Surname *</label>
           <input id="inputSurname"
                  [formControlName]="formControls.surname"
                  type="text"
@@ -28,10 +31,13 @@
           <div *ngIf="form.controls[formControls.surname]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a surname
           </div>
+          <div *ngIf="form.controls[formControls.surname]?.errors?.maxlength" class="invalid-feedback" i18n>
+            Max length {{form.controls[formControls.surname].errors?.maxlength?.requiredLength}}
+          </div>
         </div>
       </div>
       <div class="form-group">
-        <label for="inputAddress" i18n>Address</label>
+        <label for="inputAddress" i18n>Address *</label>
         <input id="inputAddress"
                [formControlName]="formControls.address"
                type="text"
@@ -40,13 +46,16 @@
         <div *ngIf="form.controls[formControls.address]?.errors?.required" class="invalid-feedback" i18n>
           Please enter an address
         </div>
+        <div *ngIf="form.controls[formControls.address]?.errors?.maxlength" class="invalid-feedback" i18n>
+          Max length {{form.controls[formControls.address].errors?.maxlength?.requiredLength}}
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-6">
           <app-gender-input [formControlName]="formControls.gender"></app-gender-input>
         </div>
         <div class="form-group col-md-6">
-          <label i18n>Birthday</label>
+          <label i18n>Birthday *</label>
           <app-date-input [formControlName]="formControls.birthday"></app-date-input>
           <div *ngIf="form.controls[formControls.birthday]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a birthday

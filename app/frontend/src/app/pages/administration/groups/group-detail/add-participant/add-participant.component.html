@@ -31,6 +31,9 @@
           <div *ngIf="form.controls[formControls.surname]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a surname
           </div>
+          <div *ngIf="form.controls[formControls.surname]?.errors?.maxlength" class="invalid-feedback" i18n>
+            Max length {{form.controls[formControls.surname].errors?.maxlength?.requiredLength}}
+          </div>
         </div>
       </div>
       <div class="form-group">
@@ -42,6 +45,9 @@
                class="form-control">
         <div *ngIf="form.controls[formControls.address]?.errors?.required" class="invalid-feedback" i18n>
           Please enter an address
+        </div>
+        <div *ngIf="form.controls[formControls.address]?.errors?.maxlength" class="invalid-feedback" i18n>
+          Max length {{form.controls[formControls.address].errors?.maxlength?.requiredLength}}
         </div>
       </div>
       <div class="form-row">
@@ -67,6 +73,9 @@
           <div *ngIf="form.controls[formControls.zip]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a zip code
           </div>
+          <div *ngIf="form.controls[formControls.zip]?.errors?.maxlength" class="invalid-feedback" i18n>
+            Max length {{form.controls[formControls.zip].errors?.maxlength?.requiredLength}}
+          </div>
         </div>
         <div class="form-group col-md-6">
           <label for="inputTown" i18n>Town *</label>
@@ -77,6 +86,9 @@
                  class="form-control">
           <div *ngIf="form.controls[formControls.town]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a name
+          </div>
+          <div *ngIf="form.controls[formControls.town]?.errors?.maxlength" class="invalid-feedback" i18n>
+            Max length {{form.controls[formControls.town].errors?.maxlength?.requiredLength}}
           </div>
         </div>
       </div>
