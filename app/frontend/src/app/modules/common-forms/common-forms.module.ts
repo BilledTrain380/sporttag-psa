@@ -7,22 +7,24 @@ import { NgbDatepickerModule } from "@ng-bootstrap/ng-bootstrap";
 import { DateInputComponent } from "./date-input/date-input.component";
 import { GenderInputComponent } from "./gender-input/gender-input.component";
 import { InputValidationDirective } from "./input-validation.directive";
+import { SportTypeInputComponent } from "./sport-type-input/sport-type-input.component";
 
-const COMPONENT = [
+const COMPONENTS = [
   GenderInputComponent,
   DateInputComponent,
   InputValidationDirective,
+  SportTypeInputComponent,
 ];
 
 @NgModule({
-            declarations: [...COMPONENT],
+            declarations: [...COMPONENTS],
             imports: [
               CommonModule,
               ReactiveFormsModule,
               NgbDatepickerModule,
               FontAwesomeModule,
             ],
-            exports: [...COMPONENT],
+            exports: [...COMPONENTS],
           })
 export class CommonFormsModule {
 }

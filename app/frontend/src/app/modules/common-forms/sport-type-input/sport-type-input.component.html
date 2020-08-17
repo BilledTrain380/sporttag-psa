@@ -1,0 +1,7 @@
+<form [formGroup]="form">
+  <select id="sportTypeInput" class="form-control" appInputValidation [formControlName]="formControls.sportType">
+    <option selected disabled value="">Choose...</option>
+    <option *ngFor="let type of sportTypes" [value]="type">{{type}}</option>
+  </select>
+</form>
+
