@@ -6,6 +6,7 @@ import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
 import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
+import ch.schulealtendorf.psa.dto.participation.SCHATZSUCHE
 import ch.schulealtendorf.psa.dto.participation.TownDto
 import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
@@ -32,7 +33,8 @@ internal class ParticipantControllerTest : PsaWebMvcTest() {
             address = "Musterstrasse 21",
             birthday = BirthdayDto.parse("2020-01-01"),
             group = "2a",
-            town = TownDto("8000", "Zürich")
+            town = TownDto("8000", "Zürich"),
+            sportType = SCHATZSUCHE
         )
 
         private val PARTICIPANT_ELEMENT = ParticipantElement(

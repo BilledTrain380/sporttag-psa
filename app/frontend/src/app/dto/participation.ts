@@ -157,6 +157,7 @@ export interface ParticipantInput {
   readonly address: string;
   readonly town: TownDto;
   readonly group: string;
+  readonly sportType: string;
 }
 
 export interface ParticipantRelation {
