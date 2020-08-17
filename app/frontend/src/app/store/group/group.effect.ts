@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY, forkJoin, of } from "rxjs";
 import { catchError, filter, map, switchMap } from "rxjs/operators";
+import { requireNonNullOrUndefined } from "../../@core/lib/lib";
 
 import { getLogger } from "../../@core/logging";
 import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
@@ -115,17 +116,16 @@ export class GroupEffects {
                         birthday: action.participant.birthday,
                         group: action.participant.group.name,
                         town: action.participant.town,
+                        sportType: requireNonNullOrUndefined(action.participant.sportType),
                       };
 
                       return this.participantApi.createParticipant(participantInput)
-                        .pipe(map(participant =>
-                                    of(addParticipantAction({participant}))))
-                        .pipe(map(() => {
+                        .pipe(switchMap(participant => {
                           this.log.info(`Successfully added participant: prename=${action.participant.prename}, surname=${action.participant.surname}`);
 
                           const alert = textAlert.success($localize`Successfully added participant`);
 
-                          return setParticipantAlertAction({alert});
+                          return [addParticipantAction({participant}), setParticipantAlertAction({alert})];
                         }))
                         .pipe(catchError(err => {
                           this.log.warn(`Could not add participant: prename=${action.participant.prename}, surname=${action.participant.surname}`, err);
