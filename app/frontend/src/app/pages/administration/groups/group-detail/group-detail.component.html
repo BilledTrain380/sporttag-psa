@@ -9,13 +9,13 @@
                  cardTitle="Participants"
                  i18n-cardTitle>
   <app-layout-buttons>
-    <button type="button"
-            (click)="openAddParticipantModal()"
-            class="btn btn-primary btn-sm"
-            data-test-selector="add-participant">
-      <fa-icon [icon]="faPlusCircle"></fa-icon>
-      <span i18n>Add participant</span>
-    </button>
+    <app-layout-button (click)="openAddParticipantModal()"
+                       buttonType="primary"
+                       text="Add participant"
+                       i18n-text
+                       [icon]="faPlusCircle"
+                       data-test-selector="add-participant">
+    </app-layout-button>
   </app-layout-buttons>
 
   <app-text-alert [alert]="alert$ | async"></app-text-alert>
