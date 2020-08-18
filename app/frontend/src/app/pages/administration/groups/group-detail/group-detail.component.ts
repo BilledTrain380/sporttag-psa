@@ -9,8 +9,8 @@ import { map, takeUntil } from "rxjs/operators";
 import { Timer } from "../../../../@core/lib/timer";
 import { ParticipantElement, ParticipantRelation } from "../../../../dto/participation";
 import { Alert } from "../../../../modules/alert/alert";
+import { confirmModalOptions, ConfirmType } from "../../../../modules/modal/confirm-modal/confirm-modal-util";
 import { ConfirmModalComponent } from "../../../../modules/modal/confirm-modal/confirm-modal.component";
-import { ConfirmType } from "../../../../modules/modal/confirm-modal/confirm-type";
 import {
   clearActiveGroupAction,
   clearParticipantAlertAction,
@@ -18,14 +18,14 @@ import {
   loadActiveParticipantAction,
   loadGroupAction,
   updateParticipantAction,
-  updateParticipantRelationAction
+  updateParticipantRelationAction,
 } from "../../../../store/group/group.action";
 import { selectActiveGroup, selectParticipantAlert, selectParticipants } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
+
 import { AddParticipantComponent } from "./add-participant/add-participant.component";
 import { EditParticipantModalComponent } from "./edit-participant-modal/edit-participant-modal.component";
-
 import { GroupViewModel, ParticipantModel } from "./view-model";
 
 @Component({
@@ -105,23 +105,23 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.updateParticipantSportTypeTimer.trigger(participantRelation);
   }
 
+  openAddParticipantModal(): void {
+    this.clearAlert();
+    this.modalService.open(AddParticipantComponent, {size: "lg"});
+  }
+
   openEditParticipantModal(participant: ParticipantModel): void {
     this.clearAlert();
     this.store.dispatch(loadActiveParticipantAction({participantId: participant.id}));
     this.modalService.open(EditParticipantModalComponent, {size: "lg"});
   }
 
-  openAddParticipantModal(): void {
-    this.clearAlert();
-    this.modalService.open(AddParticipantComponent, {size: "lg"});
-  }
-
   deleteParticipant(participant: ParticipantModel): void {
     this.clearAlert();
-    const modalRef = this.modalService.open(ConfirmModalComponent, {size: "md"});
+    const modalRef = this.modalService.open(ConfirmModalComponent, confirmModalOptions);
 
     modalRef.componentInstance.buildText(
-      $localize`Are you really want to delete the participant `,
+      $localize`Do you really want to delete the participant `,
       "\"",
       participant.fullName,
       "\"?",

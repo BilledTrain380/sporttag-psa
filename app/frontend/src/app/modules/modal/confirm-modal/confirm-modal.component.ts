@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { ConfirmType } from "./confirm-type";
+import { ConfirmType } from "./confirm-modal-util";
 
 @Component({
              selector: "app-confirm-modal",
