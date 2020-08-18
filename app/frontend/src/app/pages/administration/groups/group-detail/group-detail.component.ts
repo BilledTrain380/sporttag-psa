@@ -7,7 +7,7 @@ import { Observable, Subject } from "rxjs";
 import { map, takeUntil } from "rxjs/operators";
 
 import { Timer } from "../../../../@core/lib/timer";
-import { ParticipantElement } from "../../../../dto/participation";
+import { ParticipantElement, ParticipantRelation } from "../../../../dto/participation";
 import { Alert } from "../../../../modules/alert/alert";
 import { ConfirmModalComponent } from "../../../../modules/modal/confirm-modal/confirm-modal.component";
 import { ConfirmType } from "../../../../modules/modal/confirm-modal/confirm-type";
@@ -17,7 +17,8 @@ import {
   deleteParticipantAction,
   loadActiveParticipantAction,
   loadGroupAction,
-  updateParticipantAction
+  updateParticipantAction,
+  updateParticipantRelationAction
 } from "../../../../store/group/group.action";
 import { selectActiveGroup, selectParticipantAlert, selectParticipants } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
@@ -46,11 +47,14 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     }));
 
   readonly participants$: Observable<ReadonlyArray<ParticipantModel>> = this.store.select(selectParticipants)
-    .pipe(map(participants => participants.map(participant => ParticipantModel.fromDto(participant))));
+    .pipe(map(participants => participants
+      .map(participant => ParticipantModel.fromDto(participant))
+      .sort((a, b) => a.compareTo(b))));
 
   readonly alert$: Observable<Alert | undefined> = this.store.select(selectParticipantAlert);
 
   private readonly updateParticipantAbsentTimer = Timer.ofHalfSecond<ParticipantElement>();
+  private readonly updateParticipantSportTypeTimer = Timer.ofHalfSecond<ParticipantRelation>();
 
   private readonly destroy$ = new Subject();
 
@@ -70,6 +74,10 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.updateParticipantAbsentTimer.run$
       .pipe(takeUntil(this.destroy$))
       .subscribe(participant => this.store.dispatch(updateParticipantAction({participant})));
+
+    this.updateParticipantSportTypeTimer.run$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(participant => this.store.dispatch(updateParticipantRelationAction({participant})));
   }
 
   ngOnDestroy(): void {
@@ -85,6 +93,16 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     };
 
     this.updateParticipantAbsentTimer.trigger(participantElement);
+  }
+
+  toggleSportType(participant: ParticipantModel): void {
+    this.clearAlert();
+    const participantRelation: ParticipantRelation = {
+      id: participant.id,
+      sportType: participant.sportType,
+    };
+
+    this.updateParticipantSportTypeTimer.trigger(participantRelation);
   }
 
   openEditParticipantModal(participant: ParticipantModel): void {

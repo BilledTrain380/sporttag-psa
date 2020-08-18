@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnDestroy, OnInit } from "@angular/core";
+import { Component, forwardRef, Input, OnDestroy, OnInit } from "@angular/core";
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -20,6 +20,9 @@ import { ATHLETICS, BRENNBALL, SCHATZSUCHE, VELO_ROLLERBLADES } from "../../../d
              ],
            })
 export class SportTypeInputComponent implements OnInit, OnDestroy, ControlValueAccessor {
+  @Input()
+  size = "";
+
   readonly sportTypes: ReadonlyArray<string> = [
     ATHLETICS,
     SCHATZSUCHE,

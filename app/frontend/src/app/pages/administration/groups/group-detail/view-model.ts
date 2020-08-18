@@ -34,7 +34,7 @@ export class ParticipantModel {
     readonly gender: string,
     public isAbsent: boolean,
     readonly address: string,
-    readonly sportType?: string,
+    public sportType?: string,
   ) {
   }
 
@@ -46,7 +46,19 @@ export class ParticipantModel {
       translateGender(dto.gender),
       dto.absent,
       dto.address,
-      dto.sportType,
+      dto.sportType ?? "",
     );
+  }
+
+  compareTo(other: ParticipantModel): number {
+    if (this.fullName.localeCompare(other.fullName) > 0) {
+      return 1;
+    }
+
+    if (this.fullName.localeCompare(other.fullName) < 0) {
+      return -1;
+    }
+
+    return 0;
   }
 }

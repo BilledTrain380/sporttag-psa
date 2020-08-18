@@ -61,7 +61,7 @@
         </div>
       </td>
       <td>
-        {{participant.sportType}}
+        <app-sport-type-input size="sm" [(ngModel)]="participant.sportType" (change)="toggleSportType(participant)"></app-sport-type-input>
       </td>
     </tr>
     </tbody>

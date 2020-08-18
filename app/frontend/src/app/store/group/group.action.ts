@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 
 import { GroupStatusType, OverviewGroupDto, SimpleGroupDto } from "../../dto/group";
-import { ParticipantDto, ParticipantElement } from "../../dto/participation";
+import { ParticipantDto, ParticipantElement, ParticipantRelation } from "../../dto/participation";
 import { Alert } from "../../modules/alert/alert";
 
 export interface LoadOverviewGroupsProps {
@@ -113,6 +113,15 @@ export interface UpdateParticipantProps {
 export const updateParticipantAction = createAction(
   "[GroupDetail] Update participant",
   props<UpdateParticipantProps>(),
+);
+
+export interface UpdateParticipantRelationProps {
+  readonly participant: ParticipantRelation;
+}
+
+export const updateParticipantRelationAction = createAction(
+  "[GroupDetail] Update participant relation",
+  props<UpdateParticipantRelationProps>(),
 );
 
 export interface DeleteParticipantProps {

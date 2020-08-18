@@ -31,6 +31,8 @@ import {
   setParticipantAlertAction,
   updateParticipantAction,
   UpdateParticipantProps,
+  updateParticipantRelationAction,
+  UpdateParticipantRelationProps,
 } from "./group.action";
 
 @Injectable()
@@ -152,6 +154,29 @@ export class GroupEffects {
                         }))
                         .pipe(catchError(err => {
                           this.log.warn(`Could not update participant: participantId=${action.participant.id}`, err);
+
+                          const alert = textAlert.error($localize`Could not update participant`);
+
+                          return of(setParticipantAlertAction({alert}));
+                        }));
+                    },
+    )));
+
+  readonly updateParticipantRelation = createEffect(() => this.actions$
+    .pipe(ofType(updateParticipantRelationAction.type))
+    .pipe(switchMap((action: UpdateParticipantRelationProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.participantApi.updateParticipantRelation(action.participant)
+                        .pipe(map(() => {
+                          this.log.info(`Successfully updated participant relation: participantId=${action.participant.id}`);
+
+                          const alert = textAlert.success($localize`Successfully updated participant`);
+
+                          return setParticipantAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn(`Could not update participant relation: participantId=${action.participant.id}`, err);
 
                           const alert = textAlert.error($localize`Could not update participant`);
 
