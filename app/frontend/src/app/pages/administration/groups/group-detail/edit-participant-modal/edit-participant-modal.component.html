@@ -4,7 +4,7 @@
                   [isSubmitEnabled]="form?.valid"
                   (cancel)="cancel()"
                   (submitData)="submit()">
-  <div *ngIf="form">
+  <div *ngIf="form; else spinner">
     <form [formGroup]="form" appFormHint>
       <div class="form-row">
         <div class="form-group col-md-6">
@@ -64,4 +64,8 @@
       </div>
     </form>
   </div>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
 </app-submit-modal>

@@ -2,7 +2,6 @@
   <button class="btn btn-outline-info" [routerLink]="groupManagementLink" i18n>Go back</button>
 </div>
 
-<!-- TODO: Loading component -->
 <app-simple-page *ngIf="group$ | async as group"
                  [pageTitle]="group.name"
                  [pageSubTitle]="group.coach"
@@ -20,7 +19,9 @@
 
   <app-text-alert [alert]="alert$ | async"></app-text-alert>
 
-  <table class="table" data-test-selector="participant-table">
+  <table *ngIf="participants$ | async as participants; else spinner"
+         class="table"
+         data-test-selector="participant-table">
     <thead>
     <tr>
       <th i18n>Actions</th>
@@ -33,7 +34,7 @@
     </tr>
     </thead>
 
-    <tbody *ngIf="participants$ | async as participants">
+    <tbody>
     <tr *ngFor="let participant of participants">
       <td>
         <app-button-group>
@@ -65,4 +66,8 @@
     </tr>
     </tbody>
   </table>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
 </app-simple-page>

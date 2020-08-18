@@ -17,6 +17,7 @@ import { PageHeaderComponent } from "./layout/page-header/page-header.component"
 import { RowLayoutComponent } from "./layout/row-layout/row-layout.component";
 import { RowPageComponent } from "./layout/row-page/row-page.component";
 import { SimplePageComponent } from "./layout/simple-page/simple-page.component";
+import { CardSpinnerComponent } from './layout/spinner/card-spinner/card-spinner.component';
 
 const BASE_COMPONENTS = [
   HeaderComponent,
@@ -28,6 +29,7 @@ const BASE_COMPONENTS = [
   ColumnLayoutComponent,
   LayoutButtonsComponent,
   LayoutButtonComponent,
+  CardSpinnerComponent,
 ];
 
 const MODULES = [

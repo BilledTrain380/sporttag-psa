@@ -14,7 +14,7 @@
 
   <app-text-alert [alert]="alert"></app-text-alert>
 
-  <table class="table" data-test-selector="group-table">
+  <table *ngIf="groups$ | async as groups; else spinner" class="table" data-test-selector="group-table">
     <thead>
     <tr>
       <th i18n>Actions</th>
@@ -25,7 +25,7 @@
     </thead>
 
     <tbody>
-    <tr *ngFor="let overviewGroup of groups$ | async">
+    <tr *ngFor="let overviewGroup of groups">
       <td>
         <app-single-button text="Manage"
                            i18n-text
@@ -40,4 +40,8 @@
     </tr>
     </tbody>
   </table>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
 </app-simple-page>
