@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 import { OverviewGroupDto } from "../../../../dto/group";
 import { Alert } from "../../../../modules/alert/alert";
 import { AppState } from "../../../../store/app";
-import { clearOverviewGroupsAction, loadOverviewGroupsAction } from "../../../../store/group/group.action";
+import { clearOverviewGroupsAction, clearParticipantAlertAction, loadOverviewGroupsAction } from "../../../../store/group/group.action";
 import { selectOverviewGroups } from "../../../../store/group/group.selector";
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_DETAIL_PREFIX_PATH } from "../groups-paths";
@@ -39,6 +39,7 @@ export class GroupOverviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch(clearOverviewGroupsAction(VOID_PROPS));
+    this.store.dispatch(clearParticipantAlertAction(VOID_PROPS));
   }
 
   openImportModal(): void {
