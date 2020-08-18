@@ -5,10 +5,10 @@
                   (cancel)="cancel()"
                   (submitData)="submit()">
   <div *ngIf="form">
-    <form [formGroup]="form">
+    <form [formGroup]="form" appFormHint>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputPrename" i18n>Prename *</label>
+          <label for="inputPrename" appFormHintRequired i18n>Prename</label>
           <input id="inputPrename"
                  [formControlName]="formControls.prename"
                  type="text"
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="inputSurname" i18n>Surname *</label>
+          <label for="inputSurname" appFormHintRequired i18n>Surname</label>
           <input id="inputSurname"
                  [formControlName]="formControls.surname"
                  type="text"
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="inputAddress" i18n>Address *</label>
+        <label for="inputAddress" appFormHintRequired i18n>Address</label>
         <input id="inputAddress"
                [formControlName]="formControls.address"
                type="text"
@@ -55,7 +55,7 @@
           <app-gender-input [formControlName]="formControls.gender"></app-gender-input>
         </div>
         <div class="form-group col-md-6">
-          <label i18n>Birthday *</label>
+          <label appFormHintRequired i18n>Birthday</label>
           <app-date-input [formControlName]="formControls.birthday"></app-date-input>
           <div *ngIf="form.controls[formControls.birthday]?.errors?.required" class="invalid-feedback" i18n>
             Please enter a birthday
@@ -64,7 +64,7 @@
       </div>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="inputZip" i18n>Zip *</label>
+          <label for="inputZip" appFormHintRequired i18n>Zip</label>
           <input id="inputZip"
                  [formControlName]="formControls.zip"
                  type="text"
@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="inputTown" i18n>Town *</label>
+          <label for="inputTown" appFormHintRequired i18n>Town</label>
           <input id="inputTown"
                  [formControlName]="formControls.town"
                  type="text"
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="inputSportType" i18n>Sport Type *</label>
+        <label for="inputSportType" appFormHintRequired i18n>Sport Type</label>
         <app-sport-type-input id="inputSportType"
                               [formControlName]="formControls.sportType">
         </app-sport-type-input>
