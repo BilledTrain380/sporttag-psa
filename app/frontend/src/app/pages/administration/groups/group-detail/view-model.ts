@@ -1,5 +1,5 @@
 import { SimpleGroupDto } from "../../../../dto/group";
-import { ParticipantDto, translateGender } from "../../../../dto/participation";
+import { GenderDto, ParticipantDto } from "../../../../dto/participation";
 
 export class GroupViewModel {
   private static readonly GROUP_PREFIX = $localize`Group `;
@@ -31,7 +31,7 @@ export class ParticipantModel {
     readonly id: number,
     readonly surname: string,
     readonly prename: string,
-    readonly gender: string,
+    readonly gender: GenderDto,
     public isAbsent: boolean,
     readonly address: string,
     public sportType?: string,
@@ -43,7 +43,7 @@ export class ParticipantModel {
       dto.id,
       dto.surname,
       dto.prename,
-      translateGender(dto.gender),
+      dto.gender,
       dto.absent,
       dto.address,
       dto.sportType ?? "",

@@ -8,6 +8,7 @@ import { AlertModule } from "../../../modules/alert/alert.module";
 import { CommonFormsModule } from "../../../modules/common-forms/common-forms.module";
 import { DragAndDropModule } from "../../../modules/drag-and-drop/drag-and-drop.module";
 import { ModalModule } from "../../../modules/modal/modal.module";
+import { ParticipantModule } from "../../../modules/participant/participant.module";
 import { StatusModule } from "../../../modules/status/status.module";
 import { GroupEffects } from "../../../store/group/group.effect";
 
@@ -40,6 +41,7 @@ import { GroupsComponent } from "./groups.component";
               ReactiveFormsModule,
               FormsModule,
               CommonFormsModule,
+              ParticipantModule,
             ],
           })
 export class GroupsModule {

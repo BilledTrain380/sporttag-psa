@@ -4,6 +4,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbDatepickerModule } from "@ng-bootstrap/ng-bootstrap";
 
+import { ParticipantModule } from "../participant/participant.module";
+
 import { DateInputComponent } from "./date-input/date-input.component";
 import { FormHintRequiredDirective } from "./form-hint-required.directive";
 import { FormHintDirective } from "./form-hint.directive";
@@ -27,6 +29,7 @@ const COMPONENTS = [
               ReactiveFormsModule,
               NgbDatepickerModule,
               FontAwesomeModule,
+              ParticipantModule,
             ],
             exports: [...COMPONENTS],
           })

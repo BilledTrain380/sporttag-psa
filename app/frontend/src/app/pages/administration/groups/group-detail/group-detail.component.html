@@ -50,7 +50,9 @@
       </td>
       <td>{{participant.surname}}</td>
       <td>{{participant.prename}}</td>
-      <td>{{participant.gender}}</td>
+      <td>
+        <app-gender [gender]="participant.gender"></app-gender>
+      </td>
       <td>{{participant.address}}</td>
       <td>
         <div class="form-check">

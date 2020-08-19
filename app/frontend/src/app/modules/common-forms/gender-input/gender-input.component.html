@@ -7,7 +7,7 @@
            [formControlName]="formControl.gender"
            [value]="GenderDto.MALE">
     <label class="form-check-label" for="genderRadiosMale" i18n>
-      Male
+      <app-gender [gender]="GenderDto.MALE"></app-gender>
     </label>
   </div>
   <div class="form-check">
@@ -17,7 +17,7 @@
            [formControlName]="formControl.gender"
            [value]="GenderDto.FEMALE">
     <label class="form-check-label" for="genderRadiosFemale" i18n>
-      Female
+      <app-gender [gender]="GenderDto.FEMALE"></app-gender>
     </label>
   </div>
 </fieldset>

@@ -176,17 +176,6 @@ export enum GenderDto {
   FEMALE = "FEMALE",
 }
 
-export function translateGender(gender: GenderDto): string {
-  switch (gender) {
-    case GenderDto.MALE:
-      return $localize`Male`;
-    case GenderDto.FEMALE:
-      return $localize`Female`;
-    default:
-      throw new Error(`Can not translate unknown gender: gender=${gender}`);
-  }
-}
-
 export interface BirthdayDto {
   readonly value: string;
   readonly date: NgbDateStruct;
