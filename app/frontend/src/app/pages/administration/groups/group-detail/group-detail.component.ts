@@ -24,7 +24,7 @@ import { selectActiveGroup, selectParticipantAlert, selectParticipants } from ".
 import { VOID_PROPS } from "../../../../store/standard-props";
 import { GROUP_NAME_PATH_VARIABLE, ROOT_PATH } from "../groups-paths";
 
-import { AddParticipantComponent } from "./add-participant/add-participant.component";
+import { AddParticipantModalComponent } from "./add-participant/add-participant-modal.component";
 import { EditParticipantModalComponent } from "./edit-participant-modal/edit-participant-modal.component";
 import { GroupViewModel, ParticipantModel } from "./view-model";
 
@@ -107,7 +107,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
 
   openAddParticipantModal(): void {
     this.clearAlert();
-    this.modalService.open(AddParticipantComponent, {size: "lg"});
+    this.modalService.open(AddParticipantModalComponent, {size: "lg"});
   }
 
   openEditParticipantModal(participant: ParticipantModel): void {

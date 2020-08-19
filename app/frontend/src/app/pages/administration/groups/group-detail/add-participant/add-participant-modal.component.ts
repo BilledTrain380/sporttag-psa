@@ -14,10 +14,10 @@ import { addParticipantAction } from "../../../../../store/group/group.action";
 import { selectActiveGroup, selectParticipantAlert } from "../../../../../store/group/group.selector";
 
 @Component({
-             selector: "app-add-participant",
-             templateUrl: "./add-participant.component.html",
+             selector: "app-add-participant-modal",
+             templateUrl: "./add-participant-modal.component.html",
            })
-export class AddParticipantComponent extends AbstractSubmitModalComponent implements OnInit, OnDestroy {
+export class AddParticipantModalComponent extends AbstractSubmitModalComponent implements OnInit, OnDestroy {
   readonly formControls: FormControlsObject = {
     prename: "prename",
     surname: "surname",

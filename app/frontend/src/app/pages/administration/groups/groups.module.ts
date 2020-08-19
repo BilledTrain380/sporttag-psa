@@ -11,7 +11,7 @@ import { ModalModule } from "../../../modules/modal/modal.module";
 import { StatusModule } from "../../../modules/status/status.module";
 import { GroupEffects } from "../../../store/group/group.effect";
 
-import { AddParticipantComponent } from "./group-detail/add-participant/add-participant.component";
+import { AddParticipantModalComponent } from "./group-detail/add-participant/add-participant-modal.component";
 import { EditParticipantModalComponent } from "./group-detail/edit-participant-modal/edit-participant-modal.component";
 import { GroupDetailComponent } from "./group-detail/group-detail.component";
 import { GroupOverviewComponent } from "./group-overview/group-overview.component";
@@ -25,8 +25,8 @@ import { GroupsComponent } from "./groups.component";
               GroupOverviewComponent,
               ImportGroupsComponent,
               GroupDetailComponent,
+              AddParticipantModalComponent,
               EditParticipantModalComponent,
-              AddParticipantComponent,
             ],
             imports: [
               ThemeModule,
