@@ -7,7 +7,7 @@ import { ParticipantDto, ParticipantElement, ParticipantInput, ParticipantRelati
 import { parseDate } from "../../lib/time";
 import { getLogger, Logger } from "../../logging";
 
-import { API_ENDPOINT, ApiParameters } from "./pas-api";
+import { ApiParameters, API_ENDPOINT } from "./pas-api";
 
 @Injectable({
               providedIn: "root",

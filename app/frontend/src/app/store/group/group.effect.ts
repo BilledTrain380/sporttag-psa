@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY, forkJoin, of } from "rxjs";
 import { catchError, filter, map, switchMap } from "rxjs/operators";
-import { requireNonNullOrUndefined } from "../../@core/lib/lib";
 
+import { requireNonNullOrUndefined } from "../../@core/lib/lib";
 import { getLogger } from "../../@core/logging";
 import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
 import { ParticipantApi, ParticipantParameters } from "../../@core/service/api/participant-api";
