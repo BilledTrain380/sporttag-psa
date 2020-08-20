@@ -21,7 +21,7 @@ import { ATHLETICS, BRENNBALL, SCHATZSUCHE, VELO_ROLLERBLADES } from "../../../d
            })
 export class SportTypeInputComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @Input()
-  size = "";
+  size: "" | "sm" = "";
 
   readonly sportTypes: ReadonlyArray<string> = [
     ATHLETICS,
