@@ -1,4 +1,6 @@
-import { Duration, SECOND_IN_MILLIS, TemporalUnit } from "./time";
+import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
+
+import { Duration, isoFormatOfDate, parseDate, SECOND_IN_MILLIS, TemporalUnit } from "./time";
 
 interface ExpectedDurationValues {
   readonly days: number;
@@ -86,6 +88,44 @@ describe("Time", () => {
 
       expect(zero.isZero())
         .toBeTrue();
+    });
+  });
+
+  describe("parse date", () => {
+    it("should parse a valid ISO date", () => {
+      const date = parseDate("2008-04-28");
+
+      expect(date.year)
+        .toBe(2008);
+      expect(date.month)
+        .toBe(4);
+      expect(date.day)
+        .toBe(28);
+    });
+
+    it("should throw an error on invalid ISO date", () => {
+      expect(() => parseDate("invalid"))
+        .toThrowError("Invalid date value: invalid");
+    });
+  });
+
+  describe("iso format date", () => {
+    it("should format with two digit numbers when month or day is one digit", () => {
+      const date = new NgbDate(2008, 5, 2);
+
+      const format = isoFormatOfDate(date);
+
+      expect(format)
+        .toBe("2008-05-02");
+    });
+
+    it("should format with two digit numbers", () => {
+      const date = new NgbDate(2008, 11, 28);
+
+      const format = isoFormatOfDate(date);
+
+      expect(format)
+        .toBe("2008-11-28");
     });
   });
 });

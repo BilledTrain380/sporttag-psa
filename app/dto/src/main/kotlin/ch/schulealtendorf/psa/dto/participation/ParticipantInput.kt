@@ -7,5 +7,6 @@ data class ParticipantInput(
     val birthday: BirthdayDto,
     val address: String,
     val town: TownDto,
-    val group: String
+    val group: String,
+    val sportType: String
 )

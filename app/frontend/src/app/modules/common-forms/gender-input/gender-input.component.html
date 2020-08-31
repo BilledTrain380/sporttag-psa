@@ -1,0 +1,23 @@
+<fieldset class="form-group" [formGroup]="form">
+  <legend class="col-form-label pt-0" i18n>Gender</legend>
+  <div class="form-check">
+    <input class="form-check-input"
+           type="radio"
+           id="genderRadiosMale"
+           [formControlName]="formControl.gender"
+           [value]="GenderDto.MALE">
+    <label class="form-check-label" for="genderRadiosMale" i18n>
+      <app-gender [gender]="GenderDto.MALE"></app-gender>
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input"
+           type="radio"
+           id="genderRadiosFemale"
+           [formControlName]="formControl.gender"
+           [value]="GenderDto.FEMALE">
+    <label class="form-check-label" for="genderRadiosFemale" i18n>
+      <app-gender [gender]="GenderDto.FEMALE"></app-gender>
+    </label>
+  </div>
+</fieldset>

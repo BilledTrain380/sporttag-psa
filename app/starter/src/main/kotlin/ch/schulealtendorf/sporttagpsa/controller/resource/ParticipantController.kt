@@ -188,7 +188,16 @@ class ParticipantController(
             group = SimpleGroupDto.ofNameOnly(input.group)
         )
 
-        return participantManager.saveParticipant(participant)
+        val createdParticipant = participantManager.saveParticipant(participant)
+        val participationStatus = participationManager.getParticipationStatus()
+
+        if (participationStatus == ParticipationStatusType.OPEN) {
+            participationManager.participate(createdParticipant, input.sportType)
+        } else {
+            participationManager.reParticipate(createdParticipant, input.sportType)
+        }
+
+        return createdParticipant.copy(sportType = input.sportType)
     }
 
     @Operation(

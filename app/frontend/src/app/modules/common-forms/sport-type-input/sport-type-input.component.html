@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <select class="form-control"
+          [ngClass]="{'form-control-sm': size === 'sm'}"
+          [formControlName]="formControls.sportType">
+    <option selected disabled value="" i18n>Choose...</option>
+    <option *ngFor="let type of sportTypes" [value]="type">{{type}}</option>
+  </select>
+</form>
+

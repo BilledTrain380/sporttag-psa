@@ -21,7 +21,17 @@ export const selectActiveGroup = createSelector(
   (state: GroupState) => state.activeGroup,
 );
 
-export const selectActiveGroupAlert = createSelector(
+export const selectParticipantAlert = createSelector(
   selectGroup,
-  (state: GroupState) => state.activeGroup?.alert,
+  (state: GroupState) => state.participantAlert,
+);
+
+export const selectParticipants = createSelector(
+  selectGroup,
+  (state: GroupState) => state.participants,
+);
+
+export const selectActiveParticipant = createSelector(
+  selectGroup,
+  (state: GroupState) => state.activeParticipant,
 );

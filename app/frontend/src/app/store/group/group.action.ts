@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 
 import { GroupStatusType, OverviewGroupDto, SimpleGroupDto } from "../../dto/group";
-import { ParticipantDto, ParticipantElement } from "../../dto/participation";
+import { ParticipantDto, ParticipantElement, ParticipantRelation } from "../../dto/participation";
 import { Alert } from "../../modules/alert/alert";
 
 export interface LoadOverviewGroupsProps {
@@ -74,8 +74,40 @@ export const clearActiveGroupAction = createAction(
   props(),
 );
 
+export interface LoadParticipantProps {
+  readonly participantId: number;
+}
+
+export const loadActiveParticipantAction = createAction(
+  "[EditParticipantModal] Edit participant",
+  props<LoadParticipantProps>(),
+);
+
+export interface SetActiveParticipantProps {
+  readonly participant: ParticipantDto;
+}
+
+export const setActiveParticipantAction = createAction(
+  "[GroupEffect] Set active participant",
+  props<SetActiveParticipantProps>(),
+);
+
+export const clearActiveParticipantAction = createAction(
+  "[EditParticipantModal] Clears active participant",
+  props(),
+);
+
+export interface AddParticipantProps {
+  readonly participant: ParticipantDto;
+}
+
+export const addParticipantAction = createAction(
+  "[AddParticipantModal] Add participant",
+  props<AddParticipantProps>(),
+);
+
 export interface UpdateParticipantProps {
-  participant: ParticipantElement;
+  readonly participant: ParticipantElement;
 }
 
 export const updateParticipantAction = createAction(
@@ -83,16 +115,34 @@ export const updateParticipantAction = createAction(
   props<UpdateParticipantProps>(),
 );
 
-export interface SetActiveGroupAlertProps {
+export interface UpdateParticipantRelationProps {
+  readonly participant: ParticipantRelation;
+}
+
+export const updateParticipantRelationAction = createAction(
+  "[GroupDetail] Update participant relation",
+  props<UpdateParticipantRelationProps>(),
+);
+
+export interface DeleteParticipantProps {
+  readonly participant_id: number;
+}
+
+export const deleteParticipantAction = createAction(
+  "[GroupDetail] Delete participant",
+  props<DeleteParticipantProps>(),
+);
+
+export interface SetParticipantAlertProps {
   readonly alert: Alert;
 }
 
-export const setActiveGroupAlertAction = createAction(
+export const setParticipantAlertAction = createAction(
   "[GroupEffect] Set active group alert",
-  props<SetActiveGroupAlertProps>(),
+  props<SetParticipantAlertProps>(),
 );
 
-export const clearActiveGroupAlertAction = createAction(
+export const clearParticipantAlertAction = createAction(
   "[GroupDetail] Clear active group alert",
   props(),
 );

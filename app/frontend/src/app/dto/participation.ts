@@ -1,4 +1,7 @@
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+
 import { requireNonNullOrUndefined } from "../@core/lib/lib";
+import { isoFormatOfDate, parseDate } from "../@core/lib/time";
 
 import { SimpleGroupDto } from "./group";
 import { StatusDto } from "./status";
@@ -155,6 +158,7 @@ export interface ParticipantInput {
   readonly address: string;
   readonly town: TownDto;
   readonly group: string;
+  readonly sportType: string;
 }
 
 export interface ParticipantRelation {
@@ -172,19 +176,27 @@ export enum GenderDto {
   FEMALE = "FEMALE",
 }
 
-export function translateGender(gender: GenderDto): string {
-  switch (gender) {
-    case GenderDto.MALE:
-      return $localize`Male`;
-    case GenderDto.FEMALE:
-      return $localize`Female`;
-    default:
-      throw new Error(`Can not translate unknown gender: gender=${gender}`);
-  }
+export interface BirthdayDto {
+  readonly value: string;
+  readonly date: NgbDateStruct;
 }
 
-export interface BirthdayDto {
-  readonly value: Date;
+export class BirthdayDtoImpl implements BirthdayDto {
+  readonly value: string;
+
+  private constructor(
+    readonly date: NgbDateStruct,
+  ) {
+    this.value = isoFormatOfDate(date);
+  }
+
+  static parse(text: string): BirthdayDto {
+    return new BirthdayDtoImpl(parseDate(text));
+  }
+
+  static of(date: NgbDateStruct): BirthdayDtoImpl {
+    return new BirthdayDtoImpl(date);
+  }
 }
 
 export interface TownDto {

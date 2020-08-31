@@ -1,0 +1,28 @@
+:host {
+  width: 100%;
+  height: 200px;
+  display: block;
+  position: relative;
+}
+
+@keyframes card-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card-spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 5px solid #ccc;
+  border-top-color: #FFC107;
+  animation: card-spinner .6s linear infinite;
+}

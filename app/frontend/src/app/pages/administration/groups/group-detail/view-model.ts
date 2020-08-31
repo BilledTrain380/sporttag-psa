@@ -1,5 +1,5 @@
-import { ParticipantDto, translateGender } from "../../../../dto/participation";
-import { ActiveGroup } from "../../../../store/group/group.reducer";
+import { SimpleGroupDto } from "../../../../dto/group";
+import { GenderDto, ParticipantDto } from "../../../../dto/participation";
 
 export class GroupViewModel {
   private static readonly GROUP_PREFIX = $localize`Group `;
@@ -7,35 +7,34 @@ export class GroupViewModel {
   private constructor(
     readonly name: string,
     readonly coach: string,
-    readonly participants: ReadonlyArray<ParticipantModel>,
   ) {
   }
 
-  static fromState(activeGroup: ActiveGroup): GroupViewModel {
-    const participantModels = activeGroup.participants
-      .map(dto => ParticipantModel.fromDto(dto));
-
+  static fromState(activeGroup: SimpleGroupDto): GroupViewModel {
     return new GroupViewModel(
-      GroupViewModel.GROUP_PREFIX + activeGroup.group.name,
-      activeGroup.group.coach,
-      participantModels,
+      GroupViewModel.GROUP_PREFIX + activeGroup.name,
+      activeGroup.coach,
     );
   }
 
   static empty(): GroupViewModel {
-    return new GroupViewModel("UNKNOWN GROUP", "", []);
+    return new GroupViewModel("UNKNOWN GROUP", "");
   }
 }
 
 export class ParticipantModel {
+  get fullName(): string {
+    return `${this.surname} ${this.prename}`;
+  }
+
   private constructor(
     readonly id: number,
     readonly surname: string,
     readonly prename: string,
-    readonly gender: string,
+    readonly gender: GenderDto,
     public isAbsent: boolean,
     readonly address: string,
-    readonly sportType?: string,
+    public sportType?: string,
   ) {
   }
 
@@ -44,10 +43,22 @@ export class ParticipantModel {
       dto.id,
       dto.surname,
       dto.prename,
-      translateGender(dto.gender),
+      dto.gender,
       dto.absent,
       dto.address,
-      dto.sportType,
+      dto.sportType ?? "",
     );
+  }
+
+  compareTo(other: ParticipantModel): number {
+    if (this.fullName.localeCompare(other.fullName) > 0) {
+      return 1;
+    }
+
+    if (this.fullName.localeCompare(other.fullName) < 0) {
+      return -1;
+    }
+
+    return 0;
   }
 }
