@@ -19,6 +19,11 @@ const routes: Routes = [
           .then(module => module.GroupsModule),
       },
       {
+        path: "participation-management",
+        loadChildren: () => import("./participation/participation.module")
+          .then(module => module.ParticipationModule),
+      },
+      {
         path: "",
         redirectTo: "overview",
         pathMatch: "full",
