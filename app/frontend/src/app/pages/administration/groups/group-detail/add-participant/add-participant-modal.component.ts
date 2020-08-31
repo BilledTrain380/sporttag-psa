@@ -7,6 +7,7 @@ import { takeUntil } from "rxjs/operators";
 
 import { FormControlsObject } from "../../../../../@core/forms/form-util";
 import { requireNonNullOrUndefined } from "../../../../../@core/lib/lib";
+import { now } from "../../../../../@core/lib/time";
 import { BirthdayDto, BirthdayDtoImpl, GenderDto, ParticipantDto } from "../../../../../dto/participation";
 import { Alert } from "../../../../../modules/alert/alert";
 import { AbstractSubmitModalComponent } from "../../../../../modules/modal/submit-modal/abstract-submit-modal.component";
@@ -54,7 +55,7 @@ export class AddParticipantModalComponent extends AbstractSubmitModalComponent i
                                              [this.formControls.surname]: ["", [Validators.required, Validators.maxLength(30)]],
                                              [this.formControls.address]: ["", [Validators.required, Validators.maxLength(80)]],
                                              [this.formControls.gender]: [GenderDto.MALE, Validators.required],
-                                             [this.formControls.birthday]: ["", Validators.required],
+                                             [this.formControls.birthday]: [now(), Validators.required],
                                              [this.formControls.zip]: ["", [Validators.required, Validators.maxLength(4)]],
                                              [this.formControls.town]: ["", [Validators.required, Validators.maxLength(50)]],
                                              [this.formControls.group]: [group, Validators.required],

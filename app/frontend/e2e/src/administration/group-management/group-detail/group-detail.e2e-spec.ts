@@ -36,7 +36,6 @@ describe("Group Management", () => {
       await addParticipantPage.prenameInput.sendKeys("Max");
       await addParticipantPage.surnameInput.sendKeys("Muster");
       await addParticipantPage.addressInput.sendKeys("Bakerstreet 12");
-      await addParticipantPage.selectBirthdayToday();
       await addParticipantPage.zipInput.sendKeys("0311");
       await addParticipantPage.townInput.sendKeys("Manchester");
       await addParticipantPage.selectSportTypeAthletics();
