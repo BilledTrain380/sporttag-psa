@@ -4,10 +4,10 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbPopoverModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { StatusDetailComponent } from "./status/status-detail/status-detail.component";
-import { StatusComponent } from "./status/status.component";
+import { StatusPopoverComponent } from "./status/status-popover.component";
 
 const COMPONENTS = [
-  StatusComponent,
+  StatusPopoverComponent,
   StatusDetailComponent,
 ];
 

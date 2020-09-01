@@ -5,11 +5,11 @@ import { StatusDto } from "../../../dto/status";
 import { StatusModel } from "./status-model";
 
 @Component({
-             selector: "app-status",
-             templateUrl: "./status.component.html",
-             styleUrls: ["./status.component.scss"],
+             selector: "app-popover-status",
+             templateUrl: "./status-popover.component.html",
+             styleUrls: ["./status-popover.component.scss"],
            })
-export class StatusComponent {
+export class StatusPopoverComponent {
 
   @Input()
   set status(value: StatusDto) {
