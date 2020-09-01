@@ -16,7 +16,7 @@
 
   <div *ngIf="participation$ | async as participation" class="row">
     <div class="col-lg-9">
-      <h5 i18n>Groups with warnings</h5>
+      <h6 i18n>Groups with warnings</h6>
 
       <table class="table">
         <thead>
@@ -37,6 +37,8 @@
         </tr>
         </tbody>
       </table>
+
+
     </div>
     <div class="col-lg-3">
       <h5 i18n>Status</h5>
@@ -56,17 +58,15 @@
 
       <hr>
 
-      <h5 i18n>Reset participation <span class="badge badge-danger">Danger Zone</span></h5>
+      <h5 i18n>Reset participation</h5>
       <div class="alert alert-danger" role="alert">
         <p i18n>
-          Reset the participation to start the sport event all over again.
+          Reset the participation in order to start the sport event all over again.
           All groups including the participants and their results will be deleted.
         </p>
         <hr>
         <p class="mb-0" i18n>Be sure to export the ranking before you perform this action.</p>
       </div>
-
-
     </div>
   </div>
 </app-simple-page>
