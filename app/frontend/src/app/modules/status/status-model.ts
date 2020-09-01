@@ -1,8 +1,53 @@
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { faCheckCircle, faCircle, faExclamationCircle, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
-import { GroupStatusType } from "../../../../dto/group";
-import { StatusEntry, StatusSeverity } from "../../../../dto/status";
+import { GroupStatusType } from "../../dto/group";
+import { StatusDto, StatusEntry, StatusSeverity } from "../../dto/status";
+
+export class StatusModel {
+  private static readonly CSS_BADGE_CLASS = 0;
+  private static readonly LABEL = 1;
+  private static readonly CSS_BASE_CLASSES = "badge status-badge mr-1";
+
+  constructor(
+    readonly cssClasses: string,
+    readonly text: string,
+    readonly entries: ReadonlyArray<StatusEntryModel>,
+  ) {
+  }
+
+  static fromDto(status: StatusDto): StatusModel {
+    const params = StatusModel.createParameters(status);
+    const cssClasses = `${StatusModel.CSS_BASE_CLASSES} ${params[StatusModel.CSS_BADGE_CLASS]}`;
+    const entryModels = status.entries.map(entry => StatusEntryModel.fromDto(entry));
+
+    return new StatusModel(
+      cssClasses,
+      params[StatusModel.LABEL],
+      entryModels,
+    );
+  }
+
+  static unknown(): StatusModel {
+    return StatusModel.fromDto({
+                                 severity: StatusSeverity.INFO,
+                                 entries: [],
+                               });
+  }
+
+  private static createParameters(status: StatusDto): [string, string] {
+    switch (status.severity) {
+      case StatusSeverity.OK:
+        return ["badge-success", $localize`OK`];
+      case StatusSeverity.INFO:
+        return ["badge-info", $localize`Info`];
+      case StatusSeverity.WARNING:
+        return ["badge-warning", $localize`Warning`];
+      default:
+        return ["badge-secondary", $localize`Unknown severity`];
+    }
+  }
+}
 
 export class StatusEntryModel {
   private static readonly ICON = 0;

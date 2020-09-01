@@ -1,0 +1,8 @@
+<div>
+  <span [attr.class]="statusModel.cssClasses">{{statusModel.text}}</span>
+
+  <div class="status-detail-container">
+    <app-status-detail [entries]="statusModel.entries"></app-status-detail>
+  </div>
+</div>
+

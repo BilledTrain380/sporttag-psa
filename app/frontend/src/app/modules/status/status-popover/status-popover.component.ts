@@ -2,12 +2,15 @@ import { Component, Input } from "@angular/core";
 
 import { StatusDto } from "../../../dto/status";
 
-import { StatusModel } from "./status-model";
+import { StatusModel } from "../status-model";
 
 @Component({
              selector: "app-popover-status",
              templateUrl: "./status-popover.component.html",
-             styleUrls: ["./status-popover.component.scss"],
+             styleUrls: [
+               "../status.scss",
+               "./status-popover.component.scss",
+             ],
            })
 export class StatusPopoverComponent {
 
@@ -16,5 +19,5 @@ export class StatusPopoverComponent {
     this.statusModel = StatusModel.fromDto(value);
   }
 
-  statusModel?: StatusModel;
+  statusModel: StatusModel = StatusModel.unknown();
 }
