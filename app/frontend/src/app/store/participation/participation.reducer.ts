@@ -23,7 +23,7 @@ const reducer = createReducer(
   initialState,
   on(setParticipationStatusAction, (state, action) => ({
     ...state,
-    status: action.dto,
+    dto: action.dto,
   })),
 );
 

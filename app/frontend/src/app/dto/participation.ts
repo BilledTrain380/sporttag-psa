@@ -3,7 +3,7 @@ import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { requireNonNullOrUndefined } from "../@core/lib/lib";
 import { isoFormatOfDate, parseDate } from "../@core/lib/time";
 
-import { SimpleGroupDto } from "./group";
+import { OverviewGroupDto, SimpleGroupDto } from "./group";
 import { StatusDto } from "./status";
 
 export const ATHLETICS = "Athletics";
@@ -168,7 +168,7 @@ export interface ParticipantRelation {
 
 export interface ParticipationDto {
   readonly status: StatusDto;
-  readonly unfinishedGroups: ReadonlyArray<SimpleGroupDto>;
+  readonly unfinishedGroups: ReadonlyArray<OverviewGroupDto>;
 }
 
 export enum GenderDto {

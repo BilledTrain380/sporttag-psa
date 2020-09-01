@@ -2,6 +2,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { faCheckCircle, faCircle, faExclamationCircle, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
 import { GroupStatusType } from "../../dto/group";
+import { ParticipationStatusType } from "../../dto/participation";
 import { StatusDto, StatusEntry, StatusSeverity } from "../../dto/status";
 
 export class StatusModel {
@@ -95,6 +96,10 @@ function labelOfStatusType(type: string): string {
       return $localize`Contains only competitive participants`;
     case GroupStatusType.GROUP_TYPE_FUN:
       return $localize`Contains non competitive participants`;
+    case ParticipationStatusType.OPEN:
+      return $localize`Participation is open`;
+    case ParticipationStatusType.CLOSED:
+      return $localize`Participation is closed`;
     default:
       return $localize`Unknown status`;
   }

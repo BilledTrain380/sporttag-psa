@@ -13,7 +13,7 @@ export class ParticipationEffects {
     .pipe(switchMap(() =>
                       this.participationApi.getParticipation()
                         .pipe(map(dto => {
-                          this.log.info(`Successfully loaded participation status: dto=${dto}`);
+                          this.log.info("Successfully loaded participation status:", dto);
 
                           return setParticipationStatusAction({dto});
                         }))

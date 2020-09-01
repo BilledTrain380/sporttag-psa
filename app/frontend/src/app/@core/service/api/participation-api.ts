@@ -1,8 +1,10 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+
 import { ParticipationCommand, ParticipationDto } from "../../../dto/participation";
 import { getLogger, Logger } from "../../logging";
+
 import { API_ENDPOINT } from "./pas-api";
 
 @Injectable({
@@ -25,6 +27,9 @@ export class ParticipationApi {
   updateParticipation(command: ParticipationCommand): Observable<ParticipationDto> {
     this.log.info(`Update participation: command=${command}`);
 
-    return this.http.patch<ParticipationDto>(`${API_ENDPOINT}/participation`, command);
+    // Explicit set headers, because the command is only a string and would be interpreted as text/plain
+    const headers = new HttpHeaders({"Content-Type": "application/json"});
+
+    return this.http.patch<ParticipationDto>(`${API_ENDPOINT}/participation`, `"${command}"`, {headers});
   }
 }
