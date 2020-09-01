@@ -22,9 +22,9 @@ export class ParticipationApi {
     return this.http.get<ParticipationDto>(`${API_ENDPOINT}/participation`);
   }
 
-  updateParticipation(command: ParticipationCommand): Observable<void> {
+  updateParticipation(command: ParticipationCommand): Observable<ParticipationDto> {
     this.log.info(`Update participation: command=${command}`);
 
-    return this.http.patch<void>(`${API_ENDPOINT}/participation`, command);
+    return this.http.patch<ParticipationDto>(`${API_ENDPOINT}/participation`, command);
   }
 }

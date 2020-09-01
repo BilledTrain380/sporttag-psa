@@ -138,11 +138,13 @@ class ParticipationController(
     )
     @PreAuthorize("#oauth2.hasScope('participation') and hasRole('ADMIN')")
     @PatchMapping("/participation")
-    fun updateParticipation(@RequestBody command: ParticipationCommand) {
+    fun updateParticipation(@RequestBody command: ParticipationCommand): ParticipationDto {
         when (command) {
             ParticipationCommand.CLOSE -> participationManager.closeParticipation()
             ParticipationCommand.RESET -> participationManager.resetParticipation()
         }
+
+        return this.getParticipation()
     }
 
     @Operation(
