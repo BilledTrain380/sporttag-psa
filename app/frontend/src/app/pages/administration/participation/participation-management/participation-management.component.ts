@@ -17,7 +17,6 @@ import { VOID_PROPS } from "../../../../store/standard-props";
 @Component({
              selector: "app-participation-management",
              templateUrl: "./participation-management.component.html",
-             styleUrls: ["./participation-management.component.scss"],
            })
 export class ParticipationManagementComponent implements OnInit {
   readonly faLock = faLock;
