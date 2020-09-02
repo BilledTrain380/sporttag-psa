@@ -129,7 +129,7 @@ class ParticipationController(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Closed or reset the participation",
+                description = "Close or reset the participation",
                 content = [Content(schema = Schema(implementation = ParticipationDto::class))]
             ),
             ApiResponse(
