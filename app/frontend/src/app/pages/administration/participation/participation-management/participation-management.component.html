@@ -15,7 +15,7 @@
     </app-layout-button>
   </app-layout-buttons>
 
-  <div *ngIf="participation$ | async as participation" class="row">
+  <div *ngIf="participation$ | async as participation; else spinner" class="row">
     <div class="col-lg-9">
       <h6 i18n>Groups with warnings</h6>
 
@@ -38,8 +38,8 @@
         </tr>
         </tbody>
       </table>
-
     </div>
+
     <div class="col-lg-3">
       <h5 i18n>Status</h5>
       <app-status [status]="participation.status"></app-status>
@@ -69,4 +69,8 @@
       </div>
     </div>
   </div>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
 </app-simple-page>
