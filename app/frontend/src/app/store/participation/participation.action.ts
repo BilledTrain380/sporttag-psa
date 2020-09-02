@@ -21,6 +21,6 @@ export interface UpdateParticipationStatusProps {
 }
 
 export const updateParticipationStatusAction = createAction(
-  "[ParticipationManagement] Update participation",
+  "[ParticipationManagement] Update participation status",
   props<UpdateParticipationStatusProps>(),
 );
