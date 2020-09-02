@@ -6,10 +6,7 @@ import { StatusModel } from "../status-model";
 @Component({
              selector: "app-status",
              templateUrl: "./status.component.html",
-             styleUrls: [
-               "../status.scss",
-               "./status.component.scss",
-             ],
+             styleUrls: ["../status.scss"],
            })
 export class StatusComponent {
 
