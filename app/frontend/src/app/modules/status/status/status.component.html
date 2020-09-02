@@ -1,16 +1,8 @@
-<div *ngIf="statusModel">
-    <span [attr.class]="statusModel.cssClasses">
-      {{statusModel.text}}
-    </span>
+<div>
+  <span [attr.class]="statusModel.cssClasses">{{statusModel.text}}</span>
 
-  <span class="show-details"
-        [ngbPopover]="statusContent"
-        popoverClass="increase-popover-width"
-        placement="bottom">
-      <small i18n>Details</small>
-    </span>
-
-  <ng-template #statusContent>
+  <div class="mt-2 pl-2">
     <app-status-detail [entries]="statusModel.entries"></app-status-detail>
-  </ng-template>
+  </div>
 </div>
+

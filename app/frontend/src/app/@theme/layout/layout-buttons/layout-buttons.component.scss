@@ -4,7 +4,8 @@
 
 @include media-breakpoint-up(sm) {
   .layout-buttons {
-    float: right;
+    position: absolute;
+    right: 20px;
     transform: translateY(-40px);
   }
 }

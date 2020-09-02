@@ -20,6 +20,9 @@
   <app-text-alert [alert]="alert$ | async"></app-text-alert>
 
   <table *ngIf="participants$ | async as participants; else spinner"
+         appNoEntries
+         [rowCount]="participants.length"
+         columnCount="7"
          class="table"
          data-test-selector="participant-table">
     <thead>
@@ -63,7 +66,10 @@
         </div>
       </td>
       <td>
-        <app-sport-type-input size="sm" [(ngModel)]="participant.sportType" (change)="toggleSportType(participant)"></app-sport-type-input>
+        <app-sport-type-input size="sm"
+                              [(ngModel)]="participant.sportType"
+                              (change)="toggleSportType(participant)">
+        </app-sport-type-input>
       </td>
     </tr>
     </tbody>

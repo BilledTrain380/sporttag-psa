@@ -1,0 +1,79 @@
+<app-simple-page pageTitle="Participation Management" i18n-pageTitle cardTitle="Participation" i18n-cardTitle>
+  <app-layout-buttons>
+    <app-layout-button (click)="closeParticipation()"
+                       [disabled]="isCloseParticipationDisabled$ | async"
+                       text="Close Participation"
+                       i18n-text
+                       buttonType="primary"
+                       [icon]="faLock"
+                       data-test-selector="close-participation-button">
+    </app-layout-button>
+    <app-layout-button (click)="resetParticipation()"
+                       text="Reset Participation"
+                       i18n-text
+                       buttonType="danger"
+                       [icon]="faEraser"
+                       data-test-selector="reset-participation-button">
+    </app-layout-button>
+  </app-layout-buttons>
+
+  <div *ngIf="participation$ | async as participation; else spinner" class="row">
+    <div class="col-lg-9">
+      <h6 i18n>Groups with warnings</h6>
+
+      <table class="table" appNoEntries [rowCount]="participation.unfinishedGroups.length" columnCount="3">
+        <thead>
+        <tr>
+          <th i18n>Name</th>
+          <th i18n>Coach</th>
+          <th i18n>Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let overviewGroup of participation.unfinishedGroups">
+          <td>{{overviewGroup.group.name}}</td>
+          <td>{{overviewGroup.group.coach}}</td>
+          <td>
+            <app-popover-status [status]="overviewGroup.status"></app-popover-status>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-lg-3" data-test-selector="participation-information">
+      <h5 i18n>Status</h5>
+      <app-status [status]="participation.status"></app-status>
+
+      <hr>
+
+      <h5 i18n>Close participation</h5>
+      <p i18n>
+        Close the participation in order to start the athletics.
+        Closing the participation will assign a start number to each participant with the sport type Athletics.
+      </p>
+      <p i18n>
+        You can still change the sport type afterwards, but be aware that a start number assigned once can not be
+        reused,
+        even if the according participant will no longer participate in Athletics.
+      </p>
+
+      <hr>
+
+      <h5 i18n>Reset participation</h5>
+      <div class="alert alert-danger" role="alert">
+        <p i18n>
+          Reset the participation in order to start the sport event all over again.
+          All groups including the participants and their results will be deleted.
+        </p>
+        <hr>
+        <p class="mb-0" i18n>Be sure to export the ranking before you perform this action.</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
+</app-simple-page>

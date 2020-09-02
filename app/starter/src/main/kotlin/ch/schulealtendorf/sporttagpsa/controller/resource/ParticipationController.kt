@@ -39,6 +39,7 @@ package ch.schulealtendorf.sporttagpsa.controller.resource
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.participation.ParticipationCommand
 import ch.schulealtendorf.psa.dto.participation.ParticipationDto
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.dto.status.StatusDto
 import ch.schulealtendorf.psa.dto.status.StatusEntry
@@ -103,7 +104,7 @@ class ParticipationController(
         val status = participationManager.getParticipationStatus()
 
         val statusDto = StatusDto(
-            StatusSeverity.OK,
+            if (status == ParticipationStatusType.OPEN) StatusSeverity.OK else StatusSeverity.INFO,
             listOf(
                 StatusEntry(
                     StatusSeverity.INFO,
@@ -112,7 +113,7 @@ class ParticipationController(
             )
         )
 
-        val unfinishedGroups = groupManager.getGroupsBy(GroupStatusType.UNFINISHED_PARTICIPANTS)
+        val unfinishedGroups = groupManager.getOverviewBy(GroupStatusType.UNFINISHED_PARTICIPANTS)
 
         return ParticipationDto(
             status = statusDto,
@@ -128,7 +129,8 @@ class ParticipationController(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Closed or reset the participation"
+                description = "Close or reset the participation",
+                content = [Content(schema = Schema(implementation = ParticipationDto::class))]
             ),
             ApiResponse(
                 responseCode = "401",
@@ -138,11 +140,13 @@ class ParticipationController(
     )
     @PreAuthorize("#oauth2.hasScope('participation') and hasRole('ADMIN')")
     @PatchMapping("/participation")
-    fun updateParticipation(@RequestBody command: ParticipationCommand) {
+    fun updateParticipation(@RequestBody command: ParticipationCommand): ParticipationDto {
         when (command) {
             ParticipationCommand.CLOSE -> participationManager.closeParticipation()
             ParticipationCommand.RESET -> participationManager.resetParticipation()
         }
+
+        return this.getParticipation()
     }
 
     @Operation(

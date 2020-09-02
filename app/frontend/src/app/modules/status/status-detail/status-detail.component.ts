@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 
-import { StatusEntryModel } from "./status-entry-model";
+import { StatusEntryModel } from "../status-model";
 
 @Component({
              selector: "app-status-detail",
