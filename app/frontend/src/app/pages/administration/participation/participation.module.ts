@@ -5,6 +5,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { ThemeModule } from "../../../@theme/theme.module";
 import { ModalModule } from "../../../modules/modal/modal.module";
 import { StatusModule } from "../../../modules/status/status.module";
+import { TableModule } from "../../../modules/table/table.module";
 import { ParticipationEffects } from "../../../store/participation/participation.effect";
 
 import { ParticipationManagementComponent } from "./participation-management/participation-management.component";
@@ -18,6 +19,7 @@ import { ParticipationRoutingModule } from "./participation-routing.module";
               ThemeModule,
               StatusModule,
               ModalModule,
+              TableModule,
               EffectsModule.forFeature([ParticipationEffects]),
             ],
           })

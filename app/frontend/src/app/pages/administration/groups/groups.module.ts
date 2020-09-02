@@ -10,6 +10,7 @@ import { DragAndDropModule } from "../../../modules/drag-and-drop/drag-and-drop.
 import { ModalModule } from "../../../modules/modal/modal.module";
 import { ParticipantModule } from "../../../modules/participant/participant.module";
 import { StatusModule } from "../../../modules/status/status.module";
+import { TableModule } from "../../../modules/table/table.module";
 import { GroupEffects } from "../../../store/group/group.effect";
 
 import { AddParticipantModalComponent } from "./group-detail/add-participant/add-participant-modal.component";
@@ -40,6 +41,7 @@ import { GroupsComponent } from "./groups.component";
               EffectsModule.forFeature([GroupEffects]),
               ReactiveFormsModule,
               FormsModule,
+              TableModule,
               CommonFormsModule,
               ParticipantModule,
             ],

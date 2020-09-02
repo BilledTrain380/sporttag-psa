@@ -14,7 +14,12 @@
 
   <app-text-alert [alert]="alert"></app-text-alert>
 
-  <table *ngIf="groups$ | async as groups; else spinner" class="table" data-test-selector="group-table">
+  <table *ngIf="groups$ | async as groups; else spinner"
+         appNoEntries
+         [rowCount]="groups.length"
+         columnCount="4"
+         class="table"
+         data-test-selector="group-table">
     <thead>
     <tr>
       <th i18n>Actions</th>

@@ -18,7 +18,7 @@
     <div class="col-lg-9">
       <h6 i18n>Groups with warnings</h6>
 
-      <table class="table">
+      <table class="table" appNoEntries [rowCount]="participation.unfinishedGroups.length" columnCount="3">
         <thead>
         <tr>
           <th i18n>Name</th>
