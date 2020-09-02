@@ -4,7 +4,7 @@ import { AppState } from "../app";
 
 import { GroupState } from "./group.reducer";
 
-export const selectGroup = (state: AppState) => state.group;
+const selectGroup = (state: AppState) => state.group;
 
 export const selectOverviewGroups = createSelector(
   selectGroup,
