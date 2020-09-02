@@ -5,13 +5,15 @@
                        text="Close Participation"
                        i18n-text
                        buttonType="primary"
-                       [icon]="faLock">
+                       [icon]="faLock"
+                       data-test-selector="close-participation-button">
     </app-layout-button>
     <app-layout-button (click)="resetParticipation()"
                        text="Reset Participation"
                        i18n-text
                        buttonType="danger"
-                       [icon]="faEraser">
+                       [icon]="faEraser"
+                       data-test-selector="reset-participation-button">
     </app-layout-button>
   </app-layout-buttons>
 
@@ -40,7 +42,7 @@
       </table>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-3" data-test-selector="participation-information">
       <h5 i18n>Status</h5>
       <app-status [status]="participation.status"></app-status>
 

@@ -20,6 +20,10 @@ export class AppPage {
     return browser.get(`${browser.baseUrl}/pages/administration/group-management/2a`) as Promise<void>;
   }
 
+  async navigateToParticipationManagement(): Promise<void> {
+    return browser.get(`${browser.baseUrl}/pages/administration/participation-management`) as Promise<void>;
+  }
+
   async clickConfirmOnModal(): Promise<void> {
     await this.confirmModal
       .element(by.css(".modal-footer button[type='submit']"))
