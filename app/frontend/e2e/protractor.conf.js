@@ -10,6 +10,10 @@ const {SpecReporter} = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
+    "./src/**/*.bpc.e2e-spec.ts",
+    "./src/**/close-participation.e2e-spec.ts",
+    "./src/**/*.apc.e2e-spec.ts",
+    "./src/**/reset-participation.e2e-spec.ts",
     "./src/**/*.e2e-spec.ts"
   ],
   capabilities: {
