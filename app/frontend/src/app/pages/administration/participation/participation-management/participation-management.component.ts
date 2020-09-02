@@ -44,11 +44,7 @@ export class ParticipationManagementComponent implements OnInit {
     );
 
     modalRef.result
-      .then((type: ConfirmType) => {
-        if (type === ConfirmType.CONFIRM) {
-          this.store.dispatch(updateParticipationStatusAction({command: ParticipationCommand.CLOSE}));
-        }
-      });
+      .then((type: ConfirmType) => this.handleParticipationConfirmModal(type, ParticipationCommand.CLOSE));
   }
 
   resetParticipation(): void {
@@ -59,10 +55,12 @@ export class ParticipationManagementComponent implements OnInit {
     );
 
     modalRef.result
-      .then((type: ConfirmType) => {
-        if (type === ConfirmType.CONFIRM) {
-          this.store.dispatch(updateParticipationStatusAction({command: ParticipationCommand.RESET}));
-        }
-      });
+      .then((type: ConfirmType) => this.handleParticipationConfirmModal(type, ParticipationCommand.RESET));
+  }
+
+  private handleParticipationConfirmModal(type: ConfirmType, command: ParticipationCommand): void {
+    if (type === ConfirmType.CONFIRM) {
+      this.store.dispatch(updateParticipationStatusAction({command}));
+    }
   }
 }
