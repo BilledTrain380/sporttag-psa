@@ -15,4 +15,7 @@ export class LayoutButtonComponent {
 
   @Input()
   buttonType = "light";
+
+  @Input()
+  disabled = false;
 }

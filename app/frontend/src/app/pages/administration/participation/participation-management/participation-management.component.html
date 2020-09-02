@@ -1,6 +1,7 @@
 <app-simple-page pageTitle="Participation Management" i18n-pageTitle cardTitle="Participation" i18n-cardTitle>
   <app-layout-buttons>
     <app-layout-button (click)="closeParticipation()"
+                       [disabled]="isCloseParticipationDisabled$ | async"
                        text="Close Participation"
                        i18n-text
                        buttonType="primary"
@@ -37,7 +38,6 @@
         </tr>
         </tbody>
       </table>
-
 
     </div>
     <div class="col-lg-3">
