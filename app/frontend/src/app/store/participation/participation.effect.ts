@@ -28,7 +28,7 @@ export class ParticipationEffects {
     .pipe(switchMap(action =>
                       this.participationApi.updateParticipation(action.command)
                         .pipe(map(dto => {
-                          this.log.info(`Successfully updated participation status: dto=${dto}`);
+                          this.log.info("Successfully updated participation status:", dto);
 
                           return setParticipationStatusAction({dto});
                         }))
