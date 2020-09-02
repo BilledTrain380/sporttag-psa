@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+
 import { StatusEntryModel } from "../status-model";
 
 @Component({

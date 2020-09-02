@@ -2,8 +2,10 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
+
 import { getLogger } from "../../@core/logging";
 import { ParticipationApi } from "../../@core/service/api/participation-api";
+
 import { loadParticipationStatusAction, setParticipationStatusAction, updateParticipationStatusAction } from "./participation.action";
 
 @Injectable()

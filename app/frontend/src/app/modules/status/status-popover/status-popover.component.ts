@@ -1,7 +1,6 @@
 import { Component, Input } from "@angular/core";
 
 import { StatusDto } from "../../../dto/status";
-
 import { StatusModel } from "../status-model";
 
 @Component({
