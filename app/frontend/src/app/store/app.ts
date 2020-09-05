@@ -1,3 +1,4 @@
+import { AthleticsState } from "./athletics/athletics.reducer";
 import { GroupState } from "./group/group.reducer";
 import { MenuState } from "./menu/menu.reducer";
 import { ParticipationState } from "./participation/participation.reducer";
@@ -8,4 +9,5 @@ export interface AppState {
   readonly user: UserState;
   readonly group: GroupState;
   readonly participation: ParticipationState;
+  readonly athletics: AthleticsState;
 }
