@@ -21,7 +21,7 @@ export class ParticipantApi {
   }
 
   getParticipants(parameters?: ParticipantParameters): Observable<ReadonlyArray<ParticipantDto>> {
-    this.log.info(`Get participants: parameters=${parameters}`);
+    this.log.info("Get participants: parameters =", parameters);
 
     const params = parameters?.buildParameters();
 
@@ -30,32 +30,32 @@ export class ParticipantApi {
   }
 
   getParticipant(id: number): Observable<ParticipantDto> {
-    this.log.info(`Get participant: id=${id}`);
+    this.log.info("Get participant: id =", id);
 
     return this.http.get<ParticipantDto>(`${API_ENDPOINT}/participant/${id}`)
       .pipe(tap(participant => enhanceBirthdayDtoWithDateProperty(participant.birthday)));
   }
 
   updateParticipant(participantElement: ParticipantElement): Observable<void> {
-    this.log.info(`Update participant: id=${participantElement.id}`);
+    this.log.info("Update participant: id =", participantElement.id);
 
     return this.http.patch<void>(`${API_ENDPOINT}/participant/${participantElement.id}`, participantElement);
   }
 
   updateParticipantRelation(participantRelation: ParticipantRelation): Observable<void> {
-    this.log.info(`Update participant relation: id=${participantRelation.id}`);
+    this.log.info("Update participant relation: id =", participantRelation.id);
 
     return this.http.put<void>(`${API_ENDPOINT}/participant/${participantRelation.id}`, participantRelation);
   }
 
   createParticipant(participantInput: ParticipantInput): Observable<ParticipantDto> {
-    this.log.info(`Create participant: name=${participantInput.surname} ${participantInput.prename}`);
+    this.log.info("Create participant: name =", participantInput.surname, participantInput.prename);
 
     return this.http.post<ParticipantDto>(`${API_ENDPOINT}/participants`, participantInput);
   }
 
   deleteParticipant(id: number): Observable<void> {
-    this.log.info(`Delete participant: id=${id}`);
+    this.log.info("Delete participant: id =", id);
 
     return this.http.delete<void>(`${API_ENDPOINT}/participant/${id}`);
   }

@@ -19,7 +19,7 @@ export class GroupApi {
   }
 
   getOverviewGroups(parameters?: OverviewGroupsParameters): Observable<ReadonlyArray<OverviewGroupDto>> {
-    this.log.info(`Get groups overview: parameters=${parameters}`);
+    this.log.info("Get groups overview: parameters =", parameters);
 
     const params = parameters?.buildParameters();
 
@@ -33,7 +33,7 @@ export class GroupApi {
   }
 
   getGroup(groupName: string): Observable<SimpleGroupDto> {
-    this.log.info(`Get group: name=${groupName}`);
+    this.log.info("Get group: name =", groupName);
 
     return this.http.get<SimpleGroupDto>(`${API_ENDPOINT}/group/${groupName}`);
   }
