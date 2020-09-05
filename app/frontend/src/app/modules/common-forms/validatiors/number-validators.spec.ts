@@ -1,0 +1,77 @@
+import { FormControl } from "@angular/forms";
+
+import { floatNumber, intNumber } from "./number-validators";
+
+describe("NumberValidators", () => {
+  describe("on float number validator", () => {
+    it("should return null when input is valid", () => {
+      const control = new FormControl("2.43");
+
+      const errors = floatNumber()
+        .call(undefined, control);
+
+      expect(errors)
+        .withContext("Float number errors")
+        .toBeNull();
+    });
+
+    it("should return errors NaN when input is not a number", () => {
+      const control = new FormControl("not a number");
+
+      const errors = floatNumber()
+        .call(undefined, control);
+
+      expect(errors.floatNumber)
+        .withContext("Float number errors")
+        .toBeDefined();
+    });
+
+    it("should return errors when precision does not match", () => {
+      const control = new FormControl("2.2456");
+
+      // tslint:disable-next-line:no-magic-numbers
+      const errors = floatNumber(2)
+        .call(undefined, control);
+
+      expect(errors.floatNumber)
+        .withContext("Float number errors")
+        .toBeDefined();
+    });
+  });
+
+  describe("on int number validator", () => {
+    it("should return null when the input is valid", () => {
+      const control = new FormControl("15");
+
+      const errors = intNumber()
+        .call(undefined, control);
+
+      expect(errors)
+        .withContext("Int number errors")
+        .toBeNull();
+    });
+
+    it("should return errors NaN when input is not a number", () => {
+      const control = new FormControl("not a number");
+
+      const errors = intNumber()
+        .call(undefined, control);
+
+      expect(errors.intNumber)
+        .withContext("Int number errors")
+        .toBeDefined();
+    });
+
+    it("should return errors when a float is given", () => {
+      const control = new FormControl("15.486");
+
+      // tslint:disable-next-line:no-magic-numbers
+      const errors = intNumber()
+        .call(undefined, control);
+
+      expect(errors.intNumber)
+        .withContext("Int number errors")
+        .toBeDefined();
+    });
+  });
+});
