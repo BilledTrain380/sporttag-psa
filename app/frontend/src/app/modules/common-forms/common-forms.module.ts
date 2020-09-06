@@ -10,6 +10,7 @@ import { DateInputComponent } from "./date-input/date-input.component";
 import { FormHintRequiredDirective } from "./form-hint-required.directive";
 import { FormHintDirective } from "./form-hint.directive";
 import { GenderInputComponent } from "./gender-input/gender-input.component";
+import { InputAutoFocusDirective } from "./input-auto-focus.directive";
 import { InputValidationDirective } from "./input-validation.directive";
 import { PreNextSelectComponent } from "./pre-next-select/pre-next-select.component";
 import { SportTypeInputComponent } from "./sport-type-input/sport-type-input.component";
@@ -22,6 +23,7 @@ const COMPONENTS = [
   FormHintDirective,
   FormHintRequiredDirective,
   PreNextSelectComponent,
+  InputAutoFocusDirective,
 ];
 
 @NgModule({
