@@ -26,6 +26,18 @@ describe("NumberValidators", () => {
         .toBeDefined();
     });
 
+    it("should return errors when input does not match the parsed number", () => {
+      // Number.parseFloat will still parse this, but cuts away the .flubber part
+      const control = new FormControl("11.flubber");
+
+      const errors = floatNumber()
+        .call(undefined, control);
+
+      expect(errors.floatNumber)
+        .withContext("Float number errors")
+        .toBeDefined();
+    });
+
     it("should return errors when precision does not match", () => {
       const control = new FormControl("2.2456");
 

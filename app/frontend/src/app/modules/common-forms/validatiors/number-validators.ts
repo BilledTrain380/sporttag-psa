@@ -13,6 +13,10 @@ export function floatNumber(precision?: number): ValidatorFn {
       return {floatNumber: {precision: true}};
     }
 
+    if (parsedNumber.toString() !== control.value) {
+      return {floatNumber: {floatNumber: true}};
+    }
+
     // tslint:disable-next-line:no-null-keyword
     return null;
   };
