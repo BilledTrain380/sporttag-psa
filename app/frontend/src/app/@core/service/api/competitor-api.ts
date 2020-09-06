@@ -5,10 +5,9 @@ import { map } from "rxjs/operators";
 
 import { CompetitorDto, ResultDto, ResultElement } from "../../../dto/athletics";
 import { GenderDto } from "../../../dto/participation";
-import { ifNotNullOrUndefined } from "../../lib/lib";
 import { getLogger, Logger } from "../../logging";
 
-import { API_ENDPOINT, ApiParameters } from "./pas-api";
+import { ApiParameters, API_ENDPOINT } from "./pas-api";
 
 @Injectable({
               providedIn: "root",
@@ -55,11 +54,19 @@ export class CompetitorParameters implements ApiParameters {
   }
 
   buildParameters(): HttpParams {
-    const params = new HttpParams();
+    let params = new HttpParams();
 
-    ifNotNullOrUndefined(this.group, group => params.set("group", group));
-    ifNotNullOrUndefined(this.gender, gender => params.set("gender", gender));
-    ifNotNullOrUndefined(this.absent, absent => params.set("absent", `${absent}`));
+    if (this.group) {
+      params = params.set("group", this.group);
+    }
+
+    if (this.gender) {
+      params = params.set("gender", this.gender);
+    }
+
+    if (this.absent) {
+      params = params.set("absent", `${this.absent}`);
+    }
 
     return params;
   }
