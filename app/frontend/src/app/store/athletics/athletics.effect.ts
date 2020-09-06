@@ -6,11 +6,14 @@ import { catchError, map, switchMap } from "rxjs/operators";
 import { getLogger, Logger } from "../../@core/logging";
 import { CompetitorApi, CompetitorParameters } from "../../@core/service/api/competitor-api";
 
-import { loadCompetitorsAction, setCompetitorsAction } from "./athletics.action";
+import {
+  loadCompetitorsAction,
+  setCompetitorsAction,
+  updateCompetitorRelationAction,
+  updateCompetitorResultAction
+} from "./athletics.action";
 
-@Injectable({
-              providedIn: "root",
-            })
+@Injectable()
 export class AthleticsEffects {
   readonly loadCompetitors = createEffect(() => this.actions$
     .pipe(ofType(loadCompetitorsAction))
@@ -29,6 +32,21 @@ export class AthleticsEffects {
           return EMPTY;
         }));
     })));
+
+  readonly updateCompetitorResult = createEffect(() => this.actions$
+    .pipe(ofType(updateCompetitorResultAction))
+    .pipe(switchMap(action =>
+                      this.competitorApi.updateCompetitorResult(action.competitorId, action.result)
+                        .pipe(map(result => {
+                          this.log.info("Successfully updated competitor result: result =", result);
+
+                          return updateCompetitorRelationAction({competitorId: action.competitorId, results: [result]});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not update competitor result", err);
+
+                          return EMPTY;
+                        })))));
 
   private readonly log: Logger = getLogger("AthleticsEffects");
 

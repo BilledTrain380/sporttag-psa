@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { CompetitorDto, ResultDto, ResultElement } from "../../../dto/athletics";
 import { GenderDto } from "../../../dto/participation";
@@ -25,7 +26,8 @@ export class CompetitorApi {
 
     const params = parameters?.buildParameters();
 
-    return this.http.get<ReadonlyArray<CompetitorDto>>(`${API_ENDPOINT}/competitors`, {params});
+    return this.http.get<ReadonlyArray<CompetitorDto>>(`${API_ENDPOINT}/competitors`, {params})
+      .pipe(map(competitors => competitors.map(enhanceResultObject)));
   }
 
   getCompetitor(id: number): Observable<CompetitorDto> {
@@ -61,4 +63,17 @@ export class CompetitorParameters implements ApiParameters {
 
     return params;
   }
+}
+
+/**
+ * Since the json for the results is just a plain javascript object,
+ * this functions converts it to a actual `Map`.
+ *
+ * @param dto the dto to enhance
+ */
+// tslint:disable-next-line:no-any
+function enhanceResultObject(dto: any): CompetitorDto {
+  dto.results = new Map(Object.entries(dto.results));
+
+  return dto;
 }

@@ -1,1 +1,75 @@
-<p>athletics works!</p>
+<app-simple-page pageTitle="Athletics" i18n-pageTitle cardTitle="Competitors" i18n-cardTitle>
+  <div class="clearfix mb-3" [formGroup]="filterForm">
+    <div class="form-inline float-right">
+      <app-pre-next-select class="mr-3"
+                           [formControlName]="formControls.group"
+                           [values]="groups"
+                           prependText="Groups"
+                           i18n-prependText>
+      </app-pre-next-select>
+      <app-pre-next-select [formControlName]="formControls.discipline"
+                           [values]="disciplines"
+                           prependText="Disciplines"
+                           i18n-prependText>
+      </app-pre-next-select>
+    </div>
+  </div>
+
+  <table *ngIf="competitors$ | async as competitors"
+         class="table"
+         appNoEntries
+         [rowCount]="competitors.length"
+         columnCount="7">
+    <thead>
+    <tr>
+      <th i18n>Start Number</th>
+      <th i18n>Surname</th>
+      <th i18n>Prename</th>
+      <th i18n>Gender</th>
+      <th i18n>Absent</th>
+      <th i18n>Result</th>
+      <th i18n>Points</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let competitor of competitors;trackBy trackByPoints"
+        [ngClass]="{'bg-light text-secondary': competitor.isAbsent}">
+      <td>{{competitor.startnumber}}</td>
+      <td>{{competitor.surname}}</td>
+      <td>{{competitor.prename}}</td>
+      <td>
+        <app-gender [gender]="competitor.gender"></app-gender>
+      </td>
+      <td>
+        <input type="checkbox" disabled [checked]="competitor.isAbsent">
+      </td>
+      <td>
+        <div class="input-group result-input-container">
+          <div *ngIf="competitor.result.prependText" class="input-group-prepend">
+            <div class="input-group-text">{{competitor.result.prependText}}</div>
+          </div>
+
+          <input type="text"
+                 class="form-control"
+                 (focusout)="updateCompetitorResultIfValid(competitor)"
+                 [readOnly]="competitor.isAbsent"
+                 [formControl]="competitor.result.displayValueControl">
+
+          <div *ngIf="competitor.result.appendText" class="input-group-append">
+            <div class="input-group-text">{{competitor.result.appendText}}</div>
+          </div>
+        </div>
+
+        <div *ngIf="competitor.result.displayValueControl.errors" style="display: block" class="invalid-feedback" i18n>
+          Please enter a valid number
+        </div>
+      </td>
+      <td>
+        {{competitor.result.points}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</app-simple-page>
