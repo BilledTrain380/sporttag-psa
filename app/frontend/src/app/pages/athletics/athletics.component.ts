@@ -4,13 +4,15 @@ import { Store } from "@ngrx/store";
 import { combineLatest, Observable, Subject } from "rxjs";
 import { map, startWith, takeUntil } from "rxjs/operators";
 
-import { FormControlsObject } from "../../@core/forms/form-util";
 import { BALLWURF, BALLZIELWURF, KORBEINWURF, SCHNELLLAUF, SEILSPRINGEN, WEITSPRUNG } from "../../dto/athletics";
+import { GenderDto } from "../../dto/participation";
 import { loadCompetitorsAction, loadGroupsAction, updateCompetitorResultAction } from "../../store/athletics/athletics.action";
 import { selectCompetitors, selectGroups } from "../../store/athletics/athletics.selector";
 import { VOID_PROPS } from "../../store/standard-props";
 
 import { CompetitorModel } from "./athletics-models";
+import { GenderFilterFormValues, genderFilterPredicate, initialGenderFilterFormValues } from "./filter/gender-filter";
+import { initialStatusFilterFormValues, StatusFilterFormValues, statusFilterPredicate } from "./filter/status-filter";
 
 @Component({
              selector: "app-athletics",
@@ -18,6 +20,8 @@ import { CompetitorModel } from "./athletics-models";
              styleUrls: ["./athletics.component.scss"],
            })
 export class AthleticsComponent implements OnInit, OnDestroy {
+  readonly GenderDto = GenderDto;
+
   readonly disciplines: ReadonlyArray<string> = [
     SCHNELLLAUF,
     WEITSPRUNG,
@@ -27,6 +31,14 @@ export class AthleticsComponent implements OnInit, OnDestroy {
     KORBEINWURF,
   ];
 
+  get genderFilterGroup(): FormGroup {
+    return (this.filterForm?.controls.filter as FormGroup).controls.gender as FormGroup;
+  }
+
+  get statusFilterGroup(): FormGroup {
+    return (this.filterForm?.controls.filter as FormGroup).controls.status as FormGroup;
+  }
+
   get groupControl(): AbstractControl {
     return this.filterForm?.controls[this.formControls.group]!;
   }
@@ -35,7 +47,27 @@ export class AthleticsComponent implements OnInit, OnDestroy {
     return this.filterForm?.controls[this.formControls.discipline]!;
   }
 
-  readonly formControls: FormControlsObject = {
+  get genderFilterCount(): number {
+    return Object.values(this.genderFilterGroup.value)
+      .filter(it => it).length;
+  }
+
+  get statusFilterCount(): number {
+    return Object.values(this.statusFilterGroup.value)
+      .filter(it => it).length;
+  }
+
+  readonly formControls = {
+    filter: {
+      gender: {
+        genderMale: "genderMale",
+        genderFemale: "genderFemale",
+      },
+      status: {
+        statusPresent: "statusPresent",
+        statusAbsent: "statusAbsent",
+      },
+    },
     group: "group",
     discipline: "discipline",
   };
@@ -54,9 +86,15 @@ export class AthleticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const filterForm = this.formBuilder.group({
+                                                gender: this.formBuilder.group(initialGenderFilterFormValues),
+                                                status: this.formBuilder.group(initialStatusFilterFormValues),
+                                              });
+
     this.filterForm = this.formBuilder.group({
                                                [this.formControls.group]: "",
                                                [this.formControls.discipline]: this.disciplines[0],
+                                               filter: filterForm,
                                              });
 
     this.groupControl.valueChanges
@@ -73,15 +111,25 @@ export class AthleticsComponent implements OnInit, OnDestroy {
       }));
     this.competitors$ = combineLatest([
                                         this.disciplineControl.valueChanges.pipe(startWith(this.disciplines[0])),
+                                        this.genderFilterGroup.valueChanges.pipe(startWith(initialGenderFilterFormValues)),
+                                        this.statusFilterGroup.valueChanges.pipe(startWith(initialStatusFilterFormValues)),
                                         this.store.select(selectCompetitors),
                                       ])
       .pipe(map(sources => {
         this.competitorsUpdate$.next();
 
+        // tslint:disable: no-magic-numbers
         const discipline = sources[0];
-        const competitors = sources[1];
+        const genderFilters: GenderFilterFormValues = sources[1];
+        const statusFilters: StatusFilterFormValues = sources[2];
+        const competitors = sources[3];
+        // tslint:enable
+
+        const genderPredicate = genderFilterPredicate(genderFilters);
+        const statusPredicate = statusFilterPredicate(statusFilters);
 
         return competitors
+          .filter(competitor => genderPredicate(competitor) && statusPredicate(competitor))
           .map(competitor => {
             const model = CompetitorModel.fromDtoWithDiscipline(competitor, discipline);
 
@@ -105,8 +153,8 @@ export class AthleticsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  trackByPoints(_: number, item: CompetitorModel): number {
-    return item.result.points;
+  trackByModel(_: number, item: CompetitorModel): number {
+    return item.hashcode();
   }
 
   updateCompetitorResultIfValid(competitorModel: CompetitorModel): void {
