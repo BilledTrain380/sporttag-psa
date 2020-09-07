@@ -1,6 +1,21 @@
 import { createAction, props } from "@ngrx/store";
 
 import { CompetitorDto, ResultDto, ResultElement } from "../../dto/athletics";
+import { SimpleGroupDto } from "../../dto/group";
+
+export const loadGroupsAction = createAction(
+  "[AthleticsPage] Load groups",
+  props(),
+);
+
+export interface SetGroupsProps {
+  readonly groups: ReadonlyArray<SimpleGroupDto>;
+}
+
+export const setGroupsAction = createAction(
+  "[AthleticsEffects] Set groups",
+  props<SetGroupsProps>(),
+);
 
 export interface LoadCompetitorProps {
   readonly group: string;

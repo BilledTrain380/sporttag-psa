@@ -3,7 +3,7 @@
     <div class="form-inline float-right">
       <app-pre-next-select class="mr-3"
                            [formControlName]="formControls.group"
-                           [values]="groups"
+                           [values]="groups$ | async"
                            prependText="Groups"
                            i18n-prependText>
       </app-pre-next-select>

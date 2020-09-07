@@ -5,16 +5,34 @@ import { catchError, map, switchMap } from "rxjs/operators";
 
 import { getLogger, Logger } from "../../@core/logging";
 import { CompetitorApi, CompetitorParameters } from "../../@core/service/api/competitor-api";
+import { GroupApi } from "../../@core/service/api/group-api";
 
 import {
   loadCompetitorsAction,
+  loadGroupsAction,
   setCompetitorsAction,
+  setGroupsAction,
   updateCompetitorRelationAction,
   updateCompetitorResultAction
 } from "./athletics.action";
 
 @Injectable()
 export class AthleticsEffects {
+  readonly loadGroups = createEffect(() => this.actions$
+    .pipe(ofType(loadGroupsAction))
+    .pipe(switchMap(() =>
+                      this.groupApi.getGroups()
+                        .pipe(map(groups => {
+                          this.log.info("Successfully loaded groups");
+
+                          return setGroupsAction({groups});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not load groups", err);
+
+                          return EMPTY;
+                        })))));
+
   readonly loadCompetitors = createEffect(() => this.actions$
     .pipe(ofType(loadCompetitorsAction))
     .pipe(switchMap(action => {
@@ -53,6 +71,7 @@ export class AthleticsEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly competitorApi: CompetitorApi,
+    private readonly groupApi: GroupApi,
   ) {
   }
 }
