@@ -1,6 +1,6 @@
 import { FormControl, Validators } from "@angular/forms";
 
-import { requireNonNullOrUndefined } from "../../@core/lib/lib";
+import { hashcodeOf, requireNonNullOrUndefined } from "../../@core/lib/lib";
 import { CompetitorDto, ResultDto, ResultElement, UnitDto } from "../../dto/athletics";
 import { GenderDto } from "../../dto/participation";
 import { floatNumber, intNumber } from "../../modules/common-forms/validatiors/number-validators";
@@ -29,6 +29,20 @@ export class CompetitorModel {
       dto.absent,
       ResultModel.fromDto(result),
     );
+  }
+
+  hashcode(): number {
+    const prime = 31;
+    let result = 1;
+    result = prime * result + this.id;
+    result = prime * result + this.startnumber;
+    result = prime * result + hashcodeOf(this.surname);
+    result = prime * result + hashcodeOf(this.prename);
+    result = prime * result + hashcodeOf(this.gender);
+    result = prime * result + (this.isAbsent ? 1 : 0);
+    result = prime * result + this.result.hashcode();
+
+    return result;
   }
 }
 
@@ -80,5 +94,18 @@ export class ResultModel {
       id: this.id,
       value: absolutePoints,
     };
+  }
+
+  hashcode(): number {
+    const prime = 31;
+    let result = 1;
+    result = prime * result + this.id;
+    result = prime * result + hashcodeOf(this.prependText);
+    result = prime * result + hashcodeOf(this.appendText);
+    result = prime * result + this.points;
+    result = prime * result + hashcodeOf(this.unit.name);
+    result = prime * result + this.unit.factor;
+
+    return result;
   }
 }
