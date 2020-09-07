@@ -13,7 +13,7 @@ import {
   setCompetitorsAction,
   setGroupsAction,
   updateCompetitorRelationAction,
-  updateCompetitorResultAction
+  updateCompetitorResultAction,
 } from "./athletics.action";
 
 @Injectable()
