@@ -23,7 +23,7 @@ export class AthleticsEffects {
     .pipe(switchMap(() =>
                       this.groupApi.getGroups()
                         .pipe(map(groups => {
-                          this.log.info("Successfully loaded groups");
+                          this.log.info("Successfully loaded groups: size=", groups.length);
 
                           return setGroupsAction({groups});
                         }))
