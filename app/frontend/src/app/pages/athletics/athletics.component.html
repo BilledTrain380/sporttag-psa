@@ -10,7 +10,7 @@
           <span *ngIf="genderFilterCount > 0" class="badge badge-dark ml-2">{{genderFilterCount}}</span>
         </button>
         <div formGroupName="gender" ngbDropdownMenu aria-labelledby="genderFilterDropdown" class="p-3">
-          <h6>Gender</h6>
+          <h6 i18n>Gender</h6>
           <div class="form-group">
             <div class="form-check">
               <input [formControlName]="formControls.filter.gender.genderFemale"
@@ -38,12 +38,13 @@
         <button class="btn"
                 [ngClass]="statusFilterCount > 0 ? 'btn-secondary' : 'btn-outline-secondary'"
                 id="statusFilterDropdown"
-                ngbDropdownToggle>
+                ngbDropdownToggle
+                i18n>
           Status
           <span *ngIf="statusFilterCount > 0" class="badge badge-dark ml-2">{{statusFilterCount}}</span>
         </button>
         <div formGroupName="status" ngbDropdownMenu aria-labelledby="statusFilterDropdown" class="p-3">
-          <h6>Status</h6>
+          <h6 i18n>Status</h6>
           <div class="form-group">
             <div class="form-check">
               <input [formControlName]="formControls.filter.status.statusPresent"
@@ -64,7 +65,6 @@
               </label>
             </div>
           </div>
-
         </div>
       </div>
 
