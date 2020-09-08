@@ -5,9 +5,14 @@ import { combineLatest, Observable, Subject } from "rxjs";
 import { map, startWith, takeUntil } from "rxjs/operators";
 
 import { BALLWURF, BALLZIELWURF, KORBEINWURF, SCHNELLLAUF, SEILSPRINGEN, WEITSPRUNG } from "../../dto/athletics";
-import { GenderDto } from "../../dto/participation";
-import { loadCompetitorsAction, loadGroupsAction, updateCompetitorResultAction } from "../../store/athletics/athletics.action";
-import { selectCompetitors, selectGroups } from "../../store/athletics/athletics.selector";
+import { GenderDto, ParticipationStatusType } from "../../dto/participation";
+import {
+  loadCompetitorsAction,
+  loadGroupsAction,
+  loadParticipationStatusAction,
+  updateCompetitorResultAction
+} from "../../store/athletics/athletics.action";
+import { selectCompetitors, selectGroups, selectParticipationStatus } from "../../store/athletics/athletics.selector";
 import { VOID_PROPS } from "../../store/standard-props";
 
 import { CompetitorModel } from "./athletics-models";
@@ -73,6 +78,7 @@ export class AthleticsComponent implements OnInit, OnDestroy {
   };
   filterForm?: FormGroup;
 
+  isParticipationOpen$?: Observable<boolean>;
   groups$?: Observable<ReadonlyArray<string>>;
   competitors$?: Observable<ReadonlyArray<CompetitorModel>>;
 
@@ -100,6 +106,9 @@ export class AthleticsComponent implements OnInit, OnDestroy {
     this.groupControl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(group => this.store.dispatch(loadCompetitorsAction({group})));
+
+    this.isParticipationOpen$ = this.store.select(selectParticipationStatus)
+      .pipe(map(status => status.type === ParticipationStatusType.OPEN));
 
     this.groups$ = this.store.select(selectGroups)
       .pipe(map(groups => {
@@ -145,6 +154,7 @@ export class AthleticsComponent implements OnInit, OnDestroy {
           });
       }));
 
+    this.store.dispatch(loadParticipationStatusAction(VOID_PROPS));
     this.store.dispatch(loadGroupsAction(VOID_PROPS));
   }
 
