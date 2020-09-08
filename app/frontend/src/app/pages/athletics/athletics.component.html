@@ -69,12 +69,14 @@
       </div>
 
       <app-pre-next-select class="d-inline-block mr-3"
+                           data-test-selector="group-dropdown"
                            [formControlName]="formControls.group"
                            [values]="groups$ | async"
                            prependText="Groups"
                            i18n-prependText>
       </app-pre-next-select>
       <app-pre-next-select class="d-inline-block"
+                           data-test-selector="discipline-dropdown"
                            [formControlName]="formControls.discipline"
                            [values]="disciplines"
                            prependText="Disciplines"
@@ -120,6 +122,7 @@
 
           <input type="text"
                  class="form-control"
+                 data-test-selector="result-input"
                  (focusout)="updateCompetitorResultIfValid(competitor)"
                  [readOnly]="competitor.isAbsent"
                  [formControl]="competitor.result.displayValueControl">
@@ -141,7 +144,7 @@
           Please enter a float number
         </div>
       </td>
-      <td>{{competitor.result.points}}</td>
+      <td data-test-selector="result-points">{{competitor.result.points}}</td>
     </tr>
     </tbody>
   </table>

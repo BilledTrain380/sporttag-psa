@@ -24,6 +24,10 @@ export class AppPage {
     return browser.get(`${browser.baseUrl}/pages/administration/participation-management`) as Promise<void>;
   }
 
+  async navigateToAthletics(): Promise<void> {
+    return browser.get(`${browser.baseUrl}/pages/athletics`) as Promise<void>;
+  }
+
   async clickConfirmOnModal(): Promise<void> {
     await this.confirmModal
       .element(by.css(".modal-footer button[type='submit']"))

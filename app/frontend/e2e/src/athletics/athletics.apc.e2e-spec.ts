@@ -1,0 +1,70 @@
+import { browser, by, ExpectedConditions as EC, protractor } from "protractor";
+
+import { AppPage } from "../app.po";
+
+import { AthleticsPage } from "./athletics.po";
+
+describe("AthleticsPage", () => {
+  let appPage: AppPage;
+  let page: AthleticsPage;
+
+  const SURNAME_CELL = 1;
+
+  beforeAll(async () => {
+    appPage = new AppPage();
+    page = new AthleticsPage();
+
+    await appPage.navigateToAthletics();
+  });
+
+  it("should update the points when updating a result", async () => {
+    const resultInput = page.tableRows.get(0)
+      .element(by.css('[data-test-selector="result-input"]'));
+
+    // Send a back space and the actual value in at once. The .clear() method does not work here
+    await resultInput.sendKeys(`${protractor.Key.BACK_SPACE}11.25`);
+
+    // Trigger focus out by clicking into another input
+    await page.tableRows.get(1)
+      .element(by.css('[data-test-selector="result-input"]'))
+      .click();
+
+    const points = page.tableRows.get(0)
+      .element(by.cssContainingText('[data-test-selector="result-points"]', "187"));
+
+    await browser.wait(EC.visibilityOf(points));
+
+    await expect(points.getText())
+      .toBe("187");
+  });
+
+  it("should switch group", async () => {
+    const firstRow = page.tableRows.first();
+
+    await page.groupNextButton.click();
+
+    const firstRowValue = firstRow.element(by.cssContainingText("td", "Hill"));
+    await browser.wait(EC.invisibilityOf(firstRowValue));
+
+    const newFirstRowValue = firstRow
+      .all(by.css("td"))
+      .get(SURNAME_CELL);
+
+    await expect(newFirstRowValue.getText())
+      .toBe("Mason");
+  });
+
+  it("should switch discipline", async () => {
+    const firstRow = page.tableRows.first();
+
+    const firstRowUnitValue = firstRow.element(by.css("td .result-input-container .input-group-append"));
+    const unitValue = await firstRowUnitValue.getText();
+
+    await page.disciplineNextButton.click();
+
+    const newUnitValue = await firstRowUnitValue.getText();
+    expect(newUnitValue)
+      .not
+      .toBe(unitValue);
+  });
+});
