@@ -2,7 +2,6 @@ import { AbstractControl, ValidatorFn } from "@angular/forms";
 
 export function floatNumber(precision?: number): ValidatorFn {
   return (control: AbstractControl) => {
-
     const parsedNumber = Number.parseFloat(control.value);
 
     if (Number.isNaN(parsedNumber)) {
