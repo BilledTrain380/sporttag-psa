@@ -25,7 +25,7 @@ export class ParticipationApi {
   }
 
   updateParticipation(command: ParticipationCommand): Observable<ParticipationDto> {
-    this.log.info(`Update participation: command=${command}`);
+    this.log.info("Update participation: command =", command);
 
     // Explicit set headers, because the command is only a string and would be interpreted as text/plain
     const headers = new HttpHeaders({"Content-Type": "application/json"});

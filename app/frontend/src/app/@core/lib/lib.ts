@@ -94,3 +94,20 @@ export function ifNotNullOrUndefined<T>(value: T | undefined | null, consumer: C
     consumer(value!);
   }
 }
+
+// tslint:disable: no-bitwise no-magic-numbers
+export function hashcodeOf(value: string): number {
+  let hash = 0;
+
+  for (let i = 0; i < value.length; i++) {
+    const chr = value.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+
+    // Convert to 32bit integer
+    hash |= 0;
+  }
+
+  return hash;
+}
+
+// tslint:enable

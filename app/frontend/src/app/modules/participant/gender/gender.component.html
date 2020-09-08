@@ -1,5 +1,9 @@
 <span [ngSwitch]="gender">
-  <fa-icon *ngSwitchCase="GenderDto.MALE" [icon]="faMars"></fa-icon>
-  <fa-icon *ngSwitchCase="GenderDto.FEMALE" [icon]="faVenus"></fa-icon>
+  <span *ngSwitchCase="GenderDto.MALE">
+    <fa-icon [icon]="faMars"></fa-icon><span *ngIf="showLabel" class="ml-1" i18n>Male</span>
+  </span>
+  <span *ngSwitchCase="GenderDto.FEMALE">
+    <fa-icon [icon]="faVenus"></fa-icon><span *ngIf="showLabel" class="ml-1" i18n>Female</span>
+  </span>
 </span>
 

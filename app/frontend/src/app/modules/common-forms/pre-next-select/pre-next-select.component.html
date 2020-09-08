@@ -1,0 +1,19 @@
+<div [formGroup]="form" class="input-group">
+  <div class="input-group-prepend">
+    <button (click)="previousValue()" [disabled]="!hasPreviousValue" class="btn btn-outline-secondary" type="button">
+      <fa-icon [icon]="faChevronLeft"></fa-icon>
+    </button>
+  </div>
+  <div *ngIf="prependText" class="input-group-prepend">
+    <div class="input-group-text">{{prependText}}</div>
+  </div>
+  <select [formControlName]="formControls.value" class="form-control">
+    <option disabled selected value="" i18n>Choose one...</option>
+    <option *ngFor="let value of values" [value]="value">{{value}}</option>
+  </select>
+  <div class="input-group-append">
+    <button (click)="nextValue()" [disabled]="!hasNextValue" class="btn btn-outline-secondary" type="button">
+      <fa-icon [icon]="faChevronRight"></fa-icon>
+    </button>
+  </div>
+</div>

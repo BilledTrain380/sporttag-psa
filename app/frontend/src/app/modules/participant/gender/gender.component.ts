@@ -16,4 +16,7 @@ export class GenderComponent {
 
   @Input()
   gender = GenderDto.MALE;
+
+  @Input()
+  showLabel = false;
 }
