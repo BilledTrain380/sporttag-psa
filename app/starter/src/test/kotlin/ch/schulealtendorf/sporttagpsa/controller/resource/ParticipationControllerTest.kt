@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 internal class ParticipationControllerTest : PsaWebMvcTest() {
     companion object {
         private const val PARTICIPATION_ENDPOINT = "/api/participation"
+        private const val PARTICIPATION_STATUS_ENDPOINT = "/api/participation-status"
         private const val SPORTS_ENDPOINT = "/api/sports"
         private const val PARTICIPATION_LIST_DOWNLOAD_ENDPOINT = "/api/participation-list/download"
         private const val START_LIST_DOWNLOAD_ENDPOINT = "/api/start-list/download"
@@ -48,6 +49,33 @@ internal class ParticipationControllerTest : PsaWebMvcTest() {
     internal fun getParticipationWhenMissingScope() {
         mockMvc.perform(
             get(PARTICIPATION_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.PARTICIPANT_WRITE))
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    internal fun getParticipationStatus() {
+        mockMvc.perform(
+            get(PARTICIPATION_STATUS_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.PARTICIPATION))
+        ).andExpect(status().isOk)
+
+        mockMvc.perform(
+            get(PARTICIPATION_STATUS_ENDPOINT)
+                .with(bearerTokenUser(PSAScope.PARTICIPATION))
+        ).andExpect(status().isOk)
+    }
+
+    @Test
+    internal fun getParticipationStatusWhenUnauthorized() {
+        mockMvc.perform(get(PARTICIPATION_STATUS_ENDPOINT))
+            .andExpect(status().isUnauthorized)
+    }
+
+    @Test
+    internal fun getParticipationStatusWhenMissingScope() {
+        mockMvc.perform(
+            get(PARTICIPATION_STATUS_ENDPOINT)
                 .with(bearerTokenAdmin(PSAScope.PARTICIPANT_WRITE))
         ).andExpect(status().isNotFound)
     }
