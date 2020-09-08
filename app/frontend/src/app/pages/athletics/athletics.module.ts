@@ -11,11 +11,15 @@ import { TableModule } from "../../modules/table/table.module";
 import { AthleticsEffects } from "../../store/athletics/athletics.effect";
 import { ParticipationModule } from "../administration/participation/participation.module";
 
+import { AthleticsNotStartedComponent } from "./athletics-not-started/athletics-not-started.component";
 import { AthleticsRoutingModule } from "./athletics-routing.module";
 import { AthleticsComponent } from "./athletics.component";
 
 @NgModule({
-            declarations: [AthleticsComponent],
+            declarations: [
+              AthleticsComponent,
+              AthleticsNotStartedComponent,
+            ],
             imports: [
               CommonModule,
               AthleticsRoutingModule,
