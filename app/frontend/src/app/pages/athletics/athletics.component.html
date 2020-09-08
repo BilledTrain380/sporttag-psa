@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  <table *ngIf="competitors$ | async as competitors"
+  <table *ngIf="competitors$ | async as competitors; else spinner"
          class="table"
          appNoEntries
          [rowCount]="competitors.length"
@@ -148,4 +148,8 @@
     </tr>
     </tbody>
   </table>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
 </app-simple-page>
