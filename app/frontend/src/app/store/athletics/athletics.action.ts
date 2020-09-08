@@ -17,13 +17,13 @@ export const setGroupsAction = createAction(
   props<SetGroupsProps>(),
 );
 
-export interface LoadCompetitorProps {
+export interface LoadCompetitorsProps {
   readonly group: string;
 }
 
 export const loadCompetitorsAction = createAction(
   "[AthleticsPage] Load competitors",
-  props<LoadCompetitorProps>(),
+  props<LoadCompetitorsProps>(),
 );
 
 export interface SetCompetitorsProps {
