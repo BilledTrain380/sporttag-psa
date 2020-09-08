@@ -18,10 +18,13 @@ describe("AthleticsPage", () => {
   });
 
   it("should update the points when updating a result", async () => {
-    const resultInput = page.tableRows.get(0)
+    const resultInput = page.tableRows.first()
       .element(by.css('[data-test-selector="result-input"]'));
 
-    // Send a back space and the actual value in at once. The .clear() method does not work here
+    /* Send a back space and the actual value at once.
+     * The .clear() method does not work here, because due the focus out,
+     * the previous value will be inserted again.
+     */
     await resultInput.sendKeys(`${protractor.Key.BACK_SPACE}11.25`);
 
     // Trigger focus out by clicking into another input
