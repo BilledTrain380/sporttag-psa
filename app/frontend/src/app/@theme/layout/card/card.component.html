@@ -1,6 +1,11 @@
 <div class="card mobile-card mt-3 mb-3 ml-0 mr-0">
   <div class="card-body">
-    <h5 class="card-title pt-1">{{title}}</h5>
+    <div class="d-md-flex">
+      <h5 class="flex-md-grow-1 card-title pt-1">{{title}}</h5>
+      <p *ngIf="alert" class="flex-md-grow-1 text-center" [ngClass]="alertCssClass">{{alert?.message}}</p>
+      <div class="flex-md-grow-1"></div>
+    </div>
+
     <ng-content></ng-content>
   </div>
 </div>
