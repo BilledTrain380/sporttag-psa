@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { EMPTY } from "rxjs";
+import { of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
 import { getLogger, Logger } from "../../@core/logging";
 import { CompetitorApi, CompetitorParameters } from "../../@core/service/api/competitor-api";
 import { GroupApi } from "../../@core/service/api/group-api";
 import { ParticipationApi } from "../../@core/service/api/participation-api";
+import { AlertFactory } from "../../modules/alert/alert";
 
 import {
   loadCompetitorsAction,
   loadGroupsAction,
   loadParticipationStatusAction,
+  setAthleticsAlertAction,
   setCompetitorsAction,
   setGroupsAction,
   setParticipationStatusAction,
@@ -33,7 +35,11 @@ export class AthleticsEffects {
                         .pipe(catchError(err => {
                           this.log.warn("Could not load participation status", err);
 
-                          return EMPTY;
+                          const alert = this.alertFactory
+                            .textAlert()
+                            .error(err.message);
+
+                          return of(setAthleticsAlertAction({alert}));
                         })))));
 
   readonly loadGroups = createEffect(() => this.actions$
@@ -48,7 +54,11 @@ export class AthleticsEffects {
                         .pipe(catchError(err => {
                           this.log.warn("Could not load groups", err);
 
-                          return EMPTY;
+                          const alert = this.alertFactory
+                            .textAlert()
+                            .error(err.message);
+
+                          return of(setAthleticsAlertAction({alert}));
                         })))));
 
   readonly loadCompetitors = createEffect(() => this.actions$
@@ -65,7 +75,11 @@ export class AthleticsEffects {
         .pipe(catchError(err => {
           this.log.warn("Could not load competitors", err);
 
-          return EMPTY;
+          const alert = this.alertFactory
+            .textAlert()
+            .error(err.message);
+
+          return of(setAthleticsAlertAction({alert}));
         }));
     })));
 
@@ -78,10 +92,21 @@ export class AthleticsEffects {
 
                           return updateCompetitorRelationAction({competitorId: action.competitorId, results: [result]});
                         }))
+                        .pipe(map(() => {
+                          const alert = this.alertFactory
+                            .textAlert()
+                            .success($localize`Successfully updated competitor result`);
+
+                          return setAthleticsAlertAction({alert});
+                        }))
                         .pipe(catchError(err => {
                           this.log.warn("Could not update competitor result", err);
 
-                          return EMPTY;
+                          const alert = this.alertFactory
+                            .textAlert()
+                            .error(err.message);
+
+                          return of(setAthleticsAlertAction({alert}));
                         })))));
 
   private readonly log: Logger = getLogger("AthleticsEffects");
@@ -91,6 +116,7 @@ export class AthleticsEffects {
     private readonly competitorApi: CompetitorApi,
     private readonly groupApi: GroupApi,
     private readonly participationApi: ParticipationApi,
+    private readonly alertFactory: AlertFactory,
   ) {
   }
 }

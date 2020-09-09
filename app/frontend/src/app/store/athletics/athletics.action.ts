@@ -3,6 +3,7 @@ import { createAction, props } from "@ngrx/store";
 import { CompetitorDto, ResultDto, ResultElement } from "../../dto/athletics";
 import { SimpleGroupDto } from "../../dto/group";
 import { StatusEntry } from "../../dto/status";
+import { Alert } from "../../modules/alert/alert";
 
 export const loadParticipationStatusAction = createAction(
   "[AthleticsPage] Load participation status",
@@ -68,4 +69,18 @@ export interface UpdateCompetitorRelationProps {
 export const updateCompetitorRelationAction = createAction(
   "[AthleticsEffects] Update competitor relation",
   props<UpdateCompetitorRelationProps>(),
+);
+
+export interface SetAthleticsAlertProps {
+  readonly alert: Alert;
+}
+
+export const setAthleticsAlertAction = createAction(
+  "[AthleticsEffects] Set athletics alert",
+  props<SetAthleticsAlertProps>(),
+);
+
+export const clearAthleticsAlertAction = createAction(
+  "[AthleticsPage] Clear athletics alert",
+  props(),
 );

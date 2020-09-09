@@ -4,13 +4,22 @@ import { CompetitorDto, CompetitorDtoBuilder } from "../../dto/athletics";
 import { SimpleGroupDto } from "../../dto/group";
 import { ParticipationStatusType } from "../../dto/participation";
 import { StatusEntry, StatusSeverity } from "../../dto/status";
+import { Alert } from "../../modules/alert/alert";
 
-import { setCompetitorsAction, setGroupsAction, setParticipationStatusAction, updateCompetitorRelationAction } from "./athletics.action";
+import {
+  clearAthleticsAlertAction,
+  setAthleticsAlertAction,
+  setCompetitorsAction,
+  setGroupsAction,
+  setParticipationStatusAction,
+  updateCompetitorRelationAction,
+} from "./athletics.action";
 
 export interface AthleticsState {
   readonly groups: ReadonlyArray<SimpleGroupDto>;
   readonly competitors: ReadonlyArray<CompetitorDto>;
   readonly participationStatus: StatusEntry;
+  readonly alert?: Alert;
 }
 
 const initialState: AthleticsState = {
@@ -24,6 +33,18 @@ const initialState: AthleticsState = {
 
 const reducer = createReducer(
   initialState,
+  on(setAthleticsAlertAction, (state, action) => (
+    {
+      ...state,
+      alert: action.alert,
+    }
+  )),
+  on(clearAthleticsAlertAction, (state, _) => (
+    {
+      ...state,
+      alert: undefined,
+    }
+  )),
   on(setParticipationStatusAction, (state, action) => (
     {
       ...state,

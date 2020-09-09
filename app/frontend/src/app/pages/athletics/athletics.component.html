@@ -1,4 +1,8 @@
-<app-simple-page pageTitle="Athletics" i18n-pageTitle cardTitle="Competitors" i18n-cardTitle>
+<app-simple-page pageTitle="Athletics"
+                 i18n-pageTitle
+                 cardTitle="Competitors"
+                 i18n-cardTitle
+                 [alert]="alert$ | async">
   <app-athletics-not-started *ngIf="isParticipationOpen$ | async; else athletics"></app-athletics-not-started>
 
   <ng-template #athletics>
