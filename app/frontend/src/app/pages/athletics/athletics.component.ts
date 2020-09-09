@@ -10,7 +10,7 @@ import {
   loadCompetitorsAction,
   loadGroupsAction,
   loadParticipationStatusAction,
-  updateCompetitorResultAction
+  updateCompetitorResultAction,
 } from "../../store/athletics/athletics.action";
 import { selectCompetitors, selectGroups, selectParticipationStatus } from "../../store/athletics/athletics.selector";
 import { VOID_PROPS } from "../../store/standard-props";

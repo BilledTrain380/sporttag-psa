@@ -1,7 +1,7 @@
 <app-simple-page pageTitle="Athletics" i18n-pageTitle cardTitle="Competitors" i18n-cardTitle>
-  <app-athletics-not-started *ngIf="isParticipationOpen$ | async"></app-athletics-not-started>
+  <app-athletics-not-started *ngIf="isParticipationOpen$ | async; else athletics"></app-athletics-not-started>
 
-  <div *ngIf="!(isParticipationOpen$ | async)">
+  <ng-template #athletics>
     <div class="clearfix mb-3" [formGroup]="filterForm">
       <div class="float-right">
         <div formGroupName="filter" ngbDropdown class="d-inline-block mr-3">
@@ -152,7 +152,7 @@
       </tr>
       </tbody>
     </table>
-  </div>
+  </ng-template>
 
   <ng-template #spinner>
     <app-card-spinner></app-card-spinner>
