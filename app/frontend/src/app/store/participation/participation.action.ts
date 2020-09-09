@@ -2,25 +2,25 @@ import { createAction, props } from "@ngrx/store";
 
 import { ParticipationCommand, ParticipationDto } from "../../dto/participation";
 
-export const loadParticipationStatusAction = createAction(
+export const loadParticipationAction = createAction(
   "[ParticipationManagement] Load participation status",
   props(),
 );
 
-export interface SetParticipationStatusProps {
+export interface SetParticipationProps {
   readonly dto: ParticipationDto;
 }
 
-export const setParticipationStatusAction = createAction(
+export const setParticipationAction = createAction(
   "[ParticipationManagement] Set participation status",
-  props<SetParticipationStatusProps>(),
+  props<SetParticipationProps>(),
 );
 
 export interface UpdateParticipationStatusProps {
   readonly command: ParticipationCommand;
 }
 
-export const updateParticipationStatusAction = createAction(
+export const updateParticipationAction = createAction(
   "[ParticipationManagement] Update participation status",
   props<UpdateParticipationStatusProps>(),
 );

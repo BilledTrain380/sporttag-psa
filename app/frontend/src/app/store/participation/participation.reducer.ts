@@ -3,7 +3,7 @@ import { Action, createReducer, on } from "@ngrx/store";
 import { ParticipationDto } from "../../dto/participation";
 import { StatusSeverity } from "../../dto/status";
 
-import { setParticipationStatusAction } from "./participation.action";
+import { setParticipationAction } from "./participation.action";
 
 export interface ParticipationState {
   readonly dto: ParticipationDto;
@@ -21,7 +21,7 @@ const initialState: ParticipationState = {
 
 const reducer = createReducer(
   initialState,
-  on(setParticipationStatusAction, (state, action) => ({
+  on(setParticipationAction, (state, action) => ({
     ...state,
     dto: action.dto,
   })),
