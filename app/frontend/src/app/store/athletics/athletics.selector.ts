@@ -4,6 +4,11 @@ import { AppState } from "../app";
 
 const selectAthletics = (state: AppState) => state.athletics;
 
+export const selectParticipationStatus = createSelector(
+  selectAthletics,
+  athletics => athletics.participationStatus,
+);
+
 export const selectGroups = createSelector(
   selectAthletics,
   athletics => athletics.groups,

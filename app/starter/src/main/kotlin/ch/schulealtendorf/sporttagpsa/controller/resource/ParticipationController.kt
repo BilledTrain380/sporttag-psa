@@ -81,7 +81,7 @@ class ParticipationController(
     private val startlistReporter: StartlistReporter
 ) {
     @Operation(
-        summary = "Get the participation status",
+        summary = "Get the participation",
         tags = ["Participation"]
     )
     @ApiResponses(
@@ -118,6 +118,35 @@ class ParticipationController(
         return ParticipationDto(
             status = statusDto,
             unfinishedGroups = unfinishedGroups
+        )
+    }
+
+    @Operation(
+        summary = "Get the participation status",
+        tags = ["Participation"]
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Participation status",
+                content = [Content(schema = Schema(implementation = StatusEntry::class))]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = [Content()]
+            )
+        ]
+    )
+    @PreAuthorize("#oauth2.hasScope('participation')")
+    @GetMapping("/participation-status", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getParticipationStatus(): StatusEntry {
+        val status = participationManager.getParticipationStatus()
+
+        return StatusEntry(
+            StatusSeverity.INFO,
+            status
         )
     }
 

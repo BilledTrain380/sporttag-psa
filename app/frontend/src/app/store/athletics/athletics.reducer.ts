@@ -2,21 +2,34 @@ import { Action, createReducer, on } from "@ngrx/store";
 
 import { CompetitorDto, CompetitorDtoBuilder } from "../../dto/athletics";
 import { SimpleGroupDto } from "../../dto/group";
+import { ParticipationStatusType } from "../../dto/participation";
+import { StatusEntry, StatusSeverity } from "../../dto/status";
 
-import { setCompetitorsAction, setGroupsAction, updateCompetitorRelationAction } from "./athletics.action";
+import { setCompetitorsAction, setGroupsAction, setParticipationStatusAction, updateCompetitorRelationAction } from "./athletics.action";
 
 export interface AthleticsState {
   readonly groups: ReadonlyArray<SimpleGroupDto>;
   readonly competitors: ReadonlyArray<CompetitorDto>;
+  readonly participationStatus: StatusEntry;
 }
 
 const initialState: AthleticsState = {
   groups: [],
   competitors: [],
+  participationStatus: {
+    severity: StatusSeverity.INFO,
+    type: ParticipationStatusType.CLOSED,
+  },
 };
 
 const reducer = createReducer(
   initialState,
+  on(setParticipationStatusAction, (state, action) => (
+    {
+      ...state,
+      participationStatus: action.status,
+    }
+  )),
   on(setGroupsAction, (state, action) => (
     {
       ...state,

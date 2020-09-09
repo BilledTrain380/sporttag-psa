@@ -6,18 +6,36 @@ import { catchError, map, switchMap } from "rxjs/operators";
 import { getLogger, Logger } from "../../@core/logging";
 import { CompetitorApi, CompetitorParameters } from "../../@core/service/api/competitor-api";
 import { GroupApi } from "../../@core/service/api/group-api";
+import { ParticipationApi } from "../../@core/service/api/participation-api";
 
 import {
   loadCompetitorsAction,
   loadGroupsAction,
+  loadParticipationStatusAction,
   setCompetitorsAction,
   setGroupsAction,
+  setParticipationStatusAction,
   updateCompetitorRelationAction,
   updateCompetitorResultAction,
 } from "./athletics.action";
 
 @Injectable()
 export class AthleticsEffects {
+  readonly loadParticipationStatus = createEffect(() => this.actions$
+    .pipe(ofType(loadParticipationStatusAction))
+    .pipe(switchMap(() =>
+                      this.participationApi.getParticipationStatus()
+                        .pipe(map(status => {
+                          this.log.info("Successfully loaded participation status:", status);
+
+                          return setParticipationStatusAction({status});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not load participation status", err);
+
+                          return EMPTY;
+                        })))));
+
   readonly loadGroups = createEffect(() => this.actions$
     .pipe(ofType(loadGroupsAction))
     .pipe(switchMap(() =>
@@ -72,6 +90,7 @@ export class AthleticsEffects {
     private readonly actions$: Actions,
     private readonly competitorApi: CompetitorApi,
     private readonly groupApi: GroupApi,
+    private readonly participationApi: ParticipationApi,
   ) {
   }
 }

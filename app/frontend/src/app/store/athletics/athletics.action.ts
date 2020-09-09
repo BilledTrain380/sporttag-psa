@@ -2,6 +2,21 @@ import { createAction, props } from "@ngrx/store";
 
 import { CompetitorDto, ResultDto, ResultElement } from "../../dto/athletics";
 import { SimpleGroupDto } from "../../dto/group";
+import { StatusEntry } from "../../dto/status";
+
+export const loadParticipationStatusAction = createAction(
+  "[AthleticsPage] Load participation status",
+  props(),
+);
+
+export interface SetParticipationStatusProps {
+  readonly status: StatusEntry;
+}
+
+export const setParticipationStatusAction = createAction(
+  "[AthleticsPage] Set participation status",
+  props<SetParticipationStatusProps>(),
+);
 
 export const loadGroupsAction = createAction(
   "[AthleticsPage] Load groups",

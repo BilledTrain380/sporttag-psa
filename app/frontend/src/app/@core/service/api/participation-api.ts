@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { ParticipationCommand, ParticipationDto } from "../../../dto/participation";
+import { StatusEntry } from "../../../dto/status";
 import { getLogger, Logger } from "../../logging";
 
 import { API_ENDPOINT } from "./pas-api";
@@ -22,6 +23,12 @@ export class ParticipationApi {
     this.log.info("Load participation");
 
     return this.http.get<ParticipationDto>(`${API_ENDPOINT}/participation`);
+  }
+
+  getParticipationStatus(): Observable<StatusEntry> {
+    this.log.info("Load participation status");
+
+    return this.http.get<StatusEntry>(`${API_ENDPOINT}/participation-status`);
   }
 
   updateParticipation(command: ParticipationCommand): Observable<ParticipationDto> {
