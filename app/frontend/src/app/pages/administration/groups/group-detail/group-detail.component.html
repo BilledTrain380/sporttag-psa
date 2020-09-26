@@ -6,7 +6,8 @@
                  [pageTitle]="group.name"
                  [pageSubTitle]="group.coach"
                  cardTitle="Participants"
-                 i18n-cardTitle>
+                 i18n-cardTitle
+                 [alert]="alert$ | async">
   <app-layout-buttons>
     <app-layout-button (click)="openAddParticipantModal()"
                        buttonType="primary"
@@ -16,8 +17,6 @@
                        data-test-selector="add-participant">
     </app-layout-button>
   </app-layout-buttons>
-
-  <app-text-alert [alert]="alert$ | async"></app-text-alert>
 
   <table *ngIf="participants$ | async as participants; else spinner"
          appNoEntries

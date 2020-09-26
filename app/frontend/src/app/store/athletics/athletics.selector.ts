@@ -18,3 +18,8 @@ export const selectCompetitors = createSelector(
   selectAthletics,
   athletics => athletics.competitors,
 );
+
+export const selectAthleticsAlert = createSelector(
+  selectAthletics,
+  athletics => athletics.alert,
+);

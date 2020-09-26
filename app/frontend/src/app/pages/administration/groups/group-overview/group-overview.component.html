@@ -1,7 +1,8 @@
 <app-simple-page pageTitle="Group Management"
                  i18n-pageTitle
                  cardTitle="Overview"
-                 i18n-cardTitle>
+                 i18n-cardTitle
+                 [alert]="alert">
   <app-layout-buttons>
     <app-layout-button (click)="openImportModal()"
                        buttonType="primary"
@@ -11,8 +12,6 @@
                        data-test-selector="import-groups">
     </app-layout-button>
   </app-layout-buttons>
-
-  <app-text-alert [alert]="alert"></app-text-alert>
 
   <table *ngIf="groups$ | async as groups; else spinner"
          appNoEntries

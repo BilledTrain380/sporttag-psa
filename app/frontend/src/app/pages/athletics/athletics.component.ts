@@ -7,12 +7,13 @@ import { map, startWith, takeUntil } from "rxjs/operators";
 import { BALLWURF, BALLZIELWURF, KORBEINWURF, SCHNELLLAUF, SEILSPRINGEN, WEITSPRUNG } from "../../dto/athletics";
 import { GenderDto, ParticipationStatusType } from "../../dto/participation";
 import {
+  clearAthleticsAlertAction,
   loadCompetitorsAction,
   loadGroupsAction,
   loadParticipationStatusAction,
   updateCompetitorResultAction,
 } from "../../store/athletics/athletics.action";
-import { selectCompetitors, selectGroups, selectParticipationStatus } from "../../store/athletics/athletics.selector";
+import { selectAthleticsAlert, selectCompetitors, selectGroups, selectParticipationStatus } from "../../store/athletics/athletics.selector";
 import { VOID_PROPS } from "../../store/standard-props";
 
 import { CompetitorModel } from "./athletics-models";
@@ -78,6 +79,7 @@ export class AthleticsComponent implements OnInit, OnDestroy {
   };
   filterForm?: FormGroup;
 
+  readonly alert$ = this.store.select(selectAthleticsAlert);
   isParticipationOpen$?: Observable<boolean>;
   groups$?: Observable<ReadonlyArray<string>>;
   competitors$?: Observable<ReadonlyArray<CompetitorModel>>;
@@ -169,6 +171,7 @@ export class AthleticsComponent implements OnInit, OnDestroy {
 
   updateCompetitorResultIfValid(competitorModel: CompetitorModel): void {
     if (competitorModel.result.displayValueControl.valid) {
+      this.store.dispatch(clearAthleticsAlertAction(VOID_PROPS));
       this.store.dispatch(updateCompetitorResultAction({
                                                          competitorId: competitorModel.id,
                                                          result: competitorModel.result.toResultElement(),
