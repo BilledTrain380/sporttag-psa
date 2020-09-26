@@ -65,4 +65,15 @@ interface PasswordValidator {
      * @return a validation result
      */
     fun validate(password: String): ValidationResult
+
+    /**
+     * Checks the given {@code password} against a set of rules,
+     * as well as a case sensitive equals check against the given {@code passwordRepeat}
+     *
+     * @param password the password to validate
+     * @param passwordRepeat the password repeat to equals check
+     *
+     * @return a validation result
+     */
+    fun validateEquals(password: String, passwordRepeat: String): ValidationResult
 }
