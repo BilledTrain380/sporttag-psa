@@ -87,17 +87,17 @@ export class AthleticsEffects {
     .pipe(ofType(updateCompetitorResultAction))
     .pipe(switchMap(action =>
                       this.competitorApi.updateCompetitorResult(action.competitorId, action.result)
-                        .pipe(map(result => {
+                        .pipe(switchMap(result => {
                           this.log.info("Successfully updated competitor result: result =", result);
 
-                          return updateCompetitorRelationAction({competitorId: action.competitorId, results: [result]});
-                        }))
-                        .pipe(map(() => {
                           const alert = this.alertFactory
                             .textAlert()
                             .success($localize`Successfully updated competitor result`);
 
-                          return setAthleticsAlertAction({alert});
+                          return [
+                            setAthleticsAlertAction({alert}),
+                            updateCompetitorRelationAction({competitorId: action.competitorId, results: [result]}),
+                          ];
                         }))
                         .pipe(catchError(err => {
                           this.log.warn("Could not update competitor result", err);
