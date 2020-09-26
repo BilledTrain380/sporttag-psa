@@ -160,21 +160,24 @@ internal class PsaRankingManagerTest {
 
             val competitors = listOf(
                 competitorDtoOf(
-                    surname = THIRD_RANK, results = listOf(
+                    surname = THIRD_RANK,
+                    results = listOf(
                         weitsprung.copy(),
                         ballwurfWithPoints(100),
                         seilspringenWithPoints(100)
                     )
                 ),
                 competitorDtoOf(
-                    surname = FIRST_RANK, results = listOf(
+                    surname = FIRST_RANK,
+                    results = listOf(
                         weitsprung.copy(),
                         ballwurfWithPoints(200),
                         seilspringen.copy()
                     )
                 ),
                 competitorDtoOf(
-                    surname = SECOND_RANK, results = listOf(
+                    surname = SECOND_RANK,
+                    results = listOf(
                         weitsprung.copy(),
                         ballwurfWithPoints(150),
                         seilspringen.copy()
@@ -203,7 +206,8 @@ internal class PsaRankingManagerTest {
 
             val competitors = listOf(
                 competitorDtoOf(
-                    surname = THIRD_RANK, results = listOf(
+                    surname = THIRD_RANK,
+                    results = listOf(
                         weitsprungWithPoints(100),
                         ballwurfWithPoints(100),
                         seilspringenWithPoints(100)

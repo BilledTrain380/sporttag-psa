@@ -100,9 +100,8 @@ class SecurityConfig(
             ?.and()
 
             ?.addFilterBefore(
-                SetupAuthorizationFilter(
-                    setupManager
-                ), BasicAuthenticationFilter::class.java
+                SetupAuthorizationFilter(setupManager),
+                BasicAuthenticationFilter::class.java
             )
     }
 

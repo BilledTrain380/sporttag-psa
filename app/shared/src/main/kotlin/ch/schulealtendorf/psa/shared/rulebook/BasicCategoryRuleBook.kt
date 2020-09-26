@@ -50,10 +50,12 @@ import org.springframework.stereotype.Component
  * @version 1.0.0
  */
 @Component
-class BasicCategoryRuleBook : BasicRuleBook<CategoryModel, String>(
-    CategoryModel::class,
-    String::class
-), CategoryRuleBook {
+class BasicCategoryRuleBook :
+    BasicRuleBook<CategoryModel, String>(
+        CategoryModel::class,
+        String::class
+    ),
+    CategoryRuleBook {
 
     init {
         addRule(

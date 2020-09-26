@@ -64,7 +64,8 @@ class TotalRankingReporterImpl(
                     .groupBy { it.birthday.year }
                     .map {
                         totalRankingApi.createPdfReport(
-                            it.value, TotalRankingConfig(
+                            it.value,
+                            TotalRankingConfig(
                                 gender,
                                 it.key,
                                 it.value.ballThrowingDistance(),
