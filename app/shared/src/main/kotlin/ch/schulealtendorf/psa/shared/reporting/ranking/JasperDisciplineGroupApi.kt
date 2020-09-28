@@ -70,27 +70,29 @@ class JasperDisciplineGroupApi(
         val competitors = data filterByConfig config
 
         val lines = listOf(resourceBundle.getString("ranking.csv.header-line"))
-            .plus(competitors.map { competitor ->
-                listOf(
-                    competitor.startnumber.toString(),
-                    competitor.surname,
-                    competitor.prename,
-                    competitor.address,
-                    competitor.town.zip,
-                    competitor.town.name,
-                    competitor.birthday.format(),
-                    "Primarschule Altendorf / KTV",
-                    competitor.findResultByDiscipline(SCHNELLLAUF)
-                        .map { it.relativeValue }
-                        .orElse(""),
-                    competitor.findResultByDiscipline(WEITSPRUNG)
-                        .map { it.relativeValue }
-                        .orElse(""),
-                    competitor.findResultByDiscipline(BALLWURF)
-                        .map { it.relativeValue }
-                        .orElse("")
-                ).joinToString(",") { it }
-            })
+            .plus(
+                competitors.map { competitor ->
+                    listOf(
+                        competitor.startnumber.toString(),
+                        competitor.surname,
+                        competitor.prename,
+                        competitor.address,
+                        competitor.town.zip,
+                        competitor.town.name,
+                        competitor.birthday.format(),
+                        "Primarschule Altendorf / KTV",
+                        competitor.findResultByDiscipline(SCHNELLLAUF)
+                            .map { it.relativeValue }
+                            .orElse(""),
+                        competitor.findResultByDiscipline(WEITSPRUNG)
+                            .map { it.relativeValue }
+                            .orElse(""),
+                        competitor.findResultByDiscipline(BALLWURF)
+                            .map { it.relativeValue }
+                            .orElse("")
+                    ).joinToString(",") { it }
+                }
+            )
 
         val file = ApplicationFile(AppDirectory.REPORTING, csvNameOf(config))
 

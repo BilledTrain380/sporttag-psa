@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = '1.3.72'
-        springBootVersion = '2.2.7.RELEASE'
+        kotlinVersion = '1.4.10'
+        springBootVersion = '2.3.4.RELEASE'
         sonarLogin = System.getenv("SONAR_LOGIN")
         sourceBranch = System.getenv("BUILD_SOURCEBRANCHNAME")
         pullRequestSourceBranch = System.getenv("SYSTEM_PULLREQUEST_SOURCEBRANCH")
@@ -21,7 +21,7 @@ plugins {
     id "jacoco"
     id "org.sonarqube" version "2.8"
     id "org.jetbrains.kotlin.jvm" version "$kotlinVersion" apply false
-    id "org.jlleitschuh.gradle.ktlint" version "9.2.1" apply false
+    id "org.jlleitschuh.gradle.ktlint" version "9.4.0" apply false
     id "org.jetbrains.kotlin.plugin.spring" version "$kotlinVersion" apply false
     id "org.springframework.boot" version "$springBootVersion" apply false
     id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
@@ -118,7 +118,7 @@ configure([
             dependency "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
             dependency "org.assertj:assertj-core:3.15.0"
             // Keep in sync with spring boots junit version
-            dependency "org.junit.jupiter:junit-jupiter-params:5.5.2"
+            dependency "org.junit.jupiter:junit-jupiter-params:5.6.2"
         }
     }
 

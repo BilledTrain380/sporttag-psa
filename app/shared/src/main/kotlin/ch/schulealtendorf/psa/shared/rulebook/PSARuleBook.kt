@@ -46,10 +46,12 @@ import org.springframework.stereotype.Component
  * @version 1.1.0
  */
 @Component
-class PSARuleBook : BasicRuleBook<FormulaModel, Int>(
-    FormulaModel::class,
-    Int::class
-), ResultRuleBook {
+class PSARuleBook :
+    BasicRuleBook<FormulaModel, Int>(
+        FormulaModel::class,
+        Int::class
+    ),
+    ResultRuleBook {
 
     init {
         addRuleSet(SprintRuleSet())

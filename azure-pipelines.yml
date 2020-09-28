@@ -37,7 +37,7 @@ stages:
             displayName: 'Analyze / Test backend'
             inputs:
               javaHomeOption: JDKVersion
-              jdkVersionOption: 1.8
+              jdkVersionOption: 1.11
               jdkArchitectureOption: x64
               options: "-i"
               tasks: 'ktlintCheck test jacocoTestReport sonarqube'
@@ -96,7 +96,7 @@ stages:
             displayName: 'Setup Gradle'
             inputs:
               javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.8
+              jdkVersionOption: 1.11
               jdkArchitecture: x64
           - script: printenv
 
@@ -134,7 +134,7 @@ stages:
             name: Versions
             inputs:
               javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.8
+              jdkVersionOption: 1.11
               jdkArchitecture: x64
               tasks: 'setPipelineVariables'
 
@@ -192,7 +192,7 @@ stages:
             name: Versions
             inputs:
               javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.8
+              jdkVersionOption: 1.11
               jdkArchitecture: x64
               tasks: 'setPipelineVariables'
 
