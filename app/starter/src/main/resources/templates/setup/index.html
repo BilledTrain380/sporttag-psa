@@ -90,24 +90,9 @@
                             <div th:each="error : ${pwValidationErrors}" th:text="${error}">...</div>
                         </div>
 
-                        <small id="emailHelp" class="form-text text-muted mb-3"></small>
+                        <small class="form-text text-muted mb-3" th:text="#{page.setup.text.important}"></small>
 
-                        <div class="card border-info mb-3">
-                            <div class="card-body text-info">
-                                <h5 class="card-title" th:text="#{page.setup.policy.title}"></h5>
-                                <p class="card-text"></p>
-                                <ul>
-                                    <li th:text="#{page.setup.policy.rule1}"></li>
-                                    <li th:text="#{page.setup.policy.rule2}"></li>
-                                    <li th:text="#{page.setup.policy.rule3}"></li>
-                                    <li th:text="#{page.setup.policy.rule4}"></li>
-                                    <li th:text="#{page.setup.policy.rule5}"></li>
-                                    <li th:text="#{page.setup.policy.rule6}"></li>
-                                    <li th:text="#{page.setup.policy.rule7}"></li>
-                                </ul>
-                            </div>
-                        </div>
-
+                        <div th:replace="fragments/password-policy :: passwordPolicy"></div>
                     </div>
                 </div>
 
