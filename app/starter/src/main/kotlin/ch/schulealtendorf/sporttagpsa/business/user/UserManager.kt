@@ -62,6 +62,7 @@ interface UserManager {
      *
      * @return the saved user
      * @throws InvalidPasswordException if the password does not match the validation requirements
+     * @throws IllegalUserOperationException if the user to save is the administrator user
      */
     fun save(user: UserDto): UserDto
 

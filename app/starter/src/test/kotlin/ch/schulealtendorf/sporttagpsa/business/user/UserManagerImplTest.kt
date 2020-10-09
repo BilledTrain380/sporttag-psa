@@ -101,6 +101,22 @@ internal class UserManagerImplTest {
     }
 
     @Test
+    internal fun saveAdminUser() {
+        val userOptional = userManager.getOne(USER_ADMIN)
+        assertThat(userOptional).isNotEmpty
+
+        val admin = userOptional.get().toBuilder()
+            .setUsername("no-longer-admin")
+            .setEnabled(false)
+            .build()
+
+        val exception = assertThrows<IllegalUserOperationException> {
+            userManager.save(admin)
+        }
+        assertThat(exception).hasMessage("Not allowed to modify admin user")
+    }
+
+    @Test
     @FlywayTest
     @Sql("/db/user/add-user.sql")
     internal fun changePassword() {

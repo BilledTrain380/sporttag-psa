@@ -65,6 +65,10 @@ class UserManagerImpl(
                 UserEntity(password = user.password.encode())
             }
 
+        if (userEntity.username == USER_ADMIN) {
+            throw IllegalUserOperationException("Not allowed to modify admin user")
+        }
+
         userEntity.apply {
             username = user.username
             enabled = user.enabled

@@ -41,6 +41,7 @@ import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation
 import ch.schulealtendorf.sporttagpsa.business.user.IllegalUserOperationException
+import ch.schulealtendorf.sporttagpsa.business.user.USER_ADMIN
 import ch.schulealtendorf.sporttagpsa.business.user.UserManager
 import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
 import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.BadRequestException
@@ -100,7 +101,7 @@ class UserController(
     @PreAuthorize("#oauth2.hasScope('user')")
     @GetMapping("/users")
     fun getUsers(): List<UserDto> {
-        return userManager.getAll()
+        return userManager.getAll().filter { it.username != USER_ADMIN }
     }
 
     @Operation(
@@ -191,8 +192,10 @@ class UserController(
     )
     @PreAuthorize("#oauth2.hasScope('user')")
     @PatchMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userElement: UserElement, principal: Principal) {
-        val userBuilder = userManager.getOneOrFail(id).toBuilder()
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userElement: UserElement) {
+        val user = userManager.getOneOrFail(id)
+
+        val userBuilder = user.toBuilder()
 
         userElement.enabled.ifNotNull {
             userBuilder.setEnabled(it)
@@ -202,7 +205,11 @@ class UserController(
             userBuilder.setUsername(it)
         }
 
-        userManager.save(userBuilder.build())
+        try {
+            userManager.save(userBuilder.build())
+        } catch (exception: IllegalUserOperationException) {
+            throw BadRequestException("Admin user can not be modified")
+        }
     }
 
     @Operation(
