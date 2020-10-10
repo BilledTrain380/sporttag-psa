@@ -20,7 +20,6 @@ import { UserModel } from "./user-model";
 @Component({
              selector: "app-user-overview",
              templateUrl: "./user-overview.component.html",
-             styleUrls: ["./user-overview.component.scss"],
            })
 export class UserOverviewComponent implements OnInit, OnDestroy {
   readonly faPlusCircle = faPlusCircle;
