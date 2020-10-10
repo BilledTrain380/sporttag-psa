@@ -10,8 +10,8 @@ describe("PSA frontend", () => {
     page.navigateToBaseUrl();
   });
 
-  it("should display the username", () => {
-    expect(page.username)
+  it("should display the username", async () => {
+    await expect(page.username)
       .toEqual(browser.params.username);
   });
 
