@@ -13,7 +13,7 @@
     </app-layout-button>
   </app-layout-buttons>
 
-  <table *ngIf="users$ | async as users; else spinner" class="table">
+  <table *ngIf="users$ | async as users; else spinner" class="table" data-test-selector="user-table">
     <thead>
     <tr>
       <th i18n>Actions</th>
