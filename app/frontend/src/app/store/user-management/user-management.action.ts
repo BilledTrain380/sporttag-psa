@@ -26,13 +26,13 @@ export const updateUserAction = createAction(
   props<UpdateUserProps>(),
 );
 
-export interface SetUserAlertProps {
+export interface SetUserManagementAlertProps {
   readonly alert: Alert;
 }
 
 export const setUserManagementAlertAction = createAction(
   "[UserEffects] Set user management alert",
-  props<SetUserAlertProps>(),
+  props<SetUserManagementAlertProps>(),
 );
 
 export const clearUserManagementAlertAction = createAction(
