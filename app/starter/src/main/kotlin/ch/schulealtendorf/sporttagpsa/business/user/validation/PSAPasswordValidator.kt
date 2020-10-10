@@ -65,4 +65,17 @@ class PSAPasswordValidator : PasswordValidator {
 
         return ValidationResult(result.isValid, validator.getMessages(result))
     }
+
+    override fun validateEquals(password: String, passwordRepeat: String): ValidationResult {
+        val validationResult = validate(password)
+
+        if (password != passwordRepeat) {
+            return validationResult.copy(
+                isValid = false,
+                messages = validationResult.messages.plus("Passwords do not match.")
+            )
+        }
+
+        return validationResult
+    }
 }
