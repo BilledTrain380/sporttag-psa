@@ -9,8 +9,8 @@ export interface UserInput {
 }
 
 export interface UserElement {
-  readonly username: string;
-  readonly enabled: boolean;
+  readonly username?: string;
+  readonly enabled?: boolean;
 }
 
 export interface UserDto {

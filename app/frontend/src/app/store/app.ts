@@ -2,6 +2,7 @@ import { AthleticsState } from "./athletics/athletics.reducer";
 import { GroupState } from "./group/group.reducer";
 import { MenuState } from "./menu/menu.reducer";
 import { ParticipationState } from "./participation/participation.reducer";
+import { UserManagementState } from "./user-management/user-management.reducer";
 import { UserState } from "./user/user.reducer";
 
 export interface AppState {
@@ -10,4 +11,5 @@ export interface AppState {
   readonly group: GroupState;
   readonly participation: ParticipationState;
   readonly athletics: AthleticsState;
+  readonly userManagement: UserManagementState;
 }

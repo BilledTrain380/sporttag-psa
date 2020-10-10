@@ -16,7 +16,13 @@ const initialState: UserState = {
 
 const reducer = createReducer(
   initialState,
-  on(setUser, ((_, action) => ({username: action.username, authorities: action.authorities}))),
+  on(setUser, (state, action) => (
+    {
+      ...state,
+      username: action.username,
+      authorities: action.authorities,
+    }
+  )),
 );
 
 export function userReducer(state: UserState | undefined, action: Action): UserState {

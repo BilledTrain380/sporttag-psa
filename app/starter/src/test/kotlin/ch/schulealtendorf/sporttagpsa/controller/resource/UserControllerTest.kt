@@ -5,6 +5,8 @@ import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation
 import ch.schulealtendorf.sporttagpsa.controller.PsaWebMvcTest
 import ch.schulealtendorf.sporttagpsa.controller.oauth.PSAScope
+import org.hamcrest.Matchers.hasItem
+import org.hamcrest.Matchers.not
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
@@ -13,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 internal class UserControllerTest : PsaWebMvcTest() {
@@ -45,6 +48,7 @@ internal class UserControllerTest : PsaWebMvcTest() {
             get(USERS_ENDPOINT)
                 .with(bearerTokenAdmin(PSAScope.USER))
         ).andExpect(status().isOk)
+            .andExpect(jsonPath("$[*].username", not(hasItem(ADMIN_USER))))
     }
 
     @Test
@@ -158,6 +162,16 @@ internal class UserControllerTest : PsaWebMvcTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBodyOf(USER_ELEMENT))
         ).andExpect(status().isOk)
+    }
+
+    @Test
+    internal fun updateAdminUser() {
+        mockMvc.perform(
+            patch(ADMIN_USER_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.USER))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBodyOf(USER_ELEMENT))
+        ).andExpect(status().isBadRequest)
     }
 
     @Test

@@ -1,0 +1,56 @@
+<app-simple-page pageTitle="User Management"
+                 i18n-pageTitle
+                 cardTitle="User Overview"
+                 i18n-cardTitle
+                 [alert]="alert$ | async">
+  <app-layout-buttons>
+    <app-layout-button (click)="openAddUserModal()"
+                       buttonType="primary"
+                       text="Add user"
+                       i18n-text
+                       [icon]="faPlusCircle"
+                       data-test-selector="add-user-button">
+    </app-layout-button>
+  </app-layout-buttons>
+
+  <table *ngIf="users$ | async as users; else spinner" class="table" data-test-selector="user-table">
+    <thead>
+    <tr>
+      <th i18n>Actions</th>
+      <th i18n>Username</th>
+      <th i18n>Enabled</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>
+        <app-button-group>
+          <app-button-group-item text="Edit"
+                                 i18n-text>
+          </app-button-group-item>
+          <app-button-group-item text="Change password"
+                                 i18n-text>
+          </app-button-group-item>
+          <app-button-group-item text="Delete"
+                                 i18n-text>
+          </app-button-group-item>
+        </app-button-group>
+      </td>
+      <td>{{user.username}}</td>
+      <td>
+        <div class="form-check">
+          <input class="form-check-input"
+                 type="checkbox"
+                 [(ngModel)]="user.isEnabled"
+                 (change)="toggleEnabled(user)">
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <ng-template #spinner>
+    <app-card-spinner></app-card-spinner>
+  </ng-template>
+</app-simple-page>
