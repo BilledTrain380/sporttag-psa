@@ -46,8 +46,7 @@ internal class PSAPasswordValidatorTest {
             .withFailMessage("Expected password to be invalid")
             .isFalse
 
-        assertThat(validationResult.messages).hasSize(2)
-        assertThat(validationResult.messages[0]).isEqualTo("Password must contain 1 or more special characters.")
-        assertThat(validationResult.messages[1]).isEqualTo("Passwords do not match.")
+        assertThat(validationResult.messages).hasSize(1)
+        assertThat(validationResult.messages[0]).isEqualTo("Passwords do not match.")
     }
 }
