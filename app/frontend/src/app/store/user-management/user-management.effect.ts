@@ -7,7 +7,16 @@ import { getLogger } from "../../@core/logging";
 import { UserApi } from "../../@core/service/api/user-api";
 import { AlertFactory } from "../../modules/alert/alert";
 
-import { loadUsersAction, setUserManagementAlertAction, setUsersAction, updateUserAction, UpdateUserProps } from "./user-management.action";
+import {
+  addUserAction,
+  AddUserProps,
+  addUserToStateAction,
+  loadUsersAction,
+  setUserManagementAlertAction,
+  setUsersAction,
+  updateUserAction,
+  UpdateUserProps,
+} from "./user-management.action";
 
 @Injectable()
 export class UserManagementEffects {
@@ -24,7 +33,32 @@ export class UserManagementEffects {
                           this.log.warn("Could not load users", err);
 
                           return EMPTY;
-                        })))));
+                        })),
+    )));
+
+  readonly addUser$ = createEffect(() => this.actions$
+    .pipe(ofType(addUserAction.type))
+    .pipe(switchMap((action: AddUserProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.userApi.createUser(action.user)
+                        .pipe(switchMap(user => {
+                          this.log.info("Successfully created user: id =", user.id);
+
+                          const alert = textAlert.success($localize`Successfully added user`);
+
+                          return [
+                            addUserToStateAction({user}),
+                            setUserManagementAlertAction({alert}),
+                          ];
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could add user", err);
+
+                          return EMPTY;
+                        }));
+                    },
+    )));
 
   readonly updateUser$ = createEffect(() => this.actions$
     .pipe(ofType(updateUserAction.type))

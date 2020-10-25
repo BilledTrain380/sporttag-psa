@@ -3,7 +3,12 @@ import { Action, createReducer, on } from "@ngrx/store";
 import { UserDto } from "../../dto/user";
 import { Alert } from "../../modules/alert/alert";
 
-import { clearUserManagementAlertAction, setUserManagementAlertAction, setUsersAction } from "./user-management.action";
+import {
+  addUserToStateAction,
+  clearUserManagementAlertAction,
+  setUserManagementAlertAction,
+  setUsersAction,
+} from "./user-management.action";
 
 export interface UserManagementState {
   readonly users: ReadonlyArray<UserDto>;
@@ -22,6 +27,14 @@ const reducer = createReducer(
       users: action.users,
     }
   )),
+  on(addUserToStateAction, (state, action) => {
+    const users = [...state.users, action.user];
+
+    return {
+      ...state,
+      users,
+    };
+  }),
   on(setUserManagementAlertAction, (state, action) => (
     {
       ...state,

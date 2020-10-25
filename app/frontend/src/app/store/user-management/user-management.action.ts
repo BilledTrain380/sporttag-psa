@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { UserDto, UserElement } from "../../dto/user";
+import { UserDto, UserElement, UserInput } from "../../dto/user";
 import { Alert } from "../../modules/alert/alert";
 
 export const loadUsersAction = createAction(
@@ -14,6 +14,24 @@ export interface SetUsersProps {
 export const setUsersAction = createAction(
   "[UserEffects] Set users",
   props<SetUsersProps>(),
+);
+
+export interface AddUserProps {
+  readonly user: UserInput;
+}
+
+export const addUserAction = createAction(
+  "[AddUserModal] Add user",
+  props<AddUserProps>(),
+);
+
+export interface AddUserToStoreProps {
+  readonly user: UserDto;
+}
+
+export const addUserToStateAction = createAction(
+  "[UserManagementEffects] Add user to state",
+  props<AddUserToStoreProps>(),
 );
 
 export interface UpdateUserProps {

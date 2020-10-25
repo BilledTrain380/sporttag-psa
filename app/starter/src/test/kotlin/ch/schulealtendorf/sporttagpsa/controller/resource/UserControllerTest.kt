@@ -85,6 +85,18 @@ internal class UserControllerTest : PsaWebMvcTest() {
     }
 
     @Test
+    internal fun createUserWithInvalidPassword() {
+        val userInput = USER_INPUT.copy(password = "invalid")
+
+        mockMvc.perform(
+            post(USERS_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.USER))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBodyOf(userInput))
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
     internal fun createUserWhenUnauthorized() {
         mockMvc.perform(
             post(USERS_ENDPOINT)

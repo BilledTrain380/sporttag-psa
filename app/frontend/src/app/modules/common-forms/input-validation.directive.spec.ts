@@ -63,6 +63,22 @@ describe("InputValidationDirective", () => {
           .toBeTrue();
       });
   }));
+
+  it("should reset the input, when the its marked as untouched", async(() => {
+    component.control.reset("");
+
+    fixture.detectChanges();
+    fixture.whenStable()
+      .then(() => {
+        const classList: DOMTokenList = fixture.debugElement.query(By.css("input")).nativeElement.classList;
+        expect(classList.contains("is-invalid"))
+          .withContext("Contains not is-invalid css class")
+          .toBeFalse();
+        expect(classList.contains("is-valid"))
+          .withContext("Contains not is-valid css class")
+          .toBeFalse();
+      });
+  }));
 });
 
 @Component({

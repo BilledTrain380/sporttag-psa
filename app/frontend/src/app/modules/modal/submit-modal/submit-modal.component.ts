@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, HostListener, Input, Output } from "@angular/core";
 
 import { Alert } from "../../alert/alert";
 
@@ -22,6 +22,15 @@ export class SubmitModalComponent {
 
   @Output()
   private readonly submitData = new EventEmitter<void>();
+
+  @HostListener("document:keydown.enter", ["$event"])
+  onKeydownHandler(event: KeyboardEvent): void {
+    event.preventDefault();
+
+    if (this.isSubmitEnabled) {
+      this.emitSubmit();
+    }
+  }
 
   emitCancel(): void {
     this.cancel.emit();

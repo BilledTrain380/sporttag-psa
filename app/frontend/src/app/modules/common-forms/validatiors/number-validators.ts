@@ -1,6 +1,6 @@
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 
-export function floatNumber(precision?: number): ValidatorFn {
+export function floatNumberValidator(precision?: number): ValidatorFn {
   return (control: AbstractControl) => {
     const parsedNumber = Number.parseFloat(control.value);
 
@@ -21,7 +21,7 @@ export function floatNumber(precision?: number): ValidatorFn {
   };
 }
 
-export function intNumber(radix: number = 10): ValidatorFn {
+export function intNumberValidator(radix: number = 10): ValidatorFn {
   return (control: AbstractControl) => {
     const parsedNumber = Number.parseInt(control.value, radix);
 

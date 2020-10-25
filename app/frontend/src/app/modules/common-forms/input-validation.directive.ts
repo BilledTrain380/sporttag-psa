@@ -1,7 +1,7 @@
 import { Directive, ElementRef, OnDestroy, OnInit, Renderer2, Self } from "@angular/core";
 import { NgControl } from "@angular/forms";
 import { Subject } from "rxjs";
-import { filter, takeUntil } from "rxjs/operators";
+import { takeUntil } from "rxjs/operators";
 
 const IS_VALID_CSS = "is-valid";
 const IS_INVALID_CSS = "is-invalid";
@@ -23,14 +23,16 @@ export class InputValidationDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.control.valueChanges
       ?.pipe(takeUntil(this.destroy$))
-      ?.pipe(filter(() => !!this.control.dirty))
       ?.subscribe(() => {
-        if (this.control.valid) {
+        if (this.control.dirty && this.control.valid) {
           this.renderer.addClass(this.hostElement.nativeElement, IS_VALID_CSS);
           this.renderer.removeClass(this.hostElement.nativeElement, IS_INVALID_CSS);
-        } else {
+        } else if (this.control.dirty && this.control.invalid) {
           this.renderer.addClass(this.hostElement.nativeElement, IS_INVALID_CSS);
           this.renderer.removeClass(this.hostElement.nativeElement, IS_VALID_CSS);
+        } else {
+          this.renderer.removeClass(this.hostElement.nativeElement, IS_VALID_CSS);
+          this.renderer.removeClass(this.hostElement.nativeElement, IS_INVALID_CSS);
         }
       });
   }

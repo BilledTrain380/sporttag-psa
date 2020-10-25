@@ -1,13 +1,13 @@
 import { FormControl } from "@angular/forms";
 
-import { floatNumber, intNumber } from "./number-validators";
+import { floatNumberValidator, intNumberValidator } from "./number-validators";
 
 describe("NumberValidators", () => {
   describe("on float number validator", () => {
     it("should return null when input is valid", () => {
       const control = new FormControl("2.43");
 
-      const errors = floatNumber()
+      const errors = floatNumberValidator()
         .call(undefined, control);
 
       expect(errors)
@@ -18,7 +18,7 @@ describe("NumberValidators", () => {
     it("should return errors NaN when input is not a number", () => {
       const control = new FormControl("not a number");
 
-      const errors = floatNumber()
+      const errors = floatNumberValidator()
         .call(undefined, control);
 
       expect(errors.floatNumber)
@@ -30,7 +30,7 @@ describe("NumberValidators", () => {
       // Number.parseFloat will still parse this, but cuts away the .flubber part
       const control = new FormControl("11.flubber");
 
-      const errors = floatNumber()
+      const errors = floatNumberValidator()
         .call(undefined, control);
 
       expect(errors.floatNumber)
@@ -42,7 +42,7 @@ describe("NumberValidators", () => {
       const control = new FormControl("2.2456");
 
       // tslint:disable-next-line:no-magic-numbers
-      const errors = floatNumber(2)
+      const errors = floatNumberValidator(2)
         .call(undefined, control);
 
       expect(errors.floatNumber)
@@ -55,7 +55,7 @@ describe("NumberValidators", () => {
     it("should return null when the input is valid", () => {
       const control = new FormControl("15");
 
-      const errors = intNumber()
+      const errors = intNumberValidator()
         .call(undefined, control);
 
       expect(errors)
@@ -66,7 +66,7 @@ describe("NumberValidators", () => {
     it("should return errors NaN when input is not a number", () => {
       const control = new FormControl("not a number");
 
-      const errors = intNumber()
+      const errors = intNumberValidator()
         .call(undefined, control);
 
       expect(errors.intNumber)
@@ -78,7 +78,7 @@ describe("NumberValidators", () => {
       const control = new FormControl("15.486");
 
       // tslint:disable-next-line:no-magic-numbers
-      const errors = intNumber()
+      const errors = intNumberValidator()
         .call(undefined, control);
 
       expect(errors.intNumber)
