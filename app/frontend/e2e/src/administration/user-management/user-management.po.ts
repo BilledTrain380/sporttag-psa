@@ -1,6 +1,7 @@
 import { by, element, ElementFinder } from "protractor";
 
 export class UserManagementPage {
+  readonly addUserButton = element(by.css("[data-test-selector='add-user-button'"));
   readonly userTable = element(by.css('[data-test-selector="user-table"]'));
 
   getUserCount(): Promise<number> {

@@ -19,8 +19,6 @@ import { selectUserManagementAlert } from "../../../../../store/user-management/
              styleUrls: ["./add-user-modal.component.scss"],
            })
 export class AddUserModalComponent extends AbstractSubmitModalComponent implements OnInit {
-  isPasswordPolicyCollapsed = true;
-
   form?: FormGroup;
   readonly formControls: FormControlsObject = {
     username: "username",
