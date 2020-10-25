@@ -6,6 +6,7 @@ import { OAuthService } from "angular-oauth2-oidc";
 import { Observable, Subject } from "rxjs";
 import { takeUntil, tap } from "rxjs/operators";
 
+import { environment } from "../../../environments/environment";
 import { getLogger, Logger } from "../../@core/logging";
 import { MENU_ITEMS } from "../../@core/menu/page-menu";
 import { AppState } from "../../store/app";
@@ -46,8 +47,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  changePassword(event: Event): void {
+    event.preventDefault();
+
+    this.store.dispatch(logout());
+    this.oauthService.logOut(true);
+
+    if (environment.production) {
+      window.location.pathname = "/user/change-pw";
+    } else {
+      window.location.href = `${window.location.protocol}//${window.location.hostname}:8080/user/change-pw`;
+    }
   }
 
   logout(event: Event): void {

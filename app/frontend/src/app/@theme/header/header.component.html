@@ -25,7 +25,7 @@
           <span *ngIf="!isMobile" class="ml-2">{{username$ | async}}</span>
         </a>
         <div ngbDropdownMenu class="dropdown-menu">
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()" i18n>Change password</a>
+          <a ngbDropdownItem href="#" (click)="changePassword($event)" i18n>Change password</a>
           <a ngbDropdownItem href="#" (click)="logout($event)" i18n>Sign out</a>
         </div>
       </li>
