@@ -3,7 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { hashcodeOf, requireNonNullOrUndefined } from "../../@core/lib/lib";
 import { CompetitorDto, ResultDto, ResultElement, UnitDto } from "../../dto/athletics";
 import { GenderDto } from "../../dto/participation";
-import { floatNumber, intNumber } from "../../modules/common-forms/validatiors/number-validators";
+import { floatNumberValidator, intNumberValidator } from "../../modules/common-forms/validatiors/number-validators";
 
 export class CompetitorModel {
   constructor(
@@ -60,9 +60,9 @@ export class ResultModel {
     const validators = [Validators.required, Validators.min(1)];
 
     if (this.unit.factor > 1) {
-      validators.push(floatNumber());
+      validators.push(floatNumberValidator());
     } else {
-      validators.push(intNumber());
+      validators.push(intNumberValidator());
     }
 
     this.displayValueControl = new FormControl(displayValue, validators);
