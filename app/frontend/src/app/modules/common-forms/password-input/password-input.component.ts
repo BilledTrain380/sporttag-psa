@@ -18,8 +18,6 @@ export class PasswordInputComponent extends AbstractFormInput<string> {
 
   isShowPassword = false;
 
-  protected val = "";
-
   constructor(
     @Self() @Optional() private readonly controlDirective: NgControl,
   ) {
@@ -34,6 +32,10 @@ export class PasswordInputComponent extends AbstractFormInput<string> {
     if (this.passwordInput) {
       this.passwordInput.nativeElement.type = this.isShowPassword ? "text" : "password";
     }
+  }
+
+  protected getInitialValue(): string {
+    return "";
   }
 
   private validate(value: FormControl): ValidationErrors | null {

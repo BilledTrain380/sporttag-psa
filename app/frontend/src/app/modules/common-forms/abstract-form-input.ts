@@ -27,7 +27,7 @@ export abstract class AbstractFormInput<T> implements OnInit, OnDestroy, Control
 
   private onChange?: Consumer<T>;
   private onTouched?: Consumer<T>;
-  protected abstract val: T;
+  private val: T = this.getInitialValue();
 
   private readonly destroy$ = new Subject();
 
@@ -64,4 +64,6 @@ export abstract class AbstractFormInput<T> implements OnInit, OnDestroy, Control
   writeValue(obj: T): void {
     this.formControl.setValue(obj);
   }
+
+  protected abstract getInitialValue(): T;
 }
