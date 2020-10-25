@@ -20,7 +20,7 @@ export class ChangePasswordModalComponent extends AbstractSubmitModalComponent i
   user?: UserModel;
 
   get title(): string {
-    return $localize`Change password of ` + this.user?.username;
+    return $localize`Change password of ` + (this.user?.username || "");
   }
 
   readonly passwordControl = new FormControl("", psaPasswordValidator);
