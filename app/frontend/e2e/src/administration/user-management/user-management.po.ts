@@ -1,4 +1,4 @@
-import { by, element, ElementFinder } from "protractor";
+import { browser, by, element, ElementFinder, ExpectedConditions as EC } from "protractor";
 
 import { ACTION_BUTTON_SELECTOR, clickActionButtonGroup } from "../../util/table-button-group-util";
 
@@ -31,8 +31,10 @@ export class UserManagementPage {
   async clickChangePasswordByRow(row: ElementFinder): Promise<void> {
     await clickActionButtonGroup(row);
 
-    await row
-      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Change password"))
-      .click();
+    const button = row
+      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Change password"));
+
+    await browser.wait(EC.visibilityOf(button));
+    await button.click();
   }
 }

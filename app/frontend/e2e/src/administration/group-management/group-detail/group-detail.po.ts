@@ -1,4 +1,4 @@
-import { by, element, ElementFinder } from "protractor";
+import { browser, by, element, ElementFinder, ExpectedConditions as EC } from "protractor";
 
 import { ACTION_BUTTON_SELECTOR, clickActionButtonGroup } from "../../../util/table-button-group-util";
 
@@ -41,16 +41,20 @@ export class GroupDetailPage {
   async clickEditParticipantByRow(row: ElementFinder): Promise<void> {
     await clickActionButtonGroup(row);
 
-    await row
-      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Edit"))
-      .click();
+    const button = row
+      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Edit"));
+
+    await browser.wait(EC.visibilityOf(button));
+    await button.click();
   }
 
   async clickDeleteParticipantByRow(row: ElementFinder): Promise<void> {
     await clickActionButtonGroup(row);
 
-    await row
-      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Delete"))
-      .click();
+    const button = row
+      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Delete"));
+
+    await browser.wait(EC.visibilityOf(button));
+    await button.click();
   }
 }
