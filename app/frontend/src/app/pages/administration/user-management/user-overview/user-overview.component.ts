@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons/faPlusCircle";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -14,6 +15,7 @@ import {
   UpdateUserProps,
 } from "../../../../store/user-management/user-management.action";
 import { selectUserManagementAlert, selectUsers } from "../../../../store/user-management/user-management.selector";
+import { AddUserModalComponent } from "./add-user-modal/add-user-modal.component";
 
 import { UserModel } from "./user-model";
 
@@ -32,6 +34,7 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly store: Store,
+    private readonly modalService: NgbModal,
   ) {
   }
 
@@ -47,7 +50,8 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
   }
 
   openAddUserModal(): void {
-    throw new Error("Not implemented yet");
+    this.clearAlert();
+    this.modalService.open(AddUserModalComponent, {size: "lg"});
   }
 
   toggleEnabled(userModel: UserModel): void {
