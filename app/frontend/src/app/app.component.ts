@@ -51,6 +51,9 @@ export class AppComponent implements OnInit {
   }
 
   private handleAccessToken(): void {
+    // Just set a uuid as id_token, the service needs one to perform the logout properly
+    sessionStorage.setItem("id_token", "4ec4501e-d1a8-4437-8713-4012df83805d");
+
     const parsedToken = jwt_decode<PsaJwt>(this.oauthService.getAccessToken());
     this.log.info("Successfully logged in as user", parsedToken.user_name);
     this.store.dispatch(
