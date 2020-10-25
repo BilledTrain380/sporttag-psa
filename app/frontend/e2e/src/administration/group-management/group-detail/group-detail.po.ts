@@ -1,6 +1,6 @@
 import { by, element, ElementFinder } from "protractor";
 
-const ACTION_BUTTON_SELECTOR = "td app-button-group app-button-group-item button";
+import { ACTION_BUTTON_SELECTOR, clickActionButtonGroup } from "../../../util/table-button-group-util";
 
 export class GroupDetailPage {
   readonly addParticipantButton = element(by.css("[data-test-selector='add-participant'"));
@@ -53,10 +53,4 @@ export class GroupDetailPage {
       .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Delete"))
       .click();
   }
-}
-
-async function clickActionButtonGroup(row: ElementFinder): Promise<void> {
-  await row
-    .element(by.css("td app-button-group #action-button-group"))
-    .click();
 }

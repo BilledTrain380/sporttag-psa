@@ -1,5 +1,7 @@
 import { by, element, ElementFinder } from "protractor";
 
+import { ACTION_BUTTON_SELECTOR, clickActionButtonGroup } from "../../util/table-button-group-util";
+
 export class UserManagementPage {
   readonly addUserButton = element(by.css("[data-test-selector='add-user-button'"));
   readonly userTable = element(by.css('[data-test-selector="user-table"]'));
@@ -24,5 +26,13 @@ export class UserManagementPage {
     return row
       .element(by.css("td input[type='checkbox']"))
       .isSelected();
+  }
+
+  async clickChangePasswordByRow(row: ElementFinder): Promise<void> {
+    await clickActionButtonGroup(row);
+
+    await row
+      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Change password"))
+      .click();
   }
 }
