@@ -133,7 +133,11 @@ class UserController(
             password = userInput.password
         )
 
-        return userManager.save(user)
+        try {
+            return userManager.save(user)
+        } catch (ex: InvalidPasswordException) {
+            throw BadRequestException(ex.message);
+        }
     }
 
     @Operation(
