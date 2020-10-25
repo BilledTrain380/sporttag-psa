@@ -13,6 +13,7 @@ import { GenderInputComponent } from "./gender-input/gender-input.component";
 import { InputAutoFocusDirective } from "./input-auto-focus.directive";
 import { InputValidationDirective } from "./input-validation.directive";
 import { PasswordInputComponent } from "./password-input/password-input.component";
+import { PasswordPolicyFeedbackComponent } from "./password-policy-feedback/password-policy-feedback.component";
 import { PasswordPolicyComponent } from "./password-policy/password-policy.component";
 import { PreNextSelectComponent } from "./pre-next-select/pre-next-select.component";
 import { SportTypeInputComponent } from "./sport-type-input/sport-type-input.component";
@@ -28,6 +29,7 @@ const COMPONENTS = [
   InputAutoFocusDirective,
   PasswordPolicyComponent,
   PasswordInputComponent,
+  PasswordPolicyFeedbackComponent,
 ];
 
 @NgModule({

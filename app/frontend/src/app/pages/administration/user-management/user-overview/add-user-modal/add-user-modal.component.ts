@@ -46,10 +46,6 @@ export class AddUserModalComponent extends AbstractSubmitModalComponent implemen
                                        });
   }
 
-  violatedPoliciesAsList(policy: object): ReadonlyArray<string> {
-    return Object.values(policy);
-  }
-
   submit(): void {
     const user: UserInput = {
       username: requireNonNullOrUndefined(this.form?.value[this.formControls.username]),
