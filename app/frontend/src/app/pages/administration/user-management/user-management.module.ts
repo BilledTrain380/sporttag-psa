@@ -15,7 +15,10 @@ import { AddUserModalComponent } from "./user-overview/add-user-modal/add-user-m
 import { UserOverviewComponent } from "./user-overview/user-overview.component";
 
 @NgModule({
-            declarations: [UserOverviewComponent, AddUserModalComponent],
+            declarations: [
+              UserOverviewComponent,
+              AddUserModalComponent,
+            ],
             imports: [
               CommonModule,
               FormsModule,
