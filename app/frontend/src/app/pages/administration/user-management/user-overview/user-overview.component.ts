@@ -15,8 +15,8 @@ import {
   UpdateUserProps,
 } from "../../../../store/user-management/user-management.action";
 import { selectUserManagementAlert, selectUsers } from "../../../../store/user-management/user-management.selector";
-import { AddUserModalComponent } from "./add-user-modal/add-user-modal.component";
 
+import { AddUserModalComponent } from "./add-user-modal/add-user-modal.component";
 import { UserModel } from "./user-model";
 
 @Component({

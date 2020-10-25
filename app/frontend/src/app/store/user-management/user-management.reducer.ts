@@ -7,7 +7,7 @@ import {
   addUserToStateAction,
   clearUserManagementAlertAction,
   setUserManagementAlertAction,
-  setUsersAction
+  setUsersAction,
 } from "./user-management.action";
 
 export interface UserManagementState {

@@ -15,7 +15,7 @@ import {
   setUserManagementAlertAction,
   setUsersAction,
   updateUserAction,
-  UpdateUserProps
+  UpdateUserProps,
 } from "./user-management.action";
 
 @Injectable()
