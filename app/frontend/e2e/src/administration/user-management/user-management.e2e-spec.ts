@@ -1,8 +1,8 @@
 import { browser, ElementFinder, ExpectedConditions as EC } from "protractor";
 
 import { AppPage } from "../../app.po";
-import { AddUserModalPage } from "./add-user-modal.po";
 
+import { AddUserModalPage } from "./add-user-modal.po";
 import { UserManagementPage } from "./user-management.po";
 
 describe("UserManagement", () => {

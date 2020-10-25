@@ -136,7 +136,7 @@ class UserController(
         try {
             return userManager.save(user)
         } catch (ex: InvalidPasswordException) {
-            throw BadRequestException(ex.message);
+            throw BadRequestException(ex.message)
         }
     }
 

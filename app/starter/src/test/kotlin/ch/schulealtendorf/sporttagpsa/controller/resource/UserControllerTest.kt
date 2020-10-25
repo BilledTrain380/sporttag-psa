@@ -86,7 +86,7 @@ internal class UserControllerTest : PsaWebMvcTest() {
 
     @Test
     internal fun createUserWithInvalidPassword() {
-        val userInput = USER_INPUT.copy(password = "invalid");
+        val userInput = USER_INPUT.copy(password = "invalid")
 
         mockMvc.perform(
             post(USERS_ENDPOINT)
