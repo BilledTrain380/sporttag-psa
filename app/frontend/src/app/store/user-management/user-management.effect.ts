@@ -15,6 +15,8 @@ import {
   setUserManagementAlertAction,
   setUsersAction,
   updateUserAction,
+  updateUserPasswordAction,
+  UpdateUserPasswordProps,
   UpdateUserProps,
 } from "./user-management.action";
 
@@ -55,7 +57,9 @@ export class UserManagementEffects {
                         .pipe(catchError(err => {
                           this.log.warn("Could add user", err);
 
-                          return EMPTY;
+                          const alert = textAlert.error($localize`Could not add user`);
+
+                          return of(setUserManagementAlertAction({alert}));
                         }));
                     },
     )));
@@ -77,6 +81,29 @@ export class UserManagementEffects {
                           this.log.warn("Could not update user: id =", action.userId, err);
 
                           const alert = textAlert.error($localize`Could not update user`);
+
+                          return of(setUserManagementAlertAction({alert}));
+                        }));
+                    },
+    )));
+
+  readonly updateUserPassword$ = createEffect(() => this.actions$
+    .pipe(ofType(updateUserPasswordAction.type))
+    .pipe(switchMap((action: UpdateUserPasswordProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.userApi.updateUserRelation(action.userId, action.user)
+                        .pipe(map(() => {
+                          this.log.info("Successfully updated user password: id =", action.userId);
+
+                          const alert = textAlert.success($localize`Successfully updated user password`);
+
+                          return setUserManagementAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not update user: id =", action.userId, err);
+
+                          const alert = textAlert.error($localize`Could not update user password`);
 
                           return of(setUserManagementAlertAction({alert}));
                         }));

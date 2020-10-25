@@ -17,6 +17,7 @@ import {
 import { selectUserManagementAlert, selectUsers } from "../../../../store/user-management/user-management.selector";
 
 import { AddUserModalComponent } from "./add-user-modal/add-user-modal.component";
+import { ChangePasswordModalComponent } from "./change-password-modal/change-password-modal.component";
 import { UserModel } from "./user-model";
 
 @Component({
@@ -52,6 +53,12 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
   openAddUserModal(): void {
     this.clearAlert();
     this.modalService.open(AddUserModalComponent, {size: "lg"});
+  }
+
+  openChangePasswordModal(user: UserModel): void {
+    this.clearAlert();
+    const modalRef = this.modalService.open(ChangePasswordModalComponent, {size: "lg"});
+    modalRef.componentInstance.user = user;
   }
 
   toggleEnabled(userModel: UserModel): void {

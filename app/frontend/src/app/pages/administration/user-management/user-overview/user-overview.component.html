@@ -26,11 +26,9 @@
     <tr *ngFor="let user of users">
       <td>
         <app-button-group>
-          <app-button-group-item text="Edit"
-                                 i18n-text>
-          </app-button-group-item>
           <app-button-group-item text="Change password"
-                                 i18n-text>
+                                 i18n-text
+                                 (click)="openChangePasswordModal(user)">
           </app-button-group-item>
           <app-button-group-item text="Delete"
                                  i18n-text>
