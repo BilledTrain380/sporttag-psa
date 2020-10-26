@@ -37,4 +37,14 @@ export class UserManagementPage {
     await browser.wait(EC.visibilityOf(button));
     await button.click();
   }
+
+  async clickDeleteUserButton(row: ElementFinder): Promise<void> {
+    await clickActionButtonGroup(row);
+
+    const button = row
+      .element(by.cssContainingText(ACTION_BUTTON_SELECTOR, "Delete"));
+
+    await browser.wait(EC.visibilityOf(button));
+    await button.click();
+  }
 }

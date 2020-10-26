@@ -1,4 +1,4 @@
-import { browser, ElementFinder, ExpectedConditions as EC, logging } from "protractor";
+import { browser, ExpectedConditions as EC, logging } from "protractor";
 
 import { AppPage } from "../../app.po";
 
@@ -27,39 +27,37 @@ describe("UserManagement", () => {
       .toBeGreaterThan(0);
   });
 
-  it("should add a new user", async () => {
-    await page.addUserButton.click();
+  describe("on add / edit / delete user", () => {
+    const fmuellerUser = "fmueller";
 
-    await browser.wait(EC.visibilityOf(addUserModalPage.modalContainer));
+    it("should add a new user", async () => {
+      await page.addUserButton.click();
 
-    await addUserModalPage.usernameInput.sendKeys("fmueller");
-    await addUserModalPage.passwordInput.sendKeys("Secret12345$");
+      await browser.wait(EC.visibilityOf(addUserModalPage.modalContainer));
 
-    await browser.wait(EC.elementToBeClickable(addUserModalPage.submitButton));
-    await addUserModalPage.submitButton.click();
-    await browser.wait(EC.invisibilityOf(addUserModalPage.modalContainer));
+      await addUserModalPage.usernameInput.sendKeys("fmueller");
+      await addUserModalPage.passwordInput.sendKeys("Secret12345$");
 
-    const fmueller = page.getRowByName("fmueller");
-    await expect(fmueller.isPresent())
-      .toBe(true, "Expected fmueller to be visible in table");
-  });
+      await browser.wait(EC.elementToBeClickable(addUserModalPage.submitButton));
+      await addUserModalPage.submitButton.click();
+      await browser.wait(EC.invisibilityOf(addUserModalPage.modalContainer));
 
-  describe("on edit user", () => {
-    let wwirbelwind: ElementFinder;
-
-    beforeEach(() => {
-      wwirbelwind = page.getRowByName("wwirbelwind");
+      const fmueller = page.getRowByName(fmuellerUser);
+      await expect(fmueller.isPresent())
+        .toBe(true, "Expected fmueller to be visible in table");
     });
 
     it("should edit enabled attribute", async () => {
-      await page.toggleEnabledByRow(wwirbelwind);
+      const fmueller = page.getRowByName(fmuellerUser);
+      await page.toggleEnabledByRow(fmueller);
 
-      await expect(page.getEnabledValueByRow(wwirbelwind))
+      await expect(page.getEnabledValueByRow(fmueller))
         .toBe(false, "Expected enabled checkbox to be false");
     });
 
     it("should change user password", async () => {
-      await page.clickChangePasswordByRow(wwirbelwind);
+      const fmueller = page.getRowByName(fmuellerUser);
+      await page.clickChangePasswordByRow(fmueller);
 
       await browser.wait(EC.visibilityOf(changeUserPasswordModalPage.modalContainer));
       await changeUserPasswordModalPage.passwordInput.sendKeys("Secret12345$");
@@ -76,6 +74,20 @@ describe("UserManagement", () => {
         .toContain(jasmine.objectContaining({
                                               level: logging.Level.SEVERE,
                                             }));
+    });
+
+    it("should delete user", async () => {
+      const fmueller = page.getRowByName(fmuellerUser);
+      await page.clickDeleteUserButton(fmueller);
+
+      await browser.wait(EC.visibilityOf(appPage.confirmModal));
+
+      await appPage.clickConfirmOnModal();
+      await browser.wait(EC.invisibilityOf(appPage.confirmModal));
+
+      const fmuellerDeleted = page.getRowByName(fmuellerUser);
+      await expect(fmuellerDeleted.isPresent())
+        .toBe(false, "Expected fmueller to be deleted");
     });
   });
 });
