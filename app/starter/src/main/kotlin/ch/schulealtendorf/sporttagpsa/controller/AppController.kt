@@ -51,5 +51,5 @@ class AppController {
 
     // FIXME Use user locale to forward correctly
     @RequestMapping("/app", "/app/*", "/app/*/pages/**")
-    fun forward() = "forward:/app/ch-de/index.html"
+    fun forward() = "forward:/app/en-gb/index.html"
 }

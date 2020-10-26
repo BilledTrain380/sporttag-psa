@@ -12,12 +12,14 @@ import { UserManagementEffects } from "../../../store/user-management/user-manag
 
 import { UserManagementRoutingModule } from "./user-management-routing.module";
 import { AddUserModalComponent } from "./user-overview/add-user-modal/add-user-modal.component";
+import { ChangePasswordModalComponent } from "./user-overview/change-password-modal/change-password-modal.component";
 import { UserOverviewComponent } from "./user-overview/user-overview.component";
 
 @NgModule({
             declarations: [
               UserOverviewComponent,
               AddUserModalComponent,
+              ChangePasswordModalComponent,
             ],
             imports: [
               CommonModule,

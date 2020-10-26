@@ -6,7 +6,7 @@
                   (submitData)="submit()">
   <form [formGroup]="form" appFormHint>
     <div class="form-group">
-      <label for="usernameInput" appFormHintRequired i18n>Username</label>
+      <label appFormHintRequired i18n>Username</label>
       <input type="text"
              [formControlName]="formControls.username"
              appInputValidation
@@ -23,13 +23,10 @@
 
       <div *ngIf="form?.controls[formControls.password]?.errors?.psaPassword as violatedPolicies"
            class="invalid-feedback d-block">
-        <span i18n>Password does not match policy</span>
-        <ul>
-          <li *ngFor="let violatedPolicy of violatedPoliciesAsList(violatedPolicies)">{{violatedPolicy}}</li>
-        </ul>
+        <app-password-policy-feedback [violatedPolicies]="violatedPolicies"></app-password-policy-feedback>
       </div>
-
     </div>
+
     <div class="form-group form-check">
       <input type="checkbox" [formControlName]="formControls.enabled" class="form-check-input" id="enabledCheckbox">
       <label class="form-check-label" for="enabledCheckbox" i18n>Enabled</label>

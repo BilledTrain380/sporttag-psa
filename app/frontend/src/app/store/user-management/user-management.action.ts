@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { UserDto, UserElement, UserInput } from "../../dto/user";
+import { UserDto, UserElement, UserInput, UserRelation } from "../../dto/user";
 import { Alert } from "../../modules/alert/alert";
 
 export const loadUsersAction = createAction(
@@ -42,6 +42,16 @@ export interface UpdateUserProps {
 export const updateUserAction = createAction(
   "[UserOverview] Update user",
   props<UpdateUserProps>(),
+);
+
+export interface UpdateUserPasswordProps {
+  readonly userId: number;
+  readonly user: UserRelation;
+}
+
+export const updateUserPasswordAction = createAction(
+  "[ChangePasswordModal] Change user password",
+  props<UpdateUserPasswordProps>(),
 );
 
 export interface SetUserManagementAlertProps {
