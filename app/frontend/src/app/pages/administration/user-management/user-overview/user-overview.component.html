@@ -28,11 +28,12 @@
         <app-button-group>
           <app-button-group-item text="Change password"
                                  i18n-text
-                                 (click)="openChangePasswordModal(user)"
-                                 data-test-selector="change-user-password-button">
+                                 (click)="openChangePasswordModal(user)">
           </app-button-group-item>
+
           <app-button-group-item text="Delete"
-                                 i18n-text>
+                                 i18n-text
+                                 (click)="deleteUser(user)">
           </app-button-group-item>
         </app-button-group>
       </td>

@@ -6,6 +6,7 @@ import { Alert } from "../../modules/alert/alert";
 import {
   addUserToStateAction,
   clearUserManagementAlertAction,
+  deleteUserAction,
   setUserManagementAlertAction,
   setUsersAction,
 } from "./user-management.action";
@@ -29,6 +30,15 @@ const reducer = createReducer(
   )),
   on(addUserToStateAction, (state, action) => {
     const users = [...state.users, action.user];
+
+    return {
+      ...state,
+      users,
+    };
+  }),
+  on(deleteUserAction, (state, action) => {
+    const users = state.users
+      .filter(user => user.id !== action.userId);
 
     return {
       ...state,

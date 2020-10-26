@@ -11,6 +11,8 @@ import {
   addUserAction,
   AddUserProps,
   addUserToStateAction,
+  deleteUserAction,
+  DeleteUserProps,
   loadUsersAction,
   setUserManagementAlertAction,
   setUsersAction,
@@ -104,6 +106,29 @@ export class UserManagementEffects {
                           this.log.warn("Could not update user: id =", action.userId, err);
 
                           const alert = textAlert.error($localize`Could not update user password`);
+
+                          return of(setUserManagementAlertAction({alert}));
+                        }));
+                    },
+    )));
+
+  readonly deleteUser$ = createEffect(() => this.actions$
+    .pipe(ofType(deleteUserAction.type))
+    .pipe(switchMap((action: DeleteUserProps) => {
+                      const textAlert = this.alertFactory.textAlert();
+
+                      return this.userApi.deleteUser(action.userId)
+                        .pipe(map(() => {
+                          this.log.info("Successfully deleted user: id =", action.userId);
+
+                          const alert = textAlert.success($localize`Successfully deleted user`);
+
+                          return setUserManagementAlertAction({alert});
+                        }))
+                        .pipe(catchError(err => {
+                          this.log.warn("Could not delete user: id =", action.userId, err);
+
+                          const alert = textAlert.error($localize`Could not delete user`);
 
                           return of(setUserManagementAlertAction({alert}));
                         }));
