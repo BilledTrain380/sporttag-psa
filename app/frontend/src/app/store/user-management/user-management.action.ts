@@ -54,6 +54,15 @@ export const updateUserPasswordAction = createAction(
   props<UpdateUserPasswordProps>(),
 );
 
+export interface DeleteUserProps {
+  readonly userId: number;
+}
+
+export const deleteUserAction = createAction(
+  "[UserOverview] Delete user",
+  props<DeleteUserProps>(),
+);
+
 export interface SetUserManagementAlertProps {
   readonly alert: Alert;
 }

@@ -8,8 +8,11 @@ import { map } from "rxjs/operators";
 import { Timer } from "../../../../@core/lib/timer";
 import { UserElement } from "../../../../dto/user";
 import { Alert } from "../../../../modules/alert/alert";
+import { confirmModalOptions, ConfirmType } from "../../../../modules/modal/confirm-modal/confirm-modal-util";
+import { ConfirmModalComponent } from "../../../../modules/modal/confirm-modal/confirm-modal.component";
 import {
   clearUserManagementAlertAction,
+  deleteUserAction,
   loadUsersAction,
   updateUserAction,
   UpdateUserProps,
@@ -74,6 +77,25 @@ export class UserOverviewComponent implements OnInit, OnDestroy {
     };
 
     this.updateUserEnabledTimer.trigger(userProps);
+  }
+
+  deleteUser(user: UserModel): void {
+    this.clearAlert();
+    const modalRef = this.modalService.open(ConfirmModalComponent, confirmModalOptions);
+
+    modalRef.componentInstance.buildText(
+      $localize`Do you really want to delete the user `,
+      "\"",
+      user.username,
+      "\"?",
+    );
+
+    modalRef.result
+      .then((type: ConfirmType) => {
+        if (type === ConfirmType.CONFIRM) {
+          this.store.dispatch(deleteUserAction({userId: user.userId}));
+        }
+      });
   }
 
   private clearAlert(): void {
