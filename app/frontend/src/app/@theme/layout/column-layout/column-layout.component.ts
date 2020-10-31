@@ -1,6 +1,8 @@
 import { Component, HostBinding, Input } from "@angular/core";
 
 import { Alert } from "../../../modules/alert/alert";
+import { COL_LG_12 } from "../../theme-constants";
+import { buildColumnCssClass } from "../../utils/css-classes-utils";
 
 @Component({
              selector: "app-column-layout",
@@ -12,13 +14,13 @@ export class ColumnLayoutComponent {
   title?: string;
 
   @Input()
-  size = 12;
+  set size(size: number) {
+    this.class = buildColumnCssClass(size);
+  }
 
   @Input()
   alert?: Alert;
 
   @HostBinding("class")
-  get class(): string {
-    return `col-lg-${this.size}`;
-  }
+  class = COL_LG_12;
 }
