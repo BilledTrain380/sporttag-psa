@@ -6,6 +6,8 @@ import { buildColumnCssClass } from "../../@theme/utils/css-classes-utils";
 
 export class TreeBuilder {
   private label = "";
+  private isCollapsedEnabled = true;
+  private isCollapsed = false;
   private splitter = 1;
   private readonly nodes: Array<TreeBuilder> = [];
 
@@ -18,6 +20,18 @@ export class TreeBuilder {
 
   setLabel(label: string): TreeBuilder {
     this.label = label;
+
+    return this;
+  }
+
+  setCollapsed(isCollapsed: boolean): TreeBuilder {
+    this.isCollapsed = isCollapsed;
+
+    return this;
+  }
+
+  setCollapsedEnabled(isCollapsedEnabled: boolean): TreeBuilder {
+    this.isCollapsedEnabled = isCollapsedEnabled;
 
     return this;
   }
@@ -51,7 +65,7 @@ export class TreeBuilder {
       nodeChunks.push(chunk);
     }
 
-    return new TreeCheckNodeModel(this.label, this.splitter, nodeChunks);
+    return new TreeCheckNodeModel(this.label, this.isCollapsed, this.isCollapsedEnabled, this.splitter, nodeChunks);
   }
 }
 
@@ -77,6 +91,8 @@ export class TreeCheckNodeModel {
 
   constructor(
     readonly label: string,
+    public isCollapsed: boolean,
+    readonly isCollapsedEnabled: boolean,
     readonly splitter: number = 1,
     readonly nodes: ReadonlyArray<ReadonlyArray<TreeCheckNodeModel>> = [],
   ) {
