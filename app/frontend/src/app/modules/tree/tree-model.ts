@@ -1,10 +1,12 @@
-import { BehaviorSubject, combineLatest, Observable, Subject } from "rxjs";
+import { BehaviorSubject, merge, Observable, Subject } from "rxjs";
 import { filter, map, takeUntil } from "rxjs/operators";
 
-import { identityFunction, UnaryOperator } from "../../@core/lib/function";
+import { MAX_COLUMN_SIZE } from "../../@theme/theme-constants";
+import { buildColumnCssClass } from "../../@theme/utils/css-classes-utils";
 
 export class TreeBuilder {
   private label = "";
+  private splitter = 1;
   private readonly nodes: Array<TreeBuilder> = [];
 
   private constructor() {
@@ -20,6 +22,12 @@ export class TreeBuilder {
     return this;
   }
 
+  setSplitter(splitter: number): TreeBuilder {
+    this.splitter = splitter;
+
+    return this;
+  }
+
   addLeafNode(label: string): TreeBuilder {
     const node = TreeBuilder.newBuilder()
       .setLabel(label);
@@ -28,53 +36,65 @@ export class TreeBuilder {
     return this;
   }
 
-  addNode(operator: UnaryOperator<TreeBuilder>): TreeBuilder {
-    const builder = operator(TreeBuilder.newBuilder());
-    this.nodes.push(builder);
+  addNode(node: TreeBuilder): TreeBuilder {
+    this.nodes.push(node);
 
     return this;
   }
 
   build(): TreeCheckNodeModel {
-    const nodeModels = this.nodes
-      .map(node => node.build());
+    const chunkSize = Math.max(Math.floor(this.nodes.length / this.splitter), 1);
+    const nodeChildren = this.nodes.map(node => node.build());
+    const nodeChunks: Array<ReadonlyArray<TreeCheckNodeModel>> = [];
+    for (let i = 0; i < nodeChildren.length; i += chunkSize) {
+      const chunk = nodeChildren.slice(i, i + chunkSize);
+      nodeChunks.push(chunk);
+    }
 
-    return new TreeCheckNodeModel(this.label, nodeModels);
+    return new TreeCheckNodeModel(this.label, this.splitter, nodeChunks);
   }
 }
 
 export class TreeCheckNodeModel {
+  readonly columnCssClass: string;
+
   get isChecked(): boolean | undefined {
     return this.checkedChangeSubject$.value.isChecked;
   }
 
   set isChecked(value: boolean | undefined) {
     this.checkedChangeSubject$.next(TreeCheckNodeModelValue.of(value));
-    this.nodes.forEach(node => node.setValueSilenced(value));
+    this.flatNodes.forEach(node => node.setValueSilenced(value));
   }
 
+  readonly flatNodes: ReadonlyArray<TreeCheckNodeModel>;
+
   readonly isChecked$: Observable<boolean | undefined>;
-  protected isCheckedUnsilenced$: Observable<boolean | undefined>;
+  private readonly valueChanged$: Observable<TreeCheckNodeModelValue>;
+
   private readonly checkedChangeSubject$ = new BehaviorSubject(TreeCheckNodeModelValue.unChecked());
   private readonly close$ = new Subject();
 
   constructor(
     readonly label: string,
-    readonly nodes: ReadonlyArray<TreeCheckNodeModel> = [],
+    readonly splitter: number = 1,
+    readonly nodes: ReadonlyArray<ReadonlyArray<TreeCheckNodeModel>> = [],
   ) {
+    const columnSize = Math.floor(MAX_COLUMN_SIZE / splitter);
+    this.columnCssClass = buildColumnCssClass(columnSize);
+    this.flatNodes = nodes.reduce((accumulator, value) => accumulator.concat(value), []);
     this.isChecked$ = this.checkedChangeSubject$.asObservable()
       .pipe(map(value => value.isChecked));
-    this.isCheckedUnsilenced$ = this.checkedChangeSubject$.asObservable()
-      .pipe(filter(value => !value.isSilenced))
-      .pipe(map(value => value.isChecked));
+    this.valueChanged$ = this.checkedChangeSubject$.asObservable();
 
-    combineLatest(nodes.map(node => node.isCheckedUnsilenced$))
+    merge(...this.flatNodes.map(node => node.valueChanged$))
+      .pipe(filter(values => !values.isSilenced))
       .pipe(takeUntil(this.close$))
-      .subscribe(nodeCheckedList => {
-        if (nodeCheckedList.every(identityFunction())) {
+      .subscribe(_ => {
+        if (this.flatNodes.every(node => node.isChecked)) {
           this.checkedChangeSubject$.next(TreeCheckNodeModelValue.checked());
-        } else if (nodeCheckedList.some(identityFunction())) {
-          this.checkedChangeSubject$.next(TreeCheckNodeModelValue.intermediate());
+        } else if (this.flatNodes.some(node => node.isChecked || node.isChecked === undefined)) {
+          this.checkedChangeSubject$.next(TreeCheckNodeModelValue.indeterminate());
         } else {
           this.checkedChangeSubject$.next(TreeCheckNodeModelValue.unChecked());
         }
@@ -87,12 +107,12 @@ export class TreeCheckNodeModel {
 
   close(): void {
     this.close$.complete();
-    this.nodes.forEach(node => node.close());
+    this.flatNodes.forEach(node => node.close());
   }
 
   protected setValueSilenced(value: boolean | undefined): void {
     this.checkedChangeSubject$.next(TreeCheckNodeModelValue.silenced(value));
-    this.nodes.forEach(node => node.setValueSilenced(value));
+    this.flatNodes.forEach(node => node.setValueSilenced(value));
   }
 }
 
@@ -115,7 +135,7 @@ class TreeCheckNodeModelValue {
     return new TreeCheckNodeModelValue(false, false);
   }
 
-  static intermediate(): TreeCheckNodeModelValue {
+  static indeterminate(): TreeCheckNodeModelValue {
     return new TreeCheckNodeModelValue(undefined, false);
   }
 

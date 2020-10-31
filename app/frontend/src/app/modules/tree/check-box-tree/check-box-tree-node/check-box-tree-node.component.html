@@ -1,0 +1,10 @@
+<div class="form-check">
+  <input class="form-check-input" [(ngModel)]="node!.isChecked" type="checkbox" #checkBoxInput>
+  <label class="form-check-label">
+    {{node!.label}}
+  </label>
+</div>
+
+<div *ngFor="let chunk of node!.nodes" [classList]="node!.columnCssClass">
+  <div app-check-box-tree-node *ngFor="let subNode of chunk" [node]="subNode"></div>
+</div>
