@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons/faAngleDown";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 
@@ -9,20 +9,27 @@ import { TreeCheckNodeModel } from "../../tree-model";
              selector: "[app-check-box-tree-node]",
              templateUrl: "./check-box-tree-node.component.html",
            })
-export class CheckBoxTreeNodeComponent implements AfterViewInit {
+export class CheckBoxTreeNodeComponent {
   readonly faAngleRight = faAngleRight;
   readonly faAngleDown = faAngleDown;
 
   @Input()
-  node?: TreeCheckNodeModel;
-
-  @ViewChild("checkBoxInput", {static: false})
-  checkBoxElement?: ElementRef;
-
-  ngAfterViewInit(): void {
-    this.node?.isChecked$
+  set node(node: TreeCheckNodeModel | undefined) {
+    this._node = node;
+    this._node?.isChecked$
       .subscribe(value => {
-        this.checkBoxElement!.nativeElement.indeterminate = value === undefined;
+        if (this.checkBoxElement) {
+          this.checkBoxElement!.nativeElement.indeterminate = value === undefined;
+        }
       });
   }
+
+  get node(): TreeCheckNodeModel | undefined {
+    return this._node;
+  }
+
+  private _node?: TreeCheckNodeModel;
+
+  @ViewChild("checkBoxInput", {static: false})
+  private checkBoxElement?: ElementRef;
 }

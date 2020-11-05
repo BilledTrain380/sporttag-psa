@@ -4,6 +4,8 @@ import { filter, map, takeUntil } from "rxjs/operators";
 import { MAX_COLUMN_SIZE } from "../../@theme/theme-constants";
 import { buildColumnCssClass } from "../../@theme/utils/css-classes-utils";
 
+export const LABEL_ALL = $localize`All`;
+
 export class TreeBuilder {
   private label = "";
   private isCollapsedEnabled = true;
@@ -46,6 +48,12 @@ export class TreeBuilder {
     const node = TreeBuilder.newBuilder()
       .setLabel(label);
     this.nodes.push(node);
+
+    return this;
+  }
+
+  addLeafNodes(...labels: Array<string>): TreeBuilder {
+    labels.forEach(label => this.addLeafNode(label));
 
     return this;
   }
