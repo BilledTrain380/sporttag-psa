@@ -1,0 +1,39 @@
+<app-row-page pageTitle="Events Sheets" i18n-pageTitle>
+
+  <app-row-layout>
+    <app-column-layout title="Participant list" i18n-title size="3">
+      <app-layout-buttons>
+        <app-layout-button text="Download"
+                           i18n-text
+                           buttonType="primary"
+                           [icon]="faDownload"
+                           [disabled]="participantListTree.isChecked === false"
+                           (click)="downloadParticipantList()">
+        </app-layout-button>
+      </app-layout-buttons>
+
+      <app-check-box-tree [tree]="participantListTree"></app-check-box-tree>
+    </app-column-layout>
+
+    <app-column-layout *ngIf="eventSheetsTree$ | async as eventSheetsTree" title="Event Sheets" i18n-title size="9">
+      <app-layout-buttons>
+        <app-layout-button text="Download"
+                           i18n-text
+                           buttonType="primary"
+                           [disabled]="eventSheetsTree.isChecked === false"
+                           [icon]="faDownload"
+                           (click)="downloadEventSheets()">
+        </app-layout-button>
+
+        <app-layout-button text="Download startlist"
+                           i18n-text
+                           buttonType="secondary"
+                           [icon]="faDownload"
+                           (click)="downloadStartlist()">
+        </app-layout-button>
+      </app-layout-buttons>
+
+      <app-check-box-tree [tree]="eventSheetsTree"></app-check-box-tree>
+    </app-column-layout>
+  </app-row-layout>
+</app-row-page>

@@ -24,6 +24,11 @@ const routes: Routes = [
           .then(module => module.ParticipationModule),
       },
       {
+        path: "event-sheets-management",
+        loadChildren: () => import("./event-sheets-management/event-sheets-management.module")
+          .then(module => module.EventSheetsManagementModule),
+      },
+      {
         path: "user-management",
         loadChildren: () => import("./user-management/user-management.module")
           .then(module => module.UserManagementModule),

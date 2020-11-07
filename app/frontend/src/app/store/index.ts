@@ -4,6 +4,7 @@ import { environment } from "../../environments/environment";
 
 import { AppState } from "./app";
 import { athleticsReducer } from "./athletics/athletics.reducer";
+import { eventSheetsReducer } from "./event-sheets/event-sheets.reducer";
 import { groupReducer } from "./group/group.reducer";
 import { menuReducer } from "./menu/menu.reducer";
 import { participationReducer } from "./participation/participation.reducer";
@@ -17,6 +18,7 @@ export const reducers: ActionReducerMap<AppState> = {
   participation: participationReducer,
   userManagement: userManagementReducer,
   athletics: athleticsReducer,
+  eventSheets: eventSheetsReducer,
 };
 
 export const metaReducers: Array<MetaReducer<AppState>> = !environment.production ? [] : [];
