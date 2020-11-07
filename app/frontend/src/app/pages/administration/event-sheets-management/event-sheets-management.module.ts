@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
 
 import { ThemeModule } from "../../../@theme/theme.module";
+import { StatusModule } from "../../../modules/status/status.module";
 import { TreeModule } from "../../../modules/tree/tree.module";
 import { EventSheetsEffects } from "../../../store/event-sheets/event-sheets.effect";
 import { ParticipationEffects } from "../../../store/participation/participation.effect";
@@ -16,6 +17,7 @@ import { EventSheetsSelectionComponent } from "./event-sheets-selection/event-sh
               CommonModule,
               TreeModule,
               ThemeModule,
+              StatusModule,
               EffectsModule.forFeature([EventSheetsEffects, ParticipationEffects]),
               EventSheetsManagementRoutingModule,
             ],

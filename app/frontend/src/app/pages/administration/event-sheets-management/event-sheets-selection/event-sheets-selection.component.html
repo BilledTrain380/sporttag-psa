@@ -33,7 +33,11 @@
         </app-layout-button>
       </app-layout-buttons>
 
-      <app-check-box-tree [tree]="eventSheetsTree"></app-check-box-tree>
+      <app-athletics-not-started *ngIf="isParticipationClosed$ | async; else tree"></app-athletics-not-started>
+
+      <ng-template #tree>
+        <app-check-box-tree [tree]="eventSheetsTree"></app-check-box-tree>
+      </ng-template>
     </app-column-layout>
   </app-row-layout>
 </app-row-page>
