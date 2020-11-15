@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { EventSheetData } from "../../../dto/event-sheets";
 
+import { EventSheetData } from "../../../dto/event-sheets";
 import { ParticipationCommand, ParticipationDto, SportDto } from "../../../dto/participation";
 import { StatusEntry } from "../../../dto/status";
 import { getLogger, Logger } from "../../logging";
