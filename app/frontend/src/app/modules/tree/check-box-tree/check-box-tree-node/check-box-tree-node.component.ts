@@ -19,7 +19,7 @@ export class CheckBoxTreeNodeComponent {
     this._node?.isChecked$
       .subscribe(value => {
         if (this.checkBoxElement) {
-          this.checkBoxElement!.nativeElement.indeterminate = value === undefined;
+          this.checkBoxElement.nativeElement.indeterminate = (value === undefined);
         }
       });
   }
@@ -31,5 +31,5 @@ export class CheckBoxTreeNodeComponent {
   private _node?: TreeCheckNodeModel;
 
   @ViewChild("checkBoxInput", {static: false})
-  private checkBoxElement?: ElementRef;
+  private readonly checkBoxElement?: ElementRef;
 }

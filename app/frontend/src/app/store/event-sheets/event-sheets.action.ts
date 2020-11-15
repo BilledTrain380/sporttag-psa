@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
-import { EventSheetData } from "../../dto/event-sheets";
 
+import { EventSheetData } from "../../dto/event-sheets";
 import { SimpleGroupDto } from "../../dto/group";
 import { SportDto } from "../../dto/participation";
 

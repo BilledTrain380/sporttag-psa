@@ -72,7 +72,7 @@ const reducer = createReducer(
       ...state,
       isStartlistDownloading: false,
     }
-  ))
+  )),
 );
 
 export function eventSheetsReducer(state: EventSheetsState | undefined, action: Action): EventSheetsState {
