@@ -6,7 +6,6 @@ import { ThemeModule } from "../../../@theme/theme.module";
 import { StatusModule } from "../../../modules/status/status.module";
 import { TreeModule } from "../../../modules/tree/tree.module";
 import { EventSheetsEffects } from "../../../store/event-sheets/event-sheets.effect";
-import { ParticipationEffects } from "../../../store/participation/participation.effect";
 
 import { EventSheetsManagementRoutingModule } from "./event-sheets-management-routing.module";
 import { EventSheetsSelectionComponent } from "./event-sheets-selection/event-sheets-selection.component";
@@ -18,7 +17,7 @@ import { EventSheetsSelectionComponent } from "./event-sheets-selection/event-sh
               TreeModule,
               ThemeModule,
               StatusModule,
-              EffectsModule.forFeature([EventSheetsEffects, ParticipationEffects]),
+              EffectsModule.forFeature([EventSheetsEffects]),
               EventSheetsManagementRoutingModule,
             ],
           })

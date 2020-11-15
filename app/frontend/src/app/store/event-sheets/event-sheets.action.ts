@@ -9,6 +9,7 @@ export const loadEventSheetDataAction = createAction(
 );
 
 export interface SetEventSheetsDataProps {
+  readonly isParticipationOpen: boolean;
   readonly groups: ReadonlyArray<SimpleGroupDto>;
 }
 

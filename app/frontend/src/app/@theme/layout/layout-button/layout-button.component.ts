@@ -18,4 +18,7 @@ export class LayoutButtonComponent {
 
   @Input()
   disabled = false;
+
+  @Input()
+  showLoading = false;
 }

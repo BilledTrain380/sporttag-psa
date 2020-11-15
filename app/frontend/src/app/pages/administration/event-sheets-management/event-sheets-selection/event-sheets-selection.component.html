@@ -7,6 +7,7 @@
                            i18n-text
                            buttonType="primary"
                            [icon]="faDownload"
+                           [showLoading]="isParticipantListDownloading$ | async"
                            [disabled]="participantListTree.isChecked === false"
                            (click)="downloadParticipantList()">
         </app-layout-button>
@@ -21,6 +22,7 @@
                            i18n-text
                            buttonType="primary"
                            [disabled]="eventSheetsTree.isChecked === false"
+                           [showLoading]="isEventSheetsDownloading$ | async"
                            [icon]="faDownload"
                            (click)="downloadEventSheets()">
         </app-layout-button>
@@ -28,12 +30,14 @@
         <app-layout-button text="Download startlist"
                            i18n-text
                            buttonType="secondary"
+                           [showLoading]="isStartlistDownloading$ | async"
                            [icon]="faDownload"
+                           [disabled]="isParticipationOpen$ | async"
                            (click)="downloadStartlist()">
         </app-layout-button>
       </app-layout-buttons>
 
-      <app-athletics-not-started *ngIf="isParticipationClosed$ | async; else tree"></app-athletics-not-started>
+      <app-athletics-not-started *ngIf="isParticipationOpen$ | async; else tree"></app-athletics-not-started>
 
       <ng-template #tree>
         <app-check-box-tree [tree]="eventSheetsTree"></app-check-box-tree>

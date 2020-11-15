@@ -1,4 +1,16 @@
-export const MAX_COLUMN_SIZE = 12;
+export const COLUMN_SIZE_1 = 1;
+export const COLUMN_SIZE_2 = 2;
+export const COLUMN_SIZE_3 = 3;
+export const COLUMN_SIZE_4 = 4;
+export const COLUMN_SIZE_5 = 5;
+export const COLUMN_SIZE_6 = 6;
+export const COLUMN_SIZE_7 = 7;
+export const COLUMN_SIZE_8 = 8;
+export const COLUMN_SIZE_9 = 9;
+export const COLUMN_SIZE_10 = 10;
+export const COLUMN_SIZE_11 = 11;
+export const COLUMN_SIZE_12 = 12;
+
 export const CSS_CLASS_COLUMN_PREFIX = "col-lg-";
 export const COL_LG_12 = "col-lg-12";
 export const COL_LG_11 = "col-lg-11";

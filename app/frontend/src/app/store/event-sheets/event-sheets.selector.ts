@@ -9,7 +9,22 @@ export const selectEventSheetsGroups = createSelector(
   state => state.groups,
 );
 
+export const selectIsParticipationOpen = createSelector(
+  selectEventSheets,
+  state => state.isParticipationOpen,
+);
+
 export const selectIsParticipantListDownloading = createSelector(
   selectEventSheets,
   state => state.isParticipantListDownloading,
+);
+
+export const selectIsEventSheetsDowloading = createSelector(
+  selectEventSheets,
+  state => state.isEventSheetsDownloading,
+);
+
+export const selectIsStartlistDownloading = createSelector(
+  selectEventSheets,
+  state => state.isStartlistDownloading,
 );

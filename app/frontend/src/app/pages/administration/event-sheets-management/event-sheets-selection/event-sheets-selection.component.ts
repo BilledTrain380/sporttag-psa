@@ -4,17 +4,22 @@ import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 
 import { ALL_DISCIPLINES } from "../../../../dto/athletics";
-import { BRENNBALL, ParticipationStatusType, SCHATZSUCHE, SportDto, VELO_ROLLERBLADES } from "../../../../dto/participation";
+import { BRENNBALL, SCHATZSUCHE, SportDto, VELO_ROLLERBLADES } from "../../../../dto/participation";
 import { FEMALE, MALE } from "../../../../modules/participant/gender/gender-constants";
 import { LABEL_ALL, TreeCheckNodeModel } from "../../../../modules/tree/tree-model";
-import { selectParticipationStatus } from "../../../../store/athletics/athletics.selector";
 import {
   downloadEventSheetsAction,
   downloadParticipantListAction,
   downloadStartlistAction,
   loadEventSheetDataAction
 } from "../../../../store/event-sheets/event-sheets.action";
-import { selectEventSheetsGroups, selectIsParticipantListDownloading } from "../../../../store/event-sheets/event-sheets.selector";
+import {
+  selectEventSheetsGroups,
+  selectIsEventSheetsDowloading,
+  selectIsParticipantListDownloading,
+  selectIsParticipationOpen,
+  selectIsStartlistDownloading,
+} from "../../../../store/event-sheets/event-sheets.selector";
 
 @Component({
              selector: "app-event-sheets-selection",
@@ -24,9 +29,10 @@ import { selectEventSheetsGroups, selectIsParticipantListDownloading } from "../
 export class EventSheetsSelectionComponent implements OnInit {
   readonly faDownload = faDownload;
 
-  readonly isParticipationClosed$ = this.store.select(selectParticipationStatus)
-    .pipe(map(status => status.type === ParticipationStatusType.CLOSED));
+  readonly isParticipationOpen$ = this.store.select(selectIsParticipationOpen);
   readonly isParticipantListDownloading$ = this.store.select(selectIsParticipantListDownloading);
+  readonly isEventSheetsDownloading$ = this.store.select(selectIsEventSheetsDowloading);
+  readonly isStartlistDownloading$ = this.store.select(selectIsStartlistDownloading);
 
   readonly eventSheetsTree$ = this.store.select(selectEventSheetsGroups)
     .pipe(map(groups => {
@@ -34,15 +40,15 @@ export class EventSheetsSelectionComponent implements OnInit {
       const rootTree = TreeCheckNodeModel.newBuilder()
         .setLabel(LABEL_ALL)
         .setCollapsedEnabled(false)
-        .setSplitter(3);
+        // tslint:disable-next-line:no-magic-numbers
+        .setSplitting(3);
 
       ALL_DISCIPLINES.forEach(discipline => {
         const disciplineBuilder = TreeCheckNodeModel.newBuilder()
           .setLabel(discipline)
-          .setSplitter(2);
+          .splitHalf();
 
         groups.forEach(group => {
-
           const groupBuilder = TreeCheckNodeModel.newBuilder()
             .setLabel(group.name)
             .setCollapsed(true)

@@ -1,7 +1,7 @@
 import { BehaviorSubject, merge, Observable, Subject } from "rxjs";
 import { filter, map, takeUntil } from "rxjs/operators";
 
-import { MAX_COLUMN_SIZE } from "../../@theme/theme-constants";
+import { COLUMN_SIZE_12 } from "../../@theme/theme-constants";
 import { buildColumnCssClass } from "../../@theme/utils/css-classes-utils";
 
 export const LABEL_ALL = $localize`All`;
@@ -10,7 +10,7 @@ export class TreeBuilder {
   private label = "";
   private isCollapsedEnabled = true;
   private isCollapsed = false;
-  private splitter = 1;
+  private splitting = 1;
   private readonly nodes: Array<TreeBuilder> = [];
 
   private constructor() {
@@ -38,10 +38,15 @@ export class TreeBuilder {
     return this;
   }
 
-  setSplitter(splitter: number): TreeBuilder {
-    this.splitter = splitter;
+  setSplitting(splitting: number): TreeBuilder {
+    this.splitting = splitting;
 
     return this;
+  }
+
+  splitHalf(): TreeBuilder {
+    // tslint:disable-next-line:no-magic-numbers
+    return this.setSplitting(2);
   }
 
   addLeafNode(label: string): TreeBuilder {
@@ -65,7 +70,7 @@ export class TreeBuilder {
   }
 
   build(): TreeCheckNodeModel {
-    const chunkSize = Math.max(Math.floor(this.nodes.length / this.splitter), 1);
+    const chunkSize = Math.max(Math.floor(this.nodes.length / this.splitting), 1);
     const nodeChildren = this.nodes.map(node => node.build());
     const nodeChunks: Array<ReadonlyArray<TreeCheckNodeModel>> = [];
     for (let i = 0; i < nodeChildren.length; i += chunkSize) {
@@ -73,7 +78,7 @@ export class TreeBuilder {
       nodeChunks.push(chunk);
     }
 
-    return new TreeCheckNodeModel(this.label, this.isCollapsed, this.isCollapsedEnabled, this.splitter, nodeChunks);
+    return new TreeCheckNodeModel(this.label, this.isCollapsed, this.isCollapsedEnabled, this.splitting, nodeChunks);
   }
 }
 
@@ -104,7 +109,7 @@ export class TreeCheckNodeModel {
     readonly splitter: number = 1,
     readonly nodes: ReadonlyArray<ReadonlyArray<TreeCheckNodeModel>> = [],
   ) {
-    const columnSize = Math.floor(MAX_COLUMN_SIZE / splitter);
+    const columnSize = Math.floor(COLUMN_SIZE_12 / splitter);
     this.columnCssClass = buildColumnCssClass(columnSize);
     this.flatNodes = nodes.reduce((accumulator, value) => accumulator.concat(value), []);
     this.isChecked$ = this.checkedChangeSubject$.asObservable()

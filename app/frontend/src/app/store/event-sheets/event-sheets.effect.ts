@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { EMPTY } from "rxjs";
+import { EMPTY, forkJoin } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
 import { getLogger } from "../../@core/logging";
@@ -8,6 +8,7 @@ import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/grou
 import { ParticipationApi } from "../../@core/service/api/participation-api";
 import { DownloadService } from "../../@core/service/download-service";
 import { GroupStatusType } from "../../dto/group";
+import { ParticipationStatusType } from "../../dto/participation";
 
 import {
   downloadEventSheetsAction,
@@ -29,13 +30,16 @@ export class EventSheetsEffects {
     .pipe(switchMap(() => {
                       const parameters = new OverviewGroupsParameters(GroupStatusType.GROUP_TYPE_COMPETITIVE);
 
-                      return this.groupApi.getOverviewGroups(parameters)
-                        .pipe(map(overviewGroups => {
+                      return forkJoin([this.groupApi.getOverviewGroups(parameters), this.participationApi.getParticipationStatus()])
+                        .pipe(map(groupsAndStatus => {
+                          const overviewGroups = groupsAndStatus[0];
+                          const isParticipationOpen = groupsAndStatus[1].type === ParticipationStatusType.OPEN;
+
                           this.log.info("Successfully loaded groups, size =", overviewGroups.length);
 
                           const groups = overviewGroups.map(overviewGroup => overviewGroup.group);
 
-                          return setEventSheetsDataAction({groups});
+                          return setEventSheetsDataAction({groups, isParticipationOpen});
                         }))
                         .pipe(catchError(err => {
                           this.log.warn("Could not load groups", err);
