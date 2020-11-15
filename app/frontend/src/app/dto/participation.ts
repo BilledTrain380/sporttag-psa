@@ -176,6 +176,17 @@ export enum GenderDto {
   FEMALE = "FEMALE",
 }
 
+export function genderDtoOfValue(value: string): GenderDto {
+  switch (value) {
+    case GenderDto.MALE:
+      return GenderDto.MALE;
+    case GenderDto.FEMALE:
+      return GenderDto.FEMALE;
+    default:
+      throw new Error(`Value ${value} does not match a gender value`);
+  }
+}
+
 export interface BirthdayDto {
   readonly value: string;
   readonly date: NgbDateStruct;

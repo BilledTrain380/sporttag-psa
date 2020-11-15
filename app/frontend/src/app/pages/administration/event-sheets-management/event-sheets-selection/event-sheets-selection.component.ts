@@ -1,17 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { Store } from "@ngrx/store";
-import { map } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { map, takeUntil } from "rxjs/operators";
 
 import { ALL_DISCIPLINES } from "../../../../dto/athletics";
-import { BRENNBALL, SCHATZSUCHE, SportDto, VELO_ROLLERBLADES } from "../../../../dto/participation";
+import { EventSheetData } from "../../../../dto/event-sheets";
+import { BRENNBALL, GenderDto, genderDtoOfValue, SCHATZSUCHE, SportDto, VELO_ROLLERBLADES } from "../../../../dto/participation";
 import { FEMALE, MALE } from "../../../../modules/participant/gender/gender-constants";
 import { LABEL_ALL, TreeCheckNodeModel } from "../../../../modules/tree/tree-model";
 import {
   downloadEventSheetsAction,
   downloadParticipantListAction,
   downloadStartlistAction,
-  loadEventSheetDataAction
+  loadEventSheetDataAction,
 } from "../../../../store/event-sheets/event-sheets.action";
 import {
   selectEventSheetsGroups,
@@ -26,7 +28,7 @@ import {
              templateUrl: "./event-sheets-selection.component.html",
              styleUrls: ["./event-sheets-selection.component.scss"],
            })
-export class EventSheetsSelectionComponent implements OnInit {
+export class EventSheetsSelectionComponent implements OnInit, OnDestroy {
   readonly faDownload = faDownload;
 
   readonly isParticipationOpen$ = this.store.select(selectIsParticipationOpen);
@@ -34,9 +36,10 @@ export class EventSheetsSelectionComponent implements OnInit {
   readonly isEventSheetsDownloading$ = this.store.select(selectIsEventSheetsDowloading);
   readonly isStartlistDownloading$ = this.store.select(selectIsStartlistDownloading);
 
-  readonly eventSheetsTree$ = this.store.select(selectEventSheetsGroups)
-    .pipe(map(groups => {
+  eventSheetsTree?: TreeCheckNodeModel;
 
+  private readonly eventSheetsTree$ = this.store.select(selectEventSheetsGroups)
+    .pipe(map(groups => {
       const rootTree = TreeCheckNodeModel.newBuilder()
         .setLabel(LABEL_ALL)
         .setCollapsedEnabled(false)
@@ -52,8 +55,8 @@ export class EventSheetsSelectionComponent implements OnInit {
           const groupBuilder = TreeCheckNodeModel.newBuilder()
             .setLabel(group.name)
             .setCollapsed(true)
-            .addLeafNode(MALE)
-            .addLeafNode(FEMALE);
+            .addLeafNode(MALE, GenderDto.MALE)
+            .addLeafNode(FEMALE, GenderDto.FEMALE);
 
           disciplineBuilder.addNode(groupBuilder);
         });
@@ -72,24 +75,49 @@ export class EventSheetsSelectionComponent implements OnInit {
     .addLeafNode(BRENNBALL)
     .build();
 
+  private readonly destroy$ = new Subject();
+
   constructor(
     private readonly store: Store,
   ) {
   }
 
   ngOnInit(): void {
+    this.eventSheetsTree$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tree => this.eventSheetsTree = tree);
+
     this.store.dispatch(loadEventSheetDataAction());
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.complete();
+  }
+
   downloadParticipantList(): void {
-    const data: ReadonlyArray<SportDto> = this.participantListTree.flatNodes
+    const data: ReadonlyArray<SportDto> = this.participantListTree.checkedNodes
       .map(node => ({name: node.label}));
 
     this.store.dispatch(downloadParticipantListAction({data}));
   }
 
   downloadEventSheets(): void {
-    this.store.dispatch(downloadEventSheetsAction({data: []}));
+    const data: Array<EventSheetData> = [];
+
+    this.eventSheetsTree?.checkedNodes
+      .forEach(disciplineNode => {
+        disciplineNode.checkedNodes.forEach(groupNode => {
+          groupNode.checkedNodes.forEach(genderNode => {
+            data.push({
+                        discipline: disciplineNode.value,
+                        group: groupNode.value,
+                        gender: genderDtoOfValue(genderNode.value),
+                      });
+          });
+        });
+      });
+
+    this.store.dispatch(downloadEventSheetsAction({data}));
   }
 
   downloadStartlist(): void {

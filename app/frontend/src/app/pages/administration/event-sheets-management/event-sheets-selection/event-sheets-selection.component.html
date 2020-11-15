@@ -16,7 +16,7 @@
       <app-check-box-tree [tree]="participantListTree"></app-check-box-tree>
     </app-column-layout>
 
-    <app-column-layout *ngIf="eventSheetsTree$ | async as eventSheetsTree" title="Event Sheets" i18n-title size="9">
+    <app-column-layout *ngIf="eventSheetsTree" title="Event Sheets" i18n-title size="9">
       <app-layout-buttons>
         <app-layout-button text="Download"
                            i18n-text

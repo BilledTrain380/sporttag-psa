@@ -8,6 +8,7 @@ export const LABEL_ALL = $localize`All`;
 
 export class TreeBuilder {
   private label = "";
+  private value = "";
   private isCollapsedEnabled = true;
   private isCollapsed = false;
   private splitting = 1;
@@ -22,6 +23,16 @@ export class TreeBuilder {
 
   setLabel(label: string): TreeBuilder {
     this.label = label;
+
+    if (!this.value) {
+      this.value = label;
+    }
+
+    return this;
+  }
+
+  setValue(value: string): TreeBuilder {
+    this.value = value;
 
     return this;
   }
@@ -49,9 +60,10 @@ export class TreeBuilder {
     return this.setSplitting(2);
   }
 
-  addLeafNode(label: string): TreeBuilder {
+  addLeafNode(label: string, value: string = label): TreeBuilder {
     const node = TreeBuilder.newBuilder()
-      .setLabel(label);
+      .setLabel(label)
+      .setValue(value);
     this.nodes.push(node);
 
     return this;
@@ -78,7 +90,7 @@ export class TreeBuilder {
       nodeChunks.push(chunk);
     }
 
-    return new TreeCheckNodeModel(this.label, this.isCollapsed, this.isCollapsedEnabled, this.splitting, nodeChunks);
+    return new TreeCheckNodeModel(this.label, this.value, this.isCollapsed, this.isCollapsedEnabled, this.splitting, nodeChunks);
   }
 }
 
@@ -94,6 +106,10 @@ export class TreeCheckNodeModel {
     this.flatNodes.forEach(node => node.setValueSilenced(value));
   }
 
+  get checkedNodes(): ReadonlyArray<TreeCheckNodeModel> {
+    return this.flatNodes.filter(node => node.isChecked);
+  }
+
   readonly flatNodes: ReadonlyArray<TreeCheckNodeModel>;
 
   readonly isChecked$: Observable<boolean | undefined>;
@@ -104,6 +120,7 @@ export class TreeCheckNodeModel {
 
   constructor(
     readonly label: string,
+    readonly value: string,
     public isCollapsed: boolean,
     readonly isCollapsedEnabled: boolean,
     readonly splitter: number = 1,
@@ -111,9 +128,9 @@ export class TreeCheckNodeModel {
   ) {
     const columnSize = Math.floor(COLUMN_SIZE_12 / splitter);
     this.columnCssClass = buildColumnCssClass(columnSize);
-    this.flatNodes = nodes.reduce((accumulator, value) => accumulator.concat(value), []);
+    this.flatNodes = nodes.reduce((accumulator, val) => accumulator.concat(val), []);
     this.isChecked$ = this.checkedChangeSubject$.asObservable()
-      .pipe(map(value => value.isChecked));
+      .pipe(map(val => val.isChecked));
     this.valueChanged$ = this.checkedChangeSubject$.asObservable();
 
     merge(...this.flatNodes.map(node => node.valueChanged$))
