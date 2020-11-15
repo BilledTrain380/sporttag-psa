@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { EMPTY, forkJoin } from "rxjs";
+import { EMPTY, forkJoin, of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
 import { getLogger } from "../../@core/logging";
@@ -61,7 +61,7 @@ export class EventSheetsEffects {
                         .pipe(catchError(err => {
                           this.log.warn("Could not download participant lint", err);
 
-                          return EMPTY;
+                          return of(finishParticipantFileAction());
                         })),
     )));
 
@@ -77,7 +77,7 @@ export class EventSheetsEffects {
                         .pipe(catchError(err => {
                           this.log.warn("Could not download event sheets", err);
 
-                          return EMPTY;
+                          return of(finishEventSheetsFileAction());
                         })),
     )));
 
@@ -93,7 +93,7 @@ export class EventSheetsEffects {
                         .pipe(catchError(err => {
                           this.log.warn("Could not download startlist", err);
 
-                          return EMPTY;
+                          return of(finishStartlistFileAction());
                         })),
     )));
 
