@@ -20,7 +20,7 @@ export const ADMINISTRATION_ITEMS: ReadonlyArray<PageMenu> = [
   },
   {
     id: uuid(),
-    link: `${ADMINISTRATION_PATH}/event-sheets`,
+    link: `${ADMINISTRATION_PATH}/event-sheets-management`,
     title: $localize`Event Sheets`,
     icon: faFileAlt,
   },

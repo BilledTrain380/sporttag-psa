@@ -38,6 +38,7 @@ package ch.schulealtendorf.psa.core.io
 
 import net.harawata.appdirs.AppDirs
 import org.springframework.stereotype.Component
+import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -95,10 +96,12 @@ class PlatformFileSystem(
     override fun createArchive(file: ApplicationFile, files: Iterable<File>): File {
         val zipFile = createFile(file, ".zip")
 
-        ZipOutputStream(FileOutputStream(zipFile)).use { outputStream ->
-            files
-                .map { ZipEntry(it.absolutePath) }
-                .forEach { outputStream.putNextEntry(it) }
+        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { outputStream ->
+            files.forEach {
+                outputStream.putNextEntry(ZipEntry(it.name))
+                outputStream.write(it.readBytes())
+                outputStream.closeEntry()
+            }
         }
 
         return zipFile

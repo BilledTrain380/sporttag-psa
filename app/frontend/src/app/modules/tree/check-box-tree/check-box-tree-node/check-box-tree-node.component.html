@@ -1,0 +1,20 @@
+<div class="form-inline">
+  <fa-icon *ngIf="node!.nodes.length > 0 && node!.isCollapsedEnabled"
+           [icon]="node!.isCollapsed ? faAngleRight : faAngleDown"
+           (click)="node!.isCollapsed = !node!.isCollapsed">
+  </fa-icon>
+
+  <div class="form-check ml-2">
+    <input class="form-check-input" [(ngModel)]="node!.isChecked" type="checkbox" #checkBoxInput>
+    <label class="form-check-label">
+      {{node!.label}}
+    </label>
+  </div>
+</div>
+
+<div class="row pl-2 pr-2" [ngbCollapse]="node!.isCollapsed">
+  <div *ngFor="let chunk of node!.nodes" [classList]="node!.columnCssClass">
+    <div app-check-box-tree-node *ngFor="let subNode of chunk" [node]="subNode"></div>
+  </div>
+</div>
+

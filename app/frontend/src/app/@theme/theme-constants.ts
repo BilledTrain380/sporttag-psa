@@ -1,0 +1,26 @@
+export const COLUMN_SIZE_1 = 1;
+export const COLUMN_SIZE_2 = 2;
+export const COLUMN_SIZE_3 = 3;
+export const COLUMN_SIZE_4 = 4;
+export const COLUMN_SIZE_5 = 5;
+export const COLUMN_SIZE_6 = 6;
+export const COLUMN_SIZE_7 = 7;
+export const COLUMN_SIZE_8 = 8;
+export const COLUMN_SIZE_9 = 9;
+export const COLUMN_SIZE_10 = 10;
+export const COLUMN_SIZE_11 = 11;
+export const COLUMN_SIZE_12 = 12;
+
+export const CSS_CLASS_COLUMN_PREFIX = "col-lg-";
+export const COL_LG_12 = "col-lg-12";
+export const COL_LG_11 = "col-lg-11";
+export const COL_LG_10 = "col-lg-10";
+export const COL_LG_9 = "col-lg-9";
+export const COL_LG_8 = "col-lg-8";
+export const COL_LG_7 = "col-lg-7";
+export const COL_LG_6 = "col-lg-6";
+export const COL_LG_5 = "col-lg-5";
+export const COL_LG_4 = "col-lg-4";
+export const COL_LG_3 = "col-lg-3";
+export const COL_LG_2 = "col-lg-2";
+export const COL_LG_1 = "col-lg-1";

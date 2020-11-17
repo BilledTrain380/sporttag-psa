@@ -55,7 +55,7 @@ describe("UserManagement", () => {
         .toBe(false, "Expected enabled checkbox to be false");
     });
 
-    it("should change user password", async () => {
+    xit("should change user password", async () => {
       const fmueller = page.getRowByName(fmuellerUser);
       await page.clickChangePasswordByRow(fmueller);
 

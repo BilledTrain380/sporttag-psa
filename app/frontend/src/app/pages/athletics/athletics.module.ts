@@ -7,24 +7,24 @@ import { EffectsModule } from "@ngrx/effects";
 import { ThemeModule } from "../../@theme/theme.module";
 import { CommonFormsModule } from "../../modules/common-forms/common-forms.module";
 import { ParticipantModule } from "../../modules/participant/participant.module";
+import { StatusModule } from "../../modules/status/status.module";
 import { TableModule } from "../../modules/table/table.module";
 import { AthleticsEffects } from "../../store/athletics/athletics.effect";
 import { ParticipationModule } from "../administration/participation/participation.module";
 
-import { AthleticsNotStartedComponent } from "./athletics-not-started/athletics-not-started.component";
 import { AthleticsRoutingModule } from "./athletics-routing.module";
 import { AthleticsComponent } from "./athletics.component";
 
 @NgModule({
             declarations: [
               AthleticsComponent,
-              AthleticsNotStartedComponent,
             ],
             imports: [
               CommonModule,
               AthleticsRoutingModule,
               ThemeModule,
               CommonFormsModule,
+              StatusModule,
               FormsModule,
               ReactiveFormsModule,
               ParticipationModule,

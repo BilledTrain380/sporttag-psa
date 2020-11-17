@@ -10,6 +10,15 @@ export const BALLZIELWURF = "Ballzielwurf";
 export const SEILSPRINGEN = "Seilspringen";
 export const KORBEINWURF = "Korbeinwurf";
 
+export const ALL_DISCIPLINES: ReadonlyArray<string> = [
+  SCHNELLLAUF,
+  WEITSPRUNG,
+  BALLWURF,
+  BALLZIELWURF,
+  SEILSPRINGEN,
+  KORBEINWURF,
+];
+
 export interface CompetitorDto {
   readonly startnumber: number;
   readonly id: number;
