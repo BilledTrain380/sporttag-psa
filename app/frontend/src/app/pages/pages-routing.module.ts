@@ -9,6 +9,11 @@ const routes: Routes = [
     component: PagesComponent,
     children: [
       {
+        path: "ranking",
+        loadChildren: () => import("./ranking/ranking.module")
+          .then(module => module.RankingModule),
+      },
+      {
         path: "athletics",
         loadChildren: () => import("./athletics/athletics.module")
           .then(module => module.AthleticsModule),

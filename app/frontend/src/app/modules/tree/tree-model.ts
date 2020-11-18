@@ -81,6 +81,12 @@ export class TreeBuilder {
     return this;
   }
 
+  addNodes(nodes: ReadonlyArray<TreeBuilder>): TreeBuilder {
+    this.nodes.push(...nodes);
+
+    return this;
+  }
+
   build(): TreeCheckNodeModel {
     const chunkSize = Math.max(Math.floor(this.nodes.length / this.splitting), 1);
     const nodeChildren = this.nodes.map(node => node.build());
