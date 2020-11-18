@@ -43,7 +43,7 @@ import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 
 data class RankingExport(
     val disciplines: Iterable<DisciplineExport>,
-    val disciplineGroup: Iterable<GenderDto>,
+    val triathlon: Iterable<GenderDto>,
     val total: Iterable<GenderDto>,
     val ubsCup: Iterable<GenderDto>
 )

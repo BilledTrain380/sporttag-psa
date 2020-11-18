@@ -97,7 +97,7 @@ class RankingController(
 
         val rankingExport = RankingExport(
             disciplineExports,
-            data.disciplineGroup,
+            data.triathlon,
             data.total,
             data.ubsCup
         )

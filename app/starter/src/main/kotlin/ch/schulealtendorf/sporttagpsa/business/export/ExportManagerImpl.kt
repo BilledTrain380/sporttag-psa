@@ -94,7 +94,7 @@ class ExportManagerImpl(
         try {
             val reports = setOf(
                 totalRankingReporter.generateReport(data.total),
-                disciplineGroupRankingReporter.generateReport(data.disciplineGroup),
+                disciplineGroupRankingReporter.generateReport(data.triathlon),
                 disciplineRankingReporter.generateReport(data.disciplines),
                 disciplineGroupRankingReporter.generateCSV(data.ubsCup)
             ).flatten()
