@@ -32,7 +32,6 @@ const GENDER_TREE_BUILDER = TreeCheckNodeModel.newBuilder()
 @Component({
              selector: "app-ranking-export",
              templateUrl: "./ranking-export.component.html",
-             styleUrls: ["./ranking-export.component.scss"],
            })
 export class RankingExportComponent implements OnInit {
   readonly faDownload = faDownload;
