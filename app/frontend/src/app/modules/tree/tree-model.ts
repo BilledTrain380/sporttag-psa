@@ -112,6 +112,10 @@ export class TreeCheckNodeModel {
     this.flatNodes.forEach(node => node.setValueSilenced(value));
   }
 
+  get isCollapsable(): boolean {
+    return this.nodes.length > 0 && this.isCollapsedEnabled;
+  }
+
   get checkedNodes(): ReadonlyArray<TreeCheckNodeModel> {
     return this.flatNodes.filter(node => node.isChecked);
   }
