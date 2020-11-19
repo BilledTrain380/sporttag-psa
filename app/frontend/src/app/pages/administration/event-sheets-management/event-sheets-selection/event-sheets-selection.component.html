@@ -9,7 +9,7 @@
                            [icon]="faDownload"
                            [showLoading]="isParticipantListDownloading$ | async"
                            [disabled]="participantListTree.isChecked === false"
-                           (click)="downloadParticipantList()">
+                           (clickHandler)="downloadParticipantList()">
         </app-layout-button>
       </app-layout-buttons>
 
@@ -24,7 +24,7 @@
                            [disabled]="eventSheetsTree.isChecked === false"
                            [showLoading]="isEventSheetsDownloading$ | async"
                            [icon]="faDownload"
-                           (click)="downloadEventSheets()">
+                           (clickHandler)="downloadEventSheets()">
         </app-layout-button>
 
         <app-layout-button text="Download startlist"
@@ -33,7 +33,7 @@
                            [showLoading]="isStartlistDownloading$ | async"
                            [icon]="faDownload"
                            [disabled]="isParticipationOpen$ | async"
-                           (click)="downloadStartlist()">
+                           (clickHandler)="downloadStartlist()">
         </app-layout-button>
       </app-layout-buttons>
 

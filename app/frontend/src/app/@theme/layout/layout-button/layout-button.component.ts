@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 @Component({
@@ -21,4 +21,7 @@ export class LayoutButtonComponent {
 
   @Input()
   showLoading = false;
+
+  @Output()
+  readonly clickHandler = new EventEmitter<Event>();
 }

@@ -12,7 +12,7 @@
           <app-layout-button buttonType="primary"
                              text="Download"
                              i18n-text
-                             (click)="downloadTotalRanking()"
+                             (clickHandler)="downloadTotalRanking()"
                              [showLoading]="isTotalRankingDownloading | async"
                              [icon]="faDownload"
                              [disabled]="totalTree.isChecked === false">
@@ -27,7 +27,7 @@
           <app-layout-button buttonType="primary"
                              text="Download"
                              i18n-text
-                             (click)="downloadTriathlonRanking()"
+                             (clickHandler)="downloadTriathlonRanking()"
                              [showLoading]="isTriathlonRankingDownloading | async"
                              [icon]="faDownload"
                              [disabled]="triathlonTree.isChecked === false">
@@ -42,7 +42,7 @@
           <app-layout-button buttonType="primary"
                              text="Download"
                              i18n-text
-                             (click)="downloadUbsCupRanking()"
+                             (clickHandler)="downloadUbsCupRanking()"
                              [showLoading]="isUbsCupRankingDownloading | async"
                              [icon]="faDownload"
                              [disabled]="ubsCupTree.isChecked === false">
@@ -57,7 +57,7 @@
           <app-layout-button buttonType="primary"
                              text="Download"
                              i18n-text
-                             (click)="downloadDisciplineRanking()"
+                             (clickHandler)="downloadDisciplineRanking()"
                              [showLoading]="isDisciplineRankingDownloading | async"
                              [icon]="faDownload"
                              [disabled]="disciplinesTree.isChecked === false">

@@ -1,6 +1,6 @@
 <app-simple-page pageTitle="Participation Management" i18n-pageTitle cardTitle="Participation" i18n-cardTitle>
   <app-layout-buttons>
-    <app-layout-button (click)="closeParticipation()"
+    <app-layout-button (clickHandler)="closeParticipation()"
                        [disabled]="isCloseParticipationDisabled$ | async"
                        text="Close Participation"
                        i18n-text
@@ -8,7 +8,7 @@
                        [icon]="faLock"
                        data-test-selector="close-participation-button">
     </app-layout-button>
-    <app-layout-button (click)="resetParticipation()"
+    <app-layout-button (clickHandler)="resetParticipation()"
                        text="Reset Participation"
                        i18n-text
                        buttonType="danger"
