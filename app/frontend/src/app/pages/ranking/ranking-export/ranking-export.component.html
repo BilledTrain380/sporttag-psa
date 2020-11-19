@@ -1,0 +1,71 @@
+<app-row-page pageTitle="Ranking" i18n-pageTitle>
+  <app-row-layout *ngIf="isParticipationOpen$ | async; else ranking">
+    <app-column-layout>
+      <app-athletics-not-started></app-athletics-not-started>
+    </app-column-layout>
+  </app-row-layout>
+
+  <ng-template #ranking>
+    <app-row-layout>
+      <app-column-layout title="Total" i18n-title size="4">
+        <app-layout-buttons>
+          <app-layout-button buttonType="primary"
+                             text="Download"
+                             i18n-text
+                             (click)="downloadTotalRanking()"
+                             [showLoading]="isTotalRankingDownloading | async"
+                             [icon]="faDownload"
+                             [disabled]="totalTree.isChecked === false">
+          </app-layout-button>
+        </app-layout-buttons>
+
+        <app-check-box-tree [tree]="totalTree"></app-check-box-tree>
+      </app-column-layout>
+
+      <app-column-layout title="Triathlon" i18n-title size="4">
+        <app-layout-buttons>
+          <app-layout-button buttonType="primary"
+                             text="Download"
+                             i18n-text
+                             (click)="downloadTriathlonRanking()"
+                             [showLoading]="isTriathlonRankingDownloading | async"
+                             [icon]="faDownload"
+                             [disabled]="triathlonTree.isChecked === false">
+          </app-layout-button>
+        </app-layout-buttons>
+
+        <app-check-box-tree [tree]="triathlonTree"></app-check-box-tree>
+      </app-column-layout>
+
+      <app-column-layout title="UBS-Cup" i18n-title size="4">
+        <app-layout-buttons>
+          <app-layout-button buttonType="primary"
+                             text="Download"
+                             i18n-text
+                             (click)="downloadUbsCupRanking()"
+                             [showLoading]="isUbsCupRankingDownloading | async"
+                             [icon]="faDownload"
+                             [disabled]="ubsCupTree.isChecked === false">
+          </app-layout-button>
+        </app-layout-buttons>
+
+        <app-check-box-tree [tree]="ubsCupTree"></app-check-box-tree>
+      </app-column-layout>
+
+      <app-column-layout title="Disciplines" i18n-title>
+        <app-layout-buttons>
+          <app-layout-button buttonType="primary"
+                             text="Download"
+                             i18n-text
+                             (click)="downloadDisciplineRanking()"
+                             [showLoading]="isDisciplineRankingDownloading | async"
+                             [icon]="faDownload"
+                             [disabled]="disciplinesTree.isChecked === false">
+          </app-layout-button>
+        </app-layout-buttons>
+
+        <app-check-box-tree [tree]="disciplinesTree"></app-check-box-tree>
+      </app-column-layout>
+    </app-row-layout>
+  </ng-template>
+</app-row-page>

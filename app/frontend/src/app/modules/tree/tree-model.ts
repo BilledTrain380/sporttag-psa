@@ -81,6 +81,12 @@ export class TreeBuilder {
     return this;
   }
 
+  addNodes(nodes: ReadonlyArray<TreeBuilder>): TreeBuilder {
+    this.nodes.push(...nodes);
+
+    return this;
+  }
+
   build(): TreeCheckNodeModel {
     const chunkSize = Math.max(Math.floor(this.nodes.length / this.splitting), 1);
     const nodeChildren = this.nodes.map(node => node.build());
@@ -104,6 +110,10 @@ export class TreeCheckNodeModel {
   set isChecked(value: boolean | undefined) {
     this.checkedChangeSubject$.next(TreeCheckNodeModelValue.of(value));
     this.flatNodes.forEach(node => node.setValueSilenced(value));
+  }
+
+  get isCollapsable(): boolean {
+    return this.nodes.length > 0 && this.isCollapsedEnabled;
   }
 
   get checkedNodes(): ReadonlyArray<TreeCheckNodeModel> {

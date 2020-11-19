@@ -41,6 +41,6 @@ import ch.schulealtendorf.psa.dto.participation.GenderDto
 data class RankingData(
     val total: List<GenderDto> = listOf(),
     val discipline: List<DisciplineRanking> = listOf(),
-    val disciplineGroup: List<GenderDto> = listOf(),
+    val triathlon: List<GenderDto> = listOf(),
     val ubsCup: List<GenderDto> = listOf()
 )
