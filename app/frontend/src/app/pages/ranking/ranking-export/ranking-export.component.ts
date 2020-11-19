@@ -25,6 +25,7 @@ import {
 
 const GENDER_TREE_BUILDER = TreeCheckNodeModel.newBuilder()
   .setLabel(LABEL_ALL)
+  .setCollapsedEnabled(false)
   .addLeafNode(MALE, GenderDto.MALE)
   .addLeafNode(FEMALE, GenderDto.FEMALE);
 
@@ -49,11 +50,13 @@ export class RankingExportComponent implements OnInit {
 
   readonly disciplinesTree = TreeCheckNodeModel.newBuilder()
     .setLabel(LABEL_ALL)
+    .setCollapsedEnabled(false)
     // tslint:disable-next-line:no-magic-numbers
     .setSplitting(4)
     .addNodes(ALL_DISCIPLINES.map(discipline =>
                                     TreeCheckNodeModel.newBuilder()
                                       .setLabel(discipline)
+                                      .setCollapsed(true)
                                       .addLeafNode(MALE, GenderDto.MALE)
                                       .addLeafNode(FEMALE, GenderDto.FEMALE)))
     .build();
