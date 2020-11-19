@@ -1,5 +1,6 @@
 <button type="button"
   class="btn btn-{{buttonType}} btn-sm ml-lg-2 mr-lg-0 mr-2 mb-3"
+  (click)="clickHandler.emit($event)"
   [disabled]="disabled || showLoading">
   <span *ngIf="!showLoading; else loading">
     <fa-icon [icon]="icon"></fa-icon>&nbsp;<span>{{text}}</span>
