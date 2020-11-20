@@ -33,7 +33,7 @@ export class TokenInterceptor implements HttpInterceptor {
       .pipe(catchError(err => {
         if (err instanceof HttpErrorResponse && err.status === HTTP_STATUS_UNAUTHORIZED) {
 
-          // If we still have a valid access token, the token was invalidated by the resource server
+          // If we still have a valid access token, the token has been invalidated by the resource server
           if (this.auth.hasValidAccessToken()) {
             this.auth.logOut();
             location.replace("/");
