@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: "pages",
+    redirectTo: "pages/404",
   },
 ];
 

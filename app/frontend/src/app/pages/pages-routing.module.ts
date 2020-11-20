@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
+import { NotFoundPageComponent } from "./miscellaneous/not-found-page/not-found-page.component";
 import { PagesComponent } from "./pages.component";
 
 const routes: Routes = [
@@ -28,9 +29,12 @@ const routes: Routes = [
         redirectTo: "athletics",
         pathMatch: "full",
       },
+      {
+        path: "404",
+        component: NotFoundPageComponent,
+      },
     ],
   },
-
 ];
 
 @NgModule({
