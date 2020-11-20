@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
+import { ROLE_ADMIN } from "../../@security/auth-constants";
+import { AuthorityAuthGuard } from "../../@security/authority-auth-guard";
+
 import { AdministrationComponent } from "./administration.component";
 import { OverviewComponent } from "./overview/overview.component";
 
@@ -8,6 +11,10 @@ const routes: Routes = [
   {
     path: "",
     component: AdministrationComponent,
+    canActivate: [AuthorityAuthGuard],
+    data: {
+      requiredAuthorities: [ROLE_ADMIN],
+    },
     children: [
       {
         path: "overview",

@@ -6,6 +6,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { CoreModule } from "../@core/core.module";
+import { SecurityModule } from "../@security/security.module";
 
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
@@ -36,6 +37,7 @@ const MODULES = [
   CommonModule,
   FontAwesomeModule,
   ReactiveFormsModule,
+  SecurityModule,
 ];
 
 @NgModule({

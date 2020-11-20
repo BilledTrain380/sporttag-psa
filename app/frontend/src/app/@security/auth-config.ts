@@ -1,6 +1,6 @@
 import { AuthConfig } from "angular-oauth2-oidc";
 
-import { environment } from "../../../environments/environment";
+import { environment } from "../../environments/environment";
 
 export interface PsaJwt {
   readonly user_id: number;

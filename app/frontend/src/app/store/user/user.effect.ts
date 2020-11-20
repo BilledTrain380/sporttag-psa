@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
-import { ANONYMOUS } from "../../@core/auth/auth-constants";
-import { PsaAuthService } from "../../@core/auth/psa-auth.service";
 import { getLogger } from "../../@core/logging";
+import { PsaAuthService } from "../../@core/service/psa-auth.service";
+import { ANONYMOUS } from "../../@security/auth-constants";
 
 import { logout, setUser } from "./user.action";
 

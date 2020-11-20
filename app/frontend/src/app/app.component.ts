@@ -3,8 +3,8 @@ import { Store } from "@ngrx/store";
 import { JwksValidationHandler, OAuthService } from "angular-oauth2-oidc";
 import * as jwt_decode from "jwt-decode";
 
-import { authConfig, PsaJwt } from "./@core/auth/auth-config";
 import { getLogger, Logger } from "./@core/logging";
+import { authConfig, PsaJwt } from "./@security/auth-config";
 import { AppState } from "./store/app";
 import { setUser } from "./store/user/user.action";
 

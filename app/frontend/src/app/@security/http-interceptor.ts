@@ -4,8 +4,8 @@ import { OAuthService } from "angular-oauth2-oidc";
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 
-import { getLogger, Logger } from "../logging";
-import { HTTP_STATUS_UNAUTHORIZED } from "../web";
+import { getLogger, Logger } from "../@core/logging";
+import { HTTP_STATUS_UNAUTHORIZED } from "../@core/web";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -33,7 +33,7 @@ export class TokenInterceptor implements HttpInterceptor {
       .pipe(catchError(err => {
         if (err instanceof HttpErrorResponse && err.status === HTTP_STATUS_UNAUTHORIZED) {
 
-          // If we still have a valid access token, the token was invalidated by the resource server
+          // If we still have a valid access token, the token has been invalidated by the resource server
           if (this.auth.hasValidAccessToken()) {
             this.auth.logOut();
             location.replace("/");

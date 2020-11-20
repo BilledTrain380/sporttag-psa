@@ -10,8 +10,8 @@ import { OAuthModule } from "angular-oauth2-oidc";
 
 import { environment } from "../environments/environment";
 
-import { TokenInterceptor } from "./@core/auth/http-interceptor";
 import { CoreModule } from "./@core/core.module";
+import { TokenInterceptor } from "./@security/http-interceptor";
 import { ThemeModule } from "./@theme/theme.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
