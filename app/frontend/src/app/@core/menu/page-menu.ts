@@ -2,7 +2,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { faCog, faRunning, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import uuid from "uuid/v4";
 
-import { ROLE_ADMIN, ROLE_USER } from "../auth/auth-constants";
+import { ROLE_ADMIN, ROLE_USER } from "../../@security/auth-constants";
 
 export interface PageMenu {
   readonly id: string;

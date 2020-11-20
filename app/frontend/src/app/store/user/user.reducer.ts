@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from "@ngrx/store";
 
-import { ANONYMOUS } from "../../@core/auth/auth-constants";
+import { ANONYMOUS } from "../../@security/auth-constants";
 
 import { setUser } from "./user.action";
 

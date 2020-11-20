@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { faMugHot } from "@fortawesome/free-solid-svg-icons/faMugHot";
 
-import { ROLE_ADMIN } from "../../../@core/auth/auth-constants";
+import { ROLE_ADMIN } from "../../../@security/auth-constants";
 
 @Component({
              selector: "app-athletics-not-started",

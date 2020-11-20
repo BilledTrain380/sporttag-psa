@@ -4,8 +4,8 @@ import { OAuthService } from "angular-oauth2-oidc";
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 
-import { getLogger, Logger } from "../logging";
-import { HTTP_STATUS_UNAUTHORIZED } from "../web";
+import { getLogger, Logger } from "../@core/logging";
+import { HTTP_STATUS_UNAUTHORIZED } from "../@core/web";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
