@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.service.group
 
+import ch.schulealtendorf.psa.core.ifNotNull
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
@@ -44,7 +45,6 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.service.group.business.ParticipantManager
 import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
-import ch.schulealtendorf.psa.service.standard.ifNotNull
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema

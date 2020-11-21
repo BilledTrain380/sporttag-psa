@@ -36,13 +36,13 @@
 
 package ch.schulealtendorf.psa.service.athletics.business
 
+import ch.schulealtendorf.psa.core.toOptional
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
 import ch.schulealtendorf.psa.service.standard.competitorDtoOf
 import ch.schulealtendorf.psa.service.standard.entity.CompetitorEntity
 import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.service.standard.resultDtoOf
-import ch.schulealtendorf.psa.service.standard.toOptional
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.ResultRuleBook
 import org.springframework.stereotype.Component

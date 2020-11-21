@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.service.standard
+package ch.schulealtendorf.psa.core
 
 import java.util.Optional
 
