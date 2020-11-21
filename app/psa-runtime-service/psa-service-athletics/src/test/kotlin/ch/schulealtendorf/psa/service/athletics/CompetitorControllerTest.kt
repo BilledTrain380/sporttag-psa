@@ -3,28 +3,28 @@ package ch.schulealtendorf.psa.service.athletics
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
 import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
+import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@Disabled("Need a fix with the participation to close")
 internal class CompetitorControllerTest : PsaWebMvcTest() {
     companion object {
         private const val COMPETITORS_ENDPOINT = "/api/competitors"
         private const val COMPETITOR_1_ENDPOINT = "/api/competitor/7"
     }
 
-    // @Autowired
-    // private lateinit var participationManager: ParticipationManager
+    @Autowired
+    private lateinit var participationManager: ParticipationManager
 
     @BeforeEach
     internal fun beforeEach() {
-        // participationManager.closeParticipation()
+        participationManager.closeParticipation()
     }
 
     @Test
