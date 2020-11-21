@@ -120,9 +120,7 @@ class ResourceServerConfig(
                 "/api/group/**",
                 "/api/participant/**",
                 "/api/participants",
-                "/api/participation-list/download",
-                "/api/start-list/download",
-                "/api/event-sheets/download",
+                "/api/event-sheets/**",
                 "/api/users",
                 "/api/user/**"
             )?.hasRole("ADMIN")

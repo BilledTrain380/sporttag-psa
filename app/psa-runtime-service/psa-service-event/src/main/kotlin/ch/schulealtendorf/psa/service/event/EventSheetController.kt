@@ -186,7 +186,7 @@ class EventSheetController(
             )
         ]
     )
-    @PreAuthorize("#oauth2.hasScope('participation')")
+    @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @GetMapping("/download/startlist", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
     fun createStartList(): ResponseEntity<InputStreamResource> {
         val startList = startlistReporter.generateReport()
