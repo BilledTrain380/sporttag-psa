@@ -37,7 +37,6 @@
 package ch.schulealtendorf.psa.service.group.business
 
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
-import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import java.util.NoSuchElementException
 import java.util.Optional
 
@@ -93,47 +92,4 @@ interface ParticipantManager {
      * @param id the participant id
      */
     fun deleteParticipantById(id: Int)
-
-    /**
-     * @return the participation status
-     */
-    fun getParticipationStatus(): ParticipationStatusType
-
-    /**
-     * Sets the given [sport] to the given [participant].
-     *
-     * This operation can not be performed, if the participation status equals [ParticipationStatusType.CLOSED].
-     * In order to change the sport of a participant, use the [ParticipantManager.reParticipate] method.
-     *
-     * @param participant the participant to set the sport on
-     * @param sport the sport to set on the participant
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     * @throws IllegalStateException if the participation is already closed
-     */
-    fun participate(participant: ParticipantDto, sport: String)
-
-    /**
-     * Sets the given [sport] to the given [participant].
-     *
-     * In contrast to the [ParticipantManager.participate] method, this operation will
-     * consider the participation status.
-     *
-     * If the participation status equals [ParticipationStatusType.CLOSED],
-     * and the given [sport] equals athletics, the participant will be saved as a competitor.
-     *
-     * If the participation status equals [ParticipationStatusType.CLOSED],
-     * and the given [participant] is already a competitor, but the given [sport] is not athletics,
-     * the competitor will be removed.
-     *
-     * The participation status must be equal to [ParticipationStatusType.CLOSED]
-     * in order to perform this operation. Otherwise use the [ParticipantManager.participate] method.
-     *
-     * @param participant the participant to set the sport on
-     * @param sport the sport to set on the participant
-     *
-     * @throws NoSuchElementException if the given participant could not be found
-     * @throws IllegalStateException if the participation status is not CLOSE.
-     */
-    fun reParticipate(participant: ParticipantDto, sport: String)
 }

@@ -36,17 +36,12 @@
 
 package ch.schulealtendorf.psa.service.group.business
 
-import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
-import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
 import ch.schulealtendorf.psa.service.standard.entity.TownEntity
-import ch.schulealtendorf.psa.service.standard.manager.DefaultResultManager
 import ch.schulealtendorf.psa.service.standard.participantDtoOf
 import ch.schulealtendorf.psa.service.standard.repository.GroupRepository
 import ch.schulealtendorf.psa.service.standard.repository.ParticipantRepository
-import ch.schulealtendorf.psa.service.standard.repository.ParticipationRepository
-import ch.schulealtendorf.psa.service.standard.repository.SportRepository
 import ch.schulealtendorf.psa.service.standard.repository.TownRepository
 import org.springframework.stereotype.Component
 import java.util.Optional
@@ -60,11 +55,8 @@ import java.util.Optional
 @Component
 class ParticipantManagerImpl(
     private val participantRepository: ParticipantRepository,
-    private val participationRepository: ParticipationRepository,
-    private val defaultResultManager: DefaultResultManager,
     private val townRepository: TownRepository,
-    private val groupRepository: GroupRepository,
-    private val sportRepository: SportRepository
+    private val groupRepository: GroupRepository
 ) : ParticipantManager {
 
     override fun getParticipants(): List<ParticipantDto> = participantRepository.findAll().map { it.toDto() }
@@ -106,48 +98,6 @@ class ParticipantManagerImpl(
             participantRepository.delete(it)
         }
     }
-
-    override fun participate(participant: ParticipantDto, sport: String) {
-        val participationStatus = participationRepository.getParticipationOrFail().statusType
-
-        if (participationStatus == ParticipationStatusType.CLOSED) {
-            throw IllegalStateException("Participation already closed. Use ParticipantManager#reParticipate instead")
-        }
-
-        val participantEntity = participantRepository.getParticipantOrFail(participant.id)
-        val sportEntity = sportRepository.getSportOrFail(sport)
-
-        participantEntity.sport = sportEntity
-
-        participantRepository.save(participantEntity)
-    }
-
-    override fun reParticipate(participant: ParticipantDto, sport: String) {
-        val participationStatus = participationRepository.getParticipationOrFail().statusType
-
-        if (participationStatus != ParticipationStatusType.CLOSED) {
-            throw IllegalStateException("Participation is not closed. Use ParticipantManager#participate instead")
-        }
-
-        val participantEntity = participantRepository.getParticipantOrFail(participant.id)
-
-        // Only proceed further if sport type differs from existing
-        if (participantEntity.sport != null && participantEntity.sport?.name == sport) {
-            return
-        }
-
-        participantEntity.sport = sportRepository.getSportOrFail(sport)
-        participantRepository.save(participantEntity)
-
-        if (sport == ATHLETICS) {
-            defaultResultManager.saveAsCompetitor(participantEntity)
-        } else {
-            defaultResultManager.deleteAsCompetitor(participantEntity)
-        }
-    }
-
-    override fun getParticipationStatus(): ParticipationStatusType =
-        participationRepository.getParticipationOrFail().statusType
 
     private fun ParticipantEntity.toDto() = participantDtoOf(this)
 }

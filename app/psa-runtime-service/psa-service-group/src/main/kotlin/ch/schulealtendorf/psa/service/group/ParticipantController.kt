@@ -45,6 +45,7 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.service.group.business.ParticipantManager
 import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
+import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -76,7 +77,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 @Tag(name = "Participant", description = "Manage participants")
 class ParticipantController(
-    private val participantManager: ParticipantManager
+    private val participantManager: ParticipantManager,
+    private val participationManager: ParticipationManager
 ) {
     companion object {
         const val PARTICIPANT: String = "/participant/{participant_id}"
@@ -187,12 +189,12 @@ class ParticipantController(
         )
 
         val createdParticipant = participantManager.saveParticipant(participant)
-        val participationStatus = participantManager.getParticipationStatus()
+        val participationStatus = participationManager.getParticipationStatus()
 
         if (participationStatus == ParticipationStatusType.OPEN) {
-            participantManager.participate(createdParticipant, input.sportType)
+            participationManager.participate(createdParticipant, input.sportType)
         } else {
-            participantManager.reParticipate(createdParticipant, input.sportType)
+            participationManager.reParticipate(createdParticipant, input.sportType)
         }
 
         return createdParticipant.copy(sportType = input.sportType)
@@ -292,12 +294,12 @@ class ParticipantController(
         val participant = participantManager.getParticipantOrElseFail(id)
 
         dto.sportType.ifNotNull {
-            val participationStatus = participantManager.getParticipationStatus()
+            val participationStatus = participationManager.getParticipationStatus()
 
             if (participationStatus == ParticipationStatusType.OPEN) {
-                participantManager.participate(participant, it)
+                participationManager.participate(participant, it)
             } else if (participationStatus == ParticipationStatusType.CLOSED) {
-                participantManager.reParticipate(participant, it)
+                participationManager.reParticipate(participant, it)
             }
         }
     }
