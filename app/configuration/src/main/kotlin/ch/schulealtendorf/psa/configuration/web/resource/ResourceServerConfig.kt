@@ -34,10 +34,10 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.resource
+package ch.schulealtendorf.psa.configuration.web.resource
 
-import ch.schulealtendorf.psa.web.oauth.PSAScope
-import ch.schulealtendorf.psa.web.oauth.SecurityRequirementNames
+import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
+import ch.schulealtendorf.psa.configuration.web.oauth.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
 import io.swagger.v3.oas.annotations.info.Info

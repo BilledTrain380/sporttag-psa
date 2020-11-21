@@ -34,48 +34,37 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.authorization.config
+package ch.schulealtendorf.psa.configuration.web.oauth
 
-import org.springframework.context.MessageSource
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.support.ReloadableResourceBundleMessageSource
-import org.springframework.core.Ordered
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import ch.schulealtendorf.psa.core.user.UserManager
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken
+import org.springframework.security.oauth2.common.OAuth2AccessToken
+import org.springframework.security.oauth2.provider.OAuth2Authentication
+import org.springframework.security.oauth2.provider.token.TokenEnhancer
+import org.springframework.stereotype.Component
 
 /**
- * Configures CORS and view controllers.
+ * Puts additional information into the JWT.
  *
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 1.0.0
+ * @since 2.0.0
  */
-@Configuration
-class WebConfig : WebMvcConfigurer {
+@Component
+@Qualifier("psa")
+class PSATokenEnhancer(
+    private val userManager: UserManager
+) : TokenEnhancer {
 
-    /**
-     * Configure cross origin requests processing.
-     * @since 2.0.0
-     */
-    override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
-            .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
-            .allowedOrigins("*")
-            .allowedHeaders("*")
-    }
+    override fun enhance(accessToken: OAuth2AccessToken?, authentication: OAuth2Authentication?): OAuth2AccessToken {
 
-    override fun addViewControllers(registry: ViewControllerRegistry) {
-        registry.addViewController("/login").setViewName("login")
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE)
-    }
+        val username = (authentication!!.userAuthentication.principal as User).username
 
-    @Bean("messageSource")
-    fun getMessageSource(): MessageSource {
+        val user = userManager.getOne(username).get()
 
-        return ReloadableResourceBundleMessageSource().apply {
-            setBasename("classpath:i18n/messages")
-            setDefaultEncoding("UTF-8")
+        return (accessToken!! as DefaultOAuth2AccessToken).apply {
+            additionalInformation = additionalInformation?.plus(Pair("user_id", user.id))
         }
     }
 }

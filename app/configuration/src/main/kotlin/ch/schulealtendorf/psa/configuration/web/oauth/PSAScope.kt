@@ -34,37 +34,25 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.oauth
-
-import ch.schulealtendorf.psa.core.user.UserManager
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken
-import org.springframework.security.oauth2.common.OAuth2AccessToken
-import org.springframework.security.oauth2.provider.OAuth2Authentication
-import org.springframework.security.oauth2.provider.token.TokenEnhancer
-import org.springframework.stereotype.Component
+package ch.schulealtendorf.psa.configuration.web.oauth
 
 /**
- * Puts additional information into the JWT.
- *
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
+ * @since 2.2.0
  */
-@Component
-@Qualifier("psa")
-class PSATokenEnhancer(
-    private val userManager: UserManager
-) : TokenEnhancer {
-
-    override fun enhance(accessToken: OAuth2AccessToken?, authentication: OAuth2Authentication?): OAuth2AccessToken {
-
-        val username = (authentication!!.userAuthentication.principal as User).username
-
-        val user = userManager.getOne(username).get()
-
-        return (accessToken!! as DefaultOAuth2AccessToken).apply {
-            additionalInformation = additionalInformation?.plus(Pair("user_id", user.id))
-        }
-    }
+object PSAScope {
+    const val GROUP_READ = "group_read"
+    const val GROUP_WRITE = "group_write"
+    const val PARTICIPANT_READ = "participant_read"
+    const val PARTICIPANT_WRITE = "participant_write"
+    const val COMPETITOR_READ = "competitor_read"
+    const val COMPETITOR_WRITE = "competitor_write"
+    const val DISCIPLINE_READ = "discipline_read"
+    const val SPORT_READ = "sport_read"
+    const val PARTICIPATION = "participation"
+    const val PARTICIPANT_LIST = "participant_list"
+    const val FILES = "files"
+    const val RANKING = "ranking"
+    const val EVENT_SHEETS = "event_sheets"
+    const val USER = "user"
 }

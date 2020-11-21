@@ -34,10 +34,10 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.authorization.config
+package ch.schulealtendorf.psa.configuration.web.authorization
 
+import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
 import ch.schulealtendorf.psa.core.setup.SetupManager
-import ch.schulealtendorf.psa.web.oauth.PSAScope
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

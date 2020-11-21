@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.authorization.config
+package ch.schulealtendorf.psa.configuration.web.authorization
 
 import ch.schulealtendorf.psa.core.user.repository.UserRepository
 import org.springframework.beans.factory.annotation.Qualifier

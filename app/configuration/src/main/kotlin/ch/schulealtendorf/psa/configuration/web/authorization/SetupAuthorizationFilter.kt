@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.authorization.config
+package ch.schulealtendorf.psa.configuration.web.authorization
 
 import ch.schulealtendorf.psa.core.setup.SetupManager
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest

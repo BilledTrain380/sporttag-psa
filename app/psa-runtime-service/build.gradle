@@ -24,6 +24,8 @@ subprojects {
         implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
         implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
 
+        testImplementation project(":app:configuration")
+        testImplementation project(":app:configuration").sourceSets.test.output
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation "org.springframework.security:spring-security-test"
         testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test"

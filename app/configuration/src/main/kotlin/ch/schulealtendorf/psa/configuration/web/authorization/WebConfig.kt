@@ -34,25 +34,48 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.oauth
+package ch.schulealtendorf.psa.configuration.web.authorization
+
+import org.springframework.context.MessageSource
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.support.ReloadableResourceBundleMessageSource
+import org.springframework.core.Ordered
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
+ * Configures CORS and view controllers.
+ *
  * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.2.0
+ * @since 1.0.0
  */
-object PSAScope {
-    const val GROUP_READ = "group_read"
-    const val GROUP_WRITE = "group_write"
-    const val PARTICIPANT_READ = "participant_read"
-    const val PARTICIPANT_WRITE = "participant_write"
-    const val COMPETITOR_READ = "competitor_read"
-    const val COMPETITOR_WRITE = "competitor_write"
-    const val DISCIPLINE_READ = "discipline_read"
-    const val SPORT_READ = "sport_read"
-    const val PARTICIPATION = "participation"
-    const val PARTICIPANT_LIST = "participant_list"
-    const val FILES = "files"
-    const val RANKING = "ranking"
-    const val EVENT_SHEETS = "event_sheets"
-    const val USER = "user"
+@Configuration
+class WebConfig : WebMvcConfigurer {
+
+    /**
+     * Configure cross origin requests processing.
+     * @since 2.0.0
+     */
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+            .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
+            .allowedOrigins("*")
+            .allowedHeaders("*")
+    }
+
+    override fun addViewControllers(registry: ViewControllerRegistry) {
+        registry.addViewController("/login").setViewName("login")
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE)
+    }
+
+    @Bean("messageSource")
+    fun getMessageSource(): MessageSource {
+
+        return ReloadableResourceBundleMessageSource().apply {
+            setBasename("classpath:i18n/messages")
+            setDefaultEncoding("UTF-8")
+        }
+    }
 }

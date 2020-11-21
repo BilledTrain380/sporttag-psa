@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.oauth
+package ch.schulealtendorf.psa.configuration.web.oauth
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler

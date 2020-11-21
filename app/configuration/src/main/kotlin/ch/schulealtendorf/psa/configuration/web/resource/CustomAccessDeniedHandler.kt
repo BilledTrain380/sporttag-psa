@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.web.resource
+package ch.schulealtendorf.psa.configuration.web.resource
 
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.AccessDeniedException
