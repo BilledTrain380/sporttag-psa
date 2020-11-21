@@ -43,8 +43,8 @@ import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.dto.status.StatusDto
 import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity
-import ch.schulealtendorf.psa.service.participation.business.ParticipationManager
 import ch.schulealtendorf.psa.service.standard.manager.GroupManager
+import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
