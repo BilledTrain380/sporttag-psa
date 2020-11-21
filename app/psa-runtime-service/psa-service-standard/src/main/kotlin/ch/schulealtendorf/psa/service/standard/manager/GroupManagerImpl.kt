@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.group.business
+package ch.schulealtendorf.psa.service.standard.manager
 
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
@@ -43,15 +43,10 @@ import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.status.StatusDto
 import ch.schulealtendorf.psa.dto.status.StatusEntry
 import ch.schulealtendorf.psa.dto.status.StatusSeverity
-import ch.schulealtendorf.psa.service.group.business.parsing.FlatParticipant
-import ch.schulealtendorf.psa.service.standard.entity.CoachEntity
 import ch.schulealtendorf.psa.service.standard.entity.GroupEntity
 import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
-import ch.schulealtendorf.psa.service.standard.entity.TownEntity
-import ch.schulealtendorf.psa.service.standard.repository.CoachRepository
 import ch.schulealtendorf.psa.service.standard.repository.GroupRepository
 import ch.schulealtendorf.psa.service.standard.repository.ParticipantRepository
-import ch.schulealtendorf.psa.service.standard.repository.TownRepository
 import ch.schulealtendorf.psa.service.standard.simpleGroupDtoOf
 import org.springframework.stereotype.Component
 import java.util.Optional
@@ -65,9 +60,7 @@ import java.util.Optional
 @Component
 class GroupManagerImpl(
     private val groupRepository: GroupRepository,
-    private val participantRepository: ParticipantRepository,
-    private val coachRepository: CoachRepository,
-    private val townRepository: TownRepository
+    private val participantRepository: ParticipantRepository
 ) : GroupManager {
     override fun hasPendingParticipation(group: SimpleGroupDto) = hasPendingParticipation(group.name)
 
@@ -96,30 +89,6 @@ class GroupManagerImpl(
     override fun getOverviewBy(filter: GroupStatusType): List<OverviewGroupDto> {
         return getOverview()
             .filter { it.status.contains(filter) }
-    }
-
-    @Deprecated("Use participant manager instead")
-    override fun import(participant: FlatParticipant) {
-        val town = townRepository.findByZipAndName(participant.zipCode, participant.town)
-            .orElseGet { TownEntity(zip = participant.zipCode, name = participant.town) }
-
-        val coach = coachRepository.findByName(participant.coach)
-            .orElseGet { CoachEntity(name = participant.coach) }
-
-        val group = groupRepository.findByName(participant.group)
-            .orElseGet { GroupEntity(participant.group, coach) }
-
-        val participantEntity = ParticipantEntity(
-            surname = participant.surname,
-            prename = participant.prename,
-            gender = participant.gender,
-            birthday = participant.birthday.value,
-            address = participant.address,
-            town = town,
-            group = group
-        )
-
-        participantRepository.save(participantEntity)
     }
 
     private fun hasPendingParticipation(groupName: String): Boolean {

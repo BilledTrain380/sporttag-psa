@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2019 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,27 +34,35 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.standard.repository
+package ch.schulealtendorf.psa.service.event.business.reporter
 
-import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
-import org.springframework.data.repository.CrudRepository
+import ch.schulealtendorf.psa.service.standard.competitorDtoOf
+import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
+import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
+import ch.schulealtendorf.psa.shared.reporting.participation.StartListApi
+import org.springframework.stereotype.Component
+import java.io.File
 
 /**
- * @author nmaerchy
- * @since 2.0.0
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.1.0
  */
-interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
+@Component
+class StartlistReporterImpl(
+    private val competitorRepository: CompetitorRepository,
+    private val startListApi: StartListApi
+) : StartlistReporter {
+    override fun generateReport(data: Void): Set<File> {
+        return setOf(generateReport())
+    }
 
-    fun findByGroupName(name: String): List<ParticipantEntity>
+    override fun generateReport(): File {
+        return try {
+            val competitors = competitorRepository.findAll().map { competitorDtoOf(it) }
 
-    fun findBySportName(name: String): List<ParticipantEntity>
-
-    fun findByGender(gender: String): List<ParticipantEntity>
-
-    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
-
-    fun getParticipantOrFail(id: Int): ParticipantEntity {
-        return this.findById(id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
+            startListApi.createReport(competitors)
+        } catch (exception: Exception) {
+            throw ReportGenerationException("Could not generate start list report", exception)
+        }
     }
 }

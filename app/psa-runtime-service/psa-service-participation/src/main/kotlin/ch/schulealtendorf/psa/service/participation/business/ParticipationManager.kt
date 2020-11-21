@@ -34,27 +34,40 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.standard.repository
+package ch.schulealtendorf.psa.service.participation.business
 
-import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
-import org.springframework.data.repository.CrudRepository
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 
 /**
+ * Describes a manager for the participation.
+ * Provides various operations with a participant. In addition,
+ * the participation status can be modified.
+ *
  * @author nmaerchy
- * @since 2.0.0
+ * @since 1.0.0
  */
-interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
+interface ParticipationManager {
 
-    fun findByGroupName(name: String): List<ParticipantEntity>
+    /**
+     * Closes the participation. [ParticipationManager.getParticipationStatus] will always
+     * return [ParticipationStatusType.CLOSED] until [ParticipationManager.resetParticipation]
+     * will be invoked.
+     *
+     * This operation looks up all participant who participates in the sport athletics
+     * and saves them as competitor with default results of all available disciplines.
+     */
+    fun closeParticipation()
 
-    fun findBySportName(name: String): List<ParticipantEntity>
+    /**
+     * Resets the participation. All recorded data will be DELETED.
+     *
+     * [ParticipationManager.getParticipationStatus] will always return [ParticipationStatusType.OPEN]
+     * until [ParticipationManager.closeParticipation] will be invoked.
+     */
+    fun resetParticipation()
 
-    fun findByGender(gender: String): List<ParticipantEntity>
-
-    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
-
-    fun getParticipantOrFail(id: Int): ParticipantEntity {
-        return this.findById(id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
-    }
+    /**
+     * @return the participation status
+     */
+    fun getParticipationStatus(): ParticipationStatusType
 }

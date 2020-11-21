@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,27 +34,25 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.standard.repository
+package ch.schulealtendorf.psa.service.standard.export
 
-import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
-import org.springframework.data.repository.CrudRepository
+import java.io.File
 
 /**
+ * Describes a manager that generates files that can be exported.
+ *
  * @author nmaerchy
- * @since 2.0.0
+ * @version 1.0.0
  */
-interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
+interface ExportManager<T> {
 
-    fun findByGroupName(name: String): List<ParticipantEntity>
-
-    fun findBySportName(name: String): List<ParticipantEntity>
-
-    fun findByGender(gender: String): List<ParticipantEntity>
-
-    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
-
-    fun getParticipantOrFail(id: Int): ParticipantEntity {
-        return this.findById(id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
-    }
+    /**
+     * Generates an archive file by the given {@code data}.
+     *
+     * @param data contains the data to generate an archive
+     *
+     * @return the generated archive
+     * @throws ArchiveGenerationException if the archive could not be generated
+     */
+    fun generateArchive(data: T): File
 }

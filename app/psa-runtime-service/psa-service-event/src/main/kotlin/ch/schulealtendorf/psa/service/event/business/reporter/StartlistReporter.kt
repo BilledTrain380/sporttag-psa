@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2019 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,27 +34,18 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.standard.repository
+package ch.schulealtendorf.psa.service.event.business.reporter
 
-import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
-import org.springframework.data.repository.CrudRepository
+import ch.schulealtendorf.psa.service.standard.export.ExportReporter
+import java.io.File
 
 /**
- * @author nmaerchy
- * @since 2.0.0
+ * Reporter to generate the start list of competitors.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.10
  */
-interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
+interface StartlistReporter : ExportReporter<Void> {
 
-    fun findByGroupName(name: String): List<ParticipantEntity>
-
-    fun findBySportName(name: String): List<ParticipantEntity>
-
-    fun findByGender(gender: String): List<ParticipantEntity>
-
-    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
-
-    fun getParticipantOrFail(id: Int): ParticipantEntity {
-        return this.findById(id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
-    }
+    fun generateReport(): File
 }

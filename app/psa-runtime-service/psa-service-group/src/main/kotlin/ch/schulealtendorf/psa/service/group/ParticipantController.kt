@@ -42,10 +42,9 @@ import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
 import ch.schulealtendorf.psa.dto.participation.ParticipantRelation
 import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
-import ch.schulealtendorf.sporttagpsa.business.participation.ParticipantManager
-import ch.schulealtendorf.sporttagpsa.business.participation.ParticipationManager
-import ch.schulealtendorf.sporttagpsa.controller.resource.exceptions.NotFoundException
-import ch.schulealtendorf.sporttagpsa.lib.ifNotNull
+import ch.schulealtendorf.psa.service.group.business.ParticipantManager
+import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
+import ch.schulealtendorf.psa.service.standard.ifNotNull
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -77,8 +76,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 @Tag(name = "Participant", description = "Manage participants")
 class ParticipantController(
-    private val participantManager: ParticipantManager,
-    private val participationManager: ParticipationManager
+    private val participantManager: ParticipantManager
 ) {
     companion object {
         const val PARTICIPANT: String = "/participant/{participant_id}"
@@ -189,12 +187,12 @@ class ParticipantController(
         )
 
         val createdParticipant = participantManager.saveParticipant(participant)
-        val participationStatus = participationManager.getParticipationStatus()
+        val participationStatus = participantManager.getParticipationStatus()
 
         if (participationStatus == ParticipationStatusType.OPEN) {
-            participationManager.participate(createdParticipant, input.sportType)
+            participantManager.participate(createdParticipant, input.sportType)
         } else {
-            participationManager.reParticipate(createdParticipant, input.sportType)
+            participantManager.reParticipate(createdParticipant, input.sportType)
         }
 
         return createdParticipant.copy(sportType = input.sportType)
@@ -294,12 +292,12 @@ class ParticipantController(
         val participant = participantManager.getParticipantOrElseFail(id)
 
         dto.sportType.ifNotNull {
-            val participationStatus = participationManager.getParticipationStatus()
+            val participationStatus = participantManager.getParticipationStatus()
 
             if (participationStatus == ParticipationStatusType.OPEN) {
-                participationManager.participate(participant, it)
+                participantManager.participate(participant, it)
             } else if (participationStatus == ParticipationStatusType.CLOSED) {
-                participationManager.reParticipate(participant, it)
+                participantManager.reParticipate(participant, it)
             }
         }
     }

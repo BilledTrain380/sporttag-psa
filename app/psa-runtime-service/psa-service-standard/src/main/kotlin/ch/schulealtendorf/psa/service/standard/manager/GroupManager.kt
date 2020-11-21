@@ -34,12 +34,11 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.group.business
+package ch.schulealtendorf.psa.service.standard.manager
 
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
-import ch.schulealtendorf.psa.service.group.business.parsing.FlatParticipant
 import java.util.Optional
 
 /**
@@ -76,15 +75,4 @@ interface GroupManager {
      * @return an Optional containing the group, or empty if the group could not be found
      */
     fun getGroup(name: String): Optional<SimpleGroupDto>
-
-    /**
-     * Imports the given {@code participant} by considering all their relations.
-     * If a relation does not exist yet, it will be created, otherwise the already
-     * created relation will be used.
-     *
-     * The participant will always be created.
-     *
-     * @param participant the participant to import
-     */
-    fun import(participant: FlatParticipant)
 }

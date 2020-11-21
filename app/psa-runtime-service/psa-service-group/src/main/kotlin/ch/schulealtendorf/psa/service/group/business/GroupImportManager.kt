@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -34,27 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.standard.repository
+package ch.schulealtendorf.psa.service.group.business
 
-import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
-import org.springframework.data.repository.CrudRepository
+import ch.schulealtendorf.psa.service.group.business.parsing.FlatParticipant
 
 /**
- * @author nmaerchy
+ * Describes a manager for domain classes related to a {@link Group}.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
  * @since 2.0.0
  */
-interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
+interface GroupImportManager {
 
-    fun findByGroupName(name: String): List<ParticipantEntity>
-
-    fun findBySportName(name: String): List<ParticipantEntity>
-
-    fun findByGender(gender: String): List<ParticipantEntity>
-
-    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
-
-    fun getParticipantOrFail(id: Int): ParticipantEntity {
-        return this.findById(id)
-            .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }
-    }
+    /**
+     * Imports the given {@code participant} by considering all their relations.
+     * If a relation does not exist yet, it will be created, otherwise the already
+     * created relation will be used.
+     *
+     * The participant will always be created.
+     *
+     * @param participant the participant to import
+     */
+    fun import(participant: FlatParticipant)
 }

@@ -39,11 +39,12 @@ package ch.schulealtendorf.psa.service.group
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
-import ch.schulealtendorf.psa.service.group.business.GroupManager
+import ch.schulealtendorf.psa.service.group.business.GroupImportManager
 import ch.schulealtendorf.psa.service.group.business.parsing.CSVParsingException
 import ch.schulealtendorf.psa.service.group.business.parsing.GroupFileParser
 import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
 import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
+import ch.schulealtendorf.psa.service.standard.manager.GroupManager
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -74,6 +75,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/api")
 @Tag(name = "Group", description = "Manage groups")
 class GroupController(
+    private val groupImportManager: GroupImportManager,
     private val groupManager: GroupManager,
     private val fileParser: GroupFileParser
 ) {
@@ -200,7 +202,7 @@ class GroupController(
     fun importGroup(@RequestParam("group-input") file: MultipartFile): ResponseEntity<String> {
         return try {
             val participants = fileParser.parseCSV(file)
-            participants.forEach(groupManager::import)
+            participants.forEach(groupImportManager::import)
 
             ResponseEntity.ok("Group import successful")
         } catch (exception: CSVParsingException) {

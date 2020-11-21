@@ -43,4 +43,9 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @version 0.0.1
  */
-interface SportRepository : CrudRepository<SportEntity, String>
+interface SportRepository : CrudRepository<SportEntity, String> {
+    fun getSportOrFail(sport: String): SportEntity {
+        return this.findById(sport)
+            .orElseThrow { NoSuchElementException("Could not find sport: name=$sport") }
+    }
+}

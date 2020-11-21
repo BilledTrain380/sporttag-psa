@@ -43,4 +43,9 @@ import org.springframework.data.repository.CrudRepository
  * @author nmaerchy
  * @since 1.0.0
  */
-interface ParticipationRepository : CrudRepository<ParticipationEntity, String>
+interface ParticipationRepository : CrudRepository<ParticipationEntity, String> {
+    fun getParticipationOrFail(): ParticipationEntity {
+        return this.findById(ParticipationEntity.MAIN_PARTICIPATION)
+            .orElseThrow { IllegalStateException("No participation status could be found. There MUST be a status. Check your database.") }
+    }
+}
