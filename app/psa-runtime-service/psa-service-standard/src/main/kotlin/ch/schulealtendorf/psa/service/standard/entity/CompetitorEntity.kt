@@ -33,14 +33,38 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.entity
+
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+
+/**
+ * @author nmaerchy
+ * @since 2.0.0
+ */
+@Entity
+@Table(name = "COMPETITOR")
+data class CompetitorEntity(
+
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var startnumber: Int? = null,
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_PARTICIPANT_id", referencedColumnName = "id")
+    var participant: ParticipantEntity = ParticipantEntity(),
+
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "competitor")
+    var results: Set<ResultEntity> = setOf()
+)

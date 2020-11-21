@@ -33,14 +33,18 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.repository
+
+import ch.schulealtendorf.psa.service.standard.entity.GroupEntity
+import org.springframework.data.repository.CrudRepository
+import java.util.Optional
+
+/**
+ * @author nmaerchy
+ * @since 1.0.0
+ */
+interface GroupRepository : CrudRepository<GroupEntity, String> {
+
+    fun findByName(name: String): Optional<GroupEntity>
+}

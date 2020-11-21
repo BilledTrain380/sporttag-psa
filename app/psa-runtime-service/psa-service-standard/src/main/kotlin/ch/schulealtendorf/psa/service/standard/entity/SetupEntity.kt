@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 by Nicolas Märchy
+ * Copyright (c) 2018 by Nicolas Märchy
  *
  * This file is part of Sporttag PSA.
  *
@@ -33,14 +33,34 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.entity
+
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
+
+@Entity
+@Table(name = "SETUP")
+data class SetupEntity(
+
+    @Id
+    @NotNull
+    @Size(min = 1, max = 10)
+    var name: String = DEFAULT_SETUP,
+
+    @NotNull
+    var initialized: Boolean = false,
+
+    @NotNull
+    @Size(min = 8, max = 32)
+    @Column(name = "jwt_secret")
+    var jwtSecret: String = ""
+) {
+    companion object {
+        const val DEFAULT_SETUP = "default"
+    }
+}

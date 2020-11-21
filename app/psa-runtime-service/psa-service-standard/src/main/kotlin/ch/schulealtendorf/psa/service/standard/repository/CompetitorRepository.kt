@@ -33,14 +33,27 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.repository
+
+import ch.schulealtendorf.psa.dto.participation.GenderDto
+import ch.schulealtendorf.psa.service.standard.entity.CompetitorEntity
+import org.springframework.data.repository.CrudRepository
+import java.util.Optional
+
+/**
+ * Describes a CRUD repository for the {@link StarterEntity}.
+ *
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface CompetitorRepository : CrudRepository<CompetitorEntity, Int> {
+
+    fun findByParticipantGender(gender: GenderDto): List<CompetitorEntity>
+
+    fun findByParticipantId(id: Int): Optional<CompetitorEntity>
+
+    fun findByParticipantGenderAndParticipantGroupName(gender: GenderDto, group: String): List<CompetitorEntity>
+
+    fun findByParticipantGroupName(group: String): List<CompetitorEntity>
+}

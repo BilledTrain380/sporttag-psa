@@ -33,14 +33,33 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.entity
+
+import javax.persistence.CascadeType
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
+
+/**
+ * @author nmaerchy
+ * @since 1.0.0
+ */
+@Entity
+@Table(name = "PARTICIPANT_GROUP")
+data class GroupEntity(
+
+    @Id
+    @NotNull
+    @Size(min = 1, max = 20)
+    var name: String = "",
+
+    @NotNull
+    @ManyToOne(cascade = [CascadeType.REMOVE, CascadeType.PERSIST])
+    @JoinColumn(name = "FK_COACH_id", referencedColumnName = "id")
+    var coach: CoachEntity = CoachEntity()
+)

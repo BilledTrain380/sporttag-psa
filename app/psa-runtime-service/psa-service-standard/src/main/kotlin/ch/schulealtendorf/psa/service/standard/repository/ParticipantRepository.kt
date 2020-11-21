@@ -33,14 +33,23 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.repository
+
+import ch.schulealtendorf.psa.service.standard.entity.ParticipantEntity
+import org.springframework.data.repository.CrudRepository
+
+/**
+ * @author nmaerchy
+ * @since 2.0.0
+ */
+interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
+
+    fun findByGroupName(name: String): List<ParticipantEntity>
+
+    fun findBySportName(name: String): List<ParticipantEntity>
+
+    fun findByGender(gender: String): List<ParticipantEntity>
+
+    fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
+}

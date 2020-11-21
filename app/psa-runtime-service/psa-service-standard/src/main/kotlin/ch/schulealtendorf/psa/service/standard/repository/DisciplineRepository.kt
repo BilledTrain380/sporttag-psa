@@ -33,14 +33,16 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.repository
+
+import ch.schulealtendorf.psa.service.standard.entity.DisciplineEntity
+import org.springframework.data.repository.CrudRepository
+
+/**
+ * Describes a CRUD repository for a {@link DisciplineEntity}.
+ *
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+interface DisciplineRepository : CrudRepository<DisciplineEntity, String>

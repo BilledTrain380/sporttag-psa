@@ -33,14 +33,36 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.entity
+
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
+import org.jetbrains.annotations.NotNull
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+import javax.validation.constraints.Size
+
+/**
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+@Entity
+@Table(name = "PARTICIPATION")
+data class ParticipationEntity @JvmOverloads constructor(
+    @Id
+    @NotNull
+    @Size(min = 1, max = 10)
+    var name: String = MAIN_PARTICIPATION,
+
+    @NotNull
+    @Size(min = 1, max = 10)
+    var status: String = ParticipationStatusType.OPEN.name
+) {
+    val statusType: ParticipationStatusType
+        get() = ParticipationStatusType.valueOf(status)
+
+    companion object {
+        const val MAIN_PARTICIPATION = "main"
+    }
+}

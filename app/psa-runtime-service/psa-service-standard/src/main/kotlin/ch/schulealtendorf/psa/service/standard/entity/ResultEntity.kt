@@ -33,14 +33,46 @@
  *
  *
  */
-rootProject.name = "PSA"
-include ':app:dto'
-include ':app:core'
-include ':app:shared'
-include ':app:psa-runtime-service'
-include ':app:psa-runtime-service:psa-service-athletics'
-include ':app:psa-runtime-service:psa-service-group'
-include ':app:psa-runtime-service:psa-service-standard'
-include ':app:starter'
-include 'distribution'
 
+package ch.schulealtendorf.psa.service.standard.entity
+
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
+
+@Entity
+@Table(name = "RESULT")
+data class ResultEntity(
+
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
+
+    @Size(max = 5)
+    var distance: String? = null,
+
+    @NotNull
+    var value: Long = 1,
+
+    @NotNull
+    var points: Int = 1,
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_DISCIPLINE", referencedColumnName = "name")
+    var discipline: DisciplineEntity = DisciplineEntity()
+) {
+
+    // We have to exclude this property from the toString, hashcode and equals methods, because circular mapping
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "fk_COMPETITOR_startnumber", referencedColumnName = "startnumber")
+    var competitor: CompetitorEntity = CompetitorEntity()
+}
