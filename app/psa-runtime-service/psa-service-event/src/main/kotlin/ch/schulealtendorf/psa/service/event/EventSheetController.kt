@@ -37,6 +37,7 @@
 package ch.schulealtendorf.psa.service.event
 
 import ch.schulealtendorf.psa.dto.event.EventSheetData
+import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.service.event.business.EventSheetDisciplineExport
 import ch.schulealtendorf.psa.service.event.business.EventSheetExportManager
@@ -44,9 +45,8 @@ import ch.schulealtendorf.psa.service.event.business.ParticipantListExportManage
 import ch.schulealtendorf.psa.service.event.business.reporter.StartlistReporter
 import ch.schulealtendorf.psa.service.standard.disciplineDtoOf
 import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
+import ch.schulealtendorf.psa.service.standard.manager.GroupManager
 import ch.schulealtendorf.psa.service.standard.repository.DisciplineRepository
-import ch.schulealtendorf.psa.service.standard.repository.GroupRepository
-import ch.schulealtendorf.psa.service.standard.simpleGroupDtoOf
 import ch.schulealtendorf.psa.service.standard.web.buildFileResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -73,7 +73,7 @@ class EventSheetController(
     private val participantListExportManager: ParticipantListExportManager,
     private val startlistReporter: StartlistReporter,
     private val disciplineRepository: DisciplineRepository,
-    private val groupRepository: GroupRepository
+    private val groupManager: GroupManager
 ) {
     @Operation(
         summary = "Get all competitive group names",
@@ -96,8 +96,7 @@ class EventSheetController(
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @PostMapping("/groups")
     fun getGroupNames(): List<String> {
-        // TODO: Filter by competitive
-        return groupRepository.findAll().map { it.name }
+        return groupManager.getOverviewBy(GroupStatusType.GROUP_TYPE_COMPETITIVE).map { it.group.name }
     }
 
     @Operation(
@@ -130,8 +129,7 @@ class EventSheetController(
                 .map { disciplineDtoOf(it) }
                 .orElseThrow { BadRequestException("The discipline does not exist: name=${data.discipline}") }
 
-            val group = groupRepository.findByName(data.group)
-                .map { simpleGroupDtoOf(it) }
+            val group = groupManager.getGroup(data.group)
                 .orElseThrow { BadRequestException("The group does not exist: name=${data.group}") }
 
             return@map EventSheetDisciplineExport(discipline, group, data.gender)

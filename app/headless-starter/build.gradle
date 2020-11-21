@@ -7,4 +7,6 @@ dependencies {
     implementation project(":app:psa-runtime-service:psa-service-athletics")
     implementation project(":app:psa-runtime-service:psa-service-ranking")
     implementation project(":app:psa-runtime-service:psa-service-user")
+
+    implementation "org.springframework.boot:spring-boot-devtools"
 }
