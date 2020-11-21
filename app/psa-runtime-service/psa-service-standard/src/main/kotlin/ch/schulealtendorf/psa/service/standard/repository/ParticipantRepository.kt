@@ -53,6 +53,7 @@ interface ParticipantRepository : CrudRepository<ParticipantEntity, Int> {
 
     fun findByGroupAndGender(name: String, gender: String): List<ParticipantEntity>
 
+    @JvmDefault
     fun getParticipantOrFail(id: Int): ParticipantEntity {
         return this.findById(id)
             .orElseThrow { NoSuchElementException("Could not find participant: id=$id") }

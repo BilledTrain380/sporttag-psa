@@ -36,13 +36,12 @@
 
 package ch.schulealtendorf.psa.core.user
 
+import ch.schulealtendorf.psa.core.user.entity.AuthorityEntity
+import ch.schulealtendorf.psa.core.user.entity.UserEntity
+import ch.schulealtendorf.psa.core.user.repository.UserRepository
+import ch.schulealtendorf.psa.core.user.validation.InvalidPasswordException
+import ch.schulealtendorf.psa.core.user.validation.PasswordValidator
 import ch.schulealtendorf.psa.dto.user.UserDto
-import ch.schulealtendorf.sporttagpsa.business.user.validation.InvalidPasswordException
-import ch.schulealtendorf.sporttagpsa.business.user.validation.PasswordValidator
-import ch.schulealtendorf.sporttagpsa.entity.AuthorityEntity
-import ch.schulealtendorf.sporttagpsa.entity.UserEntity
-import ch.schulealtendorf.sporttagpsa.lib.userDtoOf
-import ch.schulealtendorf.sporttagpsa.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.Optional
@@ -112,5 +111,14 @@ class UserManagerImpl(
         val validationResult = passwordValidator.validate(this)
         if (validationResult.isValid.not())
             throw InvalidPasswordException(validationResult.messages.joinToString(", "))
+    }
+
+    fun userDtoOf(userEntity: UserEntity): UserDto {
+        return UserDto(
+            id = userEntity.id!!,
+            username = userEntity.username,
+            authorities = userEntity.authorities.map { it.role },
+            enabled = userEntity.enabled
+        )
     }
 }

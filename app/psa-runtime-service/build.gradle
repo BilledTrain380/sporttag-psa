@@ -13,7 +13,6 @@ subprojects {
     dependencies {
         implementation project(":app:core")
         implementation project(":app:dto")
-        implementation project(":app:psa-runtime-service:psa-service-standard")
         implementation "org.springframework.boot:spring-boot-starter-web"
         implementation "org.springframework.boot:spring-boot-starter-data-jpa"
         implementation "org.springframework.boot:spring-boot-starter-security"
@@ -28,5 +27,18 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation "org.springframework.security:spring-security-test"
         testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test"
+    }
+}
+
+configure([
+        project(":app:psa-runtime-service:psa-service-athletics"),
+        project(":app:psa-runtime-service:psa-service-event"),
+        project(":app:psa-runtime-service:psa-service-group"),
+        project(":app:psa-runtime-service:psa-service-participation"),
+        project(":app:psa-runtime-service:psa-service-ranking"),
+        project(":app:psa-runtime-service:psa-service-user")
+]) {
+    dependencies {
+        implementation project(":app:psa-runtime-service:psa-service-standard")
     }
 }

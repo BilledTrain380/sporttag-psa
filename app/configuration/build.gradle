@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(":app:core")
+
+    implementation "org.springdoc:springdoc-openapi-kotlin"
+
+    implementation "org.flywaydb:flyway-core"
+    runtimeOnly "com.h2database:h2"
+}

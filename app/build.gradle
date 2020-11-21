@@ -119,14 +119,14 @@ subprojects {
 
     compileKotlin {
         kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
+            freeCompilerArgs = ["-Xjsr305=strict", "-Xjvm-default=compatibility"]
             jvmTarget = "1.8"
         }
     }
 
     compileTestKotlin {
         kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
+            freeCompilerArgs = ["-Xjsr305=strict", "-Xjvm-default=compatibility"]
             jvmTarget = "1.8"
         }
     }
@@ -155,11 +155,6 @@ subprojects {
             xml.enabled true
         }
     }
-}
-
-configure([project(':app:core'), project(':app:shared')]) {
-    apply plugin: 'kotlin-spring'
-    apply plugin: 'org.springframework.boot'
 
     bootJar {
         enabled = false
@@ -168,18 +163,19 @@ configure([project(':app:core'), project(':app:shared')]) {
     jar {
         enabled = true
     }
+}
+
+configure([
+        project(':app:headless-starter'),
+        project(':app:core'),
+        project(':app:shared'),
+        project(":app:configuration"),
+        project(":app:psa-runtime-service"),
+        project(":app:psa-web"),
+]) {
+    apply plugin: 'kotlin-spring'
 
     dependencies {
         implementation "org.springframework.boot:spring-boot-starter-web"
-    }
-}
-
-project(":app:dto") {
-    bootJar {
-        enabled = false
-    }
-
-    jar {
-        enabled = true
     }
 }

@@ -37,8 +37,8 @@
 package ch.schulealtendorf.psa.service.athletics.business
 
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
-import ch.schulealtendorf.sporttagpsa.lib.disciplineDtoOf
-import ch.schulealtendorf.sporttagpsa.repository.DisciplineRepository
+import ch.schulealtendorf.psa.service.standard.disciplineDtoOf
+import ch.schulealtendorf.psa.service.standard.repository.DisciplineRepository
 import org.springframework.stereotype.Component
 import java.util.Optional
 

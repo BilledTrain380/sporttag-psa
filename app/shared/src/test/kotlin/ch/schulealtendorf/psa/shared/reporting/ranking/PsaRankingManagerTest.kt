@@ -97,7 +97,7 @@ internal class PsaRankingManagerTest {
     }
 
     @Nested
-    internal inner class DisciplineRanking {
+    internal inner class DisciplineRankingDto {
 
         @Test
         internal fun createRanking() {

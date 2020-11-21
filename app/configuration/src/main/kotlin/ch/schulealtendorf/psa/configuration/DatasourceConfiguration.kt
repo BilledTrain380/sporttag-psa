@@ -34,33 +34,36 @@
  *
  */
 
-package ch.schulealtendorf.psa.service.standard.entity
+package ch.schulealtendorf.psa.configuration
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.psa.core.io.FileSystem
+import org.springframework.boot.jdbc.DataSourceBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import javax.sql.DataSource
 
-@Entity
-@Table(name = "SETUP")
-data class SetupEntity(
-
-    @Id
-    @NotNull
-    @Size(min = 1, max = 10)
-    var name: String = DEFAULT_SETUP,
-
-    @NotNull
-    var initialized: Boolean = false,
-
-    @NotNull
-    @Size(min = 8, max = 32)
-    @Column(name = "jwt_secret")
-    var jwtSecret: String = ""
+/**
+ * Configuration for the database location.
+ * The database location is determined by the {@link FileSystem#getApplicationDir} method.
+ *
+ * @author nmaerchy
+ * @version 1.0.0
+ */
+@Configuration
+@Profile("standalone")
+class DatasourceConfiguration(
+    private val fileSystem: FileSystem
 ) {
-    companion object {
-        const val DEFAULT_SETUP = "default"
+
+    @Bean
+    fun datasource(): DataSource {
+
+        return DataSourceBuilder.create()
+            .url("jdbc:h2:${fileSystem.getApplicationDir()}/db/psa;USER=psa-user;PASSWORD=Psa1999\$")
+            .username("psa-user")
+            .password("Psa1999\$")
+            .driverClassName("org.h2.Driver")
+            .build()
     }
 }

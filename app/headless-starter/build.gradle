@@ -1,0 +1,10 @@
+dependencies {
+    implementation project(":app:configuration")
+    implementation project(":app:psa-web")
+    implementation project(":app:psa-runtime-service:psa-service-group")
+    implementation project(":app:psa-runtime-service:psa-service-participation")
+    implementation project(":app:psa-runtime-service:psa-service-event")
+    implementation project(":app:psa-runtime-service:psa-service-athletics")
+    implementation project(":app:psa-runtime-service:psa-service-ranking")
+    implementation project(":app:psa-runtime-service:psa-service-user")
+}
