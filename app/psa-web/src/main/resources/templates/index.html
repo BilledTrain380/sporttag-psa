@@ -77,8 +77,7 @@
 <div class="container-full">
     <div class="jumbotron text-center p-5">
         <div class="container mt-5 mb-5">
-            <div th:if="${hasBeenInitialized}" class="alert alert-danger" role="alert">
-                You just finished the setup. Please restart PSA!
+            <div th:if="${hasBeenInitialized}" class="alert alert-danger" role="alert" th:text="#{page.home.setupWarning}">
             </div>
 
             <h1 th:text="#{page.home.product.lead.title}"></h1>
