@@ -1,11 +1,10 @@
 package ch.schulealtendorf.psa.core.setup
 
-import ch.schulealtendorf.psa.core.setup.entity.SetupEntity
-import ch.schulealtendorf.psa.core.setup.repository.SetupRepository
 import ch.schulealtendorf.psa.core.user.USER_ADMIN
 import ch.schulealtendorf.psa.core.user.UserManagerImpl
-import ch.schulealtendorf.psa.core.user.repository.UserRepository
 import ch.schulealtendorf.psa.core.user.validation.PSAPasswordValidator
+import ch.schulealtendorf.psa.setup.SetupRepository
+import ch.schulealtendorf.psa.setup.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.flywaydb.test.annotation.FlywayTest
 import org.junit.jupiter.api.Tag
@@ -47,20 +46,19 @@ internal class StatefulSetupManagerTest {
         val setup = SetupInformation("gibbiX12345$")
         setupManager.initialize(setup)
 
-        val setupEntity = setupRepository.findById(SetupEntity.DEFAULT_SETUP)
-        assertThat(setupEntity).isNotEmpty
-        assertThat(setupEntity.get().initialized).isTrue()
-        assertThat(setupEntity.get().jwtSecret).isNotEmpty()
+        val setupEntity = setupRepository.getSetup()
+        assertThat(setupEntity.initialized).isTrue
+        assertThat(setupEntity.jwtSecret).isNotEmpty
 
-        assertThat(setupManager.jwtSecret).isEqualTo(setupEntity.get().jwtSecret)
-        assertThat(setupManager.isInitialized).isTrue()
+        assertThat(setupManager.jwtSecret).isEqualTo(setupEntity.jwtSecret)
+        assertThat(setupManager.isInitialized).isTrue
 
         val admin = userRepository.findByUsername(USER_ADMIN)
         assertThat(admin).isNotEmpty
 
         val isPasswordMatch = BCryptPasswordEncoder(4)
             .matches(setup.adminPassword, admin.get().password)
-        assertThat(isPasswordMatch).isTrue()
+        assertThat(isPasswordMatch).isTrue
     }
 
     @Test

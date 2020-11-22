@@ -49,4 +49,9 @@ import java.util.Optional
 interface UserRepository : CrudRepository<UserEntity, Int> {
 
     fun findByUsername(username: String): Optional<UserEntity>
+
+    @JvmDefault
+    fun findByUserNameOrThrow(username: String): UserEntity {
+        return findByUsername(username).orElseThrow { NoSuchElementException("Username $username does not exist") }
+    }
 }

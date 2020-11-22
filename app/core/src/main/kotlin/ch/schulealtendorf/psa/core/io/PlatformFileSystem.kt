@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.core.io
 
-import net.harawata.appdirs.AppDirs
+import ch.schulealtendorf.psa.setup.ApplicationDirectory
 import org.springframework.stereotype.Component
 import java.io.BufferedOutputStream
 import java.io.File
@@ -55,18 +55,13 @@ import java.util.zip.ZipOutputStream
  */
 @Component
 class PlatformFileSystem(
-    appDirs: AppDirs
+    private val applicationDirectory: ApplicationDirectory
 ) : FileSystem {
-    private val applicationDir = File(appDirs.getUserDataDir("PSA", "", "")).toPath()
-
-    init {
-        Files.createDirectories(applicationDir)
-    }
 
     /**
      * @return the application directory which Sporttag PSA can use
      */
-    override fun getApplicationDir(): File = applicationDir.toFile()
+    override fun getApplicationDir(): File = applicationDirectory.path.toFile()
 
     override fun write(file: ApplicationFile, lines: List<String>): File {
         val newFile = createFile(file)
@@ -108,7 +103,7 @@ class PlatformFileSystem(
     }
 
     private fun createFile(appFile: ApplicationFile, extension: String = ""): File {
-        val file = applicationDir.resolve("${appFile.path}$extension")
+        val file = applicationDirectory.path.resolve("${appFile.path}$extension")
         Files.createDirectories(file.parent)
         Files.deleteIfExists(file)
         Files.createFile(file)

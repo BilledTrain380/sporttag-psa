@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.configuration
 
-import ch.schulealtendorf.psa.core.io.FileSystem
+import ch.schulealtendorf.psa.setup.ApplicationDirectory
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -53,14 +53,14 @@ import javax.sql.DataSource
 @Configuration
 @Profile("standalone")
 class DatasourceConfiguration(
-    private val fileSystem: FileSystem
+    private val applicationDirectory: ApplicationDirectory
 ) {
 
     @Bean
     fun datasource(): DataSource {
 
         return DataSourceBuilder.create()
-            .url("jdbc:h2:${fileSystem.getApplicationDir()}/db/psa;USER=psa-user;PASSWORD=Psa1999\$")
+            .url("jdbc:h2:${applicationDirectory.path}/db/psa;USER=psa-user;PASSWORD=Psa1999\$")
             .username("psa-user")
             .password("Psa1999\$")
             .driverClassName("org.h2.Driver")

@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.configuration.web.oauth
 
-import ch.schulealtendorf.psa.core.user.UserManager
+import ch.schulealtendorf.psa.setup.UserRepository
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken
@@ -54,14 +54,13 @@ import org.springframework.stereotype.Component
 @Component
 @Qualifier("psa")
 class PSATokenEnhancer(
-    private val userManager: UserManager
+    private val userRepository: UserRepository
 ) : TokenEnhancer {
 
     override fun enhance(accessToken: OAuth2AccessToken?, authentication: OAuth2Authentication?): OAuth2AccessToken {
 
         val username = (authentication!!.userAuthentication.principal as User).username
-
-        val user = userManager.getOne(username).get()
+        val user = userRepository.findByUserNameOrThrow(username)
 
         return (accessToken!! as DefaultOAuth2AccessToken).apply {
             additionalInformation = additionalInformation?.plus(Pair("user_id", user.id))
