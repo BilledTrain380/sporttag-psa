@@ -1,6 +1,6 @@
-package ch.schulealtendorf.psa.service.athletics
+package ch.schulealtendorf.psa.service.group
 
 import ch.schulealtendorf.psa.configuration.test.PsaModuleTest
 
 @PsaModuleTest
-class AthleticsTest
+class GroupModuleTest
