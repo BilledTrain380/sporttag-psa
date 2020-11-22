@@ -55,7 +55,7 @@ internal class EventSheetControllerTest : PsaWebMvcTest() {
     @Test
     internal fun getEventSheetDataWhenUnauthorized() {
         mockMvc.perform(get(EVENT_SHEET_DATA_ENDPOINT))
-            .andExpect(status().isOk)
+            .andExpect(status().isUnauthorized)
     }
 
     @Test
@@ -71,7 +71,7 @@ internal class EventSheetControllerTest : PsaWebMvcTest() {
         mockMvc.perform(
             get(EVENT_SHEET_DATA_ENDPOINT)
                 .with(bearerTokenUser(PSAScope.EVENT_SHEETS))
-        ).andExpect(status().isOk)
+        ).andExpect(status().isNotFound)
     }
 
     @Test

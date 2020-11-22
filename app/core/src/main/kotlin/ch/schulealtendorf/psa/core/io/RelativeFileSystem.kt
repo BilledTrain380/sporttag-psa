@@ -6,7 +6,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 @Component
-@Profile("dev")
+@Profile("dev", "test")
 class RelativeFileSystem : FileSystem {
     override val applicationDir: Path = Paths.get("./application-dir")
 }

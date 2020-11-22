@@ -112,7 +112,7 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/git,java,gradle,intellij
 
 # Development application directory
-/application-dir
+application-dir
 
 # PSA frontend application
 /app/psa-web/src/main/resources/public/app/*
