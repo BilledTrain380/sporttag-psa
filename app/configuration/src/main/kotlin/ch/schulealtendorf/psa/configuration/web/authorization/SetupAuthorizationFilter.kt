@@ -54,13 +54,13 @@ import javax.servlet.http.HttpServletResponse
  * @since 2.0.0
  */
 class SetupAuthorizationFilter(
-    setupRepository: SetupRepository
+    private val setupRepository: SetupRepository
 ) : OncePerRequestFilter() {
     companion object {
         private val STATIC_RESOURCES = PathRequest.toStaticResources().atCommonLocations()
     }
 
-    private val isInitialized: Boolean = setupRepository.getSetup().initialized
+    private val statefulSetup = StatefulSetup()
 
     /**
      * Checks if the setup page can be accessed, if it is forbidden or if it should redirect to it.
@@ -73,16 +73,36 @@ class SetupAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.pathInfo == "/setup" && isInitialized.not()) {
+        if (request.pathInfo == "/setup" && statefulSetup.isInitialized.not()) {
             filterChain.doFilter(request, response)
-        } else if (request.pathInfo == "/setup" && isInitialized) {
+        } else if (request.pathInfo == "/setup" && statefulSetup.isInitialized) {
             // Do not leak 403
             response.sendError(404, "Resource not found")
-        } else if (STATIC_RESOURCES.matches(request).not() && isInitialized.not()
+        } else if (STATIC_RESOURCES.matches(request).not() && statefulSetup.isInitialized.not()
         ) {
             response.sendRedirect("${request.scheme}://${request.serverName}:${request.serverPort}/setup")
         } else {
             filterChain.doFilter(request, response)
         }
+    }
+
+    /**
+     * Loads the setup state from the database whenever it has not been initialized yet.
+     *
+     * As soon as the setup is initialized, in will be read from memory
+     */
+    inner class StatefulSetup {
+        private var hasBeenInitialized: Boolean = false
+
+        val isInitialized: Boolean
+            get() {
+                if (hasBeenInitialized) {
+                    return true
+                }
+
+                hasBeenInitialized = setupRepository.getSetup().initialized
+
+                return hasBeenInitialized
+            }
     }
 }

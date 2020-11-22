@@ -101,11 +101,8 @@ class ResourceServerConfig(
 
     override fun configure(http: HttpSecurity?) {
         http
+            ?.antMatcher("/api/**")
             ?.authorizeRequests()
-            ?.antMatchers(
-                "/api/swagger-ui/**",
-                "/v3/api-docs/**"
-            )?.permitAll()
             ?.antMatchers(
                 "/api/groups",
                 "/api/participation",
