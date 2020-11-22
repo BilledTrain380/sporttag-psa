@@ -1,4 +1,4 @@
-package ch.schulealtendorf.sporttagpsa
+package ch.schulealtendorf.psa
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication

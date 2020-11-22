@@ -172,7 +172,7 @@ configure([
         project(':app:core'),
         project(":app:psa-web"),
         project(':app:shared'),
-        project(':app:headless-starter'),
+        project(':app:starter'),
 ]) {
     apply plugin: 'kotlin-spring'
 

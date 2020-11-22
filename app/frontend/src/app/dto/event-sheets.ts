@@ -7,6 +7,6 @@ export interface EventSheetExport {
 }
 
 export interface EventSheetData {
-  readonly isParticipationOpen: boolean;
+  readonly participationOpen: boolean;
   readonly groups: ReadonlyArray<string>;
 }

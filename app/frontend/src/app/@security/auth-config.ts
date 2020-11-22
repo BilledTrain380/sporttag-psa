@@ -33,9 +33,7 @@ export const authConfig: AuthConfig = {
     "participant_read",
     "participant_write",
     "participation",
-    "files",
     "ranking",
     "event_sheets",
-    "participant_list",
   ].join(" "),
 };

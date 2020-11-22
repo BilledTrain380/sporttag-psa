@@ -31,7 +31,7 @@ const reducer = createReducer(
   on(setEventSheetsDataAction, (state, action) => (
     {
       ...state,
-      groups: action.groupNames,
+      groupNames: action.groupNames,
       isParticipationOpen: action.isParticipationOpen,
     }
   )),
