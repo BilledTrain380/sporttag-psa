@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.configuration.web.oauth
+package ch.schulealtendorf.psa.dto.oauth
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>

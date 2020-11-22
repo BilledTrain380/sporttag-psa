@@ -1,7 +1,6 @@
 package ch.schulealtendorf.psa.service.athletics
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
-import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
 import org.junit.jupiter.api.Test
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get

@@ -1,7 +1,6 @@
 package ch.schulealtendorf.psa.service.participation
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
-import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.participation.ParticipationCommand
 import ch.schulealtendorf.psa.dto.participation.SportDto

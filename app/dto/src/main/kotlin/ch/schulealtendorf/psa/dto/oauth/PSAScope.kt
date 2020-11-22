@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.configuration.web.oauth
+package ch.schulealtendorf.psa.dto.oauth
 
 /**
  * @author nmaerchy <billedtrain380@gmail.com>
@@ -50,9 +50,22 @@ object PSAScope {
     const val DISCIPLINE_READ = "discipline_read"
     const val SPORT_READ = "sport_read"
     const val PARTICIPATION = "participation"
-    const val PARTICIPANT_LIST = "participant_list"
-    const val FILES = "files"
     const val RANKING = "ranking"
     const val EVENT_SHEETS = "event_sheets"
     const val USER = "user"
+
+    val ALL_SCOPES = listOf(
+        GROUP_READ,
+        GROUP_WRITE,
+        PARTICIPANT_READ,
+        PARTICIPANT_WRITE,
+        COMPETITOR_READ,
+        COMPETITOR_WRITE,
+        DISCIPLINE_READ,
+        SPORT_READ,
+        PARTICIPATION,
+        RANKING,
+        EVENT_SHEETS,
+        USER
+    )
 }

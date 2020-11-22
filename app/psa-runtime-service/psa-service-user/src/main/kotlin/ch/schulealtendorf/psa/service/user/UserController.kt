@@ -41,6 +41,8 @@ import ch.schulealtendorf.psa.core.user.IllegalUserOperationException
 import ch.schulealtendorf.psa.core.user.USER_ADMIN
 import ch.schulealtendorf.psa.core.user.UserManager
 import ch.schulealtendorf.psa.core.user.validation.InvalidPasswordException
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
@@ -54,6 +56,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -76,6 +79,7 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api")
 @Tag(name = "User", description = "Manage users")
+@SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.USER])
 class UserController(
     private val userManager: UserManager
 ) {

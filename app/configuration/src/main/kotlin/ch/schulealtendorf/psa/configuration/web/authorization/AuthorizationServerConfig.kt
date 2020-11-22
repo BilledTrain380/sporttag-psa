@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.configuration.web.authorization
 
-import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.setup.SetupRepository
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -92,22 +92,7 @@ class AuthorizationServerConfig(
             ?.authorities("ADMIN", "USER")
             ?.authorizedGrantTypes("implicit")
             ?.accessTokenValiditySeconds(TOKEN_VALIDITY_DURATION.seconds.toInt())
-            ?.scopes(
-                PSAScope.USER,
-                PSAScope.GROUP_READ,
-                PSAScope.GROUP_WRITE,
-                PSAScope.SPORT_READ,
-                PSAScope.DISCIPLINE_READ,
-                PSAScope.COMPETITOR_READ,
-                PSAScope.COMPETITOR_WRITE,
-                PSAScope.PARTICIPANT_READ,
-                PSAScope.PARTICIPANT_WRITE,
-                PSAScope.PARTICIPATION,
-                PSAScope.FILES,
-                PSAScope.RANKING,
-                PSAScope.EVENT_SHEETS,
-                PSAScope.PARTICIPANT_LIST
-            )
+            ?.scopes(*PSAScope.ALL_SCOPES.toTypedArray())
     }
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer?) {

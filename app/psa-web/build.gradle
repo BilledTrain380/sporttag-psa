@@ -8,6 +8,10 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "net.sourceforge.nekohtml:nekohtml"
 
+    implementation "org.springdoc:springdoc-openapi-ui"
+    implementation "org.springdoc:springdoc-openapi-kotlin"
+    implementation "org.springdoc:springdoc-openapi-security"
+
     // webjars
     implementation "org.webjars:jquery"
     implementation "org.webjars:bootstrap"

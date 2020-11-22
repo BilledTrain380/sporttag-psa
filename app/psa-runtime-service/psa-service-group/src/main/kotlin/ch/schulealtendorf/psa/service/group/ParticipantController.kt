@@ -38,6 +38,8 @@ package ch.schulealtendorf.psa.service.group
 
 import ch.schulealtendorf.psa.core.ifNotNull
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.participation.ParticipantDto
 import ch.schulealtendorf.psa.dto.participation.ParticipantElement
 import ch.schulealtendorf.psa.dto.participation.ParticipantInput
@@ -53,6 +55,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
@@ -94,6 +97,7 @@ class ParticipantController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -128,6 +132,7 @@ class ParticipantController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -157,6 +162,7 @@ class ParticipantController(
         summary = "Add a new participant",
         tags = ["Participant"]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -210,6 +216,7 @@ class ParticipantController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -272,6 +279,7 @@ class ParticipantController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -314,6 +322,7 @@ class ParticipantController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.PARTICIPANT_WRITE])
     @ApiResponses(
         value = [
             ApiResponse(

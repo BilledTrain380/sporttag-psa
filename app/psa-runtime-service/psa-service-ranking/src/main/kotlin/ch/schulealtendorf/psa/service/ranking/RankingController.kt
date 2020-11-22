@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.service.ranking
 
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.ranking.RankingDataDto
 import ch.schulealtendorf.psa.service.ranking.business.RankingExport
 import ch.schulealtendorf.psa.service.ranking.business.RankingExportManager
@@ -46,6 +48,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
@@ -59,6 +62,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping("/api")
 @Tag(name = "Ranking", description = "Manage the ranking")
+@SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.RANKING])
 class RankingController(
     private val exportManager: RankingExportManager,
 ) {

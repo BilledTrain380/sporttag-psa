@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.service.athletics
 
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.psa.service.athletics.business.DisciplineManager
 import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
@@ -46,6 +48,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -60,6 +63,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api")
 @Tag(name = "Discipline", description = "Manager disciplines")
+@SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.DISCIPLINE_READ])
 class DisciplineController(
     private val disciplineManager: DisciplineManager
 ) {

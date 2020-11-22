@@ -36,8 +36,8 @@
 
 package ch.schulealtendorf.psa.configuration.web.resource
 
-import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
-import ch.schulealtendorf.psa.configuration.web.oauth.SecurityRequirementNames
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
 import io.swagger.v3.oas.annotations.info.Info
@@ -88,8 +88,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices
                 OAuthScope(name = PSAScope.DISCIPLINE_READ, description = "Allows to read discipline resources"),
                 OAuthScope(name = PSAScope.SPORT_READ, description = "Allows to read sport resources"),
                 OAuthScope(name = PSAScope.PARTICIPATION, description = "Access participation resources"),
-                OAuthScope(name = PSAScope.PARTICIPANT_LIST, description = "Access participation list"),
-                OAuthScope(name = PSAScope.FILES, description = "Access files"),
                 OAuthScope(name = PSAScope.RANKING, description = "Access ranking"),
                 OAuthScope(name = PSAScope.EVENT_SHEETS, description = "Access event sheets"),
                 OAuthScope(name = PSAScope.USER, description = "Access to user management)")
@@ -103,8 +101,11 @@ class ResourceServerConfig(
 
     override fun configure(http: HttpSecurity?) {
         http
-            ?.antMatcher("/api/**")
             ?.authorizeRequests()
+            ?.antMatchers(
+                "/api/swagger-ui/**",
+                "/v3/api-docs/**"
+            )?.permitAll()
             ?.antMatchers(
                 "/api/groups",
                 "/api/participation",

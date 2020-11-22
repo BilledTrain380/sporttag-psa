@@ -39,6 +39,8 @@ package ch.schulealtendorf.psa.service.group
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.service.group.business.GroupImportManager
 import ch.schulealtendorf.psa.service.group.business.parsing.CSVParsingException
 import ch.schulealtendorf.psa.service.group.business.parsing.GroupFileParser
@@ -52,6 +54,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -89,6 +92,7 @@ class GroupController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -119,6 +123,7 @@ class GroupController(
         summary = "List groups",
         tags = ["Group"]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -149,6 +154,7 @@ class GroupController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -179,6 +185,7 @@ class GroupController(
         summary = "Import groups by a csv file",
         tags = ["Group"]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.GROUP_WRITE])
     @ApiResponses(
         value = [
             ApiResponse(

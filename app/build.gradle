@@ -155,7 +155,9 @@ subprojects {
             xml.enabled true
         }
     }
+}
 
+configure(subprojects.findAll { it.name != ":app:headless-starer" }) {
     bootJar {
         enabled = false
     }
@@ -166,12 +168,11 @@ subprojects {
 }
 
 configure([
-        project(':app:headless-starter'),
-        project(':app:core'),
-        project(':app:shared'),
         project(":app:configuration"),
-        project(":app:psa-runtime-service"),
+        project(':app:core'),
         project(":app:psa-web"),
+        project(':app:shared'),
+        project(':app:headless-starter'),
 ]) {
     apply plugin: 'kotlin-spring'
 

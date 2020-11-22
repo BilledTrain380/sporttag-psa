@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.service.athletics
 
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultDto
@@ -51,6 +53,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -90,6 +93,7 @@ class CompetitorController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -134,6 +138,7 @@ class CompetitorController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_READ])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -170,6 +175,7 @@ class CompetitorController(
             )
         ]
     )
+    @SecurityRequirement(name = SecurityRequirementNames.OAUTH2, scopes = [PSAScope.COMPETITOR_WRITE])
     @ApiResponses(
         value = [
             ApiResponse(
