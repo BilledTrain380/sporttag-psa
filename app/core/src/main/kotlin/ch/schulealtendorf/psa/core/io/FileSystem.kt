@@ -36,8 +36,14 @@
 
 package ch.schulealtendorf.psa.core.io
 
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 /**
  * Describes a abstraction of the file system used by Sporttag PSA.
@@ -48,9 +54,9 @@ import java.io.InputStream
 interface FileSystem {
 
     /**
-     * @return the application directory which PSA can use
+     * The application directory which PSA can use
      */
-    fun getApplicationDir(): File
+    val applicationDir: Path
 
     /**
      * Writes the given {@code lines} to the given {@code file}.
@@ -65,7 +71,19 @@ interface FileSystem {
      * @return the created file
      * @throws java.io.IOException If the file could not be created
      */
-    fun write(file: ApplicationFile, lines: List<String>): File
+    @JvmDefault
+    fun write(file: ApplicationFile, lines: List<String>): File {
+        val newFile = createFile(file)
+
+        newFile.bufferedWriter().use { writer ->
+            lines.forEach {
+                writer.write(it)
+                writer.newLine()
+            }
+        }
+
+        return newFile
+    }
 
     /**
      * Writes the given {@code input} to the given {@code file}.
@@ -83,7 +101,18 @@ interface FileSystem {
      * @return the created file
      * @throws java.io.IOException if the file could not be created
      */
-    fun write(file: ApplicationFile, input: InputStream): File
+    @JvmDefault
+    fun write(file: ApplicationFile, input: InputStream): File {
+        val newFile = createFile(file)
+
+        input.use { inputStream ->
+            newFile.outputStream().use {
+                inputStream.copyTo(it)
+            }
+        }
+
+        return newFile
+    }
 
     /**
      * Creates an archive with the given {@code files}.
@@ -99,5 +128,26 @@ interface FileSystem {
      * @return the created archive
      * @throws java.io.IOException if the archive could not be created
      */
-    fun createArchive(file: ApplicationFile, files: Iterable<File>): File
+    @JvmDefault
+    fun createArchive(file: ApplicationFile, files: Iterable<File>): File {
+        val zipFile = createFile(file, ".zip")
+
+        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { outputStream ->
+            files.forEach {
+                outputStream.putNextEntry(ZipEntry(it.name))
+                outputStream.write(it.readBytes())
+                outputStream.closeEntry()
+            }
+        }
+
+        return zipFile
+    }
+
+    private fun createFile(appFile: ApplicationFile, extension: String = ""): File {
+        val file = applicationDir.resolve("${appFile.path}$extension")
+        Files.createDirectories(file.parent)
+        Files.deleteIfExists(file)
+        Files.createFile(file)
+        return file.toFile()
+    }
 }

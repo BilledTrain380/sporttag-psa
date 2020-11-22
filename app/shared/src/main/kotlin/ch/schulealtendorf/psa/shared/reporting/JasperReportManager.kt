@@ -59,7 +59,7 @@ import java.io.InputStream
 class JasperReportManager(
     private val filesystem: FileSystem
 ) : ReportManager {
-    private val logoPath = "${filesystem.getApplicationDir()}/reporting/gemeinde-altendorf.jpg"
+    private val logoPath = "${filesystem.applicationDir}/reporting/gemeinde-altendorf.jpg"
 
     override fun exportToPdf(template: Template): InputStream {
         if (File(logoPath).exists().not()) {
