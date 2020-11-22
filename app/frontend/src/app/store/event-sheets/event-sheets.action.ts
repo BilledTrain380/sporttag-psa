@@ -1,7 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { EventSheetData } from "../../dto/event-sheets";
-import { SimpleGroupDto } from "../../dto/group";
+import { EventSheetExport } from "../../dto/event-sheets";
 import { SportDto } from "../../dto/participation";
 
 export const loadEventSheetDataAction = createAction(
@@ -10,7 +9,7 @@ export const loadEventSheetDataAction = createAction(
 
 export interface SetEventSheetsDataProps {
   readonly isParticipationOpen: boolean;
-  readonly groups: ReadonlyArray<SimpleGroupDto>;
+  readonly groupNames: ReadonlyArray<string>;
 }
 
 export const setEventSheetsDataAction = createAction(
@@ -32,7 +31,7 @@ export const finishParticipantFileAction = createAction(
 );
 
 export interface DownloadEventSheetsProps {
-  readonly data: ReadonlyArray<EventSheetData>;
+  readonly data: ReadonlyArray<EventSheetExport>;
 }
 
 export const downloadEventSheetsAction = createAction(

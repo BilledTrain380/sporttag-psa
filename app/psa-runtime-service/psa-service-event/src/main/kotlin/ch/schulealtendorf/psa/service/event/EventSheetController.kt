@@ -37,9 +37,11 @@
 package ch.schulealtendorf.psa.service.event
 
 import ch.schulealtendorf.psa.dto.event.EventSheetData
+import ch.schulealtendorf.psa.dto.event.EventSheetExport
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
+import ch.schulealtendorf.psa.dto.participation.ParticipationStatusType
 import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.service.event.business.EventSheetDisciplineExport
 import ch.schulealtendorf.psa.service.event.business.EventSheetExportManager
@@ -48,6 +50,7 @@ import ch.schulealtendorf.psa.service.event.business.reporter.StartlistReporter
 import ch.schulealtendorf.psa.service.standard.disciplineDtoOf
 import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
 import ch.schulealtendorf.psa.service.standard.manager.GroupManager
+import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
 import ch.schulealtendorf.psa.service.standard.repository.DisciplineRepository
 import ch.schulealtendorf.psa.service.standard.web.buildFileResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -77,7 +80,8 @@ class EventSheetController(
     private val participantListExportManager: ParticipantListExportManager,
     private val startlistReporter: StartlistReporter,
     private val disciplineRepository: DisciplineRepository,
-    private val groupManager: GroupManager
+    private val groupManager: GroupManager,
+    private val participationManager: ParticipationManager
 ) {
     @Operation(
         summary = "Get all competitive group names",
@@ -98,9 +102,15 @@ class EventSheetController(
         ]
     )
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
-    @PostMapping("/groups")
-    fun getGroupNames(): List<String> {
-        return groupManager.getOverviewBy(GroupStatusType.GROUP_TYPE_COMPETITIVE).map { it.group.name }
+    @GetMapping("/data")
+    fun getEventSheetData(): EventSheetData {
+        val groupNames = groupManager.getOverviewBy(GroupStatusType.GROUP_TYPE_COMPETITIVE).map { it.group.name }
+        val isParticipationOpen = participationManager.getParticipationStatus() == ParticipationStatusType.OPEN
+
+        return EventSheetData(
+            isParticipationOpen,
+            groupNames
+        )
     }
 
     @Operation(
@@ -127,8 +137,8 @@ class EventSheetController(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
-    fun createEventSheets(@RequestBody dataList: List<EventSheetData>): ResponseEntity<InputStreamResource> {
-        val exports = dataList.map { data ->
+    fun createEventSheets(@RequestBody exportList: List<EventSheetExport>): ResponseEntity<InputStreamResource> {
+        val exports = exportList.map { data ->
             val discipline = disciplineRepository.findById(data.discipline)
                 .map { disciplineDtoOf(it) }
                 .orElseThrow { BadRequestException("The discipline does not exist: name=${data.discipline}") }

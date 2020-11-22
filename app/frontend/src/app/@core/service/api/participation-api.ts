@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { EventSheetData } from "../../../dto/event-sheets";
 import { ParticipationCommand, ParticipationDto, SportDto } from "../../../dto/participation";
 import { StatusEntry } from "../../../dto/status";
 import { getLogger, Logger } from "../../logging";
@@ -45,23 +44,5 @@ export class ParticipationApi {
     this.log.info("Load sport types");
 
     return this.http.get<ReadonlyArray<SportDto>>(`${API_ENDPOINT}/sports`);
-  }
-
-  createParticipantList(sportTypes: ReadonlyArray<SportDto>): Observable<Blob> {
-    this.log.info("Create participant list: ", sportTypes);
-
-    return this.http.post(`${API_ENDPOINT}/participation-list/download`, sportTypes, {responseType: "blob"});
-  }
-
-  createStartlist(): Observable<Blob> {
-    this.log.info("Create start list");
-
-    return this.http.get(`${API_ENDPOINT}/start-list/download`, {responseType: "blob"});
-  }
-
-  createEventSheets(data: ReadonlyArray<EventSheetData>): Observable<Blob> {
-    this.log.info("Create event sheets");
-
-    return this.http.post(`${API_ENDPOINT}/event-sheets/download`, data, {responseType: "blob"});
   }
 }

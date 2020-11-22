@@ -6,7 +6,7 @@ const selectEventSheets = (state: AppState) => state.eventSheets;
 
 export const selectEventSheetsGroups = createSelector(
   selectEventSheets,
-  state => state.groups,
+  state => state.groupNames,
 );
 
 export const selectIsParticipationOpen = createSelector(
@@ -19,7 +19,7 @@ export const selectIsParticipantListDownloading = createSelector(
   state => state.isParticipantListDownloading,
 );
 
-export const selectIsEventSheetsDowloading = createSelector(
+export const selectIsEventSheetsDownloading = createSelector(
   selectEventSheets,
   state => state.isEventSheetsDownloading,
 );

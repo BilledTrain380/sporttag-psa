@@ -1,7 +1,8 @@
 package ch.schulealtendorf.psa.service.event
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
-import ch.schulealtendorf.psa.dto.event.EventSheetData
+import ch.schulealtendorf.psa.dto.event.EventSheetExport
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.SportDto
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -21,6 +23,7 @@ internal class EventSheetControllerTest : PsaWebMvcTest() {
     private lateinit var participationManager: ParticipationManager
 
     companion object {
+        private const val EVENT_SHEET_DATA_ENDPOINT = "/api/event-sheets/data"
         private const val EVENT_SHEET_DOWNLOAD_ENDPOINT = "/api/event-sheets/download/sheets"
         private const val PARTICIPATION_LIST_DOWNLOAD_ENDPOINT = "/api/event-sheets/download/participant-list"
         private const val START_LIST_DOWNLOAD_ENDPOINT = "/api/event-sheets/download/startlist"
@@ -29,7 +32,7 @@ internal class EventSheetControllerTest : PsaWebMvcTest() {
             SportDto(ATHLETICS)
         )
 
-        private val EVENT_SHEET_DATA = EventSheetData(
+        private val EVENT_SHEET_DATA = EventSheetExport(
             discipline = SCHNELLLAUF,
             gender = GenderDto.MALE,
             group = "2a"
@@ -39,6 +42,36 @@ internal class EventSheetControllerTest : PsaWebMvcTest() {
     @BeforeEach
     internal fun beforeEach() {
         participationManager.closeParticipation()
+    }
+
+    @Test
+    internal fun getEventSheetData() {
+        mockMvc.perform(
+            get(EVENT_SHEET_DATA_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.EVENT_SHEETS))
+        ).andExpect(status().isOk)
+    }
+
+    @Test
+    internal fun getEventSheetDataWhenUnauthorized() {
+        mockMvc.perform(get(EVENT_SHEET_DATA_ENDPOINT))
+            .andExpect(status().isOk)
+    }
+
+    @Test
+    internal fun getEventSheetDataWhenMissingScope() {
+        mockMvc.perform(
+            get(EVENT_SHEET_DATA_ENDPOINT)
+                .with(bearerTokenAdmin(PSAScope.COMPETITOR_READ))
+        ).andExpect(status().isNotFound)
+    }
+
+    @Test
+    internal fun getEventSheetDataWhenMissingAuthority() {
+        mockMvc.perform(
+            get(EVENT_SHEET_DATA_ENDPOINT)
+                .with(bearerTokenUser(PSAScope.EVENT_SHEETS))
+        ).andExpect(status().isOk)
     }
 
     @Test
