@@ -73,13 +73,12 @@ class SetupAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.pathInfo == "/setup" && statefulSetup.isInitialized.not()) {
+        if (request.requestURI.contains("/setup") && statefulSetup.isInitialized.not()) {
             filterChain.doFilter(request, response)
-        } else if (request.pathInfo == "/setup" && statefulSetup.isInitialized) {
+        } else if (request.requestURI.contains("/setup") && statefulSetup.isInitialized) {
             // Do not leak 403
             response.sendError(404, "Resource not found")
-        } else if (STATIC_RESOURCES.matches(request).not() && statefulSetup.isInitialized.not()
-        ) {
+        } else if (STATIC_RESOURCES.matches(request).not() && statefulSetup.isInitialized.not()) {
             response.sendRedirect("${request.scheme}://${request.serverName}:${request.serverPort}/setup")
         } else {
             filterChain.doFilter(request, response)

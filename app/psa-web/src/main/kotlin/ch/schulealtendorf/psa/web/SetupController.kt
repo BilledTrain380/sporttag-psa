@@ -70,6 +70,7 @@ class SetupController(
 
         if (validationResult.isValid) {
             setupManager.initialize(setupInformation)
+            redirectAttributes.addFlashAttribute("hasBeenInitialized", true)
             return "redirect:${request.scheme}://${request.serverName}:${request.serverPort}"
         }
 

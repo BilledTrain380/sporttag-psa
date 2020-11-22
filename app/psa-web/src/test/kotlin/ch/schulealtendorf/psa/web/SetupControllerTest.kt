@@ -58,6 +58,7 @@ internal class SetupControllerTest {
                 .formContent(form)
         ).andExpect(status().is3xxRedirection)
             .andExpect { assertThat(it.response.redirectedUrl).doesNotContain(SETUP_PATH) }
+            .andExpect(flash().attributeExists("hasBeenInitialized"))
 
         // Setup should no longer be accessible now
         mockMvc.perform(get(SETUP_PATH))

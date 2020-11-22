@@ -35,19 +35,13 @@
   -->
 
 <!DOCTYPE html>
-<html lang="de" xmlns:th="http://www.thymeleaf.org"
->
-
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/main :: head(#{page.home.title} + ' - PSA')">
 </head>
 <body>
 
-<!--<div class="container-fluid">-->
-
 <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
-
     <div class="container pl-3 pr-3">
-
         <a class="navbar-brand" href="#">
             <img width="30" height="30" src="images/psa-logo.svg">
             PSA
@@ -59,8 +53,6 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-
-
             <ul class="navbar-nav ml-auto">
 
                 <span class="navbar-text mr-2 ml-2" th:if="${isAuthenticated}"
@@ -77,39 +69,29 @@
                 <li th:if="!${isAuthenticated}" class="nav-item ml-2">
                     <a class="nav-link btn btn-outline-warning" th:href="@{/login}" th:text="#{label.login}"></a>
                 </li>
-
             </ul>
-
         </div>
-
     </div>
-
 </nav>
 
 <div class="container-full">
-
     <div class="jumbotron text-center p-5">
-
         <div class="container mt-5 mb-5">
+            <div th:if="${hasBeenInitialized}" class="alert alert-danger" role="alert">
+                You just finished the setup. Please restart PSA!
+            </div>
 
             <h1 th:text="#{page.home.product.lead.title}"></h1>
 
             <p th:text="#{page.home.product.lead.text}"></p>
-
         </div>
-
     </div>
 
     <div class="container p-5">
-
         <div class="row">
-
             <div class="col-lg-12">
-
                 <div class="card-deck">
-
                     <div class="card border-warning">
-
                         <div class="card-body">
                             <i class="fa fa-2x fa-play mb-3 text-warning"></i>
                             <h5 class="card-title" th:text="#{page.home.product.tour.title}"></h5>
@@ -122,7 +104,6 @@
                     </div>
 
                     <div class="card border-warning">
-
                         <div class="card-body">
                             <i class="fa fa-2x fa-book mb-3 text-warning"></i>
                             <h5 class="card-title" th:text="#{page.home.product.features.title}"></h5>
@@ -135,7 +116,6 @@
                     </div>
 
                     <div class="card border-warning">
-
                         <div class="card-body">
                             <i class="fa fa-2x fa-palette mb-3 text-warning"></i>
                             <h5 class="card-title" th:text="#{page.home.product.themes.title}"></h5>
@@ -146,48 +126,33 @@
                                class="card-link text-warning" th:text="#{label.learnMore}"></a>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 
 <footer class="bg-dark text-light">
-
     <div class="container pt-3">
-
         <div class="row">
-
             <div class="col-lg-8">
-
                 <p class="text-muted">
                     Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule
                     Altendorf</a>.
                 </p>
-
             </div>
 
             <div class="col-lg-4">
-
                 <div class="float-right">
                     <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa"
                        target="_blank">
                         <i class="fab fa-2x fa-github"></i>
                     </a>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </footer>
 
 <script>
