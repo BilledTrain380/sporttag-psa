@@ -29,7 +29,6 @@ export class EventSheetsEffects {
                         .pipe(map(eventSheetData => {
                           this.log.info("Successfully event sheet data, groupSize =", eventSheetData.groups.length);
 
-                          console.log(eventSheetData);
                           return setEventSheetsDataAction({
                                                             groupNames: eventSheetData.groups,
                                                             isParticipationOpen: eventSheetData.participationOpen,
