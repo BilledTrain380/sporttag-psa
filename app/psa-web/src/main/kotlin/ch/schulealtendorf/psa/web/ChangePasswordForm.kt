@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.web.authorization
+package ch.schulealtendorf.psa.web
 
 data class ChangePasswordForm(
     val password: String,

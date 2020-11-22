@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.web.authorization
+package ch.schulealtendorf.psa.web
 
 import ch.schulealtendorf.psa.core.user.UserManager
 import ch.schulealtendorf.psa.core.user.validation.PasswordValidator

@@ -15,4 +15,5 @@ dependencies {
 
     testImplementation project(":app:configuration")
     testImplementation project(":app:configuration").sourceSets.test.output
+    testImplementation "org.springframework.security:spring-security-test"
 }

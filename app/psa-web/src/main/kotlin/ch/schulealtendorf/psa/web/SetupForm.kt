@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.authorization
+package ch.schulealtendorf.psa.web
 
 import javax.validation.constraints.NotNull
 

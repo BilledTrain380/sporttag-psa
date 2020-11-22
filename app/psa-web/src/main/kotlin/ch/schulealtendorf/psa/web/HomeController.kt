@@ -34,46 +34,26 @@
  *
  */
 
-package ch.schulealtendorf.psa.web.authorization
+package ch.schulealtendorf.psa.web
 
-import ch.schulealtendorf.psa.core.setup.SetupInformation
-import ch.schulealtendorf.psa.core.setup.SetupManager
-import ch.schulealtendorf.psa.core.user.validation.PasswordValidator
+import ch.schulealtendorf.psa.core.ifNotNull
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import javax.servlet.http.HttpServletRequest
-import javax.validation.Valid
 
 @Controller
-class SetupController(
-    private val setupManager: SetupManager,
-    private val passwordValidator: PasswordValidator
-) {
-    @GetMapping("/setup")
-    fun index(model: Model): String {
-        model.addAttribute("setupForm", SetupForm.empty())
-        return "setup/index"
-    }
+class HomeController {
+    @GetMapping("/", "/index")
+    fun index(model: Model, authentication: Authentication?): String {
+        model.addAttribute("isAuthenticated", false)
 
-    @PostMapping("/setup")
-    fun applySetup(
-        @Valid @ModelAttribute setupForm: SetupForm,
-        request: HttpServletRequest,
-        redirectAttributes: RedirectAttributes
-    ): String {
-        val setupInformation = SetupInformation(setupForm.password)
-        val validationResult = passwordValidator.validate(setupInformation.adminPassword)
-
-        if (validationResult.isValid) {
-            setupManager.initialize(setupInformation)
-            return "redirect:${request.scheme}://${request.serverName}:${request.serverPort}"
+        authentication.ifNotNull {
+            model.addAttribute("username", (it.principal as UserDetails).username)
+            model.addAttribute("isAuthenticated", it.isAuthenticated)
         }
 
-        redirectAttributes.addFlashAttribute("pwValidationErrors", validationResult.messages)
-        return "redirect:/setup"
+        return "index"
     }
 }
