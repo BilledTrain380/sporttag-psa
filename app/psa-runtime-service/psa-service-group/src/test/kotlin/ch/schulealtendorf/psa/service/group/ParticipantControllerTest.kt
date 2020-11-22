@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.service.group
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.ATHLETICS
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto

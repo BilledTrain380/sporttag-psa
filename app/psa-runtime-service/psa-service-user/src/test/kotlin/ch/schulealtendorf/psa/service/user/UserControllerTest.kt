@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.service.user
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation

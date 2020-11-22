@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.service.athletics
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
 import org.junit.jupiter.api.BeforeEach

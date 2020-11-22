@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.service.ranking
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.participation.GenderDto
 import ch.schulealtendorf.psa.dto.participation.athletics.SCHNELLLAUF
 import ch.schulealtendorf.psa.dto.ranking.DisciplineRankingDto

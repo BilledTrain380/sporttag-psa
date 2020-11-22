@@ -1,6 +1,7 @@
 package ch.schulealtendorf.psa.service.group
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
+import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
