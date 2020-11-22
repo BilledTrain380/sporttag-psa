@@ -36,10 +36,10 @@
 
 package ch.schulealtendorf.psa.core.setup
 
-import ch.schulealtendorf.psa.core.setup.entity.SetupEntity.Companion.DEFAULT_SETUP
-import ch.schulealtendorf.psa.core.setup.repository.SetupRepository
 import ch.schulealtendorf.psa.core.user.USER_ADMIN
 import ch.schulealtendorf.psa.core.user.UserManager
+import ch.schulealtendorf.psa.setup.SetupRepository
+import ch.schulealtendorf.psa.setup.entity.SetupEntity.Companion.DEFAULT_SETUP
 import org.springframework.stereotype.Component
 import java.util.Random
 import javax.annotation.PostConstruct

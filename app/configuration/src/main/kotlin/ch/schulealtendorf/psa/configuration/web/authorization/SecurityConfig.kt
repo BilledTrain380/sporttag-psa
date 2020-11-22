@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.configuration.web.authorization
 
-import ch.schulealtendorf.psa.core.setup.SetupManager
+import ch.schulealtendorf.psa.setup.SetupRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -63,7 +63,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 class SecurityConfig(
     @Qualifier("psa-user-service")
     private val userDetailsService: UserDetailsService,
-    private val setupManager: SetupManager
+    private val setupRepository: SetupRepository
 ) : WebSecurityConfigurerAdapter() {
 
     @Autowired
@@ -100,7 +100,7 @@ class SecurityConfig(
             ?.and()
 
             ?.addFilterBefore(
-                SetupAuthorizationFilter(setupManager),
+                SetupAuthorizationFilter(setupRepository),
                 BasicAuthenticationFilter::class.java
             )
     }

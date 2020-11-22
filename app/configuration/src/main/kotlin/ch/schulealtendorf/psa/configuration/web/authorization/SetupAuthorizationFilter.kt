@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.configuration.web.authorization
 
-import ch.schulealtendorf.psa.core.setup.SetupManager
+import ch.schulealtendorf.psa.setup.SetupRepository
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -54,11 +54,13 @@ import javax.servlet.http.HttpServletResponse
  * @since 2.0.0
  */
 class SetupAuthorizationFilter(
-    private val setupManager: SetupManager
+    setupRepository: SetupRepository
 ) : OncePerRequestFilter() {
     companion object {
         private val STATIC_RESOURCES = PathRequest.toStaticResources().atCommonLocations()
     }
+
+    private val isInitialized: Boolean = setupRepository.getSetup().initialized
 
     /**
      * Checks if the setup page can be accessed, if it is forbidden or if it should redirect to it.
@@ -71,12 +73,12 @@ class SetupAuthorizationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.pathInfo == "/setup" && setupManager.isInitialized.not()) {
+        if (request.pathInfo == "/setup" && isInitialized.not()) {
             filterChain.doFilter(request, response)
-        } else if (request.pathInfo == "/setup" && setupManager.isInitialized) {
+        } else if (request.pathInfo == "/setup" && isInitialized) {
             // Do not leak 403
             response.sendError(404, "Resource not found")
-        } else if (STATIC_RESOURCES.matches(request).not() && setupManager.isInitialized.not()
+        } else if (STATIC_RESOURCES.matches(request).not() && isInitialized.not()
         ) {
             response.sendRedirect("${request.scheme}://${request.serverName}:${request.serverPort}/setup")
         } else {

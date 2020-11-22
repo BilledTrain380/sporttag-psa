@@ -34,15 +34,19 @@
  *
  */
 
-package ch.schulealtendorf.psa.core.setup.repository
+package ch.schulealtendorf.psa.setup
 
-import ch.schulealtendorf.psa.core.setup.entity.SetupEntity
+import ch.schulealtendorf.psa.setup.entity.UserEntity
 import org.springframework.data.repository.CrudRepository
+import java.util.Optional
 
 /**
- * Describes a repository for {@link SetupEntity}.
+ * Describes a CRUD repository for a user.
  *
- * @author nmaerchy <billedtrain380@gmail.com>
- * @since 2.0.0
+ * @author nmaerchy
+ * @version 1.0.0
  */
-interface SetupRepository : CrudRepository<SetupEntity, String>
+interface UserRepository : CrudRepository<UserEntity, Int> {
+
+    fun findByUsername(username: String): Optional<UserEntity>
+}

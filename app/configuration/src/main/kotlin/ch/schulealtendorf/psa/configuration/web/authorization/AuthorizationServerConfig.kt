@@ -37,7 +37,7 @@
 package ch.schulealtendorf.psa.configuration.web.authorization
 
 import ch.schulealtendorf.psa.configuration.web.oauth.PSAScope
-import ch.schulealtendorf.psa.core.setup.SetupManager
+import ch.schulealtendorf.psa.setup.SetupRepository
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -65,9 +65,9 @@ import java.time.Duration
 @Configuration
 @EnableAuthorizationServer
 class AuthorizationServerConfig(
+    setupRepository: SetupRepository,
     @Qualifier("security-config")
     private val authenticationManager: AuthenticationManager,
-    private val setupManager: SetupManager,
     @Qualifier("psa")
     private val tokenEnhancer: TokenEnhancer
 ) : AuthorizationServerConfigurerAdapter() {
@@ -75,6 +75,8 @@ class AuthorizationServerConfig(
         @JvmField
         val TOKEN_VALIDITY_DURATION: Duration = Duration.ofHours(2)
     }
+
+    private val jwtSecret = setupRepository.getSetup().jwtSecret
 
     override fun configure(security: AuthorizationServerSecurityConfigurer?) {
         security
@@ -124,7 +126,7 @@ class AuthorizationServerConfig(
     fun tokenStore(): TokenStore = InMemoryTokenStore()
 
     @Bean
-    fun tokenConverter() = JwtAccessTokenConverter().apply { setSigningKey(setupManager.jwtSecret) }
+    fun tokenConverter() = JwtAccessTokenConverter().apply { setSigningKey(jwtSecret) }
 
     @Bean
     @Primary

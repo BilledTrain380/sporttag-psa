@@ -1,9 +1,15 @@
 dependencies {
     implementation project(":app:dto")
+    implementation project(":app:setup")
 
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "org.passay:passay"
     implementation "net.harawata:appdirs"
+
+    testImplementation project(":app:configuration")
+    testImplementation project(":app:configuration").sourceSets.test.output
+    testImplementation "org.springframework.security:spring-security-test"
+    testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test"
 }

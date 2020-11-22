@@ -34,33 +34,22 @@
  *
  */
 
-package ch.schulealtendorf.psa.core.setup.entity
+package ch.schulealtendorf.psa.setup
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
+import ch.schulealtendorf.psa.setup.entity.SetupEntity
+import ch.schulealtendorf.psa.setup.entity.SetupEntity.Companion.DEFAULT_SETUP
+import org.springframework.data.repository.CrudRepository
 
-@Entity
-@Table(name = "SETUP")
-data class SetupEntity(
+/**
+ * Describes a repository for {@link SetupEntity}.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 2.0.0
+ */
+interface SetupRepository : CrudRepository<SetupEntity, String> {
 
-    @Id
-    @NotNull
-    @Size(min = 1, max = 10)
-    var name: String = DEFAULT_SETUP,
-
-    @NotNull
-    var initialized: Boolean = false,
-
-    @NotNull
-    @Size(min = 8, max = 32)
-    @Column(name = "jwt_secret")
-    var jwtSecret: String = ""
-) {
-    companion object {
-        const val DEFAULT_SETUP = "default"
+    @JvmDefault
+    fun getSetup(): SetupEntity {
+        return findById(DEFAULT_SETUP).orElseThrow { IllegalStateException("Default setup does not exist. Check your database") }
     }
 }

@@ -34,19 +34,45 @@
  *
  */
 
-package ch.schulealtendorf.psa.core.user.repository
+package ch.schulealtendorf.psa.setup.entity
 
-import ch.schulealtendorf.psa.core.user.entity.UserEntity
-import org.springframework.data.repository.CrudRepository
-import java.util.Optional
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
-/**
- * Describes a CRUD repository for a user.
- *
- * @author nmaerchy
- * @version 1.0.0
- */
-interface UserRepository : CrudRepository<UserEntity, Int> {
+@Entity
+@Table(name = "USER")
+data class UserEntity(
 
-    fun findByUsername(username: String): Optional<UserEntity>
-}
+    @Id
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Int? = null,
+
+    @NotNull
+    @Size(min = 1, max = 50)
+    var username: String = "",
+
+    @NotNull
+    @Size(min = 1, max = 128)
+    var password: String = "",
+
+    @NotNull
+    var enabled: Boolean = false,
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "USER_AUTHORITY",
+        joinColumns = [(JoinColumn(name = "user_id", referencedColumnName = "id"))],
+        inverseJoinColumns = [(JoinColumn(name = "authority", referencedColumnName = "role"))]
+    )
+    var authorities: List<AuthorityEntity> = listOf()
+)

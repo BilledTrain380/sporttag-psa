@@ -36,12 +36,12 @@
 
 package ch.schulealtendorf.psa.core.user
 
-import ch.schulealtendorf.psa.core.user.entity.AuthorityEntity
-import ch.schulealtendorf.psa.core.user.entity.UserEntity
-import ch.schulealtendorf.psa.core.user.repository.UserRepository
 import ch.schulealtendorf.psa.core.user.validation.InvalidPasswordException
 import ch.schulealtendorf.psa.core.user.validation.PasswordValidator
 import ch.schulealtendorf.psa.dto.user.UserDto
+import ch.schulealtendorf.psa.setup.UserRepository
+import ch.schulealtendorf.psa.setup.entity.AuthorityEntity
+import ch.schulealtendorf.psa.setup.entity.UserEntity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.Optional

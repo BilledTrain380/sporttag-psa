@@ -34,7 +34,7 @@
  *
  */
 
-package ch.schulealtendorf.psa.core.user.entity
+package ch.schulealtendorf.psa.setup.entity
 
 import javax.persistence.Entity
 import javax.persistence.Id

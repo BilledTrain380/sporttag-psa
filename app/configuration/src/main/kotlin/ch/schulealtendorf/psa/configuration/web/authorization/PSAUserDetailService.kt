@@ -36,7 +36,7 @@
 
 package ch.schulealtendorf.psa.configuration.web.authorization
 
-import ch.schulealtendorf.psa.core.user.repository.UserRepository
+import ch.schulealtendorf.psa.setup.UserRepository
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
