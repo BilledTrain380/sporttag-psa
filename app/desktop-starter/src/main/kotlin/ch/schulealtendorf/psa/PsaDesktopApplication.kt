@@ -1,42 +1,6 @@
-/*
- * Copyright (c) 2019 by Nicolas Märchy
- *
- * This file is part of Sporttag PSA.
- *
- * Sporttag PSA is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Sporttag PSA is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Sporttag PSA.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von Sporttag PSA.
- *
- * Sporttag PSA ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * Sporttag PSA wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- *
- */
+package ch.schulealtendorf.psa
 
-package ch.schulealtendorf.sporttagpsa.desktop
-
-import ch.schulealtendorf.sporttagpsa.SporttagPsaApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import java.awt.BorderLayout
@@ -45,7 +9,6 @@ import java.awt.Desktop
 import java.awt.Font
 import java.awt.GridLayout
 import java.net.URI
-import java.util.*
 import javax.imageio.ImageIO
 import javax.swing.BorderFactory
 import javax.swing.BoxLayout
@@ -56,9 +19,14 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 import kotlin.concurrent.thread
+import kotlin.system.exitProcess
 
-class ControlPanel : JFrame("PSA Control Panel") {
+@SpringBootApplication
+class PsaApplication
 
+class ControlPanel(
+    private val args: Array<String>
+) : JFrame("PSA Control Panel") {
     private val statusLabel = JLabel("Status")
     private val statusText = JLabel("STOPPED")
     private val startButton = JButton("Start")
@@ -67,15 +35,14 @@ class ControlPanel : JFrame("PSA Control Panel") {
     private val quitButton = JButton("Quit")
 
     private val logo = ImageIcon().apply {
-        image = ImageIO.read(ControlPanel::class.java.classLoader.getResourceAsStream("/img/psa-logo.png"))
+        image = ImageIO.read(ControlPanel::class.java.getResourceAsStream("/psa-logo.png"))
     }
 
-    private var context: Optional<ConfigurableApplicationContext> = Optional.empty()
+    private var context: ConfigurableApplicationContext? = null
 
     private val webappAddress = "http://localhost:8080"
 
     init {
-
         startButton.addActionListener { start() }
 
         stopButton.apply {
@@ -91,13 +58,10 @@ class ControlPanel : JFrame("PSA Control Panel") {
         quitButton.addActionListener { quit() }
 
         val panel = JPanel().apply {
-
             border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
-
             layout = BorderLayout()
 
             val north = JPanel().apply {
-
                 layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
                 add(JLabel(logo).apply {
@@ -107,30 +71,22 @@ class ControlPanel : JFrame("PSA Control Panel") {
                     alignmentX = Component.CENTER_ALIGNMENT
                     font = Font(Font.SANS_SERIF, 1, 20)
                 })
-
-
             }
 
-
             val center = JPanel().apply {
-
                 layout = GridLayout(1, 4)
-
                 border = BorderFactory.createEmptyBorder(10, 5, 10, 5)
 
                 add(statusLabel)
                 add(statusText)
                 add(startButton)
                 add(stopButton)
-
             }
 
             val south = JPanel().apply {
-
                 layout = GridLayout(2, 1)
 
                 add(launchButton)
-
                 add(quitButton)
             }
 
@@ -139,7 +95,7 @@ class ControlPanel : JFrame("PSA Control Panel") {
             add(south, BorderLayout.SOUTH)
         }
 
-        setSize(350, 230)
+        setSize(400, 230)
         isResizable = false
 
         add(panel)
@@ -148,14 +104,11 @@ class ControlPanel : JFrame("PSA Control Panel") {
     }
 
     private fun start() {
-
         thread {
             starting()
-
-            context = Optional.of(
-                    SpringApplicationBuilder(SporttagPsaApplication::class.java).run()
-            )
-
+            context = SpringApplicationBuilder(PsaApplication::class.java)
+                .profiles("standalone")
+                .run(*args)
             running()
         }
     }
@@ -163,23 +116,21 @@ class ControlPanel : JFrame("PSA Control Panel") {
     private fun stop() {
         thread {
             stopping()
-            context.ifPresent { it.close() }
-            context = Optional.empty()
+            context?.close()
+            context = null
             stopped()
         }
     }
 
     private fun launch() {
-
-        val desktop = Optional.ofNullable(if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
-        if (desktop.isPresent && desktop.get().isSupported(Desktop.Action.BROWSE)) {
-            desktop.get().browse(URI(webappAddress))
-        }
+        val desktop = if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE))
+            desktop.browse(URI(webappAddress))
     }
 
     private fun quit() {
         stop()
-        System.exit(0)
+        exitProcess(0)
     }
 
     private fun starting() {
@@ -215,6 +166,6 @@ class ControlPanel : JFrame("PSA Control Panel") {
 
 fun main(args: Array<String>) {
     SwingUtilities.invokeLater {
-        ControlPanel()
+        ControlPanel(args)
     }
 }
