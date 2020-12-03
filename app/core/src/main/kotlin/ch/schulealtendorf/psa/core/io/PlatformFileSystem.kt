@@ -49,7 +49,7 @@ import java.nio.file.Path
  * @version 1.0.0
  */
 @Component
-@Profile("standalone")
+@Profile("standalone", "prod")
 class PlatformFileSystem(
     applicationDirectory: ApplicationDirectory
 ) : FileSystem {

@@ -51,14 +51,13 @@ import javax.sql.DataSource
  * @version 1.0.0
  */
 @Configuration
-@Profile("standalone")
+@Profile("standalone", "prod")
 class DatasourceConfiguration(
     private val applicationDirectory: ApplicationDirectory
 ) {
 
     @Bean
     fun datasource(): DataSource {
-
         return DataSourceBuilder.create()
             .url("jdbc:h2:${applicationDirectory.path}/db/psa;USER=psa-user;PASSWORD=Psa1999\$")
             .username("psa-user")
