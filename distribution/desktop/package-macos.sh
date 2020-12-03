@@ -1,22 +1,16 @@
 #!/bin/bash
 
-version=$1
-commitHash=$2
+fullVersion=$1
 
-if [ -n "$version" ]; then
+if [ -n "fullVersion" ]; then
   echo "Version parameter is missing"
   exit 1
 fi
 
-if [ -n "$commitHash" ]; then
-  echo "Commit hash parameter is missing"
-  exit 1
-fi
-
 jpackage --name PSA-Desktop \
-  --main-jar "PSA-Desktop-$version+$commitHash.jar" \
+  --main-jar "./build/libs/PSA-Desktop-$fullVersion.jar" \
   --type dmg \
-  --app-version 0 \
+  --app-version "$fullVersion" \
   --description "Sport tournament management system" \
   --dest ./build/libs \
   --vendor "BilledTrain380" \

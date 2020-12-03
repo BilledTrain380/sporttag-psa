@@ -19,9 +19,12 @@ pr:
 variables:
   profileProd: prod
   psaJavaArtifact: psaJava
+  psaMacosArtifact: psaMacos
   frontendArtifact: Frontend
   frontendDir: app/frontend
   ubuntu: Ubuntu-18.04
+  macos: macOS-10.15
+  javaVersion: 1.14
 
 stages:
   - stage: analyze_test_build
@@ -37,7 +40,7 @@ stages:
             displayName: 'Analyze / Test backend'
             inputs:
               javaHomeOption: JDKVersion
-              jdkVersionOption: 1.11
+              jdkVersionOption: $(javaVersion)
               jdkArchitectureOption: x64
               options: "-i"
               tasks: 'ktlintCheck test jacocoTestReport sonarqube'
@@ -96,7 +99,7 @@ stages:
             displayName: 'Setup Gradle'
             inputs:
               javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.11
+              jdkVersionOption: $(javaVersion)
               jdkArchitecture: x64
           - script: printenv
 
@@ -112,12 +115,64 @@ stages:
 
           - script: ./gradlew :app:starter:bootJar
             displayName: 'Package App'
-            env:
-              spring_profiles_active: $(profileProd)
 
           - publish: $(System.DefaultWorkingDirectory)/app/starter/build/libs
             displayName: 'Publish Jar'
             artifact: $(psaJavaArtifact)
+
+      - job: Package macos native
+
+        pool:
+          vmImage: $(macos)
+
+        steps:
+          - task: Gradle@2
+            displayName: 'Setup Environment'
+            name: Versions
+            inputs:
+              javaHomeOption: JDKVersion
+              jdkVersionOption: $(javaVersion)
+              jdkArchitectureOption: x64
+              tasks: 'setPipelineVariables'
+
+          - script: printenv
+
+          - download: current
+            artifact: $(frontendArtifact)
+            displayName: 'Download Frontend'
+
+          - task: CopyFiles@2
+            displayName: 'Copy Frontend to java resources'
+            inputs:
+              sourceFolder: $(Pipeline.Workspace)/$(frontendArtifact)
+              targetFolder: "app/psa-web/src/main/resources/public/app"
+
+          - script: ./gradlew :app:desktop-starter:bootJar
+            displayName: 'Package Desktop App'
+
+          - task: CopyFiles@2
+            displayName: 'Copy desktop jar to distribution'
+            inputs:
+              sourceFolder: $(System.DefaultWorkingDirectory)/app/desktop/starter/build/libs/*.jar
+              targetFolder: $(System.DefaultWorkingDirectory)/distribution/desktop/build/libs
+
+          - task: CopyFiles@2
+            displayName: 'Copy license to distribution'
+            inputs:
+              sourceFolder: $(System.DefaultWorkingDirectory)
+              contents: LICENSE.md
+              targetFolder: $(System.DefaultWorkingDirectory)/distribution/desktop/build/resources
+
+          - task: Bash@3
+            displayName: 'Package PSA-Desktop for macos'
+            inputs:
+              filePath: $(System.DefaultWorkingDirectory)/distribution/desktop/package-macos.sh
+              workingDirectory: $(System.DefaultWorkingDirectory)/distribution/desktop
+              arguments: $(fullVersion)
+
+          - publish: $(System.DefaultWorkingDirectory)/distribution/desktop/build/libs/*.dmg
+            displayName: 'Publish dmg'
+            artifact: $(psaMacosArtifact)
 
   - stage: e2e_tests
     displayName: 'e2e tests'
@@ -134,7 +189,7 @@ stages:
             name: Versions
             inputs:
               javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.11
+              jdkVersionOption: $(javaVersion)
               jdkArchitecture: x64
               tasks: 'setPipelineVariables'
 
