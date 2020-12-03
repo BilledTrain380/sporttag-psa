@@ -36,15 +36,10 @@
 
 package ch.schulealtendorf.psa.core.io
 
-import net.harawata.appdirs.AppDirs
+import ch.schulealtendorf.psa.setup.ApplicationDirectory
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.nio.file.Files
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
+import java.nio.file.Path
 
 /**
  * The file system considers the special directory of the platform.
@@ -54,64 +49,9 @@ import java.util.zip.ZipOutputStream
  * @version 1.0.0
  */
 @Component
+@Profile("standalone", "prod")
 class PlatformFileSystem(
-    appDirs: AppDirs
+    applicationDirectory: ApplicationDirectory
 ) : FileSystem {
-    private val applicationDir = File(appDirs.getUserDataDir("PSA", "", "")).toPath()
-
-    init {
-        Files.createDirectories(applicationDir)
-    }
-
-    /**
-     * @return the application directory which Sporttag PSA can use
-     */
-    override fun getApplicationDir(): File = applicationDir.toFile()
-
-    override fun write(file: ApplicationFile, lines: List<String>): File {
-        val newFile = createFile(file)
-
-        newFile.bufferedWriter().use { writer ->
-            lines.forEach {
-                writer.write(it)
-                writer.newLine()
-            }
-        }
-
-        return newFile
-    }
-
-    override fun write(file: ApplicationFile, input: InputStream): File {
-        val newFile = createFile(file)
-
-        input.use { inputStream ->
-            newFile.outputStream().use {
-                inputStream.copyTo(it)
-            }
-        }
-
-        return newFile
-    }
-
-    override fun createArchive(file: ApplicationFile, files: Iterable<File>): File {
-        val zipFile = createFile(file, ".zip")
-
-        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { outputStream ->
-            files.forEach {
-                outputStream.putNextEntry(ZipEntry(it.name))
-                outputStream.write(it.readBytes())
-                outputStream.closeEntry()
-            }
-        }
-
-        return zipFile
-    }
-
-    private fun createFile(appFile: ApplicationFile, extension: String = ""): File {
-        val file = applicationDir.resolve("${appFile.path}$extension")
-        Files.createDirectories(file.parent)
-        Files.deleteIfExists(file)
-        Files.createFile(file)
-        return file.toFile()
-    }
+    override val applicationDir: Path = applicationDirectory.path
 }

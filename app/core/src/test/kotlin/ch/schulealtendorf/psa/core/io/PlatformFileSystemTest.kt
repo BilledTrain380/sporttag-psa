@@ -1,9 +1,8 @@
 package ch.schulealtendorf.psa.core.io
 
-import com.nhaarman.mockito_kotlin.any
+import ch.schulealtendorf.psa.setup.ApplicationDirectory
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import net.harawata.appdirs.AppDirs
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Tag
@@ -19,7 +18,7 @@ internal class PlatformFileSystemTest {
     @TempDir
     lateinit var applicationDir: File
 
-    private val mockAppDirs: AppDirs = mock()
+    private val mockApplicationDirectory: ApplicationDirectory = mock()
 
     private lateinit var fileSystem: PlatformFileSystem
 
@@ -28,8 +27,8 @@ internal class PlatformFileSystemTest {
 
     @BeforeEach
     internal fun beforeEach() {
-        whenever(mockAppDirs.getUserDataDir(any(), any(), any())).thenReturn(applicationDir.absolutePath)
-        fileSystem = PlatformFileSystem(mockAppDirs)
+        whenever(mockApplicationDirectory.path).thenReturn(applicationDir.toPath())
+        fileSystem = PlatformFileSystem(mockApplicationDirectory)
     }
 
     @Test

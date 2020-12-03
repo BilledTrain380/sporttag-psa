@@ -1,7 +1,5 @@
 import { Action, createReducer, on } from "@ngrx/store";
 
-import { SimpleGroupDto } from "../../dto/group";
-
 import {
   downloadEventSheetsAction,
   downloadParticipantListAction,
@@ -13,7 +11,7 @@ import {
 } from "./event-sheets.action";
 
 export interface EventSheetsState {
-  readonly groups: ReadonlyArray<SimpleGroupDto>;
+  readonly groupNames: ReadonlyArray<string>;
   readonly isParticipationOpen: boolean;
   readonly isParticipantListDownloading: boolean;
   readonly isEventSheetsDownloading: boolean;
@@ -21,7 +19,7 @@ export interface EventSheetsState {
 }
 
 const initialState: EventSheetsState = {
-  groups: [],
+  groupNames: [],
   isParticipationOpen: true,
   isParticipantListDownloading: false,
   isEventSheetsDownloading: false,
@@ -33,7 +31,7 @@ const reducer = createReducer(
   on(setEventSheetsDataAction, (state, action) => (
     {
       ...state,
-      groups: action.groups,
+      groupNames: action.groupNames,
       isParticipationOpen: action.isParticipationOpen,
     }
   )),

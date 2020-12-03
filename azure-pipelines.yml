@@ -108,7 +108,7 @@ stages:
             displayName: 'Copy Frontend to java resources'
             inputs:
               sourceFolder: $(Pipeline.Workspace)/$(frontendArtifact)
-              targetFolder: "app/starter/src/main/resources/public/app"
+              targetFolder: "app/psa-web/src/main/resources/public/app"
 
           - script: ./gradlew :app:starter:bootJar
             displayName: 'Package App'

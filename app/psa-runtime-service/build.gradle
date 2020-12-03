@@ -1,0 +1,37 @@
+subprojects {
+    apply plugin: 'kotlin-spring'
+
+    dependencies {
+        implementation project(":app:core")
+        implementation project(":app:dto")
+        implementation "org.springframework.boot:spring-boot-starter-web"
+        implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+        implementation "org.springframework.boot:spring-boot-starter-security"
+        implementation "org.springframework.cloud:spring-cloud-starter-oauth2"
+        implementation "org.springdoc:springdoc-openapi-ui"
+        implementation "org.springdoc:springdoc-openapi-kotlin"
+        implementation "org.springdoc:springdoc-openapi-security"
+
+        implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
+        implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+
+        testImplementation project(":app:configuration")
+        testImplementation project(":app:configuration").sourceSets.test.output
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation "org.springframework.security:spring-security-test"
+        testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test"
+    }
+}
+
+configure([
+        project(":app:psa-runtime-service:psa-service-athletics"),
+        project(":app:psa-runtime-service:psa-service-event"),
+        project(":app:psa-runtime-service:psa-service-group"),
+        project(":app:psa-runtime-service:psa-service-participation"),
+        project(":app:psa-runtime-service:psa-service-ranking"),
+        project(":app:psa-runtime-service:psa-service-user")
+]) {
+    dependencies {
+        implementation project(":app:psa-runtime-service:psa-service-standard")
+    }
+}

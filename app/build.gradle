@@ -54,17 +54,7 @@ sonarqube {
     }
 }
 
-project(":app:starter") {
-    apply plugin: 'application'
-    apply plugin: 'kotlin-spring'
-}
-
-configure([
-        project(':app:core'),
-        project(':app:shared'),
-        project(':app:dto'),
-        project(":app:starter"),
-]) {
+subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'jacoco'
@@ -124,14 +114,14 @@ configure([
 
     compileKotlin {
         kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
+            freeCompilerArgs = ["-Xjsr305=strict", "-Xjvm-default=compatibility"]
             jvmTarget = "1.8"
         }
     }
 
     compileTestKotlin {
         kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
+            freeCompilerArgs = ["-Xjsr305=strict", "-Xjvm-default=compatibility"]
             jvmTarget = "1.8"
         }
     }
@@ -162,29 +152,32 @@ configure([
     }
 }
 
-configure([project(':app:core'), project(':app:shared')]) {
-    apply plugin: 'kotlin-spring'
-    apply plugin: 'org.springframework.boot'
+project(":app:starter") {
+    apply plugin: 'application'
+}
 
+configure(subprojects.findAll { !it.name.contains("starter") }) {
     bootJar {
         enabled = false
     }
 
     jar {
         enabled = true
-    }
-
-    dependencies {
-        implementation "org.springframework.boot:spring-boot-starter-web"
     }
 }
 
-project(":app:dto") {
-    bootJar {
-        enabled = false
-    }
+configure([
+        project(":app:configuration"),
+        project(':app:core'),
+        project(":app:psa-web"),
+        project(':app:shared'),
+        project(':app:starter'),
+]) {
+    apply plugin: 'kotlin-spring'
 
-    jar {
-        enabled = true
+    dependencies {
+        implementation "org.springframework.boot:spring-boot-starter-web"
+
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
     }
 }

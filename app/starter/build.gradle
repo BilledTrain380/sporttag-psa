@@ -1,45 +1,18 @@
-mainClassName = "ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt"
+mainClassName = "ch.schulealtendorf.psa.SporttagPsaApplicationKt"
 
 bootJar {
     archiveFileName = "PSA-${archiveVersion.get()}+$commitHash.${archiveExtension.get()}"
 }
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation project(":app:configuration")
+    implementation project(":app:psa-web")
+    implementation project(":app:psa-runtime-service:psa-service-group")
+    implementation project(":app:psa-runtime-service:psa-service-participation")
+    implementation project(":app:psa-runtime-service:psa-service-event")
+    implementation project(":app:psa-runtime-service:psa-service-athletics")
+    implementation project(":app:psa-runtime-service:psa-service-ranking")
+    implementation project(":app:psa-runtime-service:psa-service-user")
+
     implementation "org.springframework.boot:spring-boot-devtools"
-    implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "org.springdoc:springdoc-openapi-ui"
-    implementation "org.springdoc:springdoc-openapi-kotlin"
-    implementation "org.springdoc:springdoc-openapi-security"
-
-    implementation "io.jsonwebtoken:jjwt"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
-
-    implementation project(":app:core")
-    implementation project(':app:shared')
-    implementation project(':app:dto')
-
-    // database dependencies
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation "org.flywaydb:flyway-core"
-    runtimeOnly "com.h2database:h2"
-
-
-    implementation "org.springframework.cloud:spring-cloud-starter-oauth2"
-    implementation "org.springframework.security:spring-security-jwt"
-
-    implementation "org.passay:passay"
-    implementation "net.sourceforge.nekohtml:nekohtml"
-
-    // webjars
-    implementation "org.webjars:jquery"
-    implementation "org.webjars:bootstrap"
-    implementation "org.webjars:font-awesome"
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation "org.springframework.security:spring-security-test"
-    testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test"
 }

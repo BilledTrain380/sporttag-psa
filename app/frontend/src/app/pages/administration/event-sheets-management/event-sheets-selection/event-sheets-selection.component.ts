@@ -5,7 +5,7 @@ import { Subject } from "rxjs";
 import { map, takeUntil } from "rxjs/operators";
 
 import { ALL_DISCIPLINES } from "../../../../dto/athletics";
-import { EventSheetData } from "../../../../dto/event-sheets";
+import { EventSheetExport } from "../../../../dto/event-sheets";
 import { BRENNBALL, GenderDto, genderDtoOfValue, SCHATZSUCHE, SportDto, VELO_ROLLERBLADES } from "../../../../dto/participation";
 import { FEMALE, MALE } from "../../../../modules/participant/gender/gender-constants";
 import { LABEL_ALL, TreeCheckNodeModel } from "../../../../modules/tree/tree-model";
@@ -17,7 +17,7 @@ import {
 } from "../../../../store/event-sheets/event-sheets.action";
 import {
   selectEventSheetsGroups,
-  selectIsEventSheetsDowloading,
+  selectIsEventSheetsDownloading,
   selectIsParticipantListDownloading,
   selectIsParticipationOpen,
   selectIsStartlistDownloading,
@@ -33,13 +33,13 @@ export class EventSheetsSelectionComponent implements OnInit, OnDestroy {
 
   readonly isParticipationOpen$ = this.store.select(selectIsParticipationOpen);
   readonly isParticipantListDownloading$ = this.store.select(selectIsParticipantListDownloading);
-  readonly isEventSheetsDownloading$ = this.store.select(selectIsEventSheetsDowloading);
+  readonly isEventSheetsDownloading$ = this.store.select(selectIsEventSheetsDownloading);
   readonly isStartlistDownloading$ = this.store.select(selectIsStartlistDownloading);
 
   eventSheetsTree?: TreeCheckNodeModel;
 
   private readonly eventSheetsTree$ = this.store.select(selectEventSheetsGroups)
-    .pipe(map(groups => {
+    .pipe(map(groupNames => {
       const rootTree = TreeCheckNodeModel.newBuilder()
         .setLabel(LABEL_ALL)
         .setCollapsedEnabled(false)
@@ -51,9 +51,9 @@ export class EventSheetsSelectionComponent implements OnInit, OnDestroy {
           .setLabel(discipline)
           .splitHalf();
 
-        groups.forEach(group => {
+        groupNames.forEach(groupName => {
           const groupBuilder = TreeCheckNodeModel.newBuilder()
-            .setLabel(group.name)
+            .setLabel(groupName)
             .setCollapsed(true)
             .addLeafNode(MALE, GenderDto.MALE)
             .addLeafNode(FEMALE, GenderDto.FEMALE);
@@ -102,7 +102,7 @@ export class EventSheetsSelectionComponent implements OnInit, OnDestroy {
   }
 
   downloadEventSheets(): void {
-    const data: Array<EventSheetData> = [];
+    const data: Array<EventSheetExport> = [];
 
     this.eventSheetsTree?.checkedNodes
       .forEach(disciplineNode => {
