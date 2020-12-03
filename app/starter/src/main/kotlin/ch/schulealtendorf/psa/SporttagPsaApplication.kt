@@ -3,7 +3,7 @@ package ch.schulealtendorf.psa
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
-@SpringBootApplication(scanBasePackages = ["ch.schulealtendorf.sporttagpsa", "ch.schulealtendorf.psa"])
+@SpringBootApplication
 class SporttagPsaApplication
 
 fun main(args: Array<String>) {

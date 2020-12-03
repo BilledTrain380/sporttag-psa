@@ -152,7 +152,7 @@ subprojects {
     }
 }
 
-project(":app:starter") {
+configure([project(":app:starter"), project(":app:desktop-starter")]) {
     apply plugin: 'application'
 }
 
@@ -172,6 +172,7 @@ configure([
         project(":app:psa-web"),
         project(':app:shared'),
         project(':app:starter'),
+        project(':app:desktop-starter'),
 ]) {
     apply plugin: 'kotlin-spring'
 

@@ -23,6 +23,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/jarRepositories.xml
+.idea/compiler.xml
 .idea/kotlinc.xml
 
 # Gradle:
