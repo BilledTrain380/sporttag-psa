@@ -63,6 +63,10 @@ exports.config = {
 
     console.log("Load psa application");
     await browser.driver.get(browser.baseUrl);
+
+    console.log("Wait for implicit flow redirect")
+    await browser.driver.sleep(2000);
+
     await browser.waitForAngularEnabled(true);
   }
 };
