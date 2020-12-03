@@ -1,6 +1,10 @@
 ext {
-    commitHash = "git rev-parse --short HEAD".execute().text.trim()
+    commitHash = System.getenv("SYSTEM_PULLREQUEST_SOURCECOMMITID")?.substring(0, 7)
     isReleaseBuild = version != null && !version.toString().toLowerCase().contains("snapshot")
+
+    if (commitHash == null || commitHash.isEmpty()) {
+        commitHash = "git rev-parse --short HEAD".execute().text.trim()
+    }
 }
 
 group = "ch.schulealtendorf.psa"

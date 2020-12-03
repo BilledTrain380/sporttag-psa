@@ -64,13 +64,17 @@ class ControlPanel(
             val north = JPanel().apply {
                 layout = BoxLayout(this, BoxLayout.Y_AXIS)
 
-                add(JLabel(logo).apply {
-                    alignmentX = Component.CENTER_ALIGNMENT
-                })
-                add(JLabel("PSA Control Panel").apply {
-                    alignmentX = Component.CENTER_ALIGNMENT
-                    font = Font(Font.SANS_SERIF, 1, 20)
-                })
+                add(
+                    JLabel(logo).apply {
+                        alignmentX = Component.CENTER_ALIGNMENT
+                    }
+                )
+                add(
+                    JLabel("PSA Control Panel").apply {
+                        alignmentX = Component.CENTER_ALIGNMENT
+                        font = Font(Font.SANS_SERIF, 1, 20)
+                    }
+                )
             }
 
             val center = JPanel().apply {

@@ -19,28 +19,34 @@ pr:
 variables:
   profileProd: prod
   psaJavaArtifact: psaJava
+  psaDesktopJavaArtifact: psaDesktopJava
+  psaMacosArtifact: psaMacos
+  psaWindowsArtifact: psaWindows
   frontendArtifact: Frontend
   frontendDir: app/frontend
   ubuntu: Ubuntu-18.04
+  macos: macOS-10.15
+  windows: windows-2019
+  javaVersion: 1.15
+  adoptOpenJdkMacosLink: 'https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.1%2B9.1/OpenJDK15U-jdk_x64_mac_hotspot_15.0.1_9.pkg'
+  adoptOpenJdkWindowsLink: 'https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.1%2B9/OpenJDK15U-jdk_x64_windows_hotspot_15.0.1_9.zip'
+
+resources:
+  containers:
+  - container: jdk-linux
+    image: adoptopenjdk:15.0.1_9-jdk-hotspot
 
 stages:
   - stage: analyze_test_build
     displayName: 'Analyze, test, build'
     jobs:
       - job: Backend
-        pool:
-          vmImage: $(ubuntu)
+        container: jdk-linux
 
         steps:
           - script: printenv
-          - task: Gradle@2
-            displayName: 'Analyze / Test backend'
-            inputs:
-              javaHomeOption: JDKVersion
-              jdkVersionOption: 1.11
-              jdkArchitectureOption: x64
-              options: "-i"
-              tasks: 'ktlintCheck test jacocoTestReport sonarqube'
+          - script: ./gradlew ktlintCheck test jacocoTestReport sonarqube
+            displayName: "Analyze / Test backend"
             env:
               SONAR_LOGIN: $(SONAR_LOGIN)
               SYSTEM_PULLREQUEST_SOURCEBRANCH: $(SYSTEM_PULLREQUEST_SOURCEBRANCH)
@@ -87,17 +93,9 @@ stages:
     displayName: 'Build / Package'
     jobs:
       - job: Package
-
-        pool:
-          vmImage: $(ubuntu)
+        container: jdk-linux
 
         steps:
-          - task: Gradle@2
-            displayName: 'Setup Gradle'
-            inputs:
-              javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.11
-              jdkArchitecture: x64
           - script: printenv
 
           - download: current
@@ -112,12 +110,130 @@ stages:
 
           - script: ./gradlew :app:starter:bootJar
             displayName: 'Package App'
-            env:
-              spring_profiles_active: $(profileProd)
+
+          - script: ./gradlew :app:desktop-starter:bootJar
+            displayName: 'Package Desktop App'
 
           - publish: $(System.DefaultWorkingDirectory)/app/starter/build/libs
             displayName: 'Publish Jar'
             artifact: $(psaJavaArtifact)
+
+          - publish: $(System.DefaultWorkingDirectory)/app/desktop-starter/build/libs
+            displayName: 'Publish Desktop jar'
+            artifact: $(psaDesktopJavaArtifact)
+
+  - stage: native_build
+    displayName: 'Build native bundles'
+    jobs:
+      - job: Package_macos_native
+        pool:
+          vmImage: $(macos)
+
+        steps:
+          - script: ./gradlew setPipelineVariables
+            displayName: 'Setup Environment'
+
+          - task: DownloadAFile@1
+            displayName: 'Download JDK for macos'
+            inputs:
+              strUrl: $(adoptOpenJdkMacosLink)
+              strTargetDir: $(System.DefaultWorkingDirectory)/distribution/jdk
+              strTargetFilename: 'openJdk.pkg'
+
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: 15
+              jdkArchitectureOption: x64
+              jdkSourceOption: LocalDirectory
+              jdkFile: $(System.DefaultWorkingDirectory)/distribution/jdk/openJdk.pkg
+              jdkDestinationDirectory: $(System.DefaultWorkingDirectory)/distribution/builds/binaries/externals
+              cleanDestinationDirectory: true
+
+          - script: printenv
+
+          - download: current
+            artifact: $(psaDesktopJavaArtifact)
+            displayName: 'Download Desktop jar'
+
+          - task: CopyFiles@2
+            displayName: 'Copy desktop jar to distribution'
+            inputs:
+              sourceFolder: $(Pipeline.Workspace)/$(psaDesktopJavaArtifact)
+              contents: 'PSA-Desktop*.jar'
+              targetFolder: $(System.DefaultWorkingDirectory)/distribution/desktop/build/libs
+
+          - task: CopyFiles@2
+            displayName: 'Copy license to distribution'
+            inputs:
+              sourceFolder: $(System.DefaultWorkingDirectory)
+              contents: LICENSE.md
+              targetFolder: $(System.DefaultWorkingDirectory)/distribution/desktop/build/resources
+
+          - task: Bash@3
+            displayName: 'Package PSA-Desktop for macos'
+            inputs:
+              filePath: $(System.DefaultWorkingDirectory)/distribution/desktop/package-macos.sh
+              workingDirectory: $(System.DefaultWorkingDirectory)/distribution/desktop
+              arguments: $(fullVersion) $(nativeBundleVersion)
+
+          - publish: $(System.DefaultWorkingDirectory)/distribution/desktop/build/macos
+            displayName: 'Publish dmg'
+            artifact: $(psaMacosArtifact)
+
+      - job: Package_windows_native
+        pool:
+          vmImage: $(windows)
+
+        steps:
+          - script: ./gradlew setPipelineVariables
+            displayName: 'Setup Environment'
+
+          - task: DownloadAFile@1
+            displayName: 'Download JDK for windows'
+            inputs:
+              strUrl: $(adoptOpenJdkWindowsLink)
+              strTargetDir: $(System.DefaultWorkingDirectory)/distribution/jdk
+              strTargetFilename: 'openJdk.zip'
+
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: 15
+              jdkArchitectureOption: x64
+              jdkSourceOption: LocalDirectory
+              jdkFile: $(System.DefaultWorkingDirectory)/distribution/jdk/openJdk.zip
+              jdkDestinationDirectory: $(System.DefaultWorkingDirectory)/distribution/builds/binaries/externals
+              cleanDestinationDirectory: true
+
+          - script: printenv
+
+          - download: current
+            artifact: $(psaDesktopJavaArtifact)
+            displayName: 'Download Desktop jar'
+
+          - task: CopyFiles@2
+            displayName: 'Copy desktop jar to distribution'
+            inputs:
+              sourceFolder: $(Pipeline.Workspace)/$(psaDesktopJavaArtifact)
+              contents: 'PSA-Desktop*.jar'
+              targetFolder: $(System.DefaultWorkingDirectory)/distribution/desktop/build/libs
+
+          - task: CopyFiles@2
+            displayName: 'Copy license to distribution'
+            inputs:
+              sourceFolder: $(System.DefaultWorkingDirectory)
+              contents: LICENSE.md
+              targetFolder: $(System.DefaultWorkingDirectory)/distribution/desktop/build/resources
+
+          - task: BatchScript@1
+            displayName: 'Package PSA-Desktop for windows'
+            inputs:
+              filename: $(System.DefaultWorkingDirectory)/distribution/desktop/package-windows.bat
+              workingFolder: $(System.DefaultWorkingDirectory)/distribution/desktop
+              arguments: $(fullVersion) $(nativeBundleVersion)
+
+          - publish: $(System.DefaultWorkingDirectory)/distribution/desktop/build/windows
+            displayName: 'Publish msi'
+            artifact: $(psaWindowsArtifact)
 
   - stage: e2e_tests
     displayName: 'e2e tests'
@@ -129,14 +245,8 @@ stages:
           vmImage: $(ubuntu)
 
         steps:
-          - task: Gradle@2
-            displayName: 'Setup Environment'
-            name: Versions
-            inputs:
-              javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.11
-              jdkArchitecture: x64
-              tasks: 'setPipelineVariables'
+          - script: ./gradlew setPipelineVariables
+            displayName: 'Set pipeline variables'
 
           - download: current
             artifact: $(psaJavaArtifact)

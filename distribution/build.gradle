@@ -1,8 +1,17 @@
 // Prints commands for azure pipeline in order to get the versions as pipeline variables
 task setPipelineVariables {
     doLast {
+        def nativeBundleVersion = "$version"
+
+        // jpackage does not allow versions other than numbers separated with dots
+        if (nativeBundleVersion.contains("SNAPSHOT")) {
+            def delimiterIndex = nativeBundleVersion.indexOf("-")
+            nativeBundleVersion = nativeBundleVersion.substring(0, delimiterIndex)
+        }
+
         println "##vso[task.setVariable variable=version]$version".trim()
         println "##vso[task.setVariable variable=fullVersion]$version+$commitHash".trim()
         println "##vso[task.setVariable variable=dockerTag]$version-g$commitHash".trim()
+        println "##vso[task.setVariable variable=nativeBundleVersion]$nativeBundleVersion".trim()
     }
 }
