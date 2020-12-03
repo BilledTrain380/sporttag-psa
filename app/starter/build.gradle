@@ -1,4 +1,4 @@
-mainClassName = "ch.schulealtendorf.sporttagpsa.SporttagPsaApplicationKt"
+mainClassName = "ch.schulealtendorf.psa.SporttagPsaApplicationKt"
 
 bootJar {
     archiveFileName = "PSA-${archiveVersion.get()}+$commitHash.${archiveExtension.get()}"
