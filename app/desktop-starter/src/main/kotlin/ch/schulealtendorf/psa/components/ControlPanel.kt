@@ -1,8 +1,6 @@
 package ch.schulealtendorf.psa.components
 
-import ch.schulealtendorf.psa.PsaApplication
-import org.springframework.boot.builder.SpringApplicationBuilder
-import org.springframework.context.ConfigurableApplicationContext
+import ch.schulealtendorf.psa.business.PsaApplicationContext
 import java.awt.Color
 import java.awt.Desktop
 import java.awt.GridBagConstraints
@@ -31,8 +29,6 @@ class ControlPanel(
     private val launchButton = JButton(i18n.getString("label.launch"))
 
     private val quitButton = JButton(i18n.getString("label.quit"))
-
-    private var context: ConfigurableApplicationContext? = null
 
     init {
         setupActionListeners()
@@ -122,9 +118,7 @@ class ControlPanel(
     private fun start() {
         thread {
             starting()
-            context = SpringApplicationBuilder(PsaApplication::class.java)
-                .profiles("standalone")
-                .run(*args)
+            PsaApplicationContext.start(args)
             running()
         }
     }
@@ -132,8 +126,7 @@ class ControlPanel(
     private fun stop() {
         thread {
             stopping()
-            context?.close()
-            context = null
+            PsaApplicationContext.stop()
             stopped()
         }
     }

@@ -3,9 +3,11 @@ package ch.schulealtendorf.psa
 import ch.schulealtendorf.psa.components.BuildInfoPanel
 import ch.schulealtendorf.psa.components.ControlPanel
 import ch.schulealtendorf.psa.components.HeaderPanel
+import ch.schulealtendorf.psa.components.TrayPopup
 import ch.schulealtendorf.psa.components.VersionPanel
-import org.springframework.boot.autoconfigure.SpringBootApplication
 import java.awt.BorderLayout
+import java.awt.SystemTray
+import java.awt.TrayIcon
 import java.util.ResourceBundle
 import javax.imageio.ImageIO
 import javax.swing.BorderFactory
@@ -14,9 +16,6 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import javax.swing.SwingUtilities
-
-@SpringBootApplication
-class PsaApplication
 
 class MainFrame(
     private val args: Array<String>
@@ -29,6 +28,13 @@ class MainFrame(
 
     init {
         title = i18n.getString("title")
+
+        if (SystemTray.isSupported()) {
+            val trayIcon = TrayIcon(logo.image)
+            val tray = SystemTray.getSystemTray()
+            trayIcon.popupMenu = TrayPopup()
+            tray.add(trayIcon)
+        }
 
         val mainPanel = JPanel().apply {
             border = BorderFactory.createEmptyBorder(15, 5, 5, 5)
