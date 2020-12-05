@@ -118,3 +118,6 @@ application-dir
 # PSA frontend application
 /app/psa-web/src/main/resources/public/app/*
 
+# PSA Build info json
+app/configuration/src/main/resources/build-info.json
+

@@ -20,3 +20,23 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.security:spring-security-test"
 }
+
+task generateBuildInfo {
+    def buildInfoFile = file("src/main/resources/build-info.json")
+    inputs.property("project version", project.version)
+    inputs.property("bulid hash", commitHash)
+    inputs.property("build env", isReleaseBuild)
+    outputs.file buildInfoFile
+    doLast {
+        def jsonOutput = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([
+                version: project.version,
+                hash: commitHash,
+                build_time: Instant.now().toString(),
+                environment: isReleaseBuild? "prod" : "dev"
+        ]))
+        buildInfoFile.text = jsonOutput
+        println(jsonOutput)
+    }
+}
+
+processResources.dependsOn generateBuildInfo
