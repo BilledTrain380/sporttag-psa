@@ -1,10 +1,12 @@
 package ch.schulealtendorf.psa
 
+import ch.schulealtendorf.psa.components.BuildInfoPanel
 import ch.schulealtendorf.psa.components.ControlPanel
 import ch.schulealtendorf.psa.components.HeaderPanel
 import ch.schulealtendorf.psa.components.VersionPanel
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import java.awt.BorderLayout
+import java.util.ResourceBundle
 import javax.imageio.ImageIO
 import javax.swing.BorderFactory
 import javax.swing.ImageIcon
@@ -23,6 +25,8 @@ class MainFrame(
         image = ImageIO.read(MainFrame::class.java.getResourceAsStream("/psa-logo.png"))
     }
 
+    private val i18n = ResourceBundle.getBundle("main-frame")
+
     init {
         val mainPanel = JPanel().apply {
             border = BorderFactory.createEmptyBorder(15, 5, 5, 5)
@@ -32,17 +36,15 @@ class MainFrame(
             add(headerPanel, BorderLayout.NORTH)
 
             val tabbedPane = JTabbedPane().apply {
-                add("Service", ControlPanel(args))
-                add("Options", JPanel())
-                add("Updates", JPanel())
+                add(i18n.getString("tab.application"), ControlPanel(args))
+                add(i18n.getString("tab.buildinfo"), BuildInfoPanel())
             }
-
             add(tabbedPane, BorderLayout.CENTER)
 
             add(VersionPanel(), BorderLayout.SOUTH)
         }
 
-        setSize(800, 600)
+        setSize(400, 500)
         isResizable = false
 
         add(mainPanel)

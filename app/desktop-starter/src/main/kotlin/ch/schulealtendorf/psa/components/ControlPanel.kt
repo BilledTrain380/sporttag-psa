@@ -36,7 +36,7 @@ class ControlPanel(
 
     init {
         setupActionListeners()
-        border = BorderFactory.createEmptyBorder(20, 250, 20, 250)
+        border = BorderFactory.createEmptyBorder(20, 20, 20, 20)
         layout = GridBagLayout()
 
         add(
