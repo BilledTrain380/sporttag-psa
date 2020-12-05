@@ -20,7 +20,7 @@ class PsaApplication
 
 class MainFrame(
     private val args: Array<String>
-) : JFrame("PSA Control Panel") {
+) : JFrame() {
     private val logo = ImageIcon().apply {
         image = ImageIO.read(MainFrame::class.java.getResourceAsStream("/psa-logo.png"))
     }
@@ -28,6 +28,8 @@ class MainFrame(
     private val i18n = ResourceBundle.getBundle("main-frame")
 
     init {
+        title = i18n.getString("title")
+
         val mainPanel = JPanel().apply {
             border = BorderFactory.createEmptyBorder(15, 5, 5, 5)
             layout = BorderLayout()
