@@ -36,8 +36,10 @@
 
 package ch.schulealtendorf.psa.web
 
+import ch.schulealtendorf.psa.core.user.UserManager
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Controller to forward the angular app routes
@@ -47,9 +49,16 @@ import org.springframework.web.bind.annotation.RequestMapping
  * @since 2.0.0
  */
 @Controller
-class AppController {
+class AppController(
+    private val userManager: UserManager
+) {
 
-    // FIXME Use user locale to forward correctly
     @RequestMapping("/app", "/app/*", "/app/*/pages/**")
-    fun forward() = "forward:/app/en-gb/index.html"
+    fun forward(request: HttpServletRequest): String {
+        val locale = userManager.getOne(request.userPrincipal?.name ?: "")
+            .map { it.locale }
+            .orElse("en")
+
+        return "forward:/app/$locale/index.html"
+    }
 }
