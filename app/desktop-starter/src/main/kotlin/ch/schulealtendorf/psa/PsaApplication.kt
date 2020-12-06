@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.business
+package ch.schulealtendorf.psa
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 

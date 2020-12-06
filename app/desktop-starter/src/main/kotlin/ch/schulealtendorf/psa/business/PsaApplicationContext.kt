@@ -1,5 +1,6 @@
 package ch.schulealtendorf.psa.business
 
+import ch.schulealtendorf.psa.PsaApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
 
