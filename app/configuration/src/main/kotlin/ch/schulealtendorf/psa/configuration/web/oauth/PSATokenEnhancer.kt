@@ -63,7 +63,9 @@ class PSATokenEnhancer(
         val user = userRepository.findByUserNameOrThrow(username)
 
         return (accessToken!! as DefaultOAuth2AccessToken).apply {
-            additionalInformation = additionalInformation?.plus(Pair("user_id", user.id))
+            additionalInformation = additionalInformation
+                ?.plus(Pair("user_id", user.id))
+                ?.plus(Pair("locale", user.locale))
         }
     }
 }

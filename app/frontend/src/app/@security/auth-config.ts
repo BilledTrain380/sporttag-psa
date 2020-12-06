@@ -6,6 +6,7 @@ export interface PsaJwt {
   readonly user_id: number;
   readonly user_name: string;
   readonly authorities: Array<string>;
+  readonly locale: string;
   readonly scope: Array<string>;
   readonly exp: number;
   readonly jti: string;

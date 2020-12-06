@@ -18,5 +18,6 @@ export interface UserDto {
   readonly username: string;
   readonly authorities: ReadonlyArray<string>;
   readonly enabled: boolean;
+  readonly locale: string;
   readonly password: string;
 }

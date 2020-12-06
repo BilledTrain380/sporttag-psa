@@ -9,6 +9,11 @@ export const selectUsername = createSelector(
   state => state.username,
 );
 
+export const selectLocale = createSelector(
+  selectUser,
+  state => state.locale,
+);
+
 export const selectAuthorities = createSelector(
   selectUser,
   state => state.authorities,

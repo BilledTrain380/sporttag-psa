@@ -7,11 +7,13 @@ import { setUser } from "./user.action";
 export interface UserState {
   readonly username: string;
   readonly authorities: ReadonlyArray<string>;
+  readonly locale: string;
 }
 
 const initialState: UserState = {
   username: ANONYMOUS,
   authorities: [],
+  locale: "en",
 };
 
 const reducer = createReducer(
@@ -21,6 +23,7 @@ const reducer = createReducer(
       ...state,
       username: action.username,
       authorities: action.authorities,
+      locale: action.locale,
     }
   )),
 );

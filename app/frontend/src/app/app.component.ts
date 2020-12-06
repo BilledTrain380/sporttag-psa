@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
       setUser({
                 username: parsedToken.user_name,
                 authorities: parsedToken.authorities,
+                locale: parsedToken.locale,
               }));
   }
 }
