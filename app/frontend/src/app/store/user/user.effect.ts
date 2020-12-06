@@ -15,7 +15,7 @@ export class UserEffects {
     .pipe(ofType(logout.type))
     .pipe(switchMap(() =>
                       this.authService.revokeToken()
-                        .pipe(map(() => setUser({username: ANONYMOUS, authorities: []})))
+                        .pipe(map(() => setUser({username: ANONYMOUS, authorities: [], locale: "en"})))
                         .pipe(catchError(err => {
                           this.log.warn("Could perform logout", err);
 
