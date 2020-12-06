@@ -65,13 +65,18 @@ class UserManagerImpl(
             }
 
         if (userEntity.username == USER_ADMIN) {
-            throw IllegalUserOperationException("Not allowed to modify admin user")
-        }
-
-        userEntity.apply {
-            username = user.username
-            enabled = user.enabled
-            authorities = user.authorities.map { AuthorityEntity(it) }
+            if (user.hasOnlyLocaleChangeComparedTo(userEntity)) {
+                userEntity.locale = user.locale
+            } else {
+                throw IllegalUserOperationException("Not allowed to modify admin user")
+            }
+        } else {
+            userEntity.apply {
+                username = user.username
+                enabled = user.enabled
+                locale = user.locale
+                authorities = user.authorities.map { AuthorityEntity(it) }
+            }
         }
 
         return userRepository.save(userEntity).toDto()
@@ -113,12 +118,33 @@ class UserManagerImpl(
             throw InvalidPasswordException(validationResult.messages.joinToString(", "))
     }
 
-    fun userDtoOf(userEntity: UserEntity): UserDto {
+    private fun userDtoOf(userEntity: UserEntity): UserDto {
         return UserDto(
             id = userEntity.id!!,
             username = userEntity.username,
             authorities = userEntity.authorities.map { it.role },
-            enabled = userEntity.enabled
+            enabled = userEntity.enabled,
+            locale = userEntity.locale
         )
+    }
+
+    private fun UserDto.hasOnlyLocaleChangeComparedTo(entity: UserEntity): Boolean {
+        if (id != entity.id) {
+            return false
+        }
+
+        if (username != entity.username) {
+            return false
+        }
+
+        if (enabled != entity.enabled) {
+            return false
+        }
+
+        if (authorities != entity.authorities.map { it.role }) {
+            return false
+        }
+
+        return true
     }
 }

@@ -90,14 +90,16 @@ internal class UserManagerImplTest {
 
         val user = userOptional.get().toBuilder()
             .setEnabled(false)
+            .setLocale("de")
             .build()
 
         val updatedUser = userManager.save(user)
-        assertThat(updatedUser.enabled).isFalse()
+        assertThat(updatedUser.enabled).isFalse
 
         val userEntity = userRepository.findByUsername(FHANSELER)
         assertThat(userEntity).isNotEmpty
-        assertThat(userEntity.get().enabled).isFalse()
+        assertThat(userEntity.get().enabled).isFalse
+        assertThat(userEntity.get().locale).isEqualTo("de")
     }
 
     @Test
@@ -114,6 +116,27 @@ internal class UserManagerImplTest {
             userManager.save(admin)
         }
         assertThat(exception).hasMessage("Not allowed to modify admin user")
+    }
+
+    @Test
+    internal fun saveAdminUserLocaleOnly() {
+        val userOptional = userManager.getOne(USER_ADMIN)
+        assertThat(userOptional).isNotEmpty
+
+        val admin = userOptional.get().toBuilder()
+            .setLocale("de")
+            .build()
+
+        val updateAdmin = userManager.save(admin)
+        assertThat(updateAdmin.locale).isEqualTo("de")
+
+        val userEntityOptional = userRepository.findByUsername(USER_ADMIN)
+        assertThat(userEntityOptional).isNotEmpty
+
+        val userEntity = userEntityOptional.get()
+        assertThat(userEntity.username).isEqualTo(USER_ADMIN)
+        assertThat(userEntity.enabled).isTrue
+        assertThat(userEntity.locale).isEqualTo("de")
     }
 
     @Test
