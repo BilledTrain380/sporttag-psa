@@ -13,26 +13,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 internal class UserManagementControllerTest : PsaWebMvcTest() {
 
     @Test
-    internal fun changeLocale() {
-        mockMvc.perform(
-            post("/user/change-locale")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBodyOf("de"))
-                .with(user(ADMIN_USER))
-        ).andExpect(status().is3xxRedirection)
-            .andExpect { assertThat(it.response.redirectedUrl).contains("/app") }
-    }
-
-    @Test
-    internal fun changeLocaleWhenUnauthorized() {
-        mockMvc.perform(
-            post("/user/change-locale")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBodyOf("de"))
-        ).andExpect(status().is3xxRedirection)
-    }
-
-    @Test
     internal fun getChangePasswordPageWhenUnauthorized() {
         mockMvc.perform(get("/user/change-pw"))
             .andExpect(status().is3xxRedirection)

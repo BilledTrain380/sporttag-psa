@@ -5,12 +5,10 @@ import ch.schulealtendorf.psa.core.user.validation.PasswordValidator
 import ch.schulealtendorf.psa.dto.user.UserDto
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
@@ -22,18 +20,6 @@ class UserManagementController(
     private val passwordValidator: PasswordValidator,
     private val userManager: UserManager
 ) {
-
-    @PostMapping("/change-locale", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun changeLocale(@RequestBody locale: String, request: HttpServletRequest): String {
-        val user = userManager.getOneOrElseFail(request.userPrincipal?.name ?: "")
-            .toBuilder()
-            .setLocale(locale)
-            .build()
-
-        userManager.save(user)
-
-        return "redirect:/app/"
-    }
 
     @GetMapping("/change-pw")
     fun changePasswordPage(): String {

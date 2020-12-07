@@ -90,7 +90,8 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices
                 OAuthScope(name = PSAScope.PARTICIPATION, description = "Access participation resources"),
                 OAuthScope(name = PSAScope.RANKING, description = "Access ranking"),
                 OAuthScope(name = PSAScope.EVENT_SHEETS, description = "Access event sheets"),
-                OAuthScope(name = PSAScope.USER, description = "Access to user management)")
+                OAuthScope(name = PSAScope.USER, description = "Access to user management)"),
+                OAuthScope(name = PSAScope.PROFILE, description = "Access the profile of the authenticated user")
             ]
         )
     )
@@ -110,7 +111,8 @@ class ResourceServerConfig(
                 "/api/competitor/**",
                 "/api/sports",
                 "/api/disciplines",
-                "/api/ranking/download"
+                "/api/ranking/download",
+                "/api/profile/**"
             )?.hasRole("USER")
             ?.antMatchers(
                 "/api/groups/overview",

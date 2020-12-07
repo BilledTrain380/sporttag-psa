@@ -53,6 +53,7 @@ object PSAScope {
     const val RANKING = "ranking"
     const val EVENT_SHEETS = "event_sheets"
     const val USER = "user"
+    const val PROFILE = "profile"
 
     val ALL_SCOPES = listOf(
         GROUP_READ,
@@ -66,6 +67,7 @@ object PSAScope {
         PARTICIPATION,
         RANKING,
         EVENT_SHEETS,
-        USER
+        USER,
+        PROFILE
     )
 }
