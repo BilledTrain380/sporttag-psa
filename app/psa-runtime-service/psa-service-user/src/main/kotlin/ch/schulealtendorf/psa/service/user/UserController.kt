@@ -246,7 +246,7 @@ class UserController(
     )
     @PreAuthorize("#oauth2.hasScope('user')")
     @PutMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userRelation: UserRelation, principal: Principal) {
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userRelation: UserRelation) {
         val user = userManager.getOneOrFail(id)
 
         try {
