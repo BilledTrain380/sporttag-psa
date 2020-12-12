@@ -37,6 +37,7 @@
 package ch.schulealtendorf.psa.web
 
 import ch.schulealtendorf.psa.core.user.UserManager
+import ch.schulealtendorf.psa.dto.user.PsaLocale
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import javax.servlet.http.HttpServletRequest
@@ -57,7 +58,7 @@ class AppController(
     fun forward(request: HttpServletRequest): String {
         val locale = userManager.getOne(request.userPrincipal?.name ?: "")
             .map { it.locale }
-            .orElse("en")
+            .orElse(PsaLocale.EN.value)
 
         return "forward:/app/$locale/index.html"
     }
