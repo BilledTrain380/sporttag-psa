@@ -6,7 +6,7 @@ import * as jwt_decode from "jwt-decode";
 import { getLogger, Logger } from "./@core/logging";
 import { authConfig, PsaJwt } from "./@security/auth-config";
 import { AppState } from "./store/app";
-import { setUser } from "./store/user/user.action";
+import { setUserAction } from "./store/user/user.action";
 
 @Component({
              selector: "app-root",
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
     const parsedToken = jwt_decode<PsaJwt>(this.oauthService.getAccessToken());
     this.log.info("Successfully logged in as user", parsedToken.user_name);
     this.store.dispatch(
-      setUser({
+      setUserAction({
                 username: parsedToken.user_name,
                 authorities: parsedToken.authorities,
                 locale: parsedToken.locale,

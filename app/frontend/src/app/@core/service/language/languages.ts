@@ -1,15 +1,20 @@
+import { PsaLocale } from "../../../dto/profile";
+
 export const LANGUAGES: ReadonlyArray<Language> = [
   {
-    locale: "en",
+    value: "en",
+    locale: PsaLocale.EN,
     name: "English",
   },
   {
-    locale: "de",
+    value: "de",
+    locale: PsaLocale.DE,
     name: "Deutsch",
   },
 ];
 
 export interface Language {
-  readonly locale: string;
+  readonly value: string;
+  readonly locale: PsaLocale;
   readonly name: string;
 }

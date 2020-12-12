@@ -12,8 +12,9 @@ import { getLogger, Logger } from "../../@core/logging";
 import { MENU_ITEMS } from "../../@core/menu/page-menu";
 import { LanguageService } from "../../@core/service/language/language-service";
 import { LANGUAGES } from "../../@core/service/language/languages";
+import { PsaLocale } from "../../dto/profile";
 import { AppState } from "../../store/app";
-import { logout } from "../../store/user/user.action";
+import { logoutAction } from "../../store/user/user.action";
 import { selectLocale, selectUsername } from "../../store/user/user.selector";
 
 @Component({
@@ -24,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly username$: Observable<string> = this.store.select(selectUsername);
   readonly locale$: Observable<string> = this.store.select(selectLocale)
     .pipe(map(locale =>
-                LANGUAGES.find(lang => lang.locale === locale)?.name ?? locale));
+                LANGUAGES.find(lang => lang.value === locale)?.name ?? locale));
 
   isMobile = false;
   readonly menu = MENU_ITEMS;
@@ -62,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   changePassword(event: Event): void {
     event.preventDefault();
 
-    this.store.dispatch(logout());
+    this.store.dispatch(logoutAction());
     this.oauthService.logOut(true);
 
     if (environment.production) {
@@ -72,19 +73,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeLocale(event: Event, locale: string): void {
+  changeLocale(event: Event, locale: PsaLocale): void {
     event.preventDefault();
 
     this.languageService.changeLocale(locale)
       .subscribe(() => {
-        window.location.pathname = "/app";
+        this.store.dispatch(logoutAction());
+        window.location.reload();
       });
   }
 
   logout(event: Event): void {
     this.log.info("Log out user");
     event.preventDefault();
-    this.store.dispatch(logout());
+    this.store.dispatch(logoutAction());
     this.oauthService.logOut();
   }
 }

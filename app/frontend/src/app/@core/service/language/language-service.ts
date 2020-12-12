@@ -1,34 +1,27 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { fromPromise } from "rxjs/internal-compatibility";
-import { map } from "rxjs/operators";
 
-import { environment } from "../../../../environments/environment";
-
-const url = environment.production
-  ? "/user/change-locale"
-  : `${window.location.protocol}//${window.location.hostname}:8080/user/change-locale`;
+import { ProfileElement, PsaLocale } from "../../../dto/profile";
+import { getLogger } from "../../logging";
+import { API_ENDPOINT } from "../api/pas-api";
 
 @Injectable({
               providedIn: "root",
             })
 export class LanguageService {
+  private readonly log = getLogger("LanguageService");
 
-  changeLocale(locale: string): Observable<void> {
-    const init: RequestInit = {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "error",
-      referrerPolicy: "no-referrer",
-      body: locale,
-    };
+  constructor(
+    private readonly http: HttpClient,
+  ) {
+  }
 
-    return fromPromise(fetch(url, init))
-      .pipe(map(() => undefined));
+  changeLocale(locale: PsaLocale): Observable<void> {
+    this.log.info("Change user locale to", locale);
+
+    const profileElement: ProfileElement = {locale};
+
+    return this.http.patch<void>(`${API_ENDPOINT}/profile`, profileElement);
   }
 }

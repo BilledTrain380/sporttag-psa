@@ -36,5 +36,6 @@ export const authConfig: AuthConfig = {
     "participation",
     "ranking",
     "event_sheets",
+    "profile",
   ].join(" "),
 };

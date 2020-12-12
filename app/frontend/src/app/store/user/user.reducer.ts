@@ -2,7 +2,7 @@ import { Action, createReducer, on } from "@ngrx/store";
 
 import { ANONYMOUS } from "../../@security/auth-constants";
 
-import { setUser } from "./user.action";
+import { setUserAction } from "./user.action";
 
 export interface UserState {
   readonly username: string;
@@ -18,7 +18,7 @@ const initialState: UserState = {
 
 const reducer = createReducer(
   initialState,
-  on(setUser, (state, action) => (
+  on(setUserAction, (state, action) => (
     {
       ...state,
       username: action.username,
