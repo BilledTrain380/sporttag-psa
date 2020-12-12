@@ -1,8 +1,9 @@
 package ch.schulealtendorf.psa.service.user
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
-import ch.schulealtendorf.psa.core.i18n.PsaLocale
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
+import ch.schulealtendorf.psa.dto.user.ProfileElement
+import ch.schulealtendorf.psa.dto.user.PsaLocale
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -16,7 +17,7 @@ internal class ProfileControllerTest : PsaWebMvcTest() {
             MockMvcRequestBuilders.patch("/api/profile")
                 .with(bearerTokenUser(PSAScope.PROFILE))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBodyOf(PsaLocale.DE))
+                .content(jsonBodyOf(ProfileElement(PsaLocale.DE)))
         ).andExpect(MockMvcResultMatchers.status().isOk)
     }
 
@@ -25,7 +26,7 @@ internal class ProfileControllerTest : PsaWebMvcTest() {
         mockMvc.perform(
             MockMvcRequestBuilders.patch("/api/profile")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBodyOf(PsaLocale.DE))
+                .content(jsonBodyOf(ProfileElement(PsaLocale.DE)))
         ).andExpect(MockMvcResultMatchers.status().isUnauthorized)
     }
 
@@ -35,7 +36,7 @@ internal class ProfileControllerTest : PsaWebMvcTest() {
             MockMvcRequestBuilders.patch("/api/profile")
                 .with(bearerTokenAdmin(PSAScope.USER))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBodyOf(PsaLocale.DE))
+                .content(jsonBodyOf(ProfileElement(PsaLocale.DE)))
         ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }
