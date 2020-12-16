@@ -17,8 +17,7 @@ internal class AppControllerTest : PsaWebMvcTest() {
     @Test
     internal fun forwardToAppWhenNoUser() {
         mockMvc.perform(get("/app"))
-            .andExpect(status().isOk)
-            .andExpect { assertThat(it.response.forwardedUrl).contains("app/en/index.html") }
+            .andExpect(status().is3xxRedirection)
     }
 
     @Test
@@ -34,7 +33,7 @@ internal class AppControllerTest : PsaWebMvcTest() {
         userManager.save(admin.get())
 
         mockMvc.perform(
-            get("/app")
+            get("/app/de")
                 .with(user(USER_ADMIN))
         ).andExpect(status().isOk)
             .andExpect { assertThat(it.response.forwardedUrl).contains("app/de/index.html") }
