@@ -25,6 +25,7 @@
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/kotlinc.xml
+.idea/.name
 
 # Gradle:
 .idea/**/gradle.xml
