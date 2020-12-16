@@ -8,15 +8,15 @@ PSA is a sport event management system.
 
 More info will be available on: https://billedtrain380.github.io/sporttag-psa/
 
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-* [Gradle](https://gradle.org/) 4.6+
-* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 1.8+
+* [Gradle](https://gradle.org/) At least 6.7
+* [JDK](https://adoptopenjdk.net/) At least 11
+* [NodeJS](https://nodejs.org/en/) At least 14.15 LTS
 
 ### Installing
 
@@ -30,13 +30,13 @@ cd sporttag-psa
 Run the application
 
 ```
-gradle bootRun
+./gradlew bootRun
 ```
 
 ## Running the tests
 
 ```
-gradle junitPlatformTest
+./gradlew test
 ```
 
 ## Deployment
@@ -46,44 +46,25 @@ Get the latest version of [PSA](https://billedtrain380.github.io/sporttag-psa/pa
 PSA is a standalone application. It uses the operating system depending application support directory
 to store its data.
 
-### Run as jar
+### Run as docker
 
-To run PSA as jar, you'll need Java 1.8 or higher installed.
-Then simply execute the jar file.
+PSA is available as docker image: https://hub.docker.com/r/billedtrain380/psa
 
-```
-java -jar sporttag-psa.jar
-```
+### Run standalone
 
-> The java version does not have a control panel. Therefore it is
-> recommended to run it in a terminal or simply setup a service to run the java file.
-
-### macOS
-
-PSA is available as a macOS app. Just double click the .app file
-on a macOS system. The JRE is bundled, therefore no need to install Java.
-
-> The macOS version is only available with a control panel. If you want to run
-> the application in a terminal, consider using the java version.
-
-### Windows
-
-PSA is available as a Windows app. Double click the .exe file on a windows system.
-The JRE is bundled, therefore no need to install Java.
-
-> The Windows version is only available with a control panel. If you want to run
-> the application in a terminal, consider using the java version.
+PSA can be run as standalone application: https://billedtrain380.github.io/sporttag-psa/pages/downloads
 
 ## Roadmap
 
 Interest where PSA is going? Look at the roadmap.
 
-https://trello.com/b/93Bu31qo/sporttag-psa
+https://dev.azure.com/billedtrain380/PSA/_boards/board/t/PSA%20Team/Stories
 
 ## Built With
 
 * [Gradle](https://gradle.org/) - Dependency Management
 * [Spring](https://spring.io/) - Server Framework used
+* [Angular](https://angular.io/) - Frontend Framework used
 * [H2](http://www.h2database.com/html/main.html) - Database Engine used
 
 ## Versioning
