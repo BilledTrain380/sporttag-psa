@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 import { TokenRevokeDto } from "../../dto/oauth";
 import { getLogger } from "../logging";
@@ -26,6 +27,7 @@ export class PsaAuthService {
     const token = this.oauthService.getAccessToken();
     const body: TokenRevokeDto = {token};
 
-    return this.http.post<void>(`${API_ENDPOINT}/oauth/token/revoke`, body);
+    return this.http.post<void>(`${API_ENDPOINT}/oauth/token/revoke`, body)
+      .pipe(tap(() => this.oauthService.logOut(true)));
   }
 }

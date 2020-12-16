@@ -19,7 +19,7 @@ export const authConfig: AuthConfig = {
   loginUrl: `${environment.production ? "" : devHost}/oauth/authorize`,
   logoutUrl: `${environment.production ? "" : devHost}/logout`,
   tokenEndpoint: `${environment.production ? "" : devHost}/oauth/token`,
-  redirectUri: `${window.location.origin}${environment.production ? "/app" : "/index.html"}`,
+  redirectUri: environment.production ? `${window.location.pathname}` : `${window.location.origin}`,
   requireHttps: false,
   oidc: false,
   clientId: "psa-kitten",

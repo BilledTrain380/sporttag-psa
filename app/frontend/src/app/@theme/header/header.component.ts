@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.languageService.changeLocale(locale)
       .subscribe(() => {
         this.store.dispatch(logoutAction());
-        window.location.reload();
+        window.location.replace("/app");
       });
   }
 

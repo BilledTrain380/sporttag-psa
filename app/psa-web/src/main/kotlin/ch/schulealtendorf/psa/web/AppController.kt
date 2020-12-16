@@ -54,12 +54,17 @@ class AppController(
     private val userManager: UserManager
 ) {
 
-    @RequestMapping("/app", "/app/*", "/app/*/pages/**")
-    fun forward(request: HttpServletRequest): String {
+    @RequestMapping("/app/*", "/app/*/pages/**")
+    fun forward(request: HttpServletRequest) = createCommand("forward", request)
+
+    @RequestMapping("/app")
+    fun redirect(request: HttpServletRequest) = createCommand("redirect", request)
+
+    private fun createCommand(cmd: String, request: HttpServletRequest): String {
         val locale = userManager.getOne(request.userPrincipal?.name ?: "")
             .map { it.locale }
             .orElse(PsaLocale.EN.value)
 
-        return "forward:/app/$locale/index.html"
+        return "$cmd:/app/$locale/index.html"
     }
 }

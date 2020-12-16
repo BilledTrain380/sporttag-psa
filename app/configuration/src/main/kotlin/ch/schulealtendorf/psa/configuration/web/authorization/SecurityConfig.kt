@@ -81,7 +81,6 @@ class SecurityConfig(
                 "/setup",
                 "/",
                 "/index",
-                "/app/**",
                 "/actuator/health"
             )
             ?.permitAll()
