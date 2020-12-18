@@ -117,9 +117,13 @@ class ControlPanel(
 
     private fun start() {
         thread {
-            starting()
-            PsaApplicationContext.start(args)
-            running()
+            try {
+                starting()
+                PsaApplicationContext.start(args)
+                running()
+            } catch (ex: Exception) {
+                failed()
+            }
         }
     }
 
@@ -174,6 +178,15 @@ class ControlPanel(
         SwingUtilities.invokeLater {
             statusText.text = i18n.getString("status.stopped")
             statusText.isOpaque = false
+            startButton.isEnabled = true
+        }
+    }
+
+    private fun failed() {
+        SwingUtilities.invokeLater {
+            statusText.text = i18n.getString("status.failed")
+            statusText.background = Color.RED
+            statusText.isOpaque = true
             startButton.isEnabled = true
         }
     }
