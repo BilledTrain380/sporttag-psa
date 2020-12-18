@@ -1,10 +1,10 @@
 package ch.schulealtendorf.psa
 
-import ch.schulealtendorf.psa.components.BuildInfoPanel
-import ch.schulealtendorf.psa.components.ControlPanel
-import ch.schulealtendorf.psa.components.HeaderPanel
-import ch.schulealtendorf.psa.components.TrayPopup
-import ch.schulealtendorf.psa.components.VersionPanel
+import ch.schulealtendorf.psa.desktop.BuildInfoPanel
+import ch.schulealtendorf.psa.desktop.ControlPanel
+import ch.schulealtendorf.psa.desktop.HeaderPanel
+import ch.schulealtendorf.psa.desktop.TrayPopup
+import ch.schulealtendorf.psa.desktop.VersionPanel
 import java.awt.BorderLayout
 import java.awt.SystemTray
 import java.awt.TrayIcon

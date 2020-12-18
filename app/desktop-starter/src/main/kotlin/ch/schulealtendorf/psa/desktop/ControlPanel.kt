@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.components
+package ch.schulealtendorf.psa.desktop
 
 import ch.schulealtendorf.psa.business.PsaApplicationContext
 import java.awt.Color
