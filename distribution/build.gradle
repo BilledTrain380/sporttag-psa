@@ -4,7 +4,7 @@ task setPipelineVariables {
         def nativeBundleVersion = "$version"
 
         // jpackage does not allow versions other than numbers separated with dots
-        if (nativeBundleVersion.contains("SNAPSHOT")) {
+        if (nativeBundleVersion.contains("SNAPSHOT") || nativeBundleVersion.contains("next")) {
             def delimiterIndex = nativeBundleVersion.indexOf("-")
             nativeBundleVersion = nativeBundleVersion.substring(0, delimiterIndex)
         }
