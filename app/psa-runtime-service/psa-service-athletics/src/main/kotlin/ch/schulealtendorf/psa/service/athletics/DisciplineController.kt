@@ -36,11 +36,11 @@
 
 package ch.schulealtendorf.psa.service.athletics
 
+import ch.schulealtendorf.psa.core.web.NotFoundException
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.participation.athletics.DisciplineDto
 import ch.schulealtendorf.psa.service.athletics.business.DisciplineManager
-import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema

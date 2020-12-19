@@ -36,6 +36,8 @@
 
 package ch.schulealtendorf.psa.service.group
 
+import ch.schulealtendorf.psa.core.web.BadRequestException
+import ch.schulealtendorf.psa.core.web.NotFoundException
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
 import ch.schulealtendorf.psa.dto.group.OverviewGroupDto
 import ch.schulealtendorf.psa.dto.group.SimpleGroupDto
@@ -44,8 +46,6 @@ import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.service.group.business.GroupImportManager
 import ch.schulealtendorf.psa.service.group.business.parsing.CSVParsingException
 import ch.schulealtendorf.psa.service.group.business.parsing.GroupFileParser
-import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
-import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
 import ch.schulealtendorf.psa.service.standard.manager.GroupManager
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter

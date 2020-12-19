@@ -36,13 +36,13 @@
 
 package ch.schulealtendorf.psa.service.ranking
 
+import ch.schulealtendorf.psa.core.web.BadRequestException
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.ranking.RankingDataDto
 import ch.schulealtendorf.psa.service.ranking.business.RankingExport
 import ch.schulealtendorf.psa.service.ranking.business.RankingExportManager
 import ch.schulealtendorf.psa.service.ranking.business.reporter.DisciplineExport
-import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
 import ch.schulealtendorf.psa.service.standard.web.buildFileResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content

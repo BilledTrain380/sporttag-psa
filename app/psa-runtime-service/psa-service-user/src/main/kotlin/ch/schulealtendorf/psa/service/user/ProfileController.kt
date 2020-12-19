@@ -1,10 +1,10 @@
 package ch.schulealtendorf.psa.service.user
 
 import ch.schulealtendorf.psa.core.user.UserManager
+import ch.schulealtendorf.psa.core.web.NotFoundException
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.user.ProfileElement
-import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse

@@ -2,15 +2,12 @@ package ch.schulealtendorf.psa.web
 
 import ch.schulealtendorf.psa.core.user.UserManager
 import ch.schulealtendorf.psa.core.user.validation.PasswordValidator
-import ch.schulealtendorf.psa.dto.user.UserDto
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
+import ch.schulealtendorf.psa.core.web.UnauthorizedException
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.servlet.http.HttpServletRequest
 
@@ -36,15 +33,7 @@ class UserManagementController(
 
         if (validationResult.isValid) {
             val user = userManager.getOne(request.userPrincipal.name)
-                .orElseThrow {
-                    HttpClientErrorException.create(
-                        HttpStatus.UNAUTHORIZED,
-                        "Unauthorized",
-                        HttpHeaders.EMPTY,
-                        byteArrayOf(),
-                        Charsets.UTF_8
-                    )
-                }
+                .orElseThrow { UnauthorizedException() }
 
             userManager.changePassword(user, form.password)
 
@@ -54,18 +43,5 @@ class UserManagementController(
 
         redirectAttributes.addFlashAttribute("pwValidationErrors", validationResult.messages)
         return "redirect:/user/change-pw"
-    }
-
-    private fun UserManager.getOneOrElseFail(username: String): UserDto {
-        return getOne(username)
-            .orElseThrow {
-                HttpClientErrorException.create(
-                    HttpStatus.UNAUTHORIZED,
-                    "Unauthorized",
-                    HttpHeaders.EMPTY,
-                    byteArrayOf(),
-                    Charsets.UTF_8
-                )
-            }
     }
 }
