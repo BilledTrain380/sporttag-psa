@@ -41,14 +41,14 @@ import ch.schulealtendorf.psa.core.user.IllegalUserOperationException
 import ch.schulealtendorf.psa.core.user.USER_ADMIN
 import ch.schulealtendorf.psa.core.user.UserManager
 import ch.schulealtendorf.psa.core.user.validation.InvalidPasswordException
+import ch.schulealtendorf.psa.core.web.BadRequestException
+import ch.schulealtendorf.psa.core.web.NotFoundException
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.psa.dto.user.UserElement
 import ch.schulealtendorf.psa.dto.user.UserInput
 import ch.schulealtendorf.psa.dto.user.UserRelation
-import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
-import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -68,7 +68,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
 
 /**
  * Rest controller for user domain.
@@ -246,7 +245,7 @@ class UserController(
     )
     @PreAuthorize("#oauth2.hasScope('user')")
     @PutMapping("/user/{user_id}")
-    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userRelation: UserRelation, principal: Principal) {
+    fun updateUser(@PathVariable("user_id") id: Int, @RequestBody userRelation: UserRelation) {
         val user = userManager.getOneOrFail(id)
 
         try {

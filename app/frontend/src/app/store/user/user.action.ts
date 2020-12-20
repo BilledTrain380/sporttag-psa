@@ -1,15 +1,16 @@
 import { createAction, props } from "@ngrx/store";
 
-export interface PropsLoginSuccess {
+export interface LoginSuccessProps {
   readonly username: string;
   readonly authorities: ReadonlyArray<string>;
+  readonly locale: string;
 }
 
-export const setUser = createAction(
+export const setUserAction = createAction(
   "[Authentication] Set user",
-  props<PropsLoginSuccess>(),
+  props<LoginSuccessProps>(),
 );
 
-export const logout = createAction(
+export const logoutAction = createAction(
   "[Authentication] Logout",
 );

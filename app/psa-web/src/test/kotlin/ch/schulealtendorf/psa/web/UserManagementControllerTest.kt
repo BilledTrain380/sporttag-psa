@@ -2,27 +2,28 @@ package ch.schulealtendorf.psa.web
 
 import ch.schulealtendorf.psa.configuration.test.PsaWebMvcTest
 import ch.schulealtendorf.psa.configuration.test.formContent
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 internal class UserManagementControllerTest : PsaWebMvcTest() {
 
     @Test
     internal fun getChangePasswordPageWhenUnauthorized() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/change-pw"))
-            .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+        mockMvc.perform(get("/user/change-pw"))
+            .andExpect(status().is3xxRedirection)
     }
 
     @Test
     internal fun getChangePasswordPageWhenAuthorized() {
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/user/change-pw")
+            get("/user/change-pw")
                 .with(user(ADMIN_USER))
-        ).andExpect(MockMvcResultMatchers.status().isOk)
+        ).andExpect(status().isOk)
     }
 
     @Test
@@ -30,12 +31,12 @@ internal class UserManagementControllerTest : PsaWebMvcTest() {
         val form = ChangePasswordForm("pass", "pass")
 
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/user/change-pw")
+            post("/user/change-pw")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .formContent(form)
                 .with(user(ADMIN_USER))
-        ).andExpect(MockMvcResultMatchers.status().is3xxRedirection)
-            .andExpect { Assertions.assertThat(it.response.redirectedUrl).contains("/user/change-pw") }
+        ).andExpect(status().is3xxRedirection)
+            .andExpect { assertThat(it.response.redirectedUrl).contains("/user/change-pw") }
             .andExpect(flash().attributeExists("pwValidationErrors"))
     }
 
@@ -45,11 +46,11 @@ internal class UserManagementControllerTest : PsaWebMvcTest() {
         val form = ChangePasswordForm(validPassword, validPassword)
 
         mockMvc.perform(
-            MockMvcRequestBuilders.post("/user/change-pw")
+            post("/user/change-pw")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .formContent(form)
                 .with(user(ADMIN_USER))
-        ).andExpect(MockMvcResultMatchers.status().is3xxRedirection)
-            .andExpect { Assertions.assertThat(it.response.redirectedUrl).contains("/app") }
+        ).andExpect(status().is3xxRedirection)
+            .andExpect { assertThat(it.response.redirectedUrl).contains("/app") }
     }
 }

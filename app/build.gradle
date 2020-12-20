@@ -40,6 +40,7 @@ sonarqube {
         property "sonar.log.level", "DEBUG"
         property "sonar.login", "$sonarLogin"
         property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.exclusions", "**/ch/schulealtendorf/psa/desktop/**"
         property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/app/**/build/reports/jacoco/**/*.xml"
 
         if (pullRequestNumber != null) {
@@ -152,7 +153,7 @@ subprojects {
     }
 }
 
-project(":app:starter") {
+configure([project(":app:starter"), project(":app:desktop-starter")]) {
     apply plugin: 'application'
 }
 
@@ -172,6 +173,7 @@ configure([
         project(":app:psa-web"),
         project(':app:shared'),
         project(':app:starter'),
+        project(':app:desktop-starter'),
 ]) {
     apply plugin: 'kotlin-spring'
 

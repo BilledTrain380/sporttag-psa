@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PsaApplication (Desktop)" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="ch.schulealtendorf.psa.PsaDesktopApplicationKt" />
+    <module name="PSA.app.desktop-starter.main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

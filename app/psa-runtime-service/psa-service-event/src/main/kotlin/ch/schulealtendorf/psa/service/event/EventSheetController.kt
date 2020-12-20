@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.service.event
 
+import ch.schulealtendorf.psa.core.web.BadRequestException
 import ch.schulealtendorf.psa.dto.event.EventSheetData
 import ch.schulealtendorf.psa.dto.event.EventSheetExport
 import ch.schulealtendorf.psa.dto.group.GroupStatusType
@@ -48,7 +49,6 @@ import ch.schulealtendorf.psa.service.event.business.EventSheetExportManager
 import ch.schulealtendorf.psa.service.event.business.ParticipantListExportManager
 import ch.schulealtendorf.psa.service.event.business.reporter.StartlistReporter
 import ch.schulealtendorf.psa.service.standard.disciplineDtoOf
-import ch.schulealtendorf.psa.service.standard.exception.web.BadRequestException
 import ch.schulealtendorf.psa.service.standard.manager.GroupManager
 import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
 import ch.schulealtendorf.psa.service.standard.repository.DisciplineRepository

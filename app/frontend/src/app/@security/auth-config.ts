@@ -6,6 +6,7 @@ export interface PsaJwt {
   readonly user_id: number;
   readonly user_name: string;
   readonly authorities: Array<string>;
+  readonly locale: string;
   readonly scope: Array<string>;
   readonly exp: number;
   readonly jti: string;
@@ -18,7 +19,7 @@ export const authConfig: AuthConfig = {
   loginUrl: `${environment.production ? "" : devHost}/oauth/authorize`,
   logoutUrl: `${environment.production ? "" : devHost}/logout`,
   tokenEndpoint: `${environment.production ? "" : devHost}/oauth/token`,
-  redirectUri: `${window.location.origin}${environment.production ? "/app" : "/index.html"}`,
+  redirectUri: environment.production ? `${window.location.pathname}` : `${window.location.origin}`,
   requireHttps: false,
   oidc: false,
   clientId: "psa-kitten",
@@ -35,5 +36,6 @@ export const authConfig: AuthConfig = {
     "participation",
     "ranking",
     "event_sheets",
+    "profile",
   ].join(" "),
 };

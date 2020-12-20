@@ -1,13 +1,20 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { OAuthService } from "angular-oauth2-oidc";
-import { EMPTY, Observable } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
+
+import { TokenRevokeDto } from "../../dto/oauth";
+import { getLogger } from "../logging";
+
+import { API_ENDPOINT } from "./api/pas-api";
 
 @Injectable({
               providedIn: "root",
             })
 export class PsaAuthService {
+  private readonly log = getLogger("PsaAuthService");
+
   constructor(
     private readonly http: HttpClient,
     private readonly oauthService: OAuthService,
@@ -15,22 +22,12 @@ export class PsaAuthService {
   }
 
   revokeToken(): Observable<void> {
-    const headers = new HttpHeaders();
-    headers.append("Content-Type", "application/x-www-form-urlencoded");
+    this.log.info("Revoke access token");
 
     const token = this.oauthService.getAccessToken();
+    const body: TokenRevokeDto = {token};
 
-    const body: TokenRevokeDto = {
-      token,
-      token_type_hint: "access_token",
-    };
-
-    return this.http.post("/token/revoke", body, {headers})
-      .pipe(mergeMap(() => EMPTY));
+    return this.http.post<void>(`${API_ENDPOINT}/oauth/token/revoke`, body)
+      .pipe(tap(() => this.oauthService.logOut(true)));
   }
-}
-
-interface TokenRevokeDto {
-  readonly token: string;
-  readonly token_type_hint: "access_token" | "refresh_token";
 }

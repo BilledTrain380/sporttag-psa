@@ -49,6 +49,7 @@ data class UserDto @JvmOverloads constructor(
     val username: String,
     val authorities: List<String>,
     val enabled: Boolean = true,
+    val locale: String = "en",
     val password: String = "protected"
 ) {
     companion object
@@ -60,6 +61,7 @@ data class UserDto @JvmOverloads constructor(
     ) {
         private var username = dto.username
         private var isEnabled = dto.enabled
+        private var locale = dto.locale
 
         fun setUsername(username: String): Builder {
             this.username = username
@@ -71,6 +73,11 @@ data class UserDto @JvmOverloads constructor(
             return this
         }
 
-        fun build() = dto.copy(username = username, enabled = isEnabled)
+        fun setLocale(locale: String): Builder {
+            this.locale = locale
+            return this
+        }
+
+        fun build() = dto.copy(username = username, enabled = isEnabled, locale = locale)
     }
 }

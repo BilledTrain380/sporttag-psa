@@ -68,6 +68,9 @@ data class UserEntity(
     @NotNull
     var enabled: Boolean = false,
 
+    @NotNull
+    var locale: String = "en",
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "USER_AUTHORITY",

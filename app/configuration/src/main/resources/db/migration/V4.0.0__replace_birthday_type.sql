@@ -14,4 +14,4 @@ SET birthday = (
     );
 
 ALTER TABLE PARTICIPANT
-DROP COLUMN old_birthday
+    DROP COLUMN old_birthday;

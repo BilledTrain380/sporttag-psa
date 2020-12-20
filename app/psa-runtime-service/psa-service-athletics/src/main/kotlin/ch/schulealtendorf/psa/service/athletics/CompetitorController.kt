@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.service.athletics
 
+import ch.schulealtendorf.psa.core.web.NotFoundException
 import ch.schulealtendorf.psa.dto.oauth.PSAScope
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.participation.CompetitorDto
@@ -45,7 +46,6 @@ import ch.schulealtendorf.psa.dto.participation.athletics.ResultElement
 import ch.schulealtendorf.psa.service.athletics.business.CompetitorFilter
 import ch.schulealtendorf.psa.service.athletics.business.CompetitorManager
 import ch.schulealtendorf.psa.service.athletics.business.CompetitorResultAmend
-import ch.schulealtendorf.psa.service.standard.exception.web.NotFoundException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ArraySchema

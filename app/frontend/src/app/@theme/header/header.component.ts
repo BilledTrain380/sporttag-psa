@@ -1,17 +1,21 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faLanguage } from "@fortawesome/free-solid-svg-icons/faLanguage";
 import { Store } from "@ngrx/store";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Observable, Subject } from "rxjs";
-import { takeUntil, tap } from "rxjs/operators";
+import { map, takeUntil, tap } from "rxjs/operators";
 
 import { environment } from "../../../environments/environment";
 import { getLogger, Logger } from "../../@core/logging";
 import { MENU_ITEMS } from "../../@core/menu/page-menu";
+import { LanguageService } from "../../@core/service/language/language-service";
+import { LANGUAGES } from "../../@core/service/language/languages";
+import { PsaLocale } from "../../dto/profile";
 import { AppState } from "../../store/app";
-import { logout } from "../../store/user/user.action";
-import { selectUsername } from "../../store/user/user.selector";
+import { logoutAction } from "../../store/user/user.action";
+import { selectLocale, selectUsername } from "../../store/user/user.selector";
 
 @Component({
              selector: "app-header",
@@ -19,10 +23,15 @@ import { selectUsername } from "../../store/user/user.selector";
            })
 export class HeaderComponent implements OnInit, OnDestroy {
   readonly username$: Observable<string> = this.store.select(selectUsername);
+  readonly locale$: Observable<string> = this.store.select(selectLocale)
+    .pipe(map(locale =>
+                LANGUAGES.find(lang => lang.value === locale)?.name ?? locale));
 
   isMobile = false;
   readonly menu = MENU_ITEMS;
 
+  readonly languages = LANGUAGES;
+  readonly faLanguage = faLanguage;
   readonly faUser = faUser;
 
   private readonly destroy$ = new Subject<void>();
@@ -31,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store<AppState>,
     private readonly oauthService: OAuthService,
+    private readonly languageService: LanguageService,
     private readonly breakpointObserver: BreakpointObserver,
   ) {
   }
@@ -53,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   changePassword(event: Event): void {
     event.preventDefault();
 
-    this.store.dispatch(logout());
+    this.store.dispatch(logoutAction());
     this.oauthService.logOut(true);
 
     if (environment.production) {
@@ -63,10 +73,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  changeLocale(event: Event, locale: PsaLocale): void {
+    event.preventDefault();
+
+    this.languageService.changeLocale(locale)
+      .subscribe(() => {
+        this.store.dispatch(logoutAction());
+        window.location.replace("/app");
+      });
+  }
+
   logout(event: Event): void {
     this.log.info("Log out user");
     event.preventDefault();
-    this.store.dispatch(logout());
+    this.store.dispatch(logoutAction());
     this.oauthService.logOut();
   }
 }

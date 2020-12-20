@@ -23,7 +23,9 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/jarRepositories.xml
+.idea/compiler.xml
 .idea/kotlinc.xml
+.idea/.name
 
 # Gradle:
 .idea/**/gradle.xml
@@ -116,4 +118,7 @@ application-dir
 
 # PSA frontend application
 /app/psa-web/src/main/resources/public/app/*
+
+# PSA Build info json
+app/configuration/src/main/resources/build-info.json
 
