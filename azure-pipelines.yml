@@ -237,6 +237,7 @@ stages:
 
   - stage: e2e_tests
     displayName: 'e2e tests'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     jobs:
       - job: psa
         displayName: 'PSA'
