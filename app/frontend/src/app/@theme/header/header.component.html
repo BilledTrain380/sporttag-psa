@@ -36,7 +36,7 @@
         </div>
       </li>
 
-      <li class="nav-item ml-4" ngbDropdown display="dynamic" placement="bottom-right">
+      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
         <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button" data-test-selector="user-menu">
           <fa-icon [icon]="faUser"></fa-icon>
           <span *ngIf="!isMobile" class="ml-2">{{username$ | async}}</span>
@@ -44,6 +44,15 @@
         <div ngbDropdownMenu class="dropdown-menu">
           <a ngbDropdownItem href="#" (click)="changePassword($event)" i18n>Change password</a>
           <a ngbDropdownItem href="#" (click)="logout($event)" i18n>Sign out</a>
+        </div>
+      </li>
+
+      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
+        <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button">
+          <fa-icon [icon]="faInfo"></fa-icon>
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu">
+          <a ngbDropdownItem href="#" (click)="openAboutDialog($event)" i18n>About</a>
         </div>
       </li>
     </ul>
