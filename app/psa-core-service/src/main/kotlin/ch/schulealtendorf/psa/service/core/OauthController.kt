@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.service.user
+package ch.schulealtendorf.psa.service.core
 
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
 import ch.schulealtendorf.psa.dto.oauth.TokenRevokeDto
