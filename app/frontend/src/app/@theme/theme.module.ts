@@ -9,6 +9,7 @@ import { CoreModule } from "../@core/core.module";
 import { SecurityModule } from "../@security/security.module";
 
 import { FooterComponent } from "./footer/footer.component";
+import { AboutModalComponent } from "./header/about-modal/about-modal.component";
 import { HeaderComponent } from "./header/header.component";
 import { CardComponent } from "./layout/card/card.component";
 import { ColumnLayoutComponent } from "./layout/column-layout/column-layout.component";
@@ -44,6 +45,7 @@ const MODULES = [
             declarations: [
               ...BASE_COMPONENTS,
               PageHeaderComponent,
+              AboutModalComponent,
             ],
             imports: [
               ...MODULES,

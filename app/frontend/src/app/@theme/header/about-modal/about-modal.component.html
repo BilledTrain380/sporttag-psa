@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <h4 class="modal-title" i18n>About</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <h5 i18n>Build Info</h5>
+  <dl class="row" *ngIf="buildInfo$ | async as buildInfo">
+    <dt class="col-sm-3" i18n>Version</dt>
+    <dd class="col-sm-9">{{buildInfo.version}}</dd>
+
+    <dt class="col-sm-3" i18n>Hash</dt>
+    <dd class="col-sm-9">{{buildInfo.hash}}</dd>
+
+    <dt class="col-sm-3" i18n>Build Time</dt>
+    <dd class="col-sm-9">{{buildInfo.buildTime}}</dd>
+
+    <dt class="col-sm-3 text-truncate" i18n>Environment</dt>
+    <dd class="col-sm-9">{{buildInfo.environment}}</dd>
+  </dl>
+
+  <h5>Contact</h5>
+  <dl class="row">
+    <dt class="col-sm-3" i18n>E-mail</dt>
+    <dd class="col-sm-9">
+      <a href="mailto: billedtrain380@gmail.com">billedtrain380@gmail.com</a>
+    </dd>
+
+    <dt class="col-sm-3">Github</dt>
+    <dd class="col-sm-9">
+      <a href="https://github.com/BilledTrain380/sporttag-psa/issues" target="_blank" i18n>Github Issues</a>
+    </dd>
+  </dl>
+</div>
+
+<div class="modal-footer">
+  <button type="button"
+          ngbAutofocus
+          class="btn btn-primary"
+          (click)="close()"
+          i18n>
+    Close
+  </button>
+</div>

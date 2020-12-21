@@ -1,7 +1,9 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 import { faLanguage } from "@fortawesome/free-solid-svg-icons/faLanguage";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Store } from "@ngrx/store";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Observable, Subject } from "rxjs";
@@ -16,6 +18,8 @@ import { PsaLocale } from "../../dto/profile";
 import { AppState } from "../../store/app";
 import { logoutAction } from "../../store/user/user.action";
 import { selectLocale, selectUsername } from "../../store/user/user.selector";
+
+import { AboutModalComponent } from "./about-modal/about-modal.component";
 
 @Component({
              selector: "app-header",
@@ -33,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly languages = LANGUAGES;
   readonly faLanguage = faLanguage;
   readonly faUser = faUser;
+  readonly faInfo = faInfoCircle;
 
   private readonly destroy$ = new Subject<void>();
   private readonly log: Logger = getLogger("HeaderComponent");
@@ -42,6 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private readonly oauthService: OAuthService,
     private readonly languageService: LanguageService,
     private readonly breakpointObserver: BreakpointObserver,
+    private readonly modalService: NgbModal,
   ) {
   }
 
@@ -88,5 +94,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.store.dispatch(logoutAction());
     this.oauthService.logOut();
+  }
+
+  openAboutDialog(event: Event): void {
+    event.preventDefault();
+
+    this.modalService.open(AboutModalComponent);
   }
 }

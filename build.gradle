@@ -3,7 +3,11 @@ ext {
     isReleaseBuild = version != null && !version.toString().toLowerCase().contains("snapshot")
 
     if (commitHash == null || commitHash.isEmpty()) {
-        commitHash = "git rev-parse --short HEAD".execute().text.trim()
+        commitHash = System.getenv("BUILD_SOURCEVERSION")?.substring(0, 7)
+
+        if (commitHash == null || commitHash.isEmpty()) {
+            commitHash = "git rev-parse --short HEAD".execute().text.trim()
+        }
     }
 }
 

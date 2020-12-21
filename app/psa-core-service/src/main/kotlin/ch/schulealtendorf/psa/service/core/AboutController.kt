@@ -1,37 +1,35 @@
-package ch.schulealtendorf.psa.service.user
+package ch.schulealtendorf.psa.service.core
 
+import ch.schulealtendorf.psa.configuration.BuildInfo
+import ch.schulealtendorf.psa.dto.about.BuildInfoDto
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
-import ch.schulealtendorf.psa.dto.oauth.TokenRevokeDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "Oauth", description = "Access oauth resources")
+@Tag(name = "About", description = "Access about resources")
 @SecurityRequirement(name = SecurityRequirementNames.OAUTH2)
-class OauthController(
-    private val tokenServices: DefaultTokenServices
-) {
+class AboutController {
 
     @Operation(
-        summary = "Revoke an access token",
-        tags = ["Oauth"],
+        summary = "Access the build info",
+        tags = ["About"]
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successful revoked an access token",
-                content = [Content()]
+                description = "Load build info",
+                content = [Content(schema = Schema(implementation = BuildInfoDto::class))]
             ),
             ApiResponse(
                 responseCode = "401",
@@ -40,8 +38,13 @@ class OauthController(
             )
         ]
     )
-    @PostMapping("/oauth/token/revoke")
-    fun revokeAccessToken(@RequestBody tokenRevokeDto: TokenRevokeDto) {
-        tokenServices.revokeToken(tokenRevokeDto.token)
+    @GetMapping("/build-info")
+    fun getBuildInfo(): BuildInfoDto {
+        return BuildInfoDto(
+            BuildInfo.VERSION,
+            BuildInfo.HASH,
+            BuildInfo.BUILD_TIME,
+            BuildInfo.ENVIRONMENT
+        )
     }
 }
