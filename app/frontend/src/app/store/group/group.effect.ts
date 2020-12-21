@@ -7,7 +7,6 @@ import { requireNonNullOrUndefined } from "../../@core/lib/lib";
 import { getLogger } from "../../@core/logging";
 import { GroupApi, OverviewGroupsParameters } from "../../@core/service/api/group-api";
 import { ParticipantApi, ParticipantParameters } from "../../@core/service/api/participant-api";
-import { WebApi } from "../../@core/service/api/web-api";
 import { ParticipantInput } from "../../dto/participation";
 import { AlertFactory } from "../../modules/alert/alert";
 
@@ -56,7 +55,7 @@ export class GroupEffects {
     .pipe(switchMap((action: ImportGroupsProps) => {
                       const textAlert = this.alertFactory.textAlert();
 
-                      return this.webApi.importGroups(action.file)
+                      return this.groupApi.importGroups(action.file)
                         .pipe(map(() => {
                           this.log.info("Successfully imported groups");
                           const alert = textAlert.success($localize`Successfully imported groups`);
@@ -214,7 +213,6 @@ export class GroupEffects {
     private readonly actions$: Actions,
     private readonly groupApi: GroupApi,
     private readonly participantApi: ParticipantApi,
-    private readonly webApi: WebApi,
     private readonly alertFactory: AlertFactory,
   ) {
   }

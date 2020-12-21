@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { mapTo } from "rxjs/operators";
 
 import { GroupStatusType, OverviewGroupDto, SimpleGroupDto } from "../../../dto/group";
 import { getLogger, Logger } from "../../logging";
 
-import { ApiParameters, API_ENDPOINT } from "./pas-api";
+import { API_ENDPOINT, ApiParameters } from "./pas-api";
 
 @Injectable({
               providedIn: "root",
@@ -36,6 +37,16 @@ export class GroupApi {
     this.log.info("Get group: name =", groupName);
 
     return this.http.get<SimpleGroupDto>(`${API_ENDPOINT}/group/${groupName}`);
+  }
+
+  importGroups(file: File): Observable<void> {
+    this.log.info("Import groups with file:", file.name);
+
+    const formData = new FormData();
+    formData.append("group-input", file);
+
+    return this.http.post(`${API_ENDPOINT}/groups/import`, formData, {responseType: "text"})
+      .pipe(mapTo(undefined));
   }
 }
 
