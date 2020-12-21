@@ -1,28 +1,32 @@
 items:
   - img: "1_import-groups.gif"
-    title: "page.tour.importGroups.title"
-    description: "page.tour.importGroups.description"
+    title: "Imports groups"
+    description: "Import your groups with a csv file"
 
   - img: "2_select-sport.gif"
-    title: "page.tour.selectSport.title"
-    description: "page.tour.selectSport.description"
+    title: "Select the sport type"
+    description: "Select the sport type for each participant"
 
   - img: "3_close-participation.gif"
-    title: "page.tour.closeParticipation.title"
-    description: "page.tour.closeParticipation.description"
+    title: "Close the participation"
+    description: "Close the participation to start the sport event. Start numbers will be generated."
 
   - img: "4_export-participant-list.gif"
-    title: "page.tour.exportParticipantList.title"
-    description: "page.tour.exportParticipantList.description"
+    title: "Export the participant list"
+    description: "Gets you an overview of participants of each sport type"
 
   - img: "5_export-event-sheets.gif"
-    title: "page.tour.exportEventSheet.title"
-    description: "page.tour.exportEventSheet.description"
+    title: "Export the start list"
+    description: "Gets you an overview of the start numbers"
+
+  - img: "5_export-event-sheets.gif"
+    title: "Export the event sheets"
+    description: "Allows you to fill in the competitor results by hand"
 
   - img: "6_record-results.gif"
-    title: "page.tour.recordResults.title"
-    description: "page.tour.recordResults.description"
+    title: "Record the results"
+    description: "Fill in the results of the competitors and get automatically calculated points."
 
   - img: "7_export-ranking.gif"
-    title: "page.tour.exportRanking.title"
-    description: "page.tour.exportRanking.description"
+    title: "Export the ranking"
+    description: "Download the ranking as PDF."
