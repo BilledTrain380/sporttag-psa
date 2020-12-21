@@ -18,6 +18,7 @@ import { PsaLocale } from "../../dto/profile";
 import { AppState } from "../../store/app";
 import { logoutAction } from "../../store/user/user.action";
 import { selectLocale, selectUsername } from "../../store/user/user.selector";
+
 import { AboutModalComponent } from "./about-modal/about-modal.component";
 
 @Component({

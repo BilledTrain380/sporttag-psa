@@ -6,7 +6,7 @@ import { mapTo } from "rxjs/operators";
 import { GroupStatusType, OverviewGroupDto, SimpleGroupDto } from "../../../dto/group";
 import { getLogger, Logger } from "../../logging";
 
-import { API_ENDPOINT, ApiParameters } from "./pas-api";
+import { ApiParameters, API_ENDPOINT } from "./pas-api";
 
 @Injectable({
               providedIn: "root",

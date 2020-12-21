@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable } from "rxjs";
 
@@ -9,16 +9,13 @@ import { BuildInfoDto } from "../../../dto/about";
              selector: "app-about-modal",
              templateUrl: "./about-modal.component.html",
            })
-export class AboutModalComponent implements OnInit {
+export class AboutModalComponent {
   readonly buildInfo$: Observable<BuildInfoDto> = this.aboutApi.getBuildInfo();
 
   constructor(
     private readonly modal: NgbActiveModal,
     private readonly aboutApi: AboutApi,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   close(): void {
