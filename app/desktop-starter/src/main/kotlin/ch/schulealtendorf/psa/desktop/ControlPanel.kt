@@ -27,8 +27,8 @@ class ControlPanel(
     private val startButton = JButton(i18n.getString("label.start"))
     private val stopButton = JButton(i18n.getString("label.stop"))
     private val launchButton = JButton(i18n.getString("label.launch"))
-
     private val quitButton = JButton(i18n.getString("label.quit"))
+    private val openLogsButton = JButton(i18n.getString("label.logs"))
 
     init {
         setupActionListeners()
@@ -86,6 +86,19 @@ class ControlPanel(
                 gridy = 3
             }
         )
+
+        add(
+            openLogsButton,
+            GridBagConstraints().apply {
+                weightx = 0.5
+                gridwidth = 2
+                insets = Insets(10, 0, 10, 0)
+                fill = GridBagConstraints.HORIZONTAL
+                gridx = 0
+                gridy = 4
+            }
+        )
+
         add(
             quitButton,
             GridBagConstraints().apply {
@@ -94,7 +107,7 @@ class ControlPanel(
                 insets = Insets(10, 0, 10, 0)
                 fill = GridBagConstraints.HORIZONTAL
                 gridx = 0
-                gridy = 4
+                gridy = 5
             }
         )
     }
@@ -110,6 +123,12 @@ class ControlPanel(
         launchButton.apply {
             isEnabled = false
             addActionListener { launch() }
+        }
+
+        openLogsButton.addActionListener {
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(PsaApplicationContext.logsDirectory.toFile())
+            }
         }
 
         quitButton.addActionListener { quit() }

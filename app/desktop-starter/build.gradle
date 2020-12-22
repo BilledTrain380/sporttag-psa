@@ -6,6 +6,7 @@ bootJar {
 
 dependencies {
     implementation project(":app:configuration")
+    implementation project(":app:setup")
     implementation project(":app:psa-web")
     implementation project(":app:psa-core-service")
     implementation project(":app:psa-runtime-service:psa-service-group")
