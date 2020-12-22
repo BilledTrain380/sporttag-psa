@@ -121,4 +121,3 @@ application-dir
 
 # PSA Build info json
 app/configuration/src/main/resources/build-info.json
-

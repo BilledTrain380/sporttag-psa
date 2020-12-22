@@ -1,89 +1,62 @@
 <footer class="bg-dark text-light pt-5">
-
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-3">
-
-                <img width="30" height="30" src="{{ site.baseurl_root }}/img/psa-logo.svg">
+                <img width="30" height="30" src="{{ site.baseurl }}/assets/img/psa-logo.svg">
                 <p>
-                    <small class="text-muted">2018 - 2019</small>
+                    <small class="text-muted">2018 - 2020</small>
                 </p>
-
             </div>
 
             <div class="col-lg-3">
+                <h5><a class="text-light" href="{{ site.baseurl }}/pages/installation">Installation and Update</a></h5>
+            </div>
 
-                <h5>{% translate footer.userGuide %}</h5>
+            <div class="col-lg-2">
+                <h5><a class="text-light" href="{{ site.baseurl }}/pages/downloads">Downloads</a></h5>
+            </div>
+
+            <div class="col-lg-2">
+                <h5>Links</h5>
 
                 <ul class="list-unstyled text-small">
-
-                    {% for item in site.data.user-guide.tableOfContents %}
-
-                    <li><a class="text-muted" href="{{ site.baseurl }}{{ item.link }}">{% translate item.translateKey %}</a></li>
-
+                    {% for item in site.data.links %}
+                    <li>
+                        <a class="text-secondary" href="{{ item.link }}" target="_blank">
+                            {{ item.title }}
+                        </a>
+                    </li>
                     {% endfor %}
-
                 </ul>
-
             </div>
 
             <div class="col-lg-2">
-
-                <h5><a class="text-light" href="{{ site.baseurl }}/pages/downloads">{% translate footer.downloads %}</a></h5>
-
+                <h5 class="float-right"><a class="text-light" href="{{ site.baseurl }}/pages/about">About</a></h5>
             </div>
-
-            <div class="col-lg-2">
-
-                <h5>{% translate footer.support.title %}</h5>
-
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="{{ site.baseurl }}/pages/installation">{% translate footer.support.installation %}</a></li>
-                    <li><a class="text-muted" target="_blank" href="https://trello.com/b/93Bu31qo/sporttag-psa">{% translate footer.support.roadmap %}</a></li>
-                </ul>
-
-            </div>
-
-            <div class="col-lg-2">
-
-                <h5 class="float-right"><a class="text-light" href="{{ site.baseurl }}/pages/about">{% translate footer.about %}</a></h5>
-
-            </div>
-
         </div>
-
     </div>
 
     <hr class="hr-light">
 
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-8">
-
                 <p class="text-muted">
-                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule
+                    Altendorf</a>.
                     <br/>
                     Currently {{ site.data.downloads.stable.version }} Code licensed GPLv3, docs CC BY 3.0
                 </p>
-
             </div>
 
             <div class="col-lg-4">
-
                 <div class="float-right">
-                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa"
+                       target="_blank">
                         <i class="fab fa-2x fa-github"></i>
                     </a>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </footer>
