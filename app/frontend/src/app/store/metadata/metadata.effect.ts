@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { EMPTY } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
-import { getLogger } from "../../@core/logging";
 
+import { getLogger } from "../../@core/logging";
 import { AboutApi } from "../../@core/service/api/about-api";
 
 import { loadMetadataAction, setMetadataAction } from "./metadata.action";

@@ -43,7 +43,7 @@ class AboutController(
     )
     @GetMapping("/build-info")
     fun getBuildInfo(): BuildInfoDto {
-        val versionResponse = githubApi.getLatestVersion();
+        val versionResponse = githubApi.getLatestVersion()
 
         return BuildInfoDto(
             version = BuildInfo.VERSION,
