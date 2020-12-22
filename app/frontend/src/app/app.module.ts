@@ -16,6 +16,7 @@ import { ThemeModule } from "./@theme/theme.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { metaReducers, reducers } from "./store";
+import { MetadataEffects } from "./store/metadata/metadata.effect";
 import { UserEffects } from "./store/user/user.effect";
 
 @NgModule({
@@ -38,7 +39,7 @@ import { UserEffects } from "./store/user/user.effect";
                   strictActionImmutability: true,
                 },
               }),
-              EffectsModule.forRoot([UserEffects]),
+              EffectsModule.forRoot([UserEffects, MetadataEffects]),
               !environment.production ? StoreDevtoolsModule.instrument({
                                                                          maxAge: 25,
                                                                          logOnly: environment.production,

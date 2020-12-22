@@ -6,6 +6,7 @@ import * as jwt_decode from "jwt-decode";
 import { getLogger, Logger } from "./@core/logging";
 import { authConfig, PsaJwt } from "./@security/auth-config";
 import { AppState } from "./store/app";
+import { loadMetadataAction } from "./store/metadata/metadata.action";
 import { setUserAction } from "./store/user/user.action";
 
 @Component({
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
       this.login();
     } else {
       this.handleAccessToken();
+      this.store.dispatch(loadMetadataAction());
     }
   }
 
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit {
           this.oauthService.initImplicitFlowInternal();
         } else {
           this.handleAccessToken();
+          this.store.dispatch(loadMetadataAction());
         }
       });
   }
@@ -58,9 +61,9 @@ export class AppComponent implements OnInit {
     this.log.info("Successfully logged in as user", parsedToken.user_name);
     this.store.dispatch(
       setUserAction({
-                username: parsedToken.user_name,
-                authorities: parsedToken.authorities,
-                locale: parsedToken.locale,
-              }));
+                      username: parsedToken.user_name,
+                      authorities: parsedToken.authorities,
+                      locale: parsedToken.locale,
+                    }));
   }
 }
