@@ -136,119 +136,70 @@
 <body>
 
 <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
-
     <div class="container pl-3 pr-3">
-
         <a class="navbar-brand" href="/sporttag-psa/">
-            <img width="30" height="30" src="/sporttag-psa/img/psa-logo.svg">
+            <img width="30" height="30" src="/sporttag-psa/assets/img/psa-logo.svg">
             PSA
         </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/sporttag-psa/pages/tour">Tour</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/sporttag-psa/pages/user-guide">User Guide</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/sporttag-psa/pages/themes">Themes</a>
-                </li>
             </ul>
 
-
             <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language: English</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/sporttag-psa/">English</a>
-                        <a class="dropdown-item" href="/sporttag-psa/de">Deutsch</a>
-                    </div>
-                </li>
-
                 <li class="nav-item ml-2">
                     <a class="nav-link btn btn-outline-warning" href="/sporttag-psa/pages/downloads">Download</a>
                 </li>
-
             </ul>
-
         </div>
-
     </div>
-
 </nav>
 
 
 <div class="container container-full pt-3 pb-5">
 
     <div class="row">
-
     <div class="col-lg-12">
-
         <h1>Downloads</h1>
 
         <h2>Current Stable Version</h2>
 
         <p>The current stable release of PSA is 2.1.2 (2019-06-23).</p>
-
     </div>
 
     <div class="col-lg-12">
-
         <p>We think your OS is <em id="current-os">...</em>.</p>
 
-        <p>Show downloads for <a href="#" onclick="setOS('macOS')">macOS</a> | <a href="#" onclick="setOS('Windows')">Windows</a> | <a href="#" onclick="setOS('Java')">Java</a></p>
-
-        <h3>PSA for <span id="psa-for">...</span></h3>
-
-        <p id="java-lead" class="lead d-none">
-            PSA as Java app is always the headless app which you start per cli.<br>You need at least Java 1.8
+        <p>Show downloads for <a href="#" onclick="setOS('macOS')">macOS</a> | <a href="#" onclick="setOS('Windows')">Windows</a>
         </p>
 
+        <h3>PSA for <span id="psa-for">...</span></h3>
     </div>
 
-
     <div class="col-lg-4 mb-2">
-
+        
+        <a id="stable-macOS" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_macOS.zip"
+           class="btn btn-primary btn-block text-white d-none">
+            <h3>Download 2.1.2</h3>
+            <span>from Github</span>
+        </a>
+        
+        <a id="stable-windows" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_Windows.zip"
+           class="btn btn-primary btn-block text-white d-none">
+            <h3>Download 2.1.2</h3>
+            <span>from Github</span>
+        </a>
         
 
-            <a id="stable-java" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_Java.zip" class="btn btn-primary btn-block text-white d-none">
-
-                <h3>Download 2.1.2</h3>
-
-                from Github
-
-            </a>
-
-        
-
-            <a id="stable-macOS" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_macOS.zip" class="btn btn-primary btn-block text-white d-none">
-
-                <h3>Download 2.1.2</h3>
-
-                from Github
-
-            </a>
-
-        
-
-            <a id="stable-windows" href="https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_Windows.zip" class="btn btn-primary btn-block text-white d-none">
-
-                <h3>Download 2.1.2</h3>
-
-                from Github
-
-            </a>
-
-        
+        <p id="recommended">PSA is not available for linux. It is recommended to use <a href="https://hub.docker.com/r/billedtrain380/psa" target="_blank">Docker</a> on linux systems.</p>
 
         <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/blob/2.1.2/RelNotes/2.1.2.md">Release Notes</a>
         |
@@ -258,194 +209,150 @@
 
     <div class="col-lg-12 mt-5">
 
-        <h2>Older Downloads</h2>
+        <h2>Older Versions</h2>
 
-        Previous downloads of PSA can be found here: <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/releases">Github</a>
+        <span>Previous versions of PSA can be found here:
+            <a target="_blank" href="https://github.com/BilledTrain380/sporttag-psa/releases">Github</a>
+        </span>
 
     </div>
-
 </div>
 
 <script>
-
-    // get elements which are OS depended
+    // Get elements which are OS depended
     var psaFor;
-    var javaLead;
 
-    // download boxes
-    var stableJava;
+    // Download boxes
     var stableMacOS;
     var stableWindows;
 
+    // Docker hint
+    var dockerHint;
+
     function resetOS() {
-
-        javaLead.addClass("d-none");
-
-        stableJava.addClass("d-none");
+        dockerHint.addClass("d-none");
         stableMacOS.addClass("d-none");
         stableWindows.addClass("d-none");
     }
 
     function setOS(os) {
-
         resetOS();
-
         psaFor.text(os);
 
         switch (os) {
-
             case "Windows":
-
                 stableWindows.removeClass("d-none");
                 break;
 
             case "macOS":
-
                 stableMacOS.removeClass("d-none");
                 break;
 
             default:
-
-                stableJava.removeClass("d-none");
-                javaLead.removeClass("d-none");
-
-                break;
+                dockerHint.removeClass("d-none");
         }
     }
-
 
     $(document).ready(function () {
 
         psaFor = $("#psa-for");
-        javaLead = $("#java-lead");
-
-        stableJava = $("#stable-java");
         stableMacOS = $("#stable-macOS");
         stableWindows = $("#stable-windows");
+        dockerHint = $("#recommended");
 
-        var OSName="Unknown OS";
-        if (navigator.appVersion.indexOf("Win")!== -1) OSName="Windows";
-        if (navigator.appVersion.indexOf("Mac")!== -1) OSName="macOS";
-        if (navigator.appVersion.indexOf("X11")!== -1) OSName="UNIX";
-        if (navigator.appVersion.indexOf("Linux")!== -1) OSName="Linux";
+        var OSName = "Unknown OS";
+        if (navigator.appVersion.indexOf("Win") !== -1) OSName = "Windows";
+        if (navigator.appVersion.indexOf("Mac") !== -1) OSName = "macOS";
+        if (navigator.appVersion.indexOf("X11") !== -1) OSName = "UNIX";
+        if (navigator.appVersion.indexOf("Linux") !== -1) OSName = "Linux";
 
         $("#current-os").text(OSName);
 
         setOS(OSName);
     });
-
 </script>
 
 </div>
 
 <footer class="bg-dark text-light pt-5">
-
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-3">
-
-                <img width="30" height="30" src="/sporttag-psa/img/psa-logo.svg">
+                <img width="30" height="30" src="/sporttag-psa/assets/img/psa-logo.svg">
                 <p>
-                    <small class="text-muted">2018 - 2019</small>
+                    <small class="text-muted">2018 - 2020</small>
                 </p>
-
             </div>
 
             <div class="col-lg-3">
-
-                <h5>User Guide</h5>
-
-                <ul class="list-unstyled text-small">
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/participants">Manage Participants</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/participation">Manage Participation</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/athletics">Manage Athletics</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/ranking">Ranking</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/event">Event Sheets</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/users">Manage Users</a></li>
-
-                    
-
-                </ul>
-
+                <h5><a class="text-light" href="/sporttag-psa/pages/installation">Installation and Update</a></h5>
             </div>
 
             <div class="col-lg-2">
-
                 <h5><a class="text-light" href="/sporttag-psa/pages/downloads">Downloads</a></h5>
-
             </div>
 
             <div class="col-lg-2">
-
-                <h5>Support</h5>
+                <h5>Links</h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="/sporttag-psa/pages/installation">Installation & Update</a></li>
-                    <li><a class="text-muted" target="_blank" href="https://trello.com/b/93Bu31qo/sporttag-psa">Roadmap</a></li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://dev.azure.com/billedtrain380/PSA/_workitems/recentlyupdated" target="_blank">
+                            Roadmap
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://github.com/BilledTrain380/sporttag-psa/tree/master" target="_blank">
+                            Github
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://sonarcloud.io/dashboard?branch=master&id=BilledTrain380_sporttag-psa" target="_blank">
+                            Sonar
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://dev.azure.com/billedtrain380/PSA/_build?definitionId=3" target="_blank">
+                            Azure DevOps
+                        </a>
+                    </li>
+                    
                 </ul>
-
             </div>
 
             <div class="col-lg-2">
-
                 <h5 class="float-right"><a class="text-light" href="/sporttag-psa/pages/about">About</a></h5>
-
             </div>
-
         </div>
-
     </div>
 
     <hr class="hr-light">
 
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-8">
-
                 <p class="text-muted">
-                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule
+                    Altendorf</a>.
                     <br/>
                     Currently 2.1.2 Code licensed GPLv3, docs CC BY 3.0
                 </p>
-
             </div>
 
             <div class="col-lg-4">
-
                 <div class="float-right">
-                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa"
+                       target="_blank">
                         <i class="fab fa-2x fa-github"></i>
                     </a>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </footer>
 
 </body>

@@ -136,54 +136,31 @@
 <body>
 
 <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
-
     <div class="container pl-3 pr-3">
-
         <a class="navbar-brand" href="/sporttag-psa/">
-            <img width="30" height="30" src="/sporttag-psa/img/psa-logo.svg">
+            <img width="30" height="30" src="/sporttag-psa/assets/img/psa-logo.svg">
             PSA
         </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/sporttag-psa/pages/tour">Tour</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/sporttag-psa/pages/user-guide">User Guide</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/sporttag-psa/pages/themes">Themes</a>
-                </li>
             </ul>
 
-
             <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language: English</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/sporttag-psa/">English</a>
-                        <a class="dropdown-item" href="/sporttag-psa/de">Deutsch</a>
-                    </div>
-                </li>
-
                 <li class="nav-item ml-2">
                     <a class="nav-link btn btn-outline-warning" href="/sporttag-psa/pages/downloads">Download</a>
                 </li>
-
             </ul>
-
         </div>
-
     </div>
-
 </nav>
 
 
@@ -197,206 +174,132 @@
 
 <h2 id="how-to-install-psa">How to install PSA</h2>
 
-<h3 id="on-a-macos">on a macOS</h3>
+<h3 id="docker">Docker</h3>
+
+<p>PSA is available as a Docker image.</p>
+
+<p><a href="https://hub.docker.com/r/billedtrain380/psa">https://hub.docker.com/r/billedtrain380/psa</a></p>
+
+<blockquote>
+  <p>It is highly recommended to use PSA with Docker.</p>
+</blockquote>
+
+<h3 id="macos">macOS</h3>
 
 <p><strong>Steps</strong></p>
 
 <ol>
-  <li>
-    <p>Download the latest stable version of <a href="/sporttag-psa/pages/downloads">PSA</a>.</p>
-  </li>
-  <li>
-    <p>Double click the downloaded dmg and follow the instructions.</p>
-  </li>
+  <li>Download the latest stable version of <a href="/sporttag-psa/pages/downloads">PSA</a>.</li>
+  <li>Execute the <code class="highlighter-rouge">.pkg</code> file and follow the wizard</li>
+  <li>Execute the <code class="highlighter-rouge">PSA-Desktop.app</code> file</li>
 </ol>
 
-<p>The app will be located in your application directory. Just start the program and the administration GUI will be shown.</p>
+<p>TODO: Insert image</p>
 
-<h3 id="on-a-windows">on a Windows</h3>
+<blockquote>
+  <p>PSA for macOS only includes an executable <code class="highlighter-rouge">.app</code> file with a control panel as a user interface.
+If you know Docker, it is highly recommended to use PSA with Docker.</p>
+</blockquote>
 
-<p>TODO: Add steps for Windows installation</p>
-
-<h3 id="as-java-app">as Java App</h3>
-
-<p><strong>Prerequisites</strong></p>
-<ul>
-  <li>You are familiar with a CLI</li>
-  <li>You have Java 1.8 or higher on your system installed</li>
-</ul>
+<h3 id="windows">Windows</h3>
 
 <p><strong>Steps</strong></p>
 
 <ol>
-  <li>
-    <p>Download the latest version of <a href="/sporttag-psa/pages/downloads">PSA</a> (remember to choose Java, if it isn’t already).</p>
-  </li>
-  <li>
-    <p>Unpack the archive.</p>
-  </li>
-  <li>
-    <p>Copy the java file to a directory of your choice.</p>
-  </li>
-  <li>
-    <p>Start the program through the command line: <code class="highlighter-rouge">java -jar PSA-&lt;version&gt;.jar</code></p>
-  </li>
+  <li>Download the latest stable version of <a href="/sporttag-psa/pages/downloads">PSA</a>.</li>
+  <li>Execute the <code class="highlighter-rouge">.msi</code> file and follow the wizard</li>
+  <li>Execute the <code class="highlighter-rouge">PSA-Desktop.exe</code> file</li>
 </ol>
 
-<h2 id="how-to-update-psa">How to update PSA</h2>
+<p>TODO: Insert image</p>
 
-<h3 id="on-a-macos-1">on a macOS</h3>
-
-<p><strong>Prerequisites</strong></p>
-<ul>
-  <li>Quit PSA</li>
-</ul>
-
-<p><strong>Steps</strong></p>
-
-<ol>
-  <li>
-    <p>Download the latest stable version of <a href="/sporttag-psa/pages/downloads">PSA</a>.</p>
-  </li>
-  <li>
-    <p>Double click the downloaded dmg.</p>
-  </li>
-  <li>
-    <p>Replace your existing <code class="highlighter-rouge">PSA.app</code> with the new one.</p>
-  </li>
-</ol>
-
-<p>During the next start, PSA will automatically migrate your existing data. You don’t have to do anything further.</p>
-
-<h3 id="on-a-windows-1">on a Windows</h3>
-
-<p>TODO: Add steps for Windows Update</p>
-
-<h3 id="as-java-app-1">as Java App</h3>
-
-<ol>
-  <li>
-    <p>Download the latest version of <a href="/sporttag-psa/pages/downloads">PSA</a> (remember to choose Java, if it isn’t already).</p>
-  </li>
-  <li>
-    <p>Unpack the archive.</p>
-  </li>
-  <li>
-    <p>Replace your existing java file with the new one.</p>
-  </li>
-</ol>
-
-<p>During the next start, PSA will automatically migrate your existing data. You don’t have to do anything further.</p>
+<blockquote>
+  <p>PSA for Windows only includes an executable <code class="highlighter-rouge">.exe</code> file with a control panel as a user interface.
+If you know Docker, it is highly recommended to use PSA with Docker.</p>
+</blockquote>
 
 
 </div>
 
 <footer class="bg-dark text-light pt-5">
-
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-3">
-
-                <img width="30" height="30" src="/sporttag-psa/img/psa-logo.svg">
+                <img width="30" height="30" src="/sporttag-psa/assets/img/psa-logo.svg">
                 <p>
-                    <small class="text-muted">2018 - 2019</small>
+                    <small class="text-muted">2018 - 2020</small>
                 </p>
-
             </div>
 
             <div class="col-lg-3">
-
-                <h5>User Guide</h5>
-
-                <ul class="list-unstyled text-small">
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/participants">Manage Participants</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/participation">Manage Participation</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/athletics">Manage Athletics</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/ranking">Ranking</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/event">Event Sheets</a></li>
-
-                    
-
-                    <li><a class="text-muted" href="/sporttag-psa/pages/user-guide/users">Manage Users</a></li>
-
-                    
-
-                </ul>
-
+                <h5><a class="text-light" href="/sporttag-psa/pages/installation">Installation and Update</a></h5>
             </div>
 
             <div class="col-lg-2">
-
                 <h5><a class="text-light" href="/sporttag-psa/pages/downloads">Downloads</a></h5>
-
             </div>
 
             <div class="col-lg-2">
-
-                <h5>Support</h5>
+                <h5>Links</h5>
 
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="/sporttag-psa/pages/installation">Installation & Update</a></li>
-                    <li><a class="text-muted" target="_blank" href="https://trello.com/b/93Bu31qo/sporttag-psa">Roadmap</a></li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://dev.azure.com/billedtrain380/PSA/_workitems/recentlyupdated" target="_blank">
+                            Roadmap
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://github.com/BilledTrain380/sporttag-psa/tree/master" target="_blank">
+                            Github
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://sonarcloud.io/dashboard?branch=master&id=BilledTrain380_sporttag-psa" target="_blank">
+                            Sonar
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a class="text-secondary" href="https://dev.azure.com/billedtrain380/PSA/_build?definitionId=3" target="_blank">
+                            Azure DevOps
+                        </a>
+                    </li>
+                    
                 </ul>
-
             </div>
 
             <div class="col-lg-2">
-
                 <h5 class="float-right"><a class="text-light" href="/sporttag-psa/pages/about">About</a></h5>
-
             </div>
-
         </div>
-
     </div>
 
     <hr class="hr-light">
 
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-8">
-
                 <p class="text-muted">
-                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule Altendorf</a>.
+                    Designed and built in cooperation with <a href="https://www.schule-altendorf.ch/" target="_blank">Primarschule
+                    Altendorf</a>.
                     <br/>
                     Currently 2.1.2 Code licensed GPLv3, docs CC BY 3.0
                 </p>
-
             </div>
 
             <div class="col-lg-4">
-
                 <div class="float-right">
-                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa" target="_blank">
+                    <a class="nav-link text-muted pr-0" href="https://github.com/BilledTrain380/sporttag-psa"
+                       target="_blank">
                         <i class="fab fa-2x fa-github"></i>
                     </a>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </footer>
 
 </body>
