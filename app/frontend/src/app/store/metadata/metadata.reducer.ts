@@ -5,10 +5,20 @@ import { BuildInfoDto } from "../../dto/about";
 import { setMetadataAction } from "./metadata.action";
 
 export interface MetadataState {
-  readonly buildInfo?: BuildInfoDto;
+  readonly buildInfo: BuildInfoDto;
 }
 
-const initialState: MetadataState = {};
+const UNKNOWN = "UNKNOWN";
+
+const initialState: MetadataState = {
+  buildInfo: {
+    latestVersion: UNKNOWN,
+    version: UNKNOWN,
+    environment: UNKNOWN,
+    buildTime: UNKNOWN,
+    hash: UNKNOWN,
+  },
+};
 
 const reducer = createReducer(
   initialState,
