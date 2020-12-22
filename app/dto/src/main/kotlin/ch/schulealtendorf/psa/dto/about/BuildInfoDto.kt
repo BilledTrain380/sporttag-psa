@@ -6,5 +6,6 @@ data class BuildInfoDto(
     val version: String,
     val hash: String,
     val buildTime: Instant,
-    val environment: String
+    val environment: String,
+    val latestVersion: String
 )

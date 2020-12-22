@@ -3,6 +3,7 @@ package ch.schulealtendorf.psa.service.core
 import ch.schulealtendorf.psa.configuration.BuildInfo
 import ch.schulealtendorf.psa.dto.about.BuildInfoDto
 import ch.schulealtendorf.psa.dto.oauth.SecurityRequirementNames
+import ch.schulealtendorf.psa.service.core.github.GithubApi
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
 @Tag(name = "About", description = "Access about resources")
 @SecurityRequirement(name = SecurityRequirementNames.OAUTH2)
-class AboutController {
+class AboutController(
+    private val githubApi: GithubApi
+) {
 
     @Operation(
         summary = "Access the build info",
@@ -40,11 +43,14 @@ class AboutController {
     )
     @GetMapping("/build-info")
     fun getBuildInfo(): BuildInfoDto {
+        val versionResponse = githubApi.getLatestVersion();
+
         return BuildInfoDto(
-            BuildInfo.VERSION,
-            BuildInfo.HASH,
-            BuildInfo.BUILD_TIME,
-            BuildInfo.ENVIRONMENT
+            version = BuildInfo.VERSION,
+            hash = BuildInfo.HASH,
+            buildTime = BuildInfo.BUILD_TIME,
+            environment = BuildInfo.ENVIRONMENT,
+            latestVersion = versionResponse.version
         )
     }
 }
