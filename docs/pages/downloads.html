@@ -4,15 +4,12 @@ layout: default
 ---
 
 <div class="row">
-
     <div class="col-lg-12">
-
         <h1>Downloads</h1>
 
         <h2>Current Stable Version</h2>
 
         <p>The current stable release of PSA is {{ site.data.downloads.currentStableVersion }}.</p>
-
     </div>
 
     <div class="col-lg-12">
@@ -33,6 +30,8 @@ layout: default
         </a>
         {% endfor %}
 
+        <p id="recommended">PSA is not available for linux. It is recommended to use <a href="https://hub.docker.com/r/billedtrain380/psa" target="_blank">Docker</a> on linux systems.</p>
+
         <a target="_blank" href="{{ site.data.downloads.stable.links.relNotes }}">Release Notes</a>
         |
         <a target="_blank" href="{{ site.data.downloads.stable.links.changelog }}">Changelog</a>
@@ -51,16 +50,18 @@ layout: default
 </div>
 
 <script>
-
-    // get elements which are OS depended
+    // Get elements which are OS depended
     var psaFor;
 
-    // download boxes
+    // Download boxes
     var stableMacOS;
     var stableWindows;
 
+    // Docker hint
+    var dockerHint;
+
     function resetOS() {
-        stableJava.addClass("d-none");
+        dockerHint.addClass("d-none");
         stableMacOS.addClass("d-none");
         stableWindows.addClass("d-none");
     }
@@ -77,16 +78,18 @@ layout: default
             case "macOS":
                 stableMacOS.removeClass("d-none");
                 break;
+
+            default:
+                dockerHint.removeClass("d-none");
         }
     }
-
 
     $(document).ready(function () {
 
         psaFor = $("#psa-for");
-
         stableMacOS = $("#stable-macOS");
         stableWindows = $("#stable-windows");
+        dockerHint = $("#recommended");
 
         var OSName = "Unknown OS";
         if (navigator.appVersion.indexOf("Win") !== -1) OSName = "Windows";
@@ -98,5 +101,4 @@ layout: default
 
         setOS(OSName);
     });
-
 </script>

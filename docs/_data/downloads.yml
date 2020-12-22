@@ -7,7 +7,7 @@ stable:
     relNotes: "https://github.com/BilledTrain380/sporttag-psa/blob/2.1.2/RelNotes/2.1.2.md"
     changelog: "https://github.com/BilledTrain380/sporttag-psa/blob/2.1.2/CHANGELOG.md"
   downloads:
-    - name: java
+    - name: docker
       link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_Java.zip"
 
     - name: macOS
