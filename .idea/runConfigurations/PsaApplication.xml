@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="SporttagPsaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="PsaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <module name="PSA.app.starter.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="ch.schulealtendorf.psa.SporttagPsaApplication" />
     <option name="ACTIVE_PROFILES" value="dev" />

@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PsaApplication In-Memory (Data)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="PSA.app.starter.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="ch.schulealtendorf.psa.SporttagPsaApplication" />
+    <option name="ACTIVE_PROFILES" value="dev, data" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <additionalParameters>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="spring.datasource.url" />
+        <option name="value" value="jdbc:h2:mem:psa" />
+      </param>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="server.port" />
+        <option name="value" value="8080" />
+      </param>
+    </additionalParameters>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
