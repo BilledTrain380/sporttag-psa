@@ -55,6 +55,12 @@
 
     </div>
 
+    <div th:if="${hasBeenInitialized}"
+         class="alert alert-info"
+         role="alert"
+         th:text="#{page.home.setupWarning}">
+    </div>
+
     <div th:if="${param.error}" class="alert alert-danger" role="alert" th:text="#{page.login.invalidLogin}">
     </div>
 
@@ -71,11 +77,7 @@
 
         <button type="submit" class="btn btn-warning btn-block" th:text="#{label.login}"></button>
     </form>
-
-    <a class="btn btn-outline-secondary btn-block mt-3" th:href="@{/}" th:text="#{label.takeMeBack}"></a>
-
 </div>
-
 </body>
 
 </html>

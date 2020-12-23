@@ -36,24 +36,11 @@
 
 package ch.schulealtendorf.psa.web
 
-import ch.schulealtendorf.psa.core.ifNotNull
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class HomeController {
-    @GetMapping("/", "/index")
-    fun index(model: Model, authentication: Authentication?): String {
-        model.addAttribute("isAuthenticated", false)
-
-        authentication.ifNotNull {
-            model.addAttribute("username", (it.principal as UserDetails).username)
-            model.addAttribute("isAuthenticated", it.isAuthenticated)
-        }
-
-        return "index"
-    }
+    @GetMapping("/")
+    fun index() = "redirect:/app"
 }
