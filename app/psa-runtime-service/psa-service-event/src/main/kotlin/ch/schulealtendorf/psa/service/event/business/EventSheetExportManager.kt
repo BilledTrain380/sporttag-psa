@@ -16,7 +16,7 @@ class EventSheetExportManager(
     private val fileSystem: FileSystem,
     private val eventSheetReporter: EventSheetReporter
 ) : ExportManager<List<EventSheetDisciplineExport>> {
-    private val resourceBundle = ResourceBundle.getBundle("i18n.file-names")
+    private val resourceBundle = ResourceBundle.getBundle("i18n.event-sheets")
     private val log = KotlinLogging.logger {}
 
     /**

@@ -69,7 +69,7 @@ class JasperDisciplineGroupApi(
     private val log = KotlinLogging.logger {}
 
     override fun createCsvReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
-        log.info { "Create csv triathlon ranking report" }
+        log.info { "Create csv triathlon ranking report: $config" }
 
         val competitors = data filterByConfig config
 
@@ -104,7 +104,7 @@ class JasperDisciplineGroupApi(
     }
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
-        log.info { "Create pdf triathlon report" }
+        log.info { "Create pdf triathlon report: $config" }
 
         val competitors = data filterByConfig config
         val rankingDataSet = rankingManager.createDisciplineGroupRanking(competitors)

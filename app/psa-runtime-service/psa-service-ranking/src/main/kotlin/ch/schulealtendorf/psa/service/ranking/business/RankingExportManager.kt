@@ -25,7 +25,7 @@ class RankingExportManager(
     private val disciplineRankingReporter: DisciplineRankingReporter,
     private val disciplineRepository: DisciplineRepository
 ) : ExportManager<RankingExport> {
-    private val resourceBundle = ResourceBundle.getBundle("i18n.file-names")
+    private val resourceBundle = ResourceBundle.getBundle("i18n.ranking")
     private val log = KotlinLogging.logger {}
 
     /**
