@@ -63,7 +63,7 @@ class JasperTotalRankingApi(
     private val log = KotlinLogging.logger {}
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: TotalRankingConfig): File {
-        log.info { "Create pdf total ranking report" }
+        log.info { "Create pdf total ranking report: $config" }
 
         val competitors = data
             .filter { it.gender == config.gender }

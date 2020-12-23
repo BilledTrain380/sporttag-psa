@@ -23,7 +23,7 @@ export class RankingApi {
     this.log.info("Create total ranking:", data);
 
     const rankingData: RankingData = {
-      discipline: [],
+      disciplines: [],
       total: data,
       triathlon: [],
       ubsCup: [],
@@ -36,7 +36,7 @@ export class RankingApi {
     this.log.info("Create triathlon ranking:", data);
 
     const rankingData: RankingData = {
-      discipline: [],
+      disciplines: [],
       total: [],
       triathlon: data,
       ubsCup: [],
@@ -49,7 +49,7 @@ export class RankingApi {
     this.log.info("Create UBS-Cup ranking:", data);
 
     const rankingData: RankingData = {
-      discipline: [],
+      disciplines: [],
       total: [],
       triathlon: [],
       ubsCup: data,
@@ -62,7 +62,7 @@ export class RankingApi {
     this.log.info("Create discipline ranking: ", data);
 
     const rankingData: RankingData = {
-      discipline: data,
+      disciplines: data,
       total: [],
       triathlon: [],
       ubsCup: [],

@@ -63,7 +63,7 @@ class JasperDisciplineRankingApi(
     private val log = KotlinLogging.logger {}
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineRankingConfig): File {
-        log.info { "Create pdf discipline ranking report" }
+        log.info { "Create pdf discipline ranking report: $config" }
 
         val competitors = data
             .filter { it.gender == config.gender }
