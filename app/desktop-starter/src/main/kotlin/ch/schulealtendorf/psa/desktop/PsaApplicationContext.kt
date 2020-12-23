@@ -1,4 +1,4 @@
-package ch.schulealtendorf.psa.business
+package ch.schulealtendorf.psa.desktop
 
 import ch.schulealtendorf.psa.PsaApplication
 import ch.schulealtendorf.psa.setup.AppDirsApplicationDirectory

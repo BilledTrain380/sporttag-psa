@@ -1,6 +1,5 @@
 package ch.schulealtendorf.psa.desktop
 
-import ch.schulealtendorf.psa.business.PsaApplicationContext
 import java.awt.MenuItem
 import java.awt.PopupMenu
 import java.util.ResourceBundle
