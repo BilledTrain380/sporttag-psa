@@ -1,6 +1,5 @@
 package ch.schulealtendorf.psa.desktop
 
-import ch.schulealtendorf.psa.business.PsaApplicationContext
 import java.awt.Color
 import java.awt.Desktop
 import java.awt.GridBagConstraints
