@@ -38,6 +38,7 @@ package ch.schulealtendorf.psa.service.group.business.parsing
 
 import ch.schulealtendorf.psa.dto.participation.BirthdayDto
 import ch.schulealtendorf.psa.dto.participation.GenderDto
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.nio.charset.Charset
@@ -56,6 +57,7 @@ import kotlin.streams.toList
  */
 @Component
 class GroupFileParserImpl : GroupFileParser {
+    private val log = KotlinLogging.logger {}
 
     /**
      * Parses the given csv {@code file}.
@@ -69,15 +71,14 @@ class GroupFileParserImpl : GroupFileParser {
      * @throws CSVParsingException if the given file can not be parsed
      */
     override fun parseCSV(file: MultipartFile): List<FlatParticipant> {
+        log.info { "Parse csv file ${file.name}" }
 
         if (file.contentType != "text/csv") throw IllegalArgumentException("Invalid file type: type=${file.contentType}")
         if (file.isEmpty) throw IllegalArgumentException("Can not parse empty file")
 
         file.inputStream.bufferedReader(Charset.forName("UTF-8")).use {
-
             return it.lines()
                 .mapIndexed { index, line ->
-
                     val parts = line.split(',')
 
                     if (parts.size != 9) {

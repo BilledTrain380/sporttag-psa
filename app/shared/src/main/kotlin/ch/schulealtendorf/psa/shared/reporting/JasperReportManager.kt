@@ -39,6 +39,7 @@ package ch.schulealtendorf.psa.shared.reporting
 import ch.schulealtendorf.psa.core.io.AppDirectory
 import ch.schulealtendorf.psa.core.io.ApplicationFile
 import ch.schulealtendorf.psa.core.io.FileSystem
+import mu.KotlinLogging
 import net.sf.jasperreports.engine.JREmptyDataSource
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperExportManager
@@ -60,6 +61,7 @@ class JasperReportManager(
     private val filesystem: FileSystem
 ) : ReportManager {
     private val logoPath = "${filesystem.applicationDir}/reporting/gemeinde-altendorf.jpg"
+    private val log = KotlinLogging.logger {}
 
     override fun exportToPdf(template: Template): InputStream {
         if (File(logoPath).exists().not()) {
@@ -76,6 +78,7 @@ class JasperReportManager(
     }
 
     private fun copyResources() {
+        log.debug { "Copy jasper resources to application directory ${filesystem.applicationDir}" }
         val altendorfLogo = JasperReportManager::class.java.getResourceAsStream("/img/gemeinde-altendorf.jpg")
         val applicationFile = ApplicationFile(AppDirectory.REPORTING, "gemeinde-altendorf.jpg")
         filesystem.write(applicationFile, altendorfLogo)

@@ -42,6 +42,7 @@ import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
 import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetApi
 import ch.schulealtendorf.psa.shared.reporting.participation.EventSheetConfig
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -54,6 +55,7 @@ class EventSheetReporterImpl(
     private val competitorRepository: CompetitorRepository,
     private val eventSheetApi: EventSheetApi
 ) : EventSheetReporter {
+    private val log = KotlinLogging.logger {}
 
     override fun generateReport(data: Iterable<EventSheetDisciplineExport>): Set<File> {
         return try {
@@ -68,6 +70,7 @@ class EventSheetReporterImpl(
                     export.group
                 )
 
+                log.info { "Create event sheet report for $export" }
                 eventSheetApi.createPdfReport(competitors, config)
             }.toSet()
         } catch (exception: Exception) {

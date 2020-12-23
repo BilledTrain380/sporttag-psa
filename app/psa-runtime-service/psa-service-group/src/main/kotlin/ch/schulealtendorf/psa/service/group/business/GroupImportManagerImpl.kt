@@ -45,6 +45,7 @@ import ch.schulealtendorf.psa.service.standard.repository.CoachRepository
 import ch.schulealtendorf.psa.service.standard.repository.GroupRepository
 import ch.schulealtendorf.psa.service.standard.repository.ParticipantRepository
 import ch.schulealtendorf.psa.service.standard.repository.TownRepository
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 
 /**
@@ -60,7 +61,11 @@ class GroupImportManagerImpl(
     private val coachRepository: CoachRepository,
     private val townRepository: TownRepository
 ) : GroupImportManager {
+    private val log = KotlinLogging.logger {}
+
     override fun import(participant: FlatParticipant) {
+        log.debug { "Import Participant ${participant.prename} ${participant.surname}" }
+
         val town = townRepository.findByZipAndName(participant.zipCode, participant.town)
             .orElseGet { TownEntity(zip = participant.zipCode, name = participant.town) }
 

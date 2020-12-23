@@ -43,6 +43,7 @@ import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
 import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineGroupConfig
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineGroupRankingApi
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -55,7 +56,11 @@ class TriathlonRankingReporterImpl(
     private val competitorRepository: CompetitorRepository,
     private val triathlonRankingApi: DisciplineGroupRankingApi
 ) : TriathlonRankingReporter {
+    private val log = KotlinLogging.logger {}
+
     override fun generateCSV(genders: Iterable<GenderDto>): Set<File> {
+        log.info { "Create triathlon csv ranking report" }
+
         return try {
             genders.generateReport(triathlonRankingApi::createCsvReport)
         } catch (exception: Exception) {
@@ -64,6 +69,8 @@ class TriathlonRankingReporterImpl(
     }
 
     override fun generateReport(data: Iterable<GenderDto>): Set<File> {
+        log.info { "Create triathlon ranking report" }
+
         return try {
             data.generateReport(triathlonRankingApi::createPdfReport)
         } catch (exception: Exception) {

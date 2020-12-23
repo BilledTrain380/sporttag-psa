@@ -47,6 +47,7 @@ import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.csvNameOf
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
+import mu.KotlinLogging
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
@@ -65,8 +66,11 @@ class JasperDisciplineGroupApi(
     private val filesystem: FileSystem
 ) : DisciplineGroupRankingApi {
     private val resourceBundle = ResourceBundle.getBundle("i18n.reporting")
+    private val log = KotlinLogging.logger {}
 
     override fun createCsvReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
+        log.info { "Create csv triathlon ranking report" }
+
         val competitors = data filterByConfig config
 
         val lines = listOf(resourceBundle.getString("ranking.csv.header-line"))
@@ -100,6 +104,8 @@ class JasperDisciplineGroupApi(
     }
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineGroupConfig): File {
+        log.info { "Create pdf triathlon report" }
+
         val competitors = data filterByConfig config
         val rankingDataSet = rankingManager.createDisciplineGroupRanking(competitors)
 

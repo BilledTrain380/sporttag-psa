@@ -6,7 +6,7 @@ import ch.schulealtendorf.psa.core.io.FileSystem
 import ch.schulealtendorf.psa.service.event.business.reporter.EventSheetReporter
 import ch.schulealtendorf.psa.service.standard.export.ArchiveGenerationException
 import ch.schulealtendorf.psa.service.standard.export.ExportManager
-import ch.schulealtendorf.psa.service.standard.repository.GroupRepository
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.ResourceBundle
@@ -14,10 +14,10 @@ import java.util.ResourceBundle
 @Component
 class EventSheetExportManager(
     private val fileSystem: FileSystem,
-    private val eventSheetReporter: EventSheetReporter,
-    private val groupRepository: GroupRepository,
+    private val eventSheetReporter: EventSheetReporter
 ) : ExportManager<List<EventSheetDisciplineExport>> {
     private val resourceBundle = ResourceBundle.getBundle("i18n.file-names")
+    private val log = KotlinLogging.logger {}
 
     /**
      * Generates an archive file for the event sheets by the given {@code data}.
@@ -29,6 +29,7 @@ class EventSheetExportManager(
      */
     override fun generateArchive(data: List<EventSheetDisciplineExport>): File {
         try {
+            log.info { "Create archive for event sheets" }
             val reports = eventSheetReporter.generateReport(data)
 
             val file = ApplicationFile(AppDirectory.EXPORT, resourceBundle.getString("event-sheets"))

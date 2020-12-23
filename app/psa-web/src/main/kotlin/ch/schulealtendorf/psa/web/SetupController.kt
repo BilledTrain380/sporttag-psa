@@ -39,6 +39,7 @@ package ch.schulealtendorf.psa.web
 import ch.schulealtendorf.psa.core.setup.SetupInformation
 import ch.schulealtendorf.psa.core.setup.SetupManager
 import ch.schulealtendorf.psa.core.user.validation.PasswordValidator
+import mu.KotlinLogging
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -53,6 +54,8 @@ class SetupController(
     private val setupManager: SetupManager,
     private val passwordValidator: PasswordValidator
 ) {
+    private val log = KotlinLogging.logger {}
+
     @GetMapping("/setup")
     fun index(model: Model): String {
         model.addAttribute("setupForm", SetupForm.empty())
@@ -65,6 +68,8 @@ class SetupController(
         request: HttpServletRequest,
         redirectAttributes: RedirectAttributes
     ): String {
+        log.info { "Perform setup" }
+
         val setupInformation = SetupInformation(setupForm.password)
         val validationResult = passwordValidator.validate(setupInformation.adminPassword)
 

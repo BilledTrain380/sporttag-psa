@@ -40,6 +40,7 @@ import ch.schulealtendorf.psa.service.standard.competitorDtoOf
 import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
 import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.shared.reporting.participation.StartListApi
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -52,14 +53,16 @@ class StartlistReporterImpl(
     private val competitorRepository: CompetitorRepository,
     private val startListApi: StartListApi
 ) : StartlistReporter {
+    private val log = KotlinLogging.logger {}
+
     override fun generateReport(data: Void): Set<File> {
         return setOf(generateReport())
     }
 
     override fun generateReport(): File {
         return try {
+            log.info { "Create startlist report" }
             val competitors = competitorRepository.findAll().map { competitorDtoOf(it) }
-
             startListApi.createReport(competitors)
         } catch (exception: Exception) {
             throw ReportGenerationException("Could not generate start list report", exception)

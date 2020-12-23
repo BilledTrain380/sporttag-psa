@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 class OauthController(
     private val tokenServices: DefaultTokenServices
 ) {
+    private val log = KotlinLogging.logger {}
 
     @Operation(
         summary = "Revoke an access token",
@@ -42,6 +44,7 @@ class OauthController(
     )
     @PostMapping("/oauth/token/revoke")
     fun revokeAccessToken(@RequestBody tokenRevokeDto: TokenRevokeDto) {
+        log.info { "Revoke access token" }
         tokenServices.revokeToken(tokenRevokeDto.token)
     }
 }

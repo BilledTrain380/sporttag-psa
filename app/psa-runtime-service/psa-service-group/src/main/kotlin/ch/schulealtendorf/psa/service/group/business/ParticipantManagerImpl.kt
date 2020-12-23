@@ -43,6 +43,7 @@ import ch.schulealtendorf.psa.service.standard.participantDtoOf
 import ch.schulealtendorf.psa.service.standard.repository.GroupRepository
 import ch.schulealtendorf.psa.service.standard.repository.ParticipantRepository
 import ch.schulealtendorf.psa.service.standard.repository.TownRepository
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.util.Optional
 
@@ -58,6 +59,7 @@ class ParticipantManagerImpl(
     private val townRepository: TownRepository,
     private val groupRepository: GroupRepository
 ) : ParticipantManager {
+    private val log = KotlinLogging.logger {}
 
     override fun getParticipants(): List<ParticipantDto> = participantRepository.findAll().map { it.toDto() }
 
@@ -88,6 +90,7 @@ class ParticipantManagerImpl(
             absent = participant.isAbsent
         }
 
+        log.info { "Save participant ${participantEntity.fullName}" }
         return participantRepository.save(participantEntity).toDto()
     }
 
@@ -95,6 +98,7 @@ class ParticipantManagerImpl(
         val participantEntity = participantRepository.findById(id)
 
         participantEntity.ifPresent {
+            log.info { "Delete participant ${it.fullName}" }
             participantRepository.delete(it)
         }
     }

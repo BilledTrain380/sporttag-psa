@@ -42,6 +42,7 @@ import ch.schulealtendorf.psa.dto.user.UserDto
 import ch.schulealtendorf.psa.setup.UserRepository
 import ch.schulealtendorf.psa.setup.entity.AuthorityEntity
 import ch.schulealtendorf.psa.setup.entity.UserEntity
+import mu.KotlinLogging
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.Optional
@@ -57,9 +58,12 @@ class UserManagerImpl(
     private val userRepository: UserRepository,
     private val passwordValidator: PasswordValidator
 ) : UserManager {
+    private val log = KotlinLogging.logger {}
+
     override fun save(user: UserDto): UserDto {
         val userEntity = userRepository.findById(user.id)
             .orElseGet {
+                log.info { "Create new user: username=${user.username}" }
                 user.password.validate()
                 UserEntity(password = user.password.encode())
             }
@@ -79,6 +83,7 @@ class UserManagerImpl(
             }
         }
 
+        log.info { "Save user: username${user.username}" }
         return userRepository.save(userEntity).toDto()
     }
 
@@ -89,6 +94,7 @@ class UserManagerImpl(
         password.validate()
         userEntity.password = password.encode()
 
+        log.info { "Change password for user ${user.username}" }
         userRepository.save(userEntity)
     }
 
@@ -102,9 +108,11 @@ class UserManagerImpl(
     override fun delete(userId: Int) {
         val user = userRepository.findById(userId)
 
-        if (user.isPresent && user.get().username == USER_ADMIN)
+        if (user.isPresent && user.get().username == USER_ADMIN) {
             throw IllegalUserOperationException("Not allowed to delete admin user")
+        }
 
+        log.info { "Delete user ${user.map { it.username }.orElse("by id $userId")}" }
         userRepository.deleteById(userId)
     }
 
