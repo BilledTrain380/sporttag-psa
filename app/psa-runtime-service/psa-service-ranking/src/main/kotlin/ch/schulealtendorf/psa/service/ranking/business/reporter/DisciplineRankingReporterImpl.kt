@@ -41,6 +41,7 @@ import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
 import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineRankingApi
 import ch.schulealtendorf.psa.shared.reporting.ranking.DisciplineRankingConfig
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -53,7 +54,11 @@ class DisciplineRankingReporterImpl(
     private val competitorRepository: CompetitorRepository,
     private val disciplineRankingApi: DisciplineRankingApi
 ) : DisciplineRankingReporter {
+    private val log = KotlinLogging.logger {}
+
     override fun generateReport(data: Iterable<DisciplineExport>): Set<File> {
+        log.info { "Create discipline ranking report" }
+
         return try {
             data.map { disciplineExport ->
                 competitorRepository.findByParticipantGender(disciplineExport.gender)

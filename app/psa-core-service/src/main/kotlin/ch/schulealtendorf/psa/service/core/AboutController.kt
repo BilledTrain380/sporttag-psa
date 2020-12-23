@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 class AboutController(
     private val githubApi: GithubApi
 ) {
+    private val log = KotlinLogging.logger {}
 
     @Operation(
         summary = "Access the build info",
@@ -43,6 +45,8 @@ class AboutController(
     )
     @GetMapping("/build-info")
     fun getBuildInfo(): BuildInfoDto {
+        log.info { "Get build info" }
+
         val versionResponse = githubApi.getLatestVersion()
 
         return BuildInfoDto(

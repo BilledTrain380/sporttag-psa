@@ -45,6 +45,7 @@ import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
 import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingApi
 import ch.schulealtendorf.psa.shared.reporting.ranking.TotalRankingConfig
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -57,7 +58,11 @@ class TotalRankingReporterImpl(
     private val competitorRepository: CompetitorRepository,
     private val totalRankingApi: TotalRankingApi
 ) : TotalRankingReporter {
+    private val log = KotlinLogging.logger {}
+
     override fun generateReport(data: Iterable<GenderDto>): Set<File> {
+        log.info { "Create total ranking report" }
+
         return try {
             data.map { gender ->
                 competitorRepository.findByParticipantGender(gender)

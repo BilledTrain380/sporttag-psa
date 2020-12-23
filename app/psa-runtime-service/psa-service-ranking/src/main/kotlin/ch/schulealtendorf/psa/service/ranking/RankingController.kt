@@ -50,6 +50,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -66,6 +67,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 class RankingController(
     private val exportManager: RankingExportManager,
 ) {
+    private val log = KotlinLogging.logger {}
+
     @Operation(
         summary = "Download the ranking as zip file",
         tags = ["Ranking"]
@@ -91,6 +94,8 @@ class RankingController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     fun createRanking(@RequestBody data: RankingDataDto): ResponseEntity<InputStreamResource> {
+        log.info { "Create ranking reports" }
+
         val disciplineExports = data.disciplines.map {
             val discipline = exportManager.getDiscipline(it.discipline)
                 .orElseThrow { BadRequestException("The given discipline does not exist: name=${it.discipline}") }

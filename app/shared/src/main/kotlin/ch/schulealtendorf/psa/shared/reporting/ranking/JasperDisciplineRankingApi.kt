@@ -43,6 +43,7 @@ import ch.schulealtendorf.psa.dto.participation.CompetitorDto
 import ch.schulealtendorf.psa.shared.reporting.ReportManager
 import ch.schulealtendorf.psa.shared.reporting.Template
 import ch.schulealtendorf.psa.shared.reporting.pdfNameOf
+import mu.KotlinLogging
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import org.springframework.stereotype.Component
 import java.io.File
@@ -59,8 +60,11 @@ class JasperDisciplineRankingApi(
     private val rankingManager: RankingManager,
     private val filesystem: FileSystem
 ) : DisciplineRankingApi {
+    private val log = KotlinLogging.logger {}
 
     override fun createPdfReport(data: Collection<CompetitorDto>, config: DisciplineRankingConfig): File {
+        log.info { "Create pdf discipline ranking report" }
+
         val competitors = data
             .filter { it.gender == config.gender }
             .filter { it.birthday.year == config.year }

@@ -40,6 +40,7 @@ import ch.schulealtendorf.psa.core.user.USER_ADMIN
 import ch.schulealtendorf.psa.core.user.UserManager
 import ch.schulealtendorf.psa.setup.SetupRepository
 import ch.schulealtendorf.psa.setup.entity.SetupEntity.Companion.DEFAULT_SETUP
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.util.Random
 import javax.annotation.PostConstruct
@@ -55,6 +56,7 @@ class StatefulSetupManager(
     private val setupRepository: SetupRepository,
     private val userManager: UserManager
 ) : SetupManager {
+    private val log = KotlinLogging.logger {}
 
     private var isInit = false
     private var jwtSec = ""
@@ -75,11 +77,13 @@ class StatefulSetupManager(
             throw IllegalStateException("Setup is already initialized")
         }
 
-        // set admin password
+        log.info { "Initialize PSA" }
+
+        // Set admin password
         val user = userManager.getOne(USER_ADMIN).get()
         userManager.changePassword(user, setup.adminPassword)
 
-        // mark setup as initialized and set new JWT secret
+        // Mark setup as initialized and set new JWT secret
         val setupEntity = setupRepository.findById(DEFAULT_SETUP).get()
         setupEntity.apply {
             initialized = true
@@ -89,10 +93,11 @@ class StatefulSetupManager(
 
         isInit = true
         jwtSec = setupEntity.jwtSecret
+
+        log.info { "Successfully initialized PSA" }
     }
 
     override fun generateJWTSecret(length: Int): String {
-
         val random = Random()
         val buffer = StringBuffer()
         while (buffer.length < length) {

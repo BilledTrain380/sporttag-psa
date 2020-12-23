@@ -45,6 +45,7 @@ import ch.schulealtendorf.psa.service.standard.repository.CompetitorRepository
 import ch.schulealtendorf.psa.service.standard.resultDtoOf
 import ch.schulealtendorf.psa.shared.rulebook.FormulaModel
 import ch.schulealtendorf.psa.shared.rulebook.ResultRuleBook
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.util.Optional
 
@@ -59,11 +60,14 @@ class CompetitorManagerImpl(
     private val resultRuleBook: ResultRuleBook,
     private val competitorRepository: CompetitorRepository
 ) : CompetitorManager {
+    private val log = KotlinLogging.logger {}
+
     override fun getCompetitors(): List<CompetitorDto> {
         return competitorRepository.findAll().map { competitorDtoOf(it) }
     }
 
     override fun getCompetitors(filter: CompetitorFilter): List<CompetitorDto> {
+        log.info { "Get competitors by filter $filter" }
 
         // Mainly filter the group on the database query if present
         // We should not have any performance issues by filtering gender and absent in memory
@@ -104,6 +108,7 @@ class CompetitorManagerImpl(
             points = resultRuleBook.calc(formulaModel)
         }
 
+        log.info { "Update competitor result: competitor=${competitor.participant.fullName}" }
         competitorRepository.save(competitor)
 
         return resultDtoOf(result)

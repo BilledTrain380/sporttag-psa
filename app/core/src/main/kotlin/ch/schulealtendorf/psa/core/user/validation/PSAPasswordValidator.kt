@@ -36,6 +36,7 @@
 
 package ch.schulealtendorf.psa.core.user.validation
 
+import mu.KotlinLogging
 import org.passay.CharacterRule
 import org.passay.EnglishCharacterData
 import org.passay.LengthRule
@@ -46,6 +47,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class PSAPasswordValidator : PasswordValidator {
+    private val log = KotlinLogging.logger {}
+
     private val validator = org.passay.PasswordValidator(
         LengthRule(8, 64),
         CharacterRule(EnglishCharacterData.Digit),
@@ -61,6 +64,8 @@ class PSAPasswordValidator : PasswordValidator {
     }
 
     override fun validate(password: String): ValidationResult {
+        log.info { "Validate password" }
+
         val result: RuleResult = validator.validate(PasswordData(password))
 
         return ValidationResult(result.isValid, validator.getMessages(result))

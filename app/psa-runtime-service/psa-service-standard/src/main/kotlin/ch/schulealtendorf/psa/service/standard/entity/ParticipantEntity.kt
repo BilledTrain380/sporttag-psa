@@ -98,4 +98,6 @@ data class ParticipantEntity(
     @ManyToOne
     @JoinColumn(name = "FK_SPORT_name", referencedColumnName = "name")
     var sport: SportEntity? = null
-)
+) {
+    val fullName: String get() = "$prename $surname"
+}

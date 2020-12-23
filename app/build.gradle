@@ -92,6 +92,8 @@ subprojects {
             dependency "org.webjars:bootstrap:4.1.3"
             dependency "org.webjars:font-awesome:5.4.1"
 
+            dependency "io.github.microutils:kotlin-logging-jvm:2.0.2"
+
             dependency "com.deliveredtechnologies:rulebook-core:0.11"
             dependency "com.guigarage:flatter:0.7"
             dependency "com.lowagie:itext:2.1.7"
@@ -129,6 +131,7 @@ subprojects {
 
     dependencies {
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+        implementation "io.github.microutils:kotlin-logging-jvm"
 
         testImplementation "com.nhaarman:mockito-kotlin"
         testImplementation "org.jetbrains.kotlin:kotlin-test"

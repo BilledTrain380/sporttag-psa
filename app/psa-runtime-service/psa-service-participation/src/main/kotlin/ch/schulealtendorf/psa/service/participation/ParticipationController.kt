@@ -55,6 +55,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.http.MediaType
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -75,6 +76,8 @@ class ParticipationController(
     private val participationManager: ParticipationManager,
     private val groupManager: GroupManager
 ) {
+    private val log = KotlinLogging.logger {}
+
     @Operation(
         summary = "Get the participation",
         tags = ["Participation"]
@@ -110,6 +113,8 @@ class ParticipationController(
 
         val unfinishedGroups = groupManager.getOverviewBy(GroupStatusType.UNFINISHED_PARTICIPANTS)
 
+        log.info { "Get participation: status=$status, unfinishedGroupCount=${unfinishedGroups.size}" }
+
         return ParticipationDto(
             status = statusDto,
             unfinishedGroups = unfinishedGroups
@@ -139,6 +144,7 @@ class ParticipationController(
     fun getParticipationStatus(): StatusEntry {
         val status = participationManager.getParticipationStatus()
 
+        log.info { "Get participant status $status" }
         return StatusEntry(
             StatusSeverity.INFO,
             status
@@ -165,6 +171,8 @@ class ParticipationController(
     @PreAuthorize("#oauth2.hasScope('participation') and hasRole('ADMIN')")
     @PatchMapping("/participation")
     fun updateParticipation(@RequestBody command: ParticipationCommand): ParticipationDto {
+        log.info { "Update participation: command=$command" }
+
         when (command) {
             ParticipationCommand.CLOSE -> participationManager.closeParticipation()
             ParticipationCommand.RESET -> participationManager.resetParticipation()

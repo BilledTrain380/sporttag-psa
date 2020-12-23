@@ -11,6 +11,7 @@ import ch.schulealtendorf.psa.service.standard.disciplineDtoOf
 import ch.schulealtendorf.psa.service.standard.export.ArchiveGenerationException
 import ch.schulealtendorf.psa.service.standard.export.ExportManager
 import ch.schulealtendorf.psa.service.standard.repository.DisciplineRepository
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 import java.util.Optional
@@ -25,6 +26,7 @@ class RankingExportManager(
     private val disciplineRepository: DisciplineRepository
 ) : ExportManager<RankingExport> {
     private val resourceBundle = ResourceBundle.getBundle("i18n.file-names")
+    private val log = KotlinLogging.logger {}
 
     /**
      * Generates an archive file for the rankings by the given {@code data}.
@@ -35,6 +37,8 @@ class RankingExportManager(
      * @throws ArchiveGenerationException if the archive could not be generated
      */
     override fun generateArchive(data: RankingExport): File {
+        log.info { "Create archive for ranking" }
+
         try {
             val reports = setOf(
                 totalRankingReporter.generateReport(data.total),

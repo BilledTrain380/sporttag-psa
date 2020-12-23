@@ -41,6 +41,7 @@ import ch.schulealtendorf.psa.service.standard.export.ReportGenerationException
 import ch.schulealtendorf.psa.service.standard.participantDtoOf
 import ch.schulealtendorf.psa.service.standard.repository.ParticipantRepository
 import ch.schulealtendorf.psa.shared.reporting.participation.ParticipantListApi
+import mu.KotlinLogging
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -53,6 +54,8 @@ class ParticipantListReporterImpl(
     private val participantRepository: ParticipantRepository,
     private val participantListApi: ParticipantListApi
 ) : ParticipantListReporter {
+    private val log = KotlinLogging.logger {}
+
     override fun generateReport(data: Iterable<SportDto>): Set<File> {
         return try {
             data.map { sport ->
@@ -60,6 +63,7 @@ class ParticipantListReporterImpl(
                     .findBySportName(sport.name)
                     .map { participantDtoOf(it) }
 
+                log.info { "Create participant list report for ${sport.name}" }
                 participantListApi.createPdfReport(participants, sport)
             }.toSet()
         } catch (exception: Exception) {

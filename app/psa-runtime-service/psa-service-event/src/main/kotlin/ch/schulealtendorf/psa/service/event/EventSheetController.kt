@@ -61,6 +61,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -83,6 +84,8 @@ class EventSheetController(
     private val groupManager: GroupManager,
     private val participationManager: ParticipationManager
 ) {
+    private val log = KotlinLogging.logger {}
+
     @Operation(
         summary = "Get all competitive group names",
         tags = ["EventSheets"]
@@ -104,6 +107,8 @@ class EventSheetController(
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @GetMapping("/data")
     fun getEventSheetData(): EventSheetData {
+        log.info { "Get event sheet data" }
+
         val groupNames = groupManager.getOverviewBy(GroupStatusType.GROUP_TYPE_COMPETITIVE).map { it.group.name }
         val isParticipationOpen = participationManager.getParticipationStatus() == ParticipationStatusType.OPEN
 
@@ -138,6 +143,8 @@ class EventSheetController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     fun createEventSheets(@RequestBody exportList: List<EventSheetExport>): ResponseEntity<InputStreamResource> {
+        log.info { "Create event sheet data" }
+
         val exports = exportList.map { data ->
             val discipline = disciplineRepository.findById(data.discipline)
                 .map { disciplineDtoOf(it) }
@@ -178,7 +185,9 @@ class EventSheetController(
         produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE]
     )
     fun createParticipantList(@RequestBody data: List<SportDto>): ResponseEntity<InputStreamResource> {
+        log.info { "Create participant list" }
         val zip = participantListExportManager.generateArchive(data)
+
         return buildFileResponse(zip)
     }
 
@@ -203,7 +212,9 @@ class EventSheetController(
     @PreAuthorize("#oauth2.hasScope('event_sheets')")
     @GetMapping("/download/startlist", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
     fun createStartList(): ResponseEntity<InputStreamResource> {
+        log.info { "Create start list" }
         val startList = startlistReporter.generateReport()
+
         return buildFileResponse(startList)
     }
 }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -28,6 +29,7 @@ import java.security.Principal
 class ProfileController(
     private val userManager: UserManager
 ) {
+    private val log = KotlinLogging.logger {}
 
     @Operation(
         summary = "Update the profile",
@@ -50,6 +52,8 @@ class ProfileController(
     @PreAuthorize("#oauth2.hasScope('profile')")
     @PatchMapping("/profile")
     fun changeLocale(@RequestBody profileElement: ProfileElement, principal: Principal) {
+        log.info { "Change locale to ${profileElement.locale} for user ${principal.name}" }
+
         val user = userManager.getOne(principal.name)
             .orElseThrow { NotFoundException("Could not find user: username=${principal.name}") }
             .toBuilder()

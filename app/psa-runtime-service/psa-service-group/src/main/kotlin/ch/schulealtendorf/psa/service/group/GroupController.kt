@@ -56,6 +56,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -82,6 +83,8 @@ class GroupController(
     private val groupManager: GroupManager,
     private val fileParser: GroupFileParser
 ) {
+    private val log = KotlinLogging.logger {}
+
     @Operation(
         summary = "Find groups by name",
         tags = ["Group"],
@@ -207,6 +210,8 @@ class GroupController(
         produces = [MediaType.TEXT_PLAIN_VALUE]
     )
     fun importGroup(@RequestParam("group-input") file: MultipartFile): ResponseEntity<String> {
+        log.info { "Import groups with csv file: name=${file.name}, size=${file.size}" }
+
         return try {
             val participants = fileParser.parseCSV(file)
             participants.forEach(groupImportManager::import)
