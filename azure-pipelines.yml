@@ -33,8 +33,8 @@ variables:
 
 resources:
   containers:
-  - container: jdk-linux
-    image: adoptopenjdk:15.0.1_9-jdk-hotspot
+    - container: jdk-linux
+      image: adoptopenjdk:15.0.1_9-jdk-hotspot
 
 stages:
   - stage: analyze_test_build
@@ -177,7 +177,7 @@ stages:
               arguments: $(fullVersion) $(nativeBundleVersion)
 
           - publish: $(System.DefaultWorkingDirectory)/distribution/desktop/build/macos
-            displayName: 'Publish dmg'
+            displayName: 'Publish pkg'
             artifact: $(psaMacosArtifact)
 
       - job: Package_windows_native
@@ -289,7 +289,7 @@ stages:
 
   - stage: release
     displayName: 'Release'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
     jobs:
       - job: setup
         displayName: 'Setup environment'
@@ -298,14 +298,9 @@ stages:
           vmImage: $(ubuntu)
 
         steps:
-          - task: Gradle@2
+          - script: './gradlew checkRelease setPipelineVariables'
             displayName: 'Setup Environment'
             name: Versions
-            inputs:
-              javaHomeOptions: JDKVersion
-              jdkVersionOption: 1.11
-              jdkArchitecture: x64
-              tasks: 'setPipelineVariables'
 
       - job: build_push_docker_image
         displayName: 'Build / Push Docker Image'
@@ -392,14 +387,12 @@ stages:
             displayName: Print Versions
 
           - download: current
-            artifact: $(psaJavaArtifact)
-            displayName: 'Download PSA Java'
+            artifact: $(psaWindowsArtifact)
+            displayName: 'Download PSA for Windows'
 
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: $(Pipeline.Workspace)/$(psaJavaArtifact)
-              includeRootFolder: false
-              archiveFile: $(Build.ArtifactStagingDirectory)/PSA_Java-$(versionFull).zip
+          - download: current
+            artifact: $(psaMacosArtifact)
+            displayName: 'Download PSA for macOS'
 
           - task: GitHubRelease@1
             inputs:
@@ -408,6 +401,12 @@ stages:
               tagSource: 'manual'
               tag: $(version)
               title: PSA $(version)
-              releaseNotsFile: $(System.DefaultWorkingDirectory)/RelNotes/$(version).md
-              assets: $(Build.ArtifactStagingDirectory)/PSA_Java-$(versionFull).zip
+              ${{ if eq(variables.isPreRelease, 'false') }}:
+                releaseNotesFile: $(System.DefaultWorkingDirectory)/RelNotes/$(version).md
+              assets: |
+                $(Pipeline.Workspace)/*.pgk
+                $(Pipeline.Workspace)/*.msi
+                $(System.DefaultWorkingDirectory)/CHANGELOG.md
               addChangeLog: false
+              ${{ if eq(variables.isPreRelease, 'true') }}:
+                isPreRelease: true

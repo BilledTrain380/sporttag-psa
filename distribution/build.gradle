@@ -13,5 +13,7 @@ task setPipelineVariables {
         println "##vso[task.setVariable variable=fullVersion]$version+$commitHash".trim()
         println "##vso[task.setVariable variable=dockerTag]$version-g$commitHash".trim()
         println "##vso[task.setVariable variable=nativeBundleVersion]$nativeBundleVersion".trim()
+        println "##vso[task.setVariable variable=isReleaseBuild]$isReleaseBuild"
+        println "##vso[task.setVariable variable=isPreRelease]$isPreRelease"
     }
 }

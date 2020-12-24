@@ -1,6 +1,7 @@
 ext {
     commitHash = System.getenv("SYSTEM_PULLREQUEST_SOURCECOMMITID")?.substring(0, 7)
-    isReleaseBuild = version != null && !version.toString().toLowerCase().contains("snapshot")
+    isReleaseBuild = !version.toString().toLowerCase().contains("snapshot")
+    isPreRelease = version.toString().contains("next")
 
     if (commitHash == null || commitHash.isEmpty()) {
         commitHash = System.getenv("BUILD_SOURCEVERSION")?.substring(0, 7)
@@ -21,33 +22,36 @@ allprojects() {
 }
 
 // Check if release files are ready
-task prepareRelease(type: Copy) {
-    if (!isReleaseBuild) {
-        return
-    }
+task checkRelease() {
+    doLast {
+        if (!isReleaseBuild) {
+            return
+        }
 
-    def errors = []
+        if (isPreRelease) {
+            return
+        }
 
-    // Check release notes
-    def releaseNotes = file("RelNotes/${version}.md")
-    if (!releaseNotes.exists()) {
-        errors.add("Release notes for version ${version} do not exist")
-    }
+        def errors = []
 
-    // Check Changelog
-    def changelogError = "Changelog is missing release version ${version}"
-    errors.add(changelogError)
-    file("CHANGELOG.md").eachLine { line ->
-        if (line.matches("## \\[${version}] - \\d{4}-\\d{2}-\\d{2}")) {
-            errors.remove(changelogError)
+        // Check release notes
+        def releaseNotes = file("RelNotes/${version}.md")
+        if (!releaseNotes.exists()) {
+            errors.add("Release notes for version ${version} do not exist")
+        }
+
+        // Check Changelog
+        def changelogError = "Changelog is missing release version ${version}"
+        errors.add(changelogError)
+        file("CHANGELOG.md").eachLine { line ->
+            if (line.matches("## \\[${version}] - \\d{4}-\\d{2}-\\d{2}")) {
+                errors.remove(changelogError)
+            }
+        }
+
+        if (errors.size() > 0) {
+            errors.forEach { error -> println(error) }
+            throw new RuntimeException("Some release files are not correct. Check the log output for more information!")
         }
     }
-
-    if (errors.size() > 0) {
-        errors.forEach { error -> println(error) }
-        throw new RuntimeException("Some release files are not correct. Check the log output for more information!")
-    }
-
-    from file("RelNotes/${version}.md")
-    into file("app/starter/build/libs")
 }
