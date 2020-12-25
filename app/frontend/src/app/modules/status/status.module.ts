@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NgbPopoverModule } from "@ng-bootstrap/ng-bootstrap";
 
@@ -22,6 +23,7 @@ const COMPONENTS = [
               CommonModule,
               NgbPopoverModule,
               FontAwesomeModule,
+              RouterModule,
               SecurityModule,
             ],
             exports: [...COMPONENTS],
