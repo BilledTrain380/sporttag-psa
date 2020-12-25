@@ -60,7 +60,7 @@ exports.config = {
     browser.driver.sleep(500);
 
     console.log("Load psa application");
-    await browser.driver.get(browser.baseUrl);
+    // await browser.driver.get(browser.baseUrl);
 
     console.log("Wait for implicit flow redirect")
     await browser.driver.sleep(5000);
