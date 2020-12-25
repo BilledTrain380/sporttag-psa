@@ -237,6 +237,7 @@ stages:
 
   - stage: e2e_tests
     displayName: 'e2e tests'
+    condition: false
     jobs:
       - job: psa
         displayName: 'PSA'
@@ -288,7 +289,7 @@ stages:
 
   - stage: release
     displayName: 'Release'
-    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+    condition: or(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     jobs:
       - job: setup
         displayName: 'Setup environment'
