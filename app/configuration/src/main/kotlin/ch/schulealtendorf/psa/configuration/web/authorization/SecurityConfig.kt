@@ -100,6 +100,10 @@ class SecurityConfig(
             ?.and()
             ?.csrf()?.disable()
 
+            ?.sessionManagement()
+            ?.sessionFixation()?.migrateSession()
+            ?.and()
+
             ?.headers()?.frameOptions()?.disable()
             ?.and()
 
