@@ -81,7 +81,12 @@ class SecurityConfig(
                 "/setup",
                 "/",
                 "/index",
-                "/actuator/health"
+                "/actuator/health",
+                "/app/**/*.js",
+                "/app/**/*.png",
+                "/app/**/*.css",
+                "/app/**/*.ico",
+                "/app/**/*.svg"
             )
             ?.permitAll()
             ?.anyRequest()?.authenticated()
