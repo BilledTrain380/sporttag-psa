@@ -298,13 +298,14 @@ stages:
           vmImage: $(ubuntu)
 
         steps:
-          - script: './gradlew checkRelease setPipelineVariables'
+          - script: './gradlew checkRelease setPipelineVariables --enableOutput'
             displayName: 'Setup Environment'
             name: Versions
 
       - job: build_push_docker_image
         displayName: 'Build / Push Docker Image'
         dependsOn: setup
+        condition: not(contains(dependencies.setup.outputs['Versions.version'], 'SNAPSHOT'))
 
         pool:
           vmImage: $(ubuntu)
@@ -321,15 +322,6 @@ stages:
               echo "PSA full version: $(fullVersion)"
               echo "PSA docker tag: $(dockerTag)"
             displayName: Print Versions
-
-          - script: |
-              if [[ $(version) == *-SNAPSHOT ]];then
-                exit 1
-              else
-                exit 0
-              fi
-            displayName: Check version for SNAPSHOT
-            failOnStderr: true
 
           - download: current
             artifact: $(psaJavaArtifact)
@@ -369,6 +361,7 @@ stages:
       - job: github_release
         displayName: 'Github Release'
         dependsOn: setup
+        condition: not(contains(dependencies.setup.outputs['Versions.version'], 'SNAPSHOT'))
 
         pool:
           vmImage: $(ubuntu)
@@ -398,7 +391,7 @@ stages:
             inputs:
               gitHubConnection: 'BilledTrain380'
               action: 'create'
-              tagSource: 'manual'
+              tagSource: 'userSpecifiedTag'
               tag: $(version)
               title: PSA $(version)
               ${{ if eq(variables.isPreRelease, 'false') }}:
