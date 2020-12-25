@@ -23,12 +23,12 @@ exports.config = {
 
   directConnect: true,
 
-  baseUrl: "http://localhost:4200",
+  baseUrl: "http://127.0.0.1:4200",
 
   params: {
     username: "admin",
     password: "admin",
-    psaLoginUrl: "http://localhost:8080/login",
+    psaLoginUrl: "http://127.0.0.1:8080/login",
   },
 
   framework: 'jasmine',
