@@ -1,5 +1,27 @@
+import org.gradle.api.tasks.options.Option;
+
+class AzurePipelineVariables extends DefaultTask {
+    private static String PATTERN = "##vso[task.setVariable variable=%s%s]%s"
+    private Boolean isOutput = false
+
+    @Input
+    Boolean getIsOutput() {
+        return isOutput
+    }
+
+    @Option(option="enableOutput", description="Whenever the isOutput should be set or not")
+    void setIsOutput(Boolean isOutput) {
+        this.isOutput = isOutput
+    }
+
+    void printVariable(String name, String value) {
+        String mod = isOutput ? ";isOutput=true" : ""
+        println String.format(PATTERN, name, mod, value)
+    }
+}
+
 // Prints commands for azure pipeline in order to get the versions as pipeline variables
-task setPipelineVariables {
+task setPipelineVariables(type: AzurePipelineVariables) {
     doLast {
         def nativeBundleVersion = "$version"
 
@@ -9,11 +31,11 @@ task setPipelineVariables {
             nativeBundleVersion = nativeBundleVersion.substring(0, delimiterIndex)
         }
 
-        println "##vso[task.setVariable variable=version]$version".trim()
-        println "##vso[task.setVariable variable=fullVersion]$version+$commitHash".trim()
-        println "##vso[task.setVariable variable=dockerTag]$version-g$commitHash".trim()
-        println "##vso[task.setVariable variable=nativeBundleVersion]$nativeBundleVersion".trim()
-        println "##vso[task.setVariable variable=isReleaseBuild]$isReleaseBuild"
-        println "##vso[task.setVariable variable=isPreRelease]$isPreRelease"
+        printVariable("version", "$version")
+        printVariable("fullVersion", "$version+$commitHash")
+        printVariable("dockerTag", "$version-g$commitHash")
+        printVariable("nativeBundleVersion", "$nativeBundleVersion")
+        printVariable("isReleaseBuild", "$isReleaseBuild")
+        printVariable("isPreRelease", "$isPreRelease")
     }
 }
