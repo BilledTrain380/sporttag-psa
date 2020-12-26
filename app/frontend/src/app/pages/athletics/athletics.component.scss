@@ -5,3 +5,8 @@
 .error-message {
   display: block !important;
 }
+
+// Fix the distance prepend text with a min width to make it even
+.distance-pre-text {
+  min-width: 134px;
+}
