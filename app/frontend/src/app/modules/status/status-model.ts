@@ -45,7 +45,7 @@ export class StatusModel {
       case StatusSeverity.WARNING:
         return ["badge-warning", $localize`Warning`];
       default:
-        return ["badge-secondary", $localize`Unknown severity`];
+        return ["badge-secondary", "Unknown severity"];
     }
   }
 }
@@ -101,6 +101,6 @@ function labelOfStatusType(type: string): string {
     case ParticipationStatusType.CLOSED:
       return $localize`Participation is closed`;
     default:
-      return $localize`Unknown status`;
+      return "Unknown status";
   }
 }

@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="739516c2ca75843d5aec9cf0e6b3e4335c4227b9" datatype="html">
-        <source>Change password</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/@theme/header/header.component.html</context>
-          <context context-type="linenumber">15</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="5d22c795daf43877a5f708dca2bccd549eb0471d" datatype="html">
-        <source>Sign out</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/@theme/header/header.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="ngb.alert.close" datatype="html">
         <source>Close</source>
         <context-group purpose="location">
@@ -23,18 +9,28 @@
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="ngb.carousel.slide-number" datatype="html">
+        <source>
+          Slide <x id="INTERPOLATION" equiv-text="{{i + 1}}"/> of <x id="INTERPOLATION_1" equiv-text="{{c}}"/>
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/carousel/carousel.d.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">Currently selected slide number read by screen reader</note>
+      </trans-unit>
       <trans-unit id="ngb.carousel.previous" datatype="html">
         <source>Previous</source>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/carousel/carousel.d.ts</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.carousel.next" datatype="html">
         <source>Next</source>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/carousel/carousel.d.ts</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.datepicker.previous-month" datatype="html">
@@ -138,7 +134,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.progressbar.value" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{getPercentValue()}}"/>%</source>
+        <source><x id="INTERPOLATION" equiv-text="{{getValue() / max | percent}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/progressbar/progressbar.d.ts</context>
           <context context-type="linenumber">6</context>
@@ -232,14 +228,14 @@
         <source><x id="INTERPOLATION" equiv-text="{{ i18n.getAfternoonPeriod() }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/timepicker/timepicker.d.ts</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.AM" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="{{ i18n.getMorningPeriod() }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/timepicker/timepicker.d.ts</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.toast.close-aria" datatype="html">
@@ -249,11 +245,1164 @@
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="004b222ff9ef9dd4771b777950ca1d0e4cd4348a" datatype="html">
+        <source>About</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/header.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e041fd2e6e79b1622bc21b170c96cac39dfc614f" datatype="html">
+        <source>Build Info</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8fe73a4787b8068b2ba61f54ab7e0f9af2ea1fc9" datatype="html">
+        <source>Version</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="960cd598cbd85edb0a254ff3e59574d2c5cb888c" datatype="html">
+        <source>Hash</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f53666cf5f199682611a2eddf18657a6f89f9d12" datatype="html">
+        <source>Build Time</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="056d358b2b067307621203bdf9681a048041ad49" datatype="html">
+        <source>Environment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f85dc01e7aab1a5c282d14b74650255ae4042fe0" datatype="html">
+        <source>E-mail</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f800a5ddf83793cb180124a1e4fb8e6341107aa5" datatype="html">
+        <source>Github Issues</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="396111f33ef48eef016cd0eedb7be2ef882d7430" datatype="html">
+        <source>
+    Close
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/about-modal/about-modal.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="739516c2ca75843d5aec9cf0e6b3e4335c4227b9" datatype="html">
+        <source>Change password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/header.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5d22c795daf43877a5f708dca2bccd549eb0471d" datatype="html">
+        <source>Sign out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/header.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="deff278939dbb4a42bb92cbc1635cc96e645b6f0" datatype="html">
+        <source>Quick start</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/header/header.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="94516fa213706c67ce5a5b5765681d7fb032033a" datatype="html">
+        <source>Loading...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/@theme/layout/layout-button/layout-button.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5997c61c5f05beb1b5c97aeda2f2fefa4425fad7" datatype="html">
+        <source>
+                   <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>A newer version of PSA is available. <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+                   <x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;"/>Download now!<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
+                 </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/pages.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ae51d565bb8279d1b9f6f74d534b076d267009e5" datatype="html">
+        <source>Page not found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/miscellaneous/not-found-page/not-found-page.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="93b9be5abc4c38f0b47b789287c3f02053488f11" datatype="html">
+        <source>We can&apos;t seem to find the page you are looking for.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/miscellaneous/not-found-page/not-found-page.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9f43e7ce2d22c0cf79f9c449761a1eb90171329a" datatype="html">
+        <source>We suggest that you return to the main section</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/miscellaneous/not-found-page/not-found-page.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c8aeea8970b86051a673d0003c092a4ce473af69" datatype="html">
+        <source>Go to main page</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/miscellaneous/not-found-page/not-found-page.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4f8b2bb476981727ab34ed40fde1218361f92c45" datatype="html">
+        <source>Details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/status/status-popover/status-popover.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b02292b112659d817874e1a51e6840ee756339ed" datatype="html">
+        <source>Hint! Your are too early</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/status/athletics-not-started/athletics-not-started.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="14e2611019a3d5c57237770bf25ebe349d49d25e" datatype="html">
+        <source>Your sport event did not start yet. Close the participation or contact your administrator.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/status/athletics-not-started/athletics-not-started.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="03b0b363b7c03ecf4ee29fd4d89ddc172831a818" datatype="html">
+        <source>
+      Go to Participation Management
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/status/athletics-not-started/athletics-not-started.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dc75033a5238fdc4f462212c847a45ba8018a3fd" datatype="html">
+        <source>Download</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/event-sheets-management/event-sheets-selection/event-sheets-selection.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/event-sheets-management/event-sheets-selection/event-sheets-selection.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d04d5b5d13ac9acf9750f1807f0227eeee98b247" datatype="html">
+        <source>Total</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="66d186e794387619dafbcf761aa2f46d19c70465" datatype="html">
+        <source>Triathlon</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0220b4ddd1b7fb3edf72add58230a2297e87bf3e" datatype="html">
+        <source>UBS-Cup</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bd94893bd28633d181d42bf5f8fe9a5b6cc3df71" datatype="html">
+        <source>Disciplines</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0e69fc7de5d88295ef8ae8938fd34ff5e5327e48" datatype="html">
+        <source>Ranking</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="003d4f5e4909ccf01b6a204c688fd6dab15c20bd" datatype="html">
+        <source>Gender</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/gender-input/gender-input.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="48fad590068f4d584673f6556c1d7a490ab7d859" datatype="html">
+        <source>
+      <x id="START_TAG_APP-GENDER" ctype="x-app-gender" equiv-text="&lt;app-gender&gt;"/><x id="CLOSE_TAG_APP-GENDER" ctype="x-app-gender" equiv-text="&lt;/app-gender&gt;"/>
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/gender-input/gender-input.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/gender-input/gender-input.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a922f92ca153b5cb14777c02d88c5e91c2092e15" datatype="html">
+        <source>Choose...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/sport-type-input/sport-type-input.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3533a8c726d2204880d8b113c7a6558fda1c17bb" datatype="html">
+        <source>Choose one...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/pre-next-select/pre-next-select.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="335a4c287abf6c7b26c92de5a7024cb008d1932e" datatype="html">
+        <source>Password Policy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2d18f26901a3c1c0e35c3509cc943d5b27fdeec4" datatype="html">
+        <source>Must be between 8 and 64 characters long</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5ddd062c8a56d7d51c0811c2bf9bac76378f0206" datatype="html">
+        <source>Must contain at least 1 digit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="04c5221b62360b9ab7f934efa7b12404cfc5c80f" datatype="html">
+        <source>Must contain at least 1 lowercase character</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7f9db76159325a660432bca6cb1cbc9e3591ddb7" datatype="html">
+        <source>Must contain at least 1 uppercase character</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="518b43b1704a64a9873d4b223ad130f8a41c6e9b" datatype="html">
+        <source>Must contain at least 1 alphabetical character</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7f885ea0f8fb394850579326fe7155fe8a690b35" datatype="html">
+        <source>Must contain at least 1 special character</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="da1228670458f7fb0053e15f065eb64c619c70f0" datatype="html">
+        <source>Must not contain any whitespaces</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy/password-policy.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7a6f2ac66bd85e9785577fe977e141a34b7a1d06" datatype="html">
+        <source>Password does not match policy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/common-forms/password-policy-feedback/password-policy-feedback.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="097b5dfee5665aa0f7daba8b696acecde6445474" datatype="html">
+        <source>Male</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/participant/gender/gender.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="18f3bafdc69b800737e303bc1cb0753bd9dd3f32" datatype="html">
+        <source>Female</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/participant/gender/gender.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f62b00f25658ac4685f64abb6bf93f6c4098d82c" datatype="html">
+        <source>
+            Gender
+            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/><x id="INTERPOLATION" equiv-text="{{genderFilterCount}}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0b7359a13f9a7ae567c5832e6d1e249bd8ecd887" datatype="html">
+        <source>
+            Status
+            <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/><x id="INTERPOLATION" equiv-text="{{statusFilterCount}}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/>
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="92819dcfa8bc04ccf3ca79a9e1297384a8c8fd2f" datatype="html">
+        <source>
+                  Present
+                </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3de8a2553e4edd09e7c6603f3b5d73983b57a5ef" datatype="html">
+        <source>
+                  Absent
+                </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c22ba03540aa3217da059f45e7eab138b51a96e2" datatype="html">
+        <source>Groups</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2565db4e6eb6c76c5673a56f64718500ab63a873" datatype="html">
+        <source>Start Number</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9e5ac183bc4cf80f01cde3ff96207b11464a4295" datatype="html">
+        <source>Surname</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6e86e9029e10b2d0c07c9a5088379671958337c9" datatype="html">
+        <source>Prename</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="97610c9c973c03aa6e4d8038c7fb8e42c7216373" datatype="html">
+        <source>Absent</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">107</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="80ebb1b82fed892345531fff2ba095160972dd86" datatype="html">
+        <source>Result</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8b4bb9bd0228fff7fc4f4da2a0f8037763ae5bf7" datatype="html">
+        <source>Points</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="17bede40573b39b52b2c90f96415eb832e6206b3" datatype="html">
+        <source>
+            Please enter an integer
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0007de1fcc07dffa389dc15e4f0c0d62c6c75fdd" datatype="html">
+        <source>
+            Please enter a float number
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">151</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="73f51cdd0cb08e3aad1da43e9375b252b7e3984c" datatype="html">
+        <source>Athletics</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="75e9482d22b2d1b42441bb592026d074017286ae" datatype="html">
+        <source>Competitors</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/athletics/athletics.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e67bebb0291cbe76b190e83225878cdd3a8a6df6" datatype="html">
+        <source>
+    Cancel
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/modal/submit-modal/submit-modal.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/modal/confirm-modal/confirm-modal.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="99387bde50a12de9097e8cb9c92e2aa6a43f8324" datatype="html">
+        <source>
+    Submit
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/modal/submit-modal/submit-modal.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="68e710782ccb5398b3acb8844caf0b199da2c3da" datatype="html">
+        <source>Confirm</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/modal/confirm-modal/confirm-modal.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2ca4f4e6a46986c3eead62669b41042ddbdecd64" datatype="html">
+        <source>
+    Confirm
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/modal/confirm-modal/confirm-modal.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="09f88cb2771f72f0ea193223d313d31cffa8c5e0" datatype="html">
+        <source>Close Participation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9b9c598718f758c672e21e933f18f0bc61a2290d" datatype="html">
+        <source>Reset Participation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0a6d2149de056e57002bc142f4f3d9514cf665c0" datatype="html">
+        <source>Groups with open participation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cff1428d10d59d14e45edec3c735a27b5482db59" datatype="html">
+        <source>Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4015421f04d5baeed771e50cfdf1c1ca4e30e119" datatype="html">
+        <source>Coach</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b9eda963b961edc28f9e198818ed351524e3e396" datatype="html">
+        <source>Close participation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="51454f396acfa1b7198c4cc001638d75f10027b3" datatype="html">
+        <source>
+        Close the participation in order to start the athletics.
+        Closing the participation will assign a start number to each participant with the sport type Athletics.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="911318545f253fbfb4ea3381eee023c688d2bdfd" datatype="html">
+        <source>
+        You can still change the sport type afterwards, but be aware that a start number assigned once can not be
+        reused,
+        even if the according participant will no longer participate in Athletics.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ec52663f08469bf6b5e5db968c89709a7b2c99b3" datatype="html">
+        <source>Reset participation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="210ae14072a29674894d6c5bfd41a20283b208cc" datatype="html">
+        <source>
+          Reset the participation in order to start the sport event all over again.
+          All groups including the participants and their results will be deleted.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="93ec622b55834a7b152be4f33a0693efa0af79d4" datatype="html">
+        <source>Be sure to export the ranking before you perform this action.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c9c70d4863a87639b55d66ca107c3c911abefa9b" datatype="html">
+        <source>Participation Management</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8b408824fa876c47188c0128ed95fda499ebb972" datatype="html">
+        <source>Participation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0f4113ddfd6a0aace680237ae7853a44e3980272" datatype="html">
+        <source>
+    Actions
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/action-buttons/button-group/button-group.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c465f226bb6817e6d573272bfa8dc4c57e2fb1ef" datatype="html">
+        <source>
+      Choose file
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/drag-and-drop/file-drop/file-drop.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d4953ec26f2683107e97b1cb556b8cf3d5f6790d" datatype="html">
+        <source>or drag and drop file here</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/modules/drag-and-drop/file-drop/file-drop.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8a0b838976a97d2f0f263d2d50bd903485cf47d9" datatype="html">
+        <source>CSV Format</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9e64995dea83ecb7944d87cbf883aa613576cbfa" datatype="html">
+        <source>Must end with
+      <x id="START_TAG_MARK" ctype="x-mark" equiv-text="&lt;mark&gt;"/>.csv<x id="CLOSE_TAG_MARK" ctype="x-mark" equiv-text="&lt;/mark&gt;"/>
+      extension
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c58e35407801d6aa20b7e47c6b40cb678f5cfffd" datatype="html">
+        <source>
+      Must follow the attribute order:
+      <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/>Group,Surname,Prename,Gender,Street,Zip Code,Town,Birthday,Group Coach<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/>
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d3b81064705d36e3ceaa536ac40fde9aaf1d59b5" datatype="html">
+        <source>The gender must be a
+      <x id="START_TAG_MARK" ctype="x-mark" equiv-text="&lt;mark&gt;"/>m<x id="CLOSE_TAG_MARK" ctype="x-mark" equiv-text="&lt;/mark&gt;"/>
+      for men and a
+      <x id="START_TAG_MARK" ctype="x-mark" equiv-text="&lt;mark&gt;"/>w<x id="CLOSE_TAG_MARK" ctype="x-mark" equiv-text="&lt;/mark&gt;"/>
+      for woman
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f44a74ea71f059bd45236d31d53dce004fe93c72" datatype="html">
+        <source>The birthday must follow the format
+      <x id="START_TAG_MARK" ctype="x-mark" equiv-text="&lt;mark&gt;"/>dd.MM.YYYY<x id="CLOSE_TAG_MARK" ctype="x-mark" equiv-text="&lt;/mark&gt;"/>
+      ; e.g. 06.10.2009
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="985da0d8fe95431b9288778a872d3c79c53438fb" datatype="html">
+        <source>The csv delimiter must be a comma
+      <x id="START_TAG_MARK" ctype="x-mark" equiv-text="&lt;mark&gt;"/>,<x id="CLOSE_TAG_MARK" ctype="x-mark" equiv-text="&lt;/mark&gt;"/>
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4a3358ca6263e72672259b27bd3457189df9a778" datatype="html">
+        <source>
+      File is required
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="76189360d8346a2f6a2141c336d77713b2c39595" datatype="html">
+        <source>
+      Max file size is 1MiB
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0968d3a84903aeac3821efd86c9d5f16484b14a0" datatype="html">
+        <source>
+      Only .csv files are allowed
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5917d2ea5c48382d70ae2b71dbccddf6a865ff83" datatype="html">
+        <source>Import groups</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/import-groups/import-groups.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="a059709f71aa4c0ac219e160e78a738682ca6a36" datatype="html">
         <source>Import</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/pages/groups/group-overview/group-overview.component.html</context>
-          <context context-type="linenumber">5</context>
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="030b4423b92167200e39519599f9b863b4f7c62c" datatype="html">
+        <source>Actions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="68949525c4d9a901e0cd15a94e3fc8d2711e9918" datatype="html">
+        <source>Manage</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0d65db91949bc98f9ca7b8ec02693a27351a5ed6" datatype="html">
+        <source>Group Management</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e95ae009d0bdb45fcc656e8b65248cf7396080d5" datatype="html">
+        <source>Overview</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-overview/group-overview.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fd1311360957c73b4fd0235a057b1390d33dddfb" datatype="html">
+        <source>
+            Please enter a prename
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c7cd79f43798596ed038667519c4da20dffd40bb" datatype="html">
+        <source>
+            Max length <x id="INTERPOLATION" equiv-text="{{form.controls[formControls.prename].errors?.maxlength?.requiredLength}}"/>
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="52d0866df4c582ef74e93515bf1758df1641c36b" datatype="html">
+        <source>
+            Please enter a surname
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6a93818049c1962e6bbe8a1abdf807dee2a1d7ff" datatype="html">
+        <source>
+            Max length <x id="INTERPOLATION" equiv-text="{{form.controls[formControls.surname].errors?.maxlength?.requiredLength}}"/>
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="729754dd19eb9ce0670b0aeb5a6ae60574c2c563" datatype="html">
+        <source>Address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="972a645b2d1cf87ed617d358628fa34fd4e43336" datatype="html">
+        <source>
+          Please enter an address
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d7c88dce56c6db40f294fc2a8f9d314f4d9a0862" datatype="html">
+        <source>
+          Max length <x id="INTERPOLATION" equiv-text="{{form.controls[formControls.address].errors?.maxlength?.requiredLength}}"/>
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6433be6b03134c54a0c6aa6cfcb7746c7c27eec3" datatype="html">
+        <source>Birthday</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="95126105cff2e388f6bc7416ad857a42d08012fd" datatype="html">
+        <source>
+            Please enter a birthday
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="638745f99699a62ab88082697a180ae291bb485b" datatype="html">
+        <source>Zip</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4ecfdd8624c24df872432e56599a19ceca438234" datatype="html">
+        <source>
+            Please enter a zip code
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="31365d30065a5022d320cdaf6e2ffd9c3d74ed9c" datatype="html">
+        <source>
+            Max length <x id="INTERPOLATION" equiv-text="{{form.controls[formControls.zip].errors?.maxlength?.requiredLength}}"/>
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8d1bc1c15d52c3b7ed295c12cf72beccf882bfda" datatype="html">
+        <source>Town</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="214391e65c9d25637e6b698a999fc91fab644a85" datatype="html">
+        <source>
+            Please enter a name
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="560599bc55bc5d8a0dc58e23016705bd88750471" datatype="html">
+        <source>
+            Max length <x id="INTERPOLATION" equiv-text="{{form.controls[formControls.town].errors?.maxlength?.requiredLength}}"/>
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2ad48075dbc8a4bcaa9c0cac0421569d297606db" datatype="html">
+        <source>Sport Type</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1095a3582f1e5251d9a6dd2ad4d1374cb3baf035" datatype="html">
+        <source>
+          Please select a sport type
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">100</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ca14fe4a0b08564e8ea1444d51b0ad0340a56adc" datatype="html">
+        <source>Add participant</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/add-participant/add-participant-modal.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="685567738ca490613ec2c23df2c85b711222bcd3" datatype="html">
+        <source>Edit participant</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/edit-participant-modal/edit-participant-modal.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a67aec1c4d47cdf3a4442a19e616def78fd77388" datatype="html">
+        <source>Go back</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="28f86ffd419b869711aa13f5e5ff54be6d70731c" datatype="html">
+        <source>Edit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="826b25211922a1b46436589233cb6f1a163d89b7" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="303cf04ca5c12a60d676b6a00ceaf852799c1af4" datatype="html">
+        <source>Participants</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="46f15ce155f68d2c5383893e7eb94fd424755602" datatype="html">
+        <source>Participant list</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/event-sheets-management/event-sheets-selection/event-sheets-selection.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="46192347bd4b195a1470f2a2a9ad691eaae9d689" datatype="html">
+        <source>Download startlist</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/event-sheets-management/event-sheets-selection/event-sheets-selection.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3f7304e68eb5fc04c504d8773ed7140b4d52cf1a" datatype="html">
+        <source>Event Sheets</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/event-sheets-management/event-sheets-selection/event-sheets-selection.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f0f03ce6d8ec286cd0dfdf564e5eba73615dce56" datatype="html">
+        <source>Events Sheets</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/event-sheets-management/event-sheets-selection/event-sheets-selection.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="08c74dc9762957593b91f6eb5d65efdfc975bf48" datatype="html">
+        <source>Username</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/add-user-modal/add-user-modal.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="42a962be391597530a7039525feb0457e7943fa7" datatype="html">
+        <source>
+          Username is required
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/add-user-modal/add-user-modal.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c32ef07f8803a223a83ed17024b38e8d82292407" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/add-user-modal/add-user-modal.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f50a33d3c339f8f4a465141f8caa5d2d8c005251" datatype="html">
+        <source>Enabled</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/add-user-modal/add-user-modal.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f8c7e16da78e5daf06335e60dd27f03ec30530f4" datatype="html">
+        <source>Add user</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/add-user-modal/add-user-modal.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6ad31729632818476420bb0f698d617436263675" datatype="html">
+        <source>User Management</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0a33d8ffb7e5cb2958e21856455b8fc226de85c0" datatype="html">
+        <source>User Overview</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
     </body>

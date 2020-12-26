@@ -23,11 +23,11 @@ export class SportTypeInputComponent implements OnInit, OnDestroy, ControlValueA
   @Input()
   size: "" | "sm" = "";
 
-  readonly sportTypes: ReadonlyArray<string> = [
-    ATHLETICS,
-    SCHATZSUCHE,
-    BRENNBALL,
-    VELO_ROLLERBLADES,
+  readonly sportTypes: ReadonlyArray<SportTypeModel> = [
+    new SportTypeModel(ATHLETICS, $localize`Athletics`),
+    new SportTypeModel(SCHATZSUCHE),
+    new SportTypeModel(BRENNBALL),
+    new SportTypeModel(VELO_ROLLERBLADES),
   ];
 
   readonly formControls: FormControlsObject = {
@@ -90,5 +90,13 @@ export class SportTypeInputComponent implements OnInit, OnDestroy, ControlValueA
 
   writeValue(obj: string): void {
     this.form?.controls[this.formControls.sportType]?.setValue(obj);
+  }
+}
+
+class SportTypeModel {
+  constructor(
+    readonly value: string,
+    readonly displayValue: string = value,
+  ) {
   }
 }
