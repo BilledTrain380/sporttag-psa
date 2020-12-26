@@ -70,7 +70,8 @@ export class ResultModel {
 
   static fromDto(dto: ResultDto): ResultModel {
     const prependText = dto.discipline.hasDistance
-      ? $localize`Distance: ${dto.distance}`
+      // tslint:disable-next-line
+      ? $localize`Distance: ` + dto.distance
       : "";
 
     const appendText = dto.discipline.unit.name;

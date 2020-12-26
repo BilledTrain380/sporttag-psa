@@ -20,7 +20,10 @@ export class FormHintDirective implements OnInit {
 
     const hintDiv = this.document.createElement("div");
     hintDiv.classList.add("form-group", "col-md-12");
-    hintDiv.innerHTML = $localize`<i>Fields with <span style="color: red">*</span> are required</i>`;
+
+    const preText = $localize`Fields with`;
+    const appText = $localize`are required`;
+    hintDiv.innerHTML = `<i>${preText} <span style="color: red">*</span> ${appText}</i>`;
 
     rootDiv.appendChild(hintDiv);
 
