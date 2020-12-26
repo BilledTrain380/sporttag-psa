@@ -4,32 +4,34 @@
                   [isSubmitEnabled]="form?.valid"
                   (cancel)="cancel()"
                   (submitData)="submit()">
-  <form [formGroup]="form" appFormHint>
-    <div class="form-group">
-      <label appFormHintRequired i18n>Username</label>
-      <input type="text"
-             [formControlName]="formControls.username"
-             appInputValidation
-             class="form-control"
-             id="inputUsername">
+  <div *ngIf="form">
+    <form [formGroup]="form" appFormHint>
+      <div class="form-group">
+        <label appFormHintRequired i18n>Username</label>
+        <input type="text"
+               [formControlName]="formControls.username"
+               appInputValidation
+               class="form-control"
+               id="inputUsername">
 
-      <div *ngIf="form?.controls[formControls.username]?.errors?.required" class="invalid-feedback" i18n>
-        Username is required
+        <div *ngIf="form.controls[formControls.username]?.errors?.required" class="invalid-feedback" i18n>
+          Username is required
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label appFormHintRequired i18n>Password</label>
-      <app-password-input [formControlName]="formControls.password"></app-password-input>
+      <div class="form-group">
+        <label appFormHintRequired i18n>Password</label>
+        <app-password-input [formControlName]="formControls.password"></app-password-input>
 
-      <div *ngIf="form?.controls[formControls.password]?.errors?.psaPassword as violatedPolicies"
-           class="invalid-feedback d-block">
-        <app-password-policy-feedback [violatedPolicies]="violatedPolicies"></app-password-policy-feedback>
+        <div *ngIf="form.controls[formControls.password]?.errors?.psaPassword as violatedPolicies"
+             class="invalid-feedback d-block">
+          <app-password-policy-feedback [violatedPolicies]="violatedPolicies"></app-password-policy-feedback>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group form-check">
-      <input type="checkbox" [formControlName]="formControls.enabled" class="form-check-input" id="enabledCheckbox">
-      <label class="form-check-label" for="enabledCheckbox" i18n>Enabled</label>
-    </div>
-  </form>
+      <div class="form-group form-check">
+        <input type="checkbox" [formControlName]="formControls.enabled" class="form-check-input" id="enabledCheckbox">
+        <label class="form-check-label" for="enabledCheckbox" i18n>Enabled</label>
+      </div>
+    </form>
+  </div>
 </app-submit-modal>
