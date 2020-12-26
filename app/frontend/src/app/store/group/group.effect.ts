@@ -67,7 +67,7 @@ export class GroupEffects {
 
                           const alert = (typeof err.error === "string")
                             ? textAlert.error(err.error)
-                            : textAlert.error($localize`Unknown error`);
+                            : textAlert.error("Unknown error");
 
                           return of(setImportGroupsAlertAction({alert}));
                         }));

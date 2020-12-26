@@ -153,6 +153,7 @@
       </trans-unit>
       <trans-unit id="ngb.progressbar.value" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="{{getValue() / max | percent}}"/></source>
+        <target><x id="INTERPOLATION" equiv-text="{{getValue() / max | percent}}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/ng-bootstrap/progressbar/progressbar.d.ts</context>
           <context context-type="linenumber">6</context>
@@ -534,7 +535,7 @@
       </trans-unit>
       <trans-unit id="0e69fc7de5d88295ef8ae8938fd34ff5e5327e48" datatype="html">
         <source>Ranking</source>
-        <target>Ranlisten</target>
+        <target>Ranglisten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/ranking/ranking-export/ranking-export.component.html</context>
           <context context-type="linenumber">1</context>
@@ -586,7 +587,7 @@
       </trans-unit>
       <trans-unit id="3533a8c726d2204880d8b113c7a6558fda1c17bb" datatype="html">
         <source>Choose one...</source>
-        <target>Wähle eines...</target>
+        <target>Wähle...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/modules/common-forms/pre-next-select/pre-next-select.component.html</context>
           <context context-type="linenumber">11</context>
@@ -959,7 +960,7 @@
         </source>
         <target>
           Schliessen Sie die Teilnahme ab, um die Startnummern zu generieren.
-          Jeden Teilnehmer, welcher an der Sportart Mehrkampf mittmacht, wird eine Startnummer zugewiesen.
+          Jedem Teilnehmer, welcher an der Sportart Mehrkampf mitmacht, wird eine Startnummer zugewiesen.
         </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
@@ -973,7 +974,7 @@
         even if the according participant will no longer participate in Athletics.
       </source>
       <target>
-        Sie können die Sportart immer noch ändern, aber eine Startnummer, welche bereits vergeben ist, kann
+        Sie können die Sportart immer noch ändern, aber eine Startnummer welche bereits vergeben ist, kann
         nicht wiederverwendet werden, auch wenn der entsprechenden Teilnehmer gar nicht mehr am Mehrkampf mitmacht.
       </target>
         <context-group purpose="location">
@@ -995,7 +996,7 @@
           All groups including the participants and their results will be deleted.
         </source>
         <target>
-          Setzen Sie die Teilnahme zurück, um den Sport Event von vorne zu starten.target
+          Setzen Sie die Teilnahme zurück, um den Sport Event von vorne zu starten.
           Alle Gruppen inklusive den Teilnehmern und ihren Resultaten werden gelöscht.
         </target>
         <context-group purpose="location">
@@ -1005,7 +1006,7 @@
       </trans-unit>
       <trans-unit id="93ec622b55834a7b152be4f33a0693efa0af79d4" datatype="html">
         <source>Be sure to export the ranking before you perform this action.</source>
-        <target>Stellen Sie sicher, dass die Rangliste exportiert wurde, bevor Sie diese Aktion ausführen.</target>
+        <target>Stellen Sie sicher dass die Rangliste exportiert wurde, bevor Sie diese Aktion ausführen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/administration/participation/participation-management/participation-management.component.html</context>
           <context context-type="linenumber">71</context>
@@ -1443,7 +1444,7 @@
       </trans-unit>
       <trans-unit id="28f86ffd419b869711aa13f5e5ff54be6d70731c" datatype="html">
         <source>Edit</source>
-        <target>Editieren</target>
+        <target>Bearbeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/pages/administration/groups/group-detail/group-detail.component.html</context>
           <context context-type="linenumber">43</context>
@@ -1568,6 +1569,212 @@
           <context context-type="sourcefile">src/app/pages/administration/user-management/user-overview/user-overview.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
+      </trans-unit>
+
+      <!-- Manually added translation for the Typscript translated text -->
+      <trans-unit id="6575329963973302276">
+        <source>Successfully updated competitor result</source>
+        <target>Wettkämpfer Resultat erfolgreich aktualisiert</target>
+      </trans-unit>
+      <trans-unit id="8998179362936748717">
+        <source>OK</source>
+        <target>OK</target>
+      </trans-unit>
+      <trans-unit id="314315645942131479">
+        <source>Info</source>
+        <target>Info</target>
+      </trans-unit>
+      <trans-unit id="6759205696902713848">
+        <source>Warning</source>
+        <target>Warnung</target>
+      </trans-unit>
+      <trans-unit id="3720035233502307422">
+        <source>Contains participants with no sport type</source>
+        <target>Enthält Teinehmer ohne zugewiesener Sportart</target>
+      </trans-unit>
+      <trans-unit id="1616102757855967475">
+        <source>All</source>
+        <target>Alle</target>
+      </trans-unit>
+      <trans-unit id="1019243228467773596">
+        <source>Do you really want to close the participation?</source>
+        <target>Wollen Sie die Teilnahme wirklich abschliessen?</target>
+      </trans-unit>
+      <trans-unit id="4908414168139351001">
+        <source>Do you really want to reset the participation?</source>
+        <target>Wollen Sie die Teilnahme wirklich zurüchsetzen?</target>
+      </trans-unit>
+      <trans-unit id="5667840900782067941">
+        <source>Female</source>
+        <target>Weiblich</target>
+      </trans-unit>
+      <trans-unit id="8012344910054029733">
+        <source>Male</source>
+        <target>Männlich</target>
+      </trans-unit>
+      <trans-unit id="3362740582689590107">
+        <source>Successfully added user</source>
+        <target>Benutzer erfolgreich hinzugefügt</target>
+      </trans-unit>
+      <trans-unit id="488221494162166765">
+        <source>Could not add user</source>
+        <target>Benutzer konnte nicht hinzugefügt werden</target>
+      </trans-unit>
+      <trans-unit id="8057515795040006849">
+        <source>Successfully updated user</source>
+        <target>Benutzer erfolgreich aktualisiert</target>
+      </trans-unit>
+      <trans-unit id="7752767250081351928">
+        <source>Could not update user</source>
+        <target>Benutzer konnte nicht aktualisiert werden</target>
+      </trans-unit>
+      <trans-unit id="2339069818163996720">
+        <source>Successfully updated user password</source>
+        <target>Benutzer Passwort erfolgreich aktualisiert</target>
+      </trans-unit>
+      <trans-unit id="6560547971285372721">
+        <source>Could not update user password</source>
+        <target>Benutzer Passwort konnte nicht aktualisiert werden</target>
+      </trans-unit>
+      <trans-unit id="5993578961578010358">
+        <source>Successfully deleted user</source>
+        <target>Benutzer erfolgreich gelöscht</target>
+      </trans-unit>
+      <trans-unit id="2896705661350638498">
+        <source>Could not delete user</source>
+        <target>Benutzer konnte nicht gelöscht werden</target>
+      </trans-unit>
+      <trans-unit id="3299858879444377468">
+        <source>Do you really want to delete the user </source>
+        <target>Möchten Sie den Benutzer wirklich löschen: </target>
+      </trans-unit>
+      <trans-unit id="6411258006079038763">
+        <source>Change password of </source>
+        <target>Ändere Passwort von </target>
+      </trans-unit>
+      <trans-unit id="1263244195818707408">
+        <source>Contains competitive participants</source>
+        <target>Enthält Wettkämpfer</target>
+      </trans-unit>
+      <trans-unit id="5718327129977406196">
+        <source>Contains non competitive participants</source>
+        <target>Enthält Nicht-Wettkämpfer</target>
+      </trans-unit>
+      <trans-unit id="2828755252372654185">
+        <source>Participation is open</source>
+        <target>Teilnahme ist offen</target>
+      </trans-unit>
+      <trans-unit id="5161862997723660765">
+        <source>Participation is closed</source>
+        <target>Teilnahme ist geschlossen</target>
+      </trans-unit>
+      <trans-unit id="3760603924400916818">
+        <source>No entries</source>
+        <target>Keine Einträge</target>
+      </trans-unit>
+<!--       <trans-unit id="557701853202463511"> -->
+<!--         <source><i>Fields with <span style="color: red">*</span> are required</i></source> -->
+<!--         <target><i>Felder mit <span style="color: red">*</span> sind anzugeben</i></target> -->
+<!--       </trans-unit> -->
+      <trans-unit id="4404461565290519896">
+        <source>Could not add participant</source>
+        <target>Teilnehmer konnte nicht hinzugefügt werden</target>
+      </trans-unit>
+      <trans-unit id="64735501393814428">
+        <source>Could not update participant</source>
+        <target>Teilnehmer konnte nicht aktualisiert werden</target>
+      </trans-unit>
+      <trans-unit id="260762545079541470">
+        <source>Successfully updated participant</source>
+        <target>Teilnehmer erfolgreich aktualisiert</target>
+      </trans-unit>
+      <trans-unit id="3463218762739081768">
+        <source>Successfully deleted participant</source>
+        <target>Teilnehmer erfolgreich gelöscht</target>
+      </trans-unit>
+      <trans-unit id="1505219639152008178">
+        <source>Password must be between 8 and 64 characters</source>
+        <target>Passwort muss zwischen 8 und 64 Zeichen lang sein</target>
+      </trans-unit>
+      <trans-unit id="2419713044231448553">
+        <source>Password must contain an upper case character</source>
+        <target>Passwort muss ein Grossbuchstabe enthalten</target>
+      </trans-unit>
+      <trans-unit id="3601674018818403893">
+        <source>Password must contain a lower case character</source>
+        <target>Passwort muss ein Kleinbuchstabe enthalten</target>
+      </trans-unit>
+      <trans-unit id="5441962745290394081">
+        <source>Password must contain a special character</source>
+        <target>Passwort muss ein Sonderzeichen enthalten</target>
+      </trans-unit>
+      <trans-unit id="7418098392904172875">
+        <source>Password must contain a digit</source>
+        <target>Passwort muss eine Zahl enthalten</target>
+      </trans-unit>
+      <trans-unit id="7966597995091997158">
+        <source>Password must not contain any whitespace character</source>
+        <target>Passwort darf keine Leerzeichen enthalten</target>
+      </trans-unit>
+      <trans-unit id="6803315844417547389">
+        <source>Successfully imported groups</source>
+        <target>Gruppen erfolgreich importiert</target>
+      </trans-unit>
+      <trans-unit id="6075869291669949632">
+        <source>Successfully added participant</source>
+        <target>Teilnehmer erfolgreich hinzugefügt</target>
+      </trans-unit>
+      <trans-unit id="8519155605080794204">
+        <source>Could not delete participant</source>
+        <target>Teilnehmer konnte nicht gelöscht werden</target>
+      </trans-unit>
+      <trans-unit id="498905136522914426">
+        <source>Group </source>
+        <target>Gruppe </target>
+      </trans-unit>
+      <trans-unit id="6971816810450470983">
+        <source>Do you really want to delete the participant </source>
+        <target>Wollen Sie den Teilnehmer wirklich löschen: </target>
+      </trans-unit>
+      <trans-unit id="8214511981867441305">
+        <source>Group Management</source>
+        <target>Gruppen Verwaltung</target>
+      </trans-unit>
+      <trans-unit id="5708881265859232452">
+        <source>Participation Management</source>
+        <target>Teilnahme Verwaltung</target>
+      </trans-unit>
+      <trans-unit id="8958960477134711104">
+        <source>Event Sheets</source>
+        <target>Wettkampfblätter</target>
+      </trans-unit>
+      <trans-unit id="2550377588620126747">
+        <source>User Management</source>
+        <target>Benutzer Verwaltung</target>
+      </trans-unit>
+      <trans-unit id="4402468059690137469">
+        <source>Ranking</source>
+        <target>Ranglisten</target>
+      </trans-unit>
+      <trans-unit id="7919898239872556948">
+        <source>Athletics</source>
+        <target>Mehrkampf</target>
+      </trans-unit>
+      <trans-unit id="7844706011418789951">
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="2191186401753575252">
+        <source>Distance: </source>
+        <target>Distanz: </target>
+      </trans-unit>
+      <trans-unit id="1046296619911199538">
+        <source>Fields with</source>
+        <target>Felder mit</target>
+      </trans-unit>
+      <trans-unit id="974437052221961135">
+        <source>are required</source>
+        <target>sind anzugeben</target>
       </trans-unit>
     </body>
   </file>
