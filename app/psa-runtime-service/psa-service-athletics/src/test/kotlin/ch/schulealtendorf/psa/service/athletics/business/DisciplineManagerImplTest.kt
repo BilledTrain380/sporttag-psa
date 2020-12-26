@@ -36,29 +36,29 @@ internal class DisciplineManagerImplTest {
 
         val schnelllauf = disciplines.find { it.name == SCHNELLLAUF }
         assertThat(schnelllauf).isNotNull
-        assertThat(schnelllauf?.hasDistance).isFalse()
-        assertThat(schnelllauf?.hasTrials).isFalse()
+        assertThat(schnelllauf?.hasDistance).isFalse
+        assertThat(schnelllauf?.hasTrials).isFalse
         assertThat(schnelllauf?.unit?.name).isEqualTo("Sekunden")
         assertThat(schnelllauf?.unit?.factor).isEqualTo(100)
 
         val weitsprung = disciplines.find { it.name == WEITSPRUNG }
         assertThat(weitsprung).isNotNull
-        assertThat(weitsprung?.hasDistance).isFalse()
-        assertThat(weitsprung?.hasTrials).isTrue()
+        assertThat(weitsprung?.hasDistance).isFalse
+        assertThat(weitsprung?.hasTrials).isTrue
         assertThat(weitsprung?.unit?.name).isEqualTo("Meter")
         assertThat(weitsprung?.unit?.factor).isEqualTo(100)
 
         val ballwurf = disciplines.find { it.name == BALLWURF }
         assertThat(ballwurf).isNotNull
-        assertThat(ballwurf?.hasDistance).isFalse()
-        assertThat(ballwurf?.hasTrials).isTrue()
+        assertThat(ballwurf?.hasDistance).isFalse
+        assertThat(ballwurf?.hasTrials).isTrue
         assertThat(ballwurf?.unit?.name).isEqualTo("Meter")
         assertThat(ballwurf?.unit?.factor).isEqualTo(100)
 
         val ballzielwurf = disciplines.find { it.name == BALLZIELWURF }
         assertThat(ballzielwurf).isNotNull
-        assertThat(ballzielwurf?.hasDistance).isTrue()
-        assertThat(ballzielwurf?.hasTrials).isFalse()
+        assertThat(ballzielwurf?.hasDistance).isTrue
+        assertThat(ballzielwurf?.hasTrials).isFalse
         assertThat(ballzielwurf?.unit?.name).isEqualTo("Punkte")
         assertThat(ballzielwurf?.unit?.factor).isEqualTo(1)
 
@@ -66,14 +66,14 @@ internal class DisciplineManagerImplTest {
         assertThat(seilspringen).isNotNull
         assertThat(seilspringen?.hasDistance).isFalse()
         assertThat(seilspringen?.hasTrials).isTrue()
-        assertThat(seilspringen?.unit?.name).isEqualTo("Punkte")
+        assertThat(seilspringen?.unit?.name).isEqualTo("Anzahl")
         assertThat(seilspringen?.unit?.factor).isEqualTo(1)
 
         val korbeinwurf = disciplines.find { it.name == KORBEINWURF }
         assertThat(korbeinwurf).isNotNull
-        assertThat(korbeinwurf?.hasDistance).isTrue()
-        assertThat(korbeinwurf?.hasTrials).isFalse()
-        assertThat(korbeinwurf?.unit?.name).isEqualTo("Punkte")
+        assertThat(korbeinwurf?.hasDistance).isTrue
+        assertThat(korbeinwurf?.hasTrials).isFalse
+        assertThat(korbeinwurf?.unit?.name).isEqualTo("Treffer")
         assertThat(korbeinwurf?.unit?.factor).isEqualTo(1)
     }
 
@@ -83,9 +83,9 @@ internal class DisciplineManagerImplTest {
         assertThat(disciplineOptional).isNotEmpty
 
         val seilspringen = disciplineOptional.get()
-        assertThat(seilspringen.hasDistance).isFalse()
-        assertThat(seilspringen.hasTrials).isTrue()
-        assertThat(seilspringen.unit.name).isEqualTo("Punkte")
+        assertThat(seilspringen.hasDistance).isFalse
+        assertThat(seilspringen.hasTrials).isTrue
+        assertThat(seilspringen.unit.name).isEqualTo("Anzahl")
         assertThat(seilspringen.unit.factor).isEqualTo(1)
     }
 
