@@ -19,7 +19,7 @@
 
   <div *ngIf="participation$ | async as participation; else spinner" class="row">
     <div class="col-lg-9">
-      <h6 i18n>Groups with warnings</h6>
+      <h6 i18n>Groups with unfinished participants</h6>
 
       <table class="table" appNoEntries [rowCount]="participation.unfinishedGroups.length" columnCount="3">
         <thead>

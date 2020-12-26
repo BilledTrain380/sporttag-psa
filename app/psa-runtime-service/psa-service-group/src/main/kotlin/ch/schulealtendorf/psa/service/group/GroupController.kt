@@ -174,7 +174,7 @@ class GroupController(
     )
     @PreAuthorize("#oauth2.hasScope('group_read')")
     @GetMapping("/groups/overview", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getGroups(
+    fun getOverviewGroups(
         @RequestParam("status_type", required = false) statusType: GroupStatusType?
     ): List<OverviewGroupDto> {
         if (statusType == null) {
