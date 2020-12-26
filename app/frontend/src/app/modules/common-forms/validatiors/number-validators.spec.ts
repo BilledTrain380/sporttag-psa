@@ -49,6 +49,18 @@ describe("NumberValidators", () => {
         .withContext("Float number errors")
         .toBeDefined();
     });
+
+    it("should allow a trailing zero", () => {
+      const control = new FormControl("2.30");
+
+      // tslint:disable-next-line:no-magic-numbers
+      const errors = floatNumberValidator()
+        .call(undefined, control);
+
+      expect(errors)
+        .withContext("Float number errors")
+        .toBeNull();
+    });
   });
 
   describe("on int number validator", () => {
