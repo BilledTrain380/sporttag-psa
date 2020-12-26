@@ -34,11 +34,11 @@ internal class GroupManagerImplTest {
 
         assertThat(groupManager.hasPendingParticipation(pendingParticipationGroup.get()))
             .withFailMessage("Expected group ${pendingParticipationGroup.get().name} to have pending participation")
-            .isTrue()
+            .isTrue
 
         assertThat(groupManager.hasPendingParticipation(finishedParticipationGroup.get()))
             .withFailMessage("Expected group ${finishedParticipationGroup.get().name} to not have pending participation")
-            .isFalse()
+            .isFalse
     }
 
     @Test
@@ -48,11 +48,11 @@ internal class GroupManagerImplTest {
 
         assertThat(groupManager.isCompetitive(competitiveGroup.get()))
             .withFailMessage("Expected group ${competitiveGroup.get().name} to be competitive")
-            .isFalse()
+            .isFalse
 
         assertThat(groupManager.isCompetitive(funGroup.get()))
             .withFailMessage("Expected group ${funGroup.get().name} to be competitive")
-            .isTrue()
+            .isTrue
     }
 
     @Test
@@ -78,17 +78,17 @@ internal class GroupManagerImplTest {
 
         val group2a = overviewList.find { it.group.name == "2a" }
         assertThat(group2a).isNotNull
-        assertThat(group2a?.status?.severity).isEqualTo(StatusSeverity.WARNING)
+        assertThat(group2a?.status?.severity).isEqualTo(StatusSeverity.INFO)
 
         assertThat(group2a?.status?.entries).hasSize(2)
 
-        val warningEntry = group2a?.status?.entries?.find { it.severity == StatusSeverity.WARNING }
-        assertThat(warningEntry).isNotNull
-        assertThat(warningEntry?.type?.text).isEqualTo(GroupStatusType.UNFINISHED_PARTICIPANTS.name)
+        val statusUnfinishedParticipants = group2a?.status?.entries?.get(0)
+        assertThat(statusUnfinishedParticipants?.severity).isEqualTo(StatusSeverity.INFO)
+        assertThat(statusUnfinishedParticipants?.type?.text).isEqualTo(GroupStatusType.UNFINISHED_PARTICIPANTS.name)
 
-        val infoEntry = group2a?.status?.entries?.find { it.severity == StatusSeverity.INFO }
-        assertThat(infoEntry).isNotNull
-        assertThat(infoEntry?.type?.text).isEqualTo(GroupStatusType.GROUP_TYPE_FUN.name)
+        val statusCompetitive = group2a?.status?.entries?.get(1)
+        assertThat(statusCompetitive?.severity).isEqualTo(StatusSeverity.INFO)
+        assertThat(statusCompetitive?.type?.text).isEqualTo(GroupStatusType.GROUP_TYPE_FUN.name)
     }
 
     @Test
@@ -102,10 +102,14 @@ internal class GroupManagerImplTest {
         assertThat(overview2b.group.coach).isEqualTo("Willi Wirbelwind")
         assertThat(overview2b.status.severity).isEqualTo(StatusSeverity.OK)
 
-        assertThat(overview2b.status.entries).hasSize(1)
+        assertThat(overview2b.status.entries).hasSize(2)
 
-        val status = overview2b.status.entries[0]
+        val statusCompetitive = overview2b.status.entries[0]
+        assertThat(statusCompetitive.severity).isEqualTo(StatusSeverity.INFO)
+        assertThat(statusCompetitive.type.text).isEqualTo(GroupStatusType.GROUP_TYPE_COMPETITIVE.name)
+
+        val status = overview2b.status.entries[1]
         assertThat(status.severity).isEqualTo(StatusSeverity.INFO)
-        assertThat(status.type.text).isEqualTo(GroupStatusType.GROUP_TYPE_COMPETITIVE.name)
+        assertThat(status.type.text).isEqualTo(GroupStatusType.GROUP_TYPE_FUN.name)
     }
 }

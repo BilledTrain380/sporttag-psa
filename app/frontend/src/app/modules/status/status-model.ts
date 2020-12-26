@@ -93,7 +93,7 @@ function labelOfStatusType(type: string): string {
     case GroupStatusType.UNFINISHED_PARTICIPANTS:
       return $localize`Contains participants with no sport type`;
     case GroupStatusType.GROUP_TYPE_COMPETITIVE:
-      return $localize`Contains only competitive participants`;
+      return $localize`Contains competitive participants`;
     case GroupStatusType.GROUP_TYPE_FUN:
       return $localize`Contains non competitive participants`;
     case ParticipationStatusType.OPEN:

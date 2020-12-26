@@ -62,9 +62,17 @@ class GroupManagerImpl(
     private val groupRepository: GroupRepository,
     private val participantRepository: ParticipantRepository
 ) : GroupManager {
-    override fun hasPendingParticipation(group: SimpleGroupDto) = hasPendingParticipation(group.name)
+    override fun hasPendingParticipation(group: SimpleGroupDto): Boolean {
+        val participants = participantRepository.findByGroupName(group.name)
 
-    override fun isCompetitive(group: SimpleGroupDto) = isCompetitive(group.name)
+        return hasPendingParticipation(participants)
+    }
+
+    override fun isCompetitive(group: SimpleGroupDto): Boolean {
+        val participants = participantRepository.findByGroupName(group.name)
+
+        return hasCompetitors(participants)
+    }
 
     override fun getGroup(name: String): Optional<SimpleGroupDto> {
         return groupRepository.findById(name)
@@ -91,14 +99,16 @@ class GroupManagerImpl(
             .filter { it.status.contains(filter) }
     }
 
-    private fun hasPendingParticipation(groupName: String): Boolean {
-        return participantRepository.findByGroupName(groupName)
-            .any { it.sport == null }
+    private fun hasPendingParticipation(participants: List<ParticipantEntity>): Boolean {
+        return participants.any { it.sport == null }
     }
 
-    private fun isCompetitive(groupName: String): Boolean {
-        return participantRepository.findByGroupName(groupName)
-            .any { it.isCompetitive() }
+    private fun hasCompetitors(participants: List<ParticipantEntity>): Boolean {
+        return participants.any { it.isCompetitive() }
+    }
+
+    private fun hasNonCompetitors(participants: List<ParticipantEntity>): Boolean {
+        return participants.any { it.isCompetitive().not() }
     }
 
     private fun ParticipantEntity.isCompetitive() = sport != null && sport?.name == ATHLETICS
@@ -110,26 +120,35 @@ class GroupManagerImpl(
 
         val statusList = ArrayList<StatusEntry>()
 
-        if (hasPendingParticipation(name)) {
-            severity = StatusSeverity.WARNING
+        val participants = participantRepository.findByGroupName(name)
+
+        if (hasPendingParticipation(participants)) {
+            severity = StatusSeverity.INFO
             statusList.add(
                 StatusEntry(
-                    StatusSeverity.WARNING,
+                    StatusSeverity.INFO,
                     GroupStatusType.UNFINISHED_PARTICIPANTS
                 )
             )
         }
 
-        val statusType =
-            if (isCompetitive(name)) GroupStatusType.GROUP_TYPE_COMPETITIVE
-            else GroupStatusType.GROUP_TYPE_FUN
-
-        statusList.add(
-            StatusEntry(
-                StatusSeverity.INFO,
-                statusType
+        if (hasCompetitors(participants)) {
+            statusList.add(
+                StatusEntry(
+                    StatusSeverity.INFO,
+                    GroupStatusType.GROUP_TYPE_COMPETITIVE
+                )
             )
-        )
+        }
+
+        if (hasNonCompetitors(participants)) {
+            statusList.add(
+                StatusEntry(
+                    StatusSeverity.INFO,
+                    GroupStatusType.GROUP_TYPE_FUN
+                )
+            )
+        }
 
         return OverviewGroupDto(
             this.toDto(),

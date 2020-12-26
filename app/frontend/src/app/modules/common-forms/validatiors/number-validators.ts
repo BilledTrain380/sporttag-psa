@@ -2,18 +2,19 @@ import { AbstractControl, ValidatorFn } from "@angular/forms";
 
 export function floatNumberValidator(precision?: number): ValidatorFn {
   return (control: AbstractControl) => {
-    const parsedNumber = Number.parseFloat(control.value);
+    const value: string = control.value;
+    const parsedNumber = Number.parseFloat(value);
 
     if (Number.isNaN(parsedNumber)) {
       return {floatNumber: {nan: true}};
     }
 
-    if (precision && parsedNumber.toFixed(precision) !== control.value) {
-      return {floatNumber: {precision: true}};
+    if (value.match("[^\\d\\.]")) {
+      return {floatNumber: {nan: true}};
     }
 
-    if (parsedNumber.toString() !== control.value) {
-      return {floatNumber: {floatNumber: true}};
+    if (precision && parsedNumber.toFixed(precision) !== value) {
+      return {floatNumber: {precision: true}};
     }
 
     // tslint:disable-next-line:no-null-keyword

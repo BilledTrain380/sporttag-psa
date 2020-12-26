@@ -369,7 +369,8 @@ stages:
         variables:
           version: $[ dependencies.setup.outputs['Versions.version'] ]
           fullVersion: $[ dependencies.setup.outputs['Versions.fullVersion'] ]
-          dockerTag: $[ dependencies.setup.outputs['Versions.dockerTag'] ]
+          isReleaseBuild: $[ dependencies.setup.outputs['Versions.isReleaseBuild'] ]
+          isPreRelease: $[ dependencies.setup.outputs['Versions.isPreRelease'] ]
 
         steps:
           - script: printenv
@@ -397,8 +398,8 @@ stages:
               ${{ if eq(variables.isPreRelease, 'false') }}:
                 releaseNotesFile: $(System.DefaultWorkingDirectory)/RelNotes/$(version).md
               assets: |
-                $(Pipeline.Workspace)/*.pgk
-                $(Pipeline.Workspace)/*.msi
+                $(Pipeline.Workspace)/$(psaMacosArtifact)/*.pkg
+                $(Pipeline.Workspace)/$(psaWindowsArtifact)/*.msi
                 $(System.DefaultWorkingDirectory)/CHANGELOG.md
               addChangeLog: false
               ${{ if eq(variables.isPreRelease, 'true') }}:
