@@ -39,6 +39,7 @@ package ch.schulealtendorf.psa.web
 import ch.schulealtendorf.psa.core.user.UserManager
 import ch.schulealtendorf.psa.dto.user.PsaLocale
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import javax.servlet.http.HttpServletRequest
 
@@ -54,16 +55,16 @@ class AppController(
     private val userManager: UserManager
 ) {
 
-    @RequestMapping("/app/*", "/app/*/pages/**")
-    fun forward(request: HttpServletRequest) = createCommand("forward", request)
+    @RequestMapping("/app/{locale}", "/app/{locale}/pages/**")
+    fun forward(request: HttpServletRequest, @PathVariable locale: String) = createCommand("forward", request, locale)
 
     @RequestMapping("/app")
-    fun redirect(request: HttpServletRequest) = createCommand("redirect", request)
+    fun redirect(request: HttpServletRequest) = createCommand("redirect", request, PsaLocale.EN.value)
 
-    private fun createCommand(cmd: String, request: HttpServletRequest): String {
+    private fun createCommand(cmd: String, request: HttpServletRequest, defaultLocal: String): String {
         val locale = userManager.getOne(request.userPrincipal?.name ?: "")
             .map { it.locale }
-            .orElse(PsaLocale.EN.value)
+            .orElse(defaultLocal)
 
         return "$cmd:/app/$locale/index.html"
     }
