@@ -78,7 +78,7 @@ export class EventSheetsEffects {
     .pipe(switchMap(() =>
                       this.eventSheetApi.createStartlist()
                         .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "startlist.pdf");
+                          this.downloadService.downloadBinary(binary, "startlist.zip");
 
                           return finishStartlistFileAction();
                         }))
