@@ -45,8 +45,8 @@ export class EventSheetsEffects {
     .pipe(ofType(downloadParticipantListAction.type))
     .pipe(switchMap((action: DownloadParticipantListProps) =>
                       this.eventSheetApi.createParticipantList(action.data)
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "participant-list.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishParticipantFileAction();
                         }))
@@ -61,8 +61,8 @@ export class EventSheetsEffects {
     .pipe(ofType(downloadEventSheetsAction.type))
     .pipe(switchMap((action: DownloadEventSheetsProps) =>
                       this.eventSheetApi.createEventSheets(action.data)
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "event-sheets.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishEventSheetsFileAction();
                         }))
@@ -77,8 +77,8 @@ export class EventSheetsEffects {
     .pipe(ofType(downloadStartlistAction.type))
     .pipe(switchMap(() =>
                       this.eventSheetApi.createStartlist()
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "startlist.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishStartlistFileAction();
                         }))

@@ -1,12 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { GenderDto } from "../../../dto/participation";
 import { DisciplineRanking, RankingData } from "../../../dto/ranking";
 import { getLogger } from "../../logging";
 
-import { API_ENDPOINT } from "./pas-api";
+import { API_ENDPOINT, SimpleFile } from "./pas-api";
 
 @Injectable({
               providedIn: "root",
@@ -19,7 +20,7 @@ export class RankingApi {
   ) {
   }
 
-  createTotalRanking(data: ReadonlyArray<GenderDto>): Observable<Blob> {
+  createTotalRanking(data: ReadonlyArray<GenderDto>): Observable<SimpleFile> {
     this.log.info("Create total ranking:", data);
 
     const rankingData: RankingData = {
@@ -29,10 +30,11 @@ export class RankingApi {
       ubsCup: [],
     };
 
-    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob"});
+    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob", observe: "response"})
+      .pipe(map(response => SimpleFile.fromResponse(response)));
   }
 
-  createTriathlonRanking(data: ReadonlyArray<GenderDto>): Observable<Blob> {
+  createTriathlonRanking(data: ReadonlyArray<GenderDto>): Observable<SimpleFile> {
     this.log.info("Create triathlon ranking:", data);
 
     const rankingData: RankingData = {
@@ -42,10 +44,11 @@ export class RankingApi {
       ubsCup: [],
     };
 
-    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob"});
+    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob", observe: "response"})
+      .pipe(map(response => SimpleFile.fromResponse(response)));
   }
 
-  createUbsCupRanking(data: ReadonlyArray<GenderDto>): Observable<Blob> {
+  createUbsCupRanking(data: ReadonlyArray<GenderDto>): Observable<SimpleFile> {
     this.log.info("Create UBS-Cup ranking:", data);
 
     const rankingData: RankingData = {
@@ -55,10 +58,11 @@ export class RankingApi {
       ubsCup: data,
     };
 
-    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob"});
+    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob", observe: "response"})
+      .pipe(map(response => SimpleFile.fromResponse(response)));
   }
 
-  createDisciplineRanking(data: ReadonlyArray<DisciplineRanking>): Observable<Blob> {
+  createDisciplineRanking(data: ReadonlyArray<DisciplineRanking>): Observable<SimpleFile> {
     this.log.info("Create discipline ranking: ", data);
 
     const rankingData: RankingData = {
@@ -68,6 +72,7 @@ export class RankingApi {
       ubsCup: [],
     };
 
-    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob"});
+    return this.http.post(`${API_ENDPOINT}/ranking/download`, rankingData, {responseType: "blob", observe: "response"})
+      .pipe(map(response => SimpleFile.fromResponse(response)));
   }
 }
