@@ -26,6 +26,7 @@
 .idea/compiler.xml
 .idea/kotlinc.xml
 .idea/.name
+.idea/**/*.iml
 
 # Gradle:
 .idea/**/gradle.xml
