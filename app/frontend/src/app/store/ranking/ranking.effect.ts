@@ -52,8 +52,8 @@ export class RankingEffects {
     .pipe(ofType(downloadTotalRankingAction.type))
     .pipe(switchMap((action: DownloadTotalRankingProps) =>
                       this.rankingApi.createTotalRanking(action.genders)
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "total-ranking.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishTotalRankingFileAction();
                         }))
@@ -68,8 +68,8 @@ export class RankingEffects {
     .pipe(ofType(downloadTriathlonRankingAction.type))
     .pipe(switchMap((action: DownloadTriathlonRankingProps) =>
                       this.rankingApi.createTriathlonRanking(action.genders)
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "triathlon-ranking.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishTriathlonRankingFileAction();
                         }))
@@ -84,8 +84,8 @@ export class RankingEffects {
     .pipe(ofType(downloadUbsCupRankingAction.type))
     .pipe(switchMap((action: DownloadUbsCupRankingProps) =>
                       this.rankingApi.createUbsCupRanking(action.genders)
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "ubs-cup-ranking.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishUbsCupRankingFileAction();
                         }))
@@ -100,8 +100,8 @@ export class RankingEffects {
     .pipe(ofType(downloadDisciplineRankingAction.type))
     .pipe(switchMap((action: DownloadDisciplineRankingProps) =>
                       this.rankingApi.createDisciplineRanking(action.disciplines)
-                        .pipe(map(binary => {
-                          this.downloadService.downloadBinary(binary, "discipline-ranking.zip");
+                        .pipe(map(file => {
+                          this.downloadService.downloadBinary(file.binary, file.name);
 
                           return finishDisciplineRankingFileAction();
                         }))
