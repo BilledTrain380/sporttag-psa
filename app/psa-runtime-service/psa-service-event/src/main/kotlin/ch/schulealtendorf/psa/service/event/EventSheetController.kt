@@ -47,7 +47,7 @@ import ch.schulealtendorf.psa.dto.participation.SportDto
 import ch.schulealtendorf.psa.service.event.business.EventSheetDisciplineExport
 import ch.schulealtendorf.psa.service.event.business.EventSheetExportManager
 import ch.schulealtendorf.psa.service.event.business.ParticipantListExportManager
-import ch.schulealtendorf.psa.service.event.business.reporter.StartlistReporter
+import ch.schulealtendorf.psa.service.event.business.StartlistExportManager
 import ch.schulealtendorf.psa.service.standard.disciplineDtoOf
 import ch.schulealtendorf.psa.service.standard.manager.GroupManager
 import ch.schulealtendorf.psa.service.standard.manager.ParticipationManager
@@ -79,7 +79,7 @@ import org.springframework.web.bind.annotation.RestController
 class EventSheetController(
     private val eventSheetExportManager: EventSheetExportManager,
     private val participantListExportManager: ParticipantListExportManager,
-    private val startlistReporter: StartlistReporter,
+    private val startlistExportManager: StartlistExportManager,
     private val disciplineRepository: DisciplineRepository,
     private val groupManager: GroupManager,
     private val participationManager: ParticipationManager
@@ -213,7 +213,7 @@ class EventSheetController(
     @GetMapping("/download/startlist", produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
     fun createStartList(): ResponseEntity<InputStreamResource> {
         log.info { "Create start list" }
-        val startList = startlistReporter.generateReport()
+        val startList = startlistExportManager.generateArchive()
 
         return buildFileResponse(startList)
     }
