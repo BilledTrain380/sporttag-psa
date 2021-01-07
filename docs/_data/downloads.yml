@@ -1,13 +1,13 @@
-currentStableVersion: "2.1.2 (2019-06-23)"
+currentStableVersion: "4.0.0 (2021-01-07)"
 
 stable:
-  version: 2.1.2
+  version: 4.0.0
   links:
-    relNotes: "https://github.com/BilledTrain380/sporttag-psa/blob/2.1.2/RelNotes/2.1.2.md"
-    changelog: "https://github.com/BilledTrain380/sporttag-psa/blob/2.1.2/CHANGELOG.md"
+    relNotes: "https://github.com/BilledTrain380/sporttag-psa/blob/4.0.0/RelNotes/4.0.0.md"
+    changelog: "https://github.com/BilledTrain380/sporttag-psa/blob/4.0.0/CHANGELOG.md"
   downloads:
     - name: macOS
-      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_macOS.zip"
+      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/4.0.0/PSA-Desktop-4.0.0.pkg"
 
     - name: windows
-      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/2.1.2/PSA_Windows.zip"
+      link: "https://github.com/BilledTrain380/sporttag-psa/releases/download/4.0.0/PSA-Desktop-4.0.0.msi"
